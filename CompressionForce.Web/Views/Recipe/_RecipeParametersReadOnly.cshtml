@@ -1,0 +1,36 @@
+﻿@model CompressionForce.Services.DTOs.RecipeDto
+    <div class="card-header">
+        <strong>@Model.Name</strong> <span class="text-muted">(@Model.Code)</span>
+    </div>
+    <div class="card-body">
+        @if (Model.Parameters?.Any() == true)
+        {
+            <div class="row">
+                @foreach (var p in Model.Parameters)
+                {
+                    <div class="col-md-6 mb-2">
+                        <div>
+                            <strong>@p.Name</strong> <span class="badge bg-light text-dark">@p.Type</span><br />
+                            <span>
+                                @{
+                                    if (p.Value is IEnumerable<string> arr)
+                                    {
+                                        @string.Join(", ", arr)
+                                    }
+                                    else
+                                    {
+                                        @((p.Value ?? "(null)").ToString())
+                                    }
+                                }
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">No parameters.</div>
+        }
+    </div>
+

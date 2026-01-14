@@ -1,0 +1,578 @@
+﻿@{
+    ViewData["Title"] = "Calibration";
+}
+
+<div class="card border-0 mx-4 ps-0 pt-4 min-height-78vh">
+    <ul class="nav nav-tabs row-gap-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#loadcellCali" type="button" role="tab" aria-controls="loadcellCali" aria-selected="true">Loadcell Calibration</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#servoCali" type="button" role="tab" aria-controls="servoCali" aria-selected="false">Servo Calibration</button>
+        </li>
+
+    </ul>
+
+    <div class="tab-content">
+
+        <!-- Load Calibration -->
+        <div class="tab-pane pt-3 fade show active" id="loadcellCali" role="tabpanel">
+
+            <div class="card shadow-sm p-5">
+
+                <!-- Sensor Name -->
+                <div class="mb-4 row align-items-center">
+                    <label class="col-md-2 col-form-label font-size-18px fw-semibold">
+                        Sensor Name:
+                    </label>
+
+                    <div class="col-md-10">
+                        <div class="input-group position-relative">
+
+                            <input type="text"
+                                   id="selectedItem"
+                                   class="form-control bg-white"
+                                   readonly />
+
+                            <button class="btn bgcol-215ED6 dropdown-toggle"
+                                    data-bs-toggle="dropdown">
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-menu-end"
+                                id="loadcellDropdown">
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Display Row -->
+                <div class="row text-center fw-semibold mb-3">
+
+                    <div class="col-lg-4">
+                        <label class="form-label">Calibrated Value</label>
+                        <div class="d-flex justify-content-center gap-2">
+                            <input id="calibratedValue"
+                                   class="form-control text-center w-25"
+                                   value="0.000"
+                                   readonly />
+
+                            <span>kN</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label class="form-label">Sensor Voltage</label>
+                        <div class="d-flex justify-content-center gap-2">
+                            <input id="sensorVoltage"
+                                   class="form-control text-center w-25"
+                                   value="0.000" />
+                            <span>V</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 text-end">
+                        <button type="button"
+                                class="btn btn-primary bgcol-215ED6"
+                                onclick="calculateCalibration()">
+                            Calibrate
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- Setpoints -->
+                <div class="row mb-3">
+
+                    <!-- Min Volt -->
+                    <div class="col-lg-3">
+                        <label class="fw-semibold">Set Min. Volt</label>
+                        <input id="minVolt"
+                               class="form-control text-center"
+                               value="0" />
+                    </div>
+
+                    <!-- Max Volt -->
+                    <div class="col-lg-3">
+                        <label class="fw-semibold">Set Max. Volt</label>
+                        <input id="maxVolt"
+                               class="form-control text-center"
+                               value="10" />
+                    </div>
+
+                    <!-- Min Value -->
+                    <div class="col-lg-3">
+                        <label class="fw-semibold">Set Min. Value (kN)</label>
+                        <input id="minValue"
+                               class="form-control text-center"
+                               value="0" />
+                    </div>
+
+                    <!-- Max Value -->
+                    <div class="col-lg-3">
+                        <label class="fw-semibold">Set Max. Value (kN)</label>
+                        <input id="maxValue"
+                               class="form-control text-center"
+                               value="100" />
+                    </div>
+                </div>
+
+                <!-- Result -->
+                <div class="row mt-3">
+
+                    <div class="col-lg-3">
+                        <label class="fw-semibold">Factor</label>
+                        <input id="factor"
+                               class="form-control text-center"
+                               readonly />
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label class="fw-semibold">Offset</label>
+                        <input id="offset"
+                               class="form-control text-center"
+                               readonly />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!--Servo Calibration-->
+        <div class="tab-pane pt-3 fade" id="servoCali" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            <div class="servo-container">
+
+                @{
+                    // List of titles for the servo management cards
+                    var titles = new List<string>
+                                {
+                                "S1 Fill Depth Servo-1",
+                                "S1 Main Penetration Servo-4",
+                                "S2 Main Penetration Servo-8",
+                                "S1 Pre Penetration Servo-6",
+                                "S2 Pre Penetration Servo-10",
+                                "S2 Fill Depth Servo-2",
+                                "S1 Main Lower Servo-3",
+                                "S2 Main Lower Servo-7",
+                                "S1 Pre Lower Servo-5",
+                                "S1 Pre Lower Servo-9"
+                                };
+                }
+                @foreach (var title in titles)
+                {
+                    <!--Cards 1 to 10-->
+                    <div class="col">
+                        <div class="card h-100 box-shadow-1">
+
+
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0"
+                                data-servo="@title.Replace(" ", "_")">
+                                @title
+                            </h5>
+
+                            <div class="card-body p-3 bord-rad-4px">
+
+                                <!--1st row-->
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px" type="button">Jog Up</button>
+                                    <button class="btn btn-primary bgcol-8434C6 fw-semibold w-100px" type="button">Jog Down</button>
+                                </div>
+
+                                <!--Counter component-->
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
+                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Jog Speed</label>
+
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                        <div class="d-flex flex-column me-2 row-gap-1">
+
+                                            <button class="btn btn-sm arrow-btns p-0">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, 1)">
+                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+
+                                            <button class="btn btn-sm arrow-btns p-0">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, -1)">
+                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+                                        </div>
+                                        <input class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold jog-speed" value="10">
+                                    </div>
+                                </div>
+
+                                <!--3rd and 4th rows-->
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp align-items-center">
+                                    <label for="colFormLabelSm" class="col-4 col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">Act Torque</label>
+                                    <input class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold act-torque" value="0">
+                                    <div class="form-check col-4 form-check-reverse">
+                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
+                                        <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
+                                            Ready
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3 justify-content-end w-100 position-relative counter-comp align-items-center">
+                                    
+                                    <div class="form-check col-4 form-check-reverse">
+                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
+                                        <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
+                                            Alarm
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!--Buttons-->
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary bgcol-34C63B me-auto fw-semibold col-242424 w-100px" type="button">Run</button>
+                                    <button class="btn btn-primary bgcol-FF441F  fw-semibold w-100px col-242424" type="button">Stop</button>
+                                </div>
+
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary bgcol-81D4FA me-auto fw-semibold w-100px col-242424"
+                                            type="button"
+                                            onclick="saveServoCalibration(this)">
+                                        Set
+                                    </button>
+
+                                    <button class="btn btn-primary bgcol-FFAB36 fw-semibold w-100px col-242424"
+                                            type="button"
+                                            onclick="resetServoCalibration(this)">
+                                        Reset
+                                    </button>
+
+                                </div>
+
+                                <!--Last rows-->
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
+                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set</label>
+
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                        <div class="d-flex flex-column me-2 row-gap-1">
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, 1)">
+                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, -1)">
+                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+                                        </div>
+                                        <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-value" value="10.15">
+                                    </div>
+                                </div>
+
+
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
+                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Pos.</label>
+
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                        <div class="d-flex flex-column me-2 row-gap-1">
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, 1)">
+                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, -1)">
+                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+                                        </div>
+                                        <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-pos" value="10.15">
+                                    </div>
+                                </div>
+
+
+                                <div class="row justify-content-start w-100 position-relative counter-comp">
+                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Speed</label>
+
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                        <div class="d-flex flex-column me-2 row-gap-1">
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, 1)">
+                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, -1)">
+                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+                                        </div>
+                                        <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-speed" value="30">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+               <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    fetch('@Url.Action("GetLoadCells", "Calibration")')
+        .then(response => response.json())
+        .then(data => {
+
+            console.log("Loadcells:", data); // DEBUG
+
+            const dropdown = document.getElementById("loadcellDropdown");
+            dropdown.innerHTML = "";
+
+            if (data.length === 0) {
+                dropdown.innerHTML =
+                    `<li><span class="dropdown-item text-muted">No loadcells found</span></li>`;
+                return;
+            }
+
+            data.forEach(lc => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <a class="dropdown-item"
+                       href="#"
+                       onclick="selectLoadCell('${lc.loadCellCode}', '${lc.loadCellName}')">
+                        ${lc.loadCellName}
+                    </a>`;
+                dropdown.appendChild(li);
+            });
+        })
+        .catch(err => console.error("Loadcell API error:", err));
+});
+
+function selectLoadCell(code, name) {
+    document.getElementById("selectedItem").value = name;
+    document.getElementById("selectedItem").dataset.code = code;
+}
+</script>
+                
+
+                <script>
+                    function calculateCalibration() {
+
+                        const loadCellCode = document.getElementById("selectedItem").dataset.code;
+
+                        if (!loadCellCode) {
+                            alert("Please select Sensor Name");
+                            return;
+                        }
+
+                        const minVolt = Number(document.getElementById("minVolt").value);
+                        const maxVolt = Number(document.getElementById("maxVolt").value);
+                        const minVal  = Number(document.getElementById("minValue").value);
+                        const maxVal  = Number(document.getElementById("maxValue").value);
+                        const voltage = Number(document.getElementById("sensorVoltage").value);
+
+                        if (maxVolt === minVolt) {
+                            alert("Min Volt and Max Volt cannot be same");
+                            return;
+                        }
+
+                        const factor = (maxVal - minVal) / (maxVolt - minVolt);
+                        const offset = minVal - (minVolt * factor);
+                        const force  = (voltage * factor) + offset;
+
+                        document.getElementById("factor").value = factor.toFixed(4);
+                        document.getElementById("offset").value = offset.toFixed(4);
+                        document.getElementById("calibratedValue").value = force.toFixed(3);
+
+                        // 🔹 SAVE TO DATABASE
+                        fetch('@Url.Action("SaveCalibration", "Calibration")', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                loadCellCode: loadCellCode,
+                                minVolt: minVolt,
+                                maxVolt: maxVolt,
+                                minValue: minVal,
+                                maxValue: maxVal,
+                                factor: factor,
+                                offset: offset
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            alert("Calibration saved successfully");
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert("Error saving calibration");
+                        });
+                    }
+                </script>
+                <script>
+                    function saveServoCalibration(servoCode, servoName) {
+
+                        const data = {
+                            servoCode: servoCode,
+                            servoName: servoName,
+                            jogSpeed: Number(document.getElementById(`${servoCode}-jogSpeed`).value),
+                            setPosition: Number(document.getElementById(`${servoCode}-setPos`).value),
+                            setSpeed: Number(document.getElementById(`${servoCode}-setSpeed`).value),
+                            torqueLimit: Number(document.getElementById(`${servoCode}-torque`).value)
+                        };
+
+                        fetch('/ServoCalibration/SaveServoCalibration', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        })
+                        .then(res => res.json())
+                        .then(r => alert(r.message))
+                        .catch(err => {
+                            console.error(err);
+                            alert("Error saving servo calibration");
+                        });
+                    }
+                </script>
+                <script>
+                    function loadLastServoCalibration(servoCode) {
+                        fetch(`/ServoCalibration/GetLastServoCalibration?servoCode=${servoCode}`)
+                            .then(res => res.json())
+                            .then(d => {
+                                if (!d) return;
+
+                                document.getElementById(`${servoCode}-jogSpeed`).value = d.jogSpeed;
+                                document.getElementById(`${servoCode}-setPos`).value = d.setPosition;
+                                document.getElementById(`${servoCode}-setSpeed`).value = d.setSpeed;
+                                document.getElementById(`${servoCode}-torque`).value = d.torqueLimit;
+                            });
+                    }
+                </script>
+                <script>
+                    function saveServoCalibration(btn) {
+
+                        const card = btn.closest(".card-body");
+                        const titleEl = card.closest(".card").querySelector(".card-title");
+
+                        const servoCode = titleEl.dataset.servo;
+                        const servoName = titleEl.innerText;
+
+                        const jogSpeed   = Number(card.querySelector(".jog-speed").value);
+                        const torque     = Number(card.querySelector(".act-torque").value);
+                        const setValue   = Number(card.querySelector(".set-value").value);
+                        const setPos     = Number(card.querySelector(".set-pos").value);
+                        const setSpeed   = Number(card.querySelector(".set-speed").value);
+
+                        const payload = {
+                            servoCode: servoCode,
+                            servoName: servoName,
+                            jogSpeed: jogSpeed,
+                            torqueLimit: torque,
+                            setPosition: setPos,
+                            setSpeed: setSpeed
+                        };
+
+                        fetch("/ServoCalibration/SaveServoCalibration", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload)
+                        })
+                        .then(res => res.json())
+                        .then(r => alert(r.message))
+                        .catch(err => {
+                            console.error(err);
+                            alert("Servo calibration save failed");
+                        });
+                    }
+                </script>
+                <<script>
+                     function resetServoCalibration(btn) {
+
+                         const card = btn.closest(".card-body");
+
+                         // Set ALL values to ZERO
+                         card.querySelector(".jog-speed").value  = 0;
+                         card.querySelector(".act-torque").value = 0;
+                         card.querySelector(".set-value").value  = 0;
+                         card.querySelector(".set-pos").value    = 0;
+                         card.querySelector(".set-speed").value  = 0;
+
+                         // Uncheck Ready / Alarm if present
+                         const radios = card.querySelectorAll(".servo-radio");
+                         radios.forEach(r => r.checked = false);
+
+                         alert("All servo values reset to zero");
+                     }
+</script>
+                <script>
+                    function changeValue(el, step) {
+
+                        // Find nearest input inside the same counter component
+                        const input = el.closest(".counter-comp").querySelector("input");
+
+                        if (!input) return;
+
+                        let value = parseFloat(input.value) || 0;
+
+                        // Step logic (can be customized)
+                        value += step;
+
+                        // Prevent negative values (industrial safety)
+                        if (value < 0) value = 0;
+
+                        input.value = value.toFixed(2);
+                    }
+                </script>

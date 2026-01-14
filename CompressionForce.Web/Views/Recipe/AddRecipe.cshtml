@@ -1,0 +1,169 @@
+﻿@model CompressionForce.Web.Models.Recipes.AddEditRecipeVm
+@{
+}
+
+
+<!--Add Recipe-->
+<form asp-action="AddRecipe" method="post">
+<div class="container-fluid px-lg-4 px-md-4 px-sm-3 pt-4 px-3">
+    <div class="RecipeCodeContainer bord-rad-4px boxshadow">
+        <div class="AddRecipeHeader headerRadius fw-semibold bgcol-215ED6 text-white text-center  font-size-18px p-10px">
+            Add Recipe
+        </div>
+        <div class="AddRecipeCodeContent p-4">
+            <div class="mb-4">
+                <input name="code" type="text" class="form-control boxshadow" placeholder="Enter Recipe Code" value=@Model.Code readonly />
+            </div>
+            <div class="d-flex gap-3 align-items-center justify-content-end ">
+                    <button type="button" onclick="location.href='@Url.Action("RecipeParameter")'" class="bg-white clr-215ED6 bord-215ED6 cancel-btn font-size-16px fw-semibold rounded-2 py-2 px-3 bg-white">Cancel</button>
+                    <button type="submit" class="bord-215ED6 bgcol-215ED6 text-white save-btn font-size-16px fw-semibold rounded-2 py-2 px-3">Save</button>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_RecipeParametersEditIndex", Model)
+    <div class="table-responsive">
+        <table class="table addRecipeTable table-bordered bord-D2D2D2 boxshadow bord-rad-4px mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Parameter Name</th>
+                    <th scope="col">Min. Limit</th>
+                    <th scope="col">Max. Limit</th>
+                    <th scope="col">Units</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="clr-242424">Tablet Thickness</td>
+                    <td class="clr-242424">1</td>
+                    <td class="clr-242424">10</td>
+                    <td class="clr-242424">mm</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Tablet Hardness</td>
+                    <td class="clr-242424">1</td>
+                    <td class="clr-242424">500</td>
+                    <td class="clr-242424">N</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Tablet Weight</td>
+                    <td class="clr-242424">1</td>
+                    <td class="clr-242424">2000</td>
+                    <td class="clr-242424">mg</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Turret RPM</td>
+                    <td class="clr-242424">10</td>
+                    <td class="clr-242424">35</td>
+                    <td class="clr-242424">RPM</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Pre Fill Depth</td>
+                    <td class="clr-242424">1</td>
+                    <td class="clr-242424">20</td>
+                    <td class="clr-242424">mm</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Main Fill Depth</td>
+                    <td class="clr-242424">1</td>
+                    <td class="clr-242424">20</td>
+                    <td class="clr-242424">mm</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Main Thickness Position</td>
+                    <td class="clr-242424">3.5</td>
+                    <td class="clr-242424">16</td>
+                    <td class="clr-242424">mm</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Pre Thickness Position</td>
+                    <td class="clr-242424">3.5</td>
+                    <td class="clr-242424">16</td>
+                    <td class="clr-242424">mm</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Max Main Comp. Force</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Max Pre Comp. Force</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Max Rejection Comp. Force</td>
+                    <td class="clr-242424">0.01</td>
+                    <td class="clr-242424">1.8</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Rej Pre Comp. Limit Max</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">AWC Pre Comp. Set Point</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">AWC Pre Comp. Limit Min</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">AWC Main Comp. Limit Max</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">AWC Main Comp. Set Point</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">AWC Main Comp. Limit Min</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Rej Main Comp. Limit Min</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">kN</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Sample Interval Rev</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">Rev</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Sample Rev Qty</td>
+                    <td class="clr-242424">0.1</td>
+                    <td class="clr-242424">80</td>
+                    <td class="clr-242424">Qty</td>
+                </tr>
+                <tr>
+                    <td class="clr-242424">Other Parameter</td>
+                    <td class="clr-242424">1</td>
+                    <td class="clr-242424">100000</td>
+                    <td class="clr-242424">Unit</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/recipeJS.js"></script>
+}

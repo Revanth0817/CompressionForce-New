@@ -1,0 +1,42 @@
+﻿#EF CORE MIGRATIONS (VERY IMPORTANT)
+
+### Prerequisites
+
+Install packages:
+
+```bash
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+```
+
+---
+
+### Add Migration
+
+From **solution root**:
+
+```bash
+dotnet ef migrations add InitialRecipeSchema \
+  --project MySolution.Data \
+  --startup-project MySolution.Web
+```
+
+---
+
+### Apply Migration
+
+```bash
+dotnet ef database update \
+  --project MySolution.Data \
+  --startup-project MySolution.Web
+```
+
+This creates:
+
+* `Recipes`
+* `RecipeHistories`
+* `LookupValues`
+
+✔ No triggers
+✔ JSON-based
+✔ Fully versioned

@@ -1,0 +1,118 @@
+﻿@model CompressionForce.Web.Models.Recipes.RecipeParameterPageVm
+@using System.Collections
+@using System.Linq
+
+
+@*@{   ViewData["Title"] = "RecipeParameter";}*@
+
+<div class="BatchContainer p-3">
+    <div class="w-100 BatchHeader">
+        <div class="d-flex flex-wrap batchPageTabHeader gap-4">
+            <nav class="flex-grow-1">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link font-size-16px clr-242424 fw-semibold active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Parameter</button>
+                    <button class="nav-link font-size-16px clr-242424 fw-semibold" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Records</button>
+                </div>
+            </nav>
+            <div class="d-flex gap-3 align-items-center">
+                <label class="font-size-16px fw-semibold clr-242424">Recipe Code</label>
+                <div class="d-flex RecipeCodeDropdown batchDropdown position-relative dropdown">
+                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="currentRecipeCode"
+                           value=@Model.SelectedCode readonly>
+                    <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        @if (Model.RecipeCodes.Any())
+                        {
+                            foreach (var code in Model.RecipeCodes)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)"
+                                       onclick="updateRecipeCodeSelection('@code')">@code</a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li><a class="dropdown-item disabled" href="#">No Recipes Found</a></li>
+                        }
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="d-flex flex-wrap gap-3 py-4">
+                    <button type="button"  id="btnAdd" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white"
+                            data-bs-toggle="modal"
+                            data-bs-target="#addRecipeModal">
+                        Add Recipe
+                    </button>
+                    <button type="button" id="btnEdit" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Edit Recipe</button>
+                    <button type="button" id="btnRemove" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Remove Recipe</button>
+                    <button type="button" id="btnPrint" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Print Recipe</button>
+                </div>
+
+            <!-- The wrapper we will replace with partial HTML -->
+            <div id="recipeSection" class="card">
+                @Html.Partial("_RecipeParametersIndex", Model.Recipe)
+            </div>
+
+
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Add Recipe -->
+<div class="modal fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bord-rad-8px shadow">
+
+            <div class="modal-header bgcol-215ED6 text-white px-3 py-2">
+                <h5 class="modal-title fw-semibold font-size-18px" id="addRecipeLabel">Add Recipe</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body border-bottom-0">
+                <label for="recipeName" class="fw-semibold col-242424 font-size-14px mb-1">Enter the Recipe Name</label>
+                <input type="text" id="recipeName" class="form-control font-size-14px col-242424 fw-normal" placeholder="e.g. R-1001">
+
+                <div id="duplicateError" class="text-danger font-size-12px mt-2 fw-semibold" style="display:none;">
+                    ⚠ This Recipe Code already exists in the database.
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-end border-top-0 p-3 pt-0">
+                <button type="button" class="btn col-215ED6 bord-215ED6 fw-semibold font-size-16px px-4" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="btnConfirmAdd" class="btn bgcol-215ED6 text-white fw-semibold font-size-16px px-4">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+     // Auto-show modal if there's an error from the Controller
+     document.addEventListener("DOMContentLoaded", function () {
+         var error = '@TempData["ErrorMessage"]';
+         if (error && error.length > 0) {
+             var myModal = new bootstrap.Modal(document.getElementById('addRecipeModal'));
+             myModal.show();
+         }
+     });
+</script>
+
+    @section Scripts {
+    <!-- jQuery Validation (depends on jQuery in _Layout) -->
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Page-specific script -->
+    <script src="~/js/recipeJS.js"></script>
+}

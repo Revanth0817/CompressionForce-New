@@ -1,0 +1,334 @@
+﻿@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="offline-force-page">
+
+    <!-- ================= HEADER ================= -->
+    <div class="page-header d-flex justify-content-between align-items-center mb-3">
+        <h4 class="page-title">Offline Force Data</h4>
+
+        <div class="page-actions d-flex gap-3">
+            <button type="button" class="btn btn-outline-primary btn-sm">
+                        Print Report
+                    </button>
+
+            <div class="batch-group">
+                <label class="batch-label">Batch Number</label>
+
+                <div class="input-group">
+
+                    <!-- READONLY INPUT -->
+                    <input type="text"
+                           class="form-control dropdownInput bord-D2D2D2"
+                           id="currentBatch"
+                           value="Select Batch"
+                           readonly />
+
+                    <!-- DROPDOWN BUTTON -->
+                    <button type="button"
+                            class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+
+                    <!-- DROPDOWN MENU -->
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" onclick="setBatch(1)">1</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setBatch(2)">2</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setBatch(3)">3</a></li>
+                    </ul>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= MAIN TABS ================= -->
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#s1-main">
+                S1 Main Comp.
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s1-pre">
+                S1 Pre Comp.
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s1-eject">
+                S1 Ejection
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-main">
+                S2 Main Comp.
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-pre">
+                S2 Pre Comp.
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-eject">
+                S2 Ejection
+            </button>
+        </li>
+    </ul>
+
+    <!-- ================= MAIN TAB CONTENT ================= -->
+    <div class="tab-content">
+
+        <!-- ========== TEMPLATE FOR ALL MAIN TABS ========== -->
+        @foreach (var tab in new[] {
+                new { Id="s1-main", Title="S1 Main Comp", Active=true },
+                new { Id="s1-pre", Title="S1 Pre Comp", Active=false },
+                new { Id="s1-eject", Title="S1 Ejection", Active=false },
+                new { Id="s2-main", Title="S2 Main Comp", Active=false },
+                new { Id="s2-pre", Title="S2 Pre Comp", Active=false },
+                new { Id="s2-eject", Title="S2 Ejection", Active=false }
+                })
+        {
+            <div class="tab-pane fade @(tab.Active ? "show active" : "")" id="@tab.Id">
+
+                <!-- SUB TABS -->
+                <ul class="nav nav-tabs mb-3">
+                    <li class="nav-item">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#@tab.Id-rev">
+                            Force VS Revolutions
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#@tab.Id-punch">
+                            Force VS Punch Number
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#@tab.Id-data">
+                            Force Data
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- SUB TAB CONTENT -->
+                <div class="tab-content">
+
+                    <!-- GRAPH TAB -->
+                    <div class="tab-pane fade show active" id="@tab.Id-rev">
+                        <div class="graph-container" style="height:300px">
+                            <canvas class="forceRevolutionChart"></canvas>
+
+                        </div>
+
+                        <div class="controls mt-3">
+                            <label>Start Revolution</label>
+                            <input type="number" value="1" class="form-control d-inline w-25" />
+
+                            <label class="ms-3">End Revolution</label>
+                            <input type="number" value="10" class="form-control d-inline w-25" />
+                        </div>
+
+                        <div class="punch-container mt-3">
+                            @for (int i = 1; i <= 51; i++)
+                            {
+                                <label class="me-2">
+                                    <input type="checkbox" checked /> P@(i)
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- PUNCH TAB -->
+                    <!-- PUNCH TAB -->
+                    <div class="tab-pane fade" id="@tab.Id-punch">
+
+                        <!-- GRAPH -->
+                        <div class="graph-container" style="height:300px">
+                            <canvas class="forcePunchChart"></canvas>
+                        </div>
+
+                        <!-- CONTROLS -->
+                        <div class="controls mt-3">
+                            <label>Start Punch</label>
+                            <input type="number" value="1" class="form-control d-inline w-25" />
+
+                            <label class="ms-3">End Punch</label>
+                            <input type="number" value="51" class="form-control d-inline w-25" />
+                        </div>
+
+                        <!-- PUNCH CHECKBOXES -->
+                        <div class="punch-container mt-3">
+                            @for (int i = 1; i <= 51; i++)
+                            {
+                                <label class="me-2">
+                                    <input type="checkbox" checked /> P@(i)
+                                </label>
+                            }
+                        </div>
+
+                    </div>
+
+
+                    <!-- DATA TAB -->
+                    <div class="tab-pane fade" id="@tab.Id-data">
+
+                        <div class="table-responsive force-table-wrapper">
+
+                            <table class="table table-bordered force-data-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Date & Time</th>
+                                        <th>Revolution</th>
+                                        @for (int i = 1; i <= 14; i++)
+                                        {
+                                            <th>P@(i)</th>
+                                        }
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>02-12-2023 16:20:38</td>
+                                        <td>0</td>
+                                        @for (int i = 1; i <= 14; i++)
+                                        {
+                                            <td>0</td>
+                                        }
+                                    </tr>
+
+                                    <tr>
+                                        <td>28-11-2023 11:32:08</td>
+                                        <td>0</td>
+                                        @for (int i = 1; i <= 14; i++)
+                                        {
+                                            <td>0</td>
+                                        }
+                                    </tr>
+
+                                    <tr>
+                                        <td>05-11-2023 20:19:00</td>
+                                        <td>0</td>
+                                        @for (int i = 1; i <= 14; i++)
+                                        {
+                                            <td>0</td>
+                                        }
+                                    </tr>
+
+                                    <tr>
+                                        <td>05-11-2023 12:32:35</td>
+                                        <td>0</td>
+                                        @for (int i = 1; i <= 14; i++)
+                                        {
+                                            <td>0</td>
+                                        }
+                                    </tr>
+
+                                    <tr>
+                                        <td>02-11-2023 12:10:23</td>
+                                        <td>0</td>
+                                        @for (int i = 1; i <= 14; i++)
+                                        {
+                                            <td>1.734</td>
+                                        }
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        /* =====================================================
+           FORCE VS REVOLUTIONS GRAPH
+        ====================================================== */
+        document.querySelectorAll('.forceRevolutionChart').forEach(canvas => {
+            new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: 10 }, (_, i) => i + 1), // Revolutions
+                    datasets: [{
+                        label: 'Force (kN)',
+                        data: [5, 12, 22, 35, 30, 28, 26, 20, 15, 10],
+                        borderWidth: 2,
+                        tension: 0.3,
+                        pointRadius: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Revolution Number'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Force (kN)'
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+
+        /* =====================================================
+           FORCE VS PUNCH NUMBER GRAPH
+        ====================================================== */
+        document.querySelectorAll('.forcePunchChart').forEach(canvas => {
+            new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: 51 }, (_, i) => i + 1), // Punch Numbers
+                    datasets: [{
+                        label: 'Force (kN)',
+                        data: Array.from({ length: 51 }, () => Math.floor(Math.random() * 40)),
+                        borderWidth: 2,
+                        tension: 0.3,
+                        pointRadius: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Punch Number'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Force (kN)'
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

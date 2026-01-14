@@ -1,0 +1,432 @@
+.bord-rad-4px {
+    border-radius: 4px !important;
+}
+
+.bgcol-000000 {
+    background-color: #000000 !important;
+}
+
+.bgcol-E9EFFB {
+    background-color: #E9EFFB !important;
+}
+
+.bgcol-215ED6 {
+    background-color: #215ED6 !important;
+}
+
+.bgcol-8434C6 {
+    background-color: #8434C6 !important;
+}
+
+.font-size-12px {
+    font-size: 12px !important;
+}
+
+.font-size-14px {
+    font-size: 14px !important;
+}
+
+.font-size-13px {
+    font-size: 13px !important;
+}
+
+.font-size-16px {
+    font-size: 16px !important;
+}
+
+.font-size-18px {
+    font-size: 18px !important;
+}
+
+.font-size-20px {
+    font-size: 20px !important;
+}
+
+.col-242424 {
+    color: #242424 !important;
+}
+
+.col-215ED6 {
+    color: #215ED6 !important;
+}
+
+.col-FFFFFF {
+    color: #FFFFFF !important;
+}
+
+.bord-D2D2D2 {
+    border: 1px solid #D2D2D2 !important;
+}
+
+.bord-215ED6 {
+    border: 1px solid #215ED6 !important;
+}
+
+.bord-8434C6 {
+    border: 1px solid #8434C6 !important;
+}
+
+.bord-top-215ED6 {
+    border-top: 2px solid #215ED6 !important;
+}
+
+.bord-left-215ED6 {
+    border-left: 2px solid #215ED6 !important;
+}
+
+.bord-right-215ED6 {
+    border-right: 2px solid #215ED6 !important;
+}
+
+.bord-bottom-242424 {
+    border-bottom: 2px solid #242424 !important;
+}
+
+.px-16px {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+.px-20px {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.py-9px {
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
+}
+
+.input-sm-width {
+    min-width: 72px;
+    max-width: 100px;
+}
+
+.param-card {
+    border-radius: 0;
+    border: 1px solid #dee2e6 !important;
+}
+
+.shadow-custom {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25) !important;
+}
+
+.shadow-custom1 {
+    box-shadow: 0 0 0 1px #E0E0E0 !;
+}
+
+.w-100px {
+    width: 100px !important;
+}
+
+.w-120px {
+    width: 120px !important;
+}
+
+.w-60px {
+    width: 60px !important;
+}
+
+.w-65px {
+    width: 65px !important;
+}
+
+.w-63px {
+    width: 63px !important;
+}
+
+.w-26px {
+    width: 26px !important;
+}
+
+.w-16px {
+    width: 16px !important;
+}
+
+.w-200 {
+    width: 200% !important;
+}
+
+.w-18px {
+    width: 18px !important;
+}
+
+.w-32px {
+    width: 32px !important;
+}
+
+.h-32px {
+    height: 32px !important;
+}
+
+.h-16px {
+    height: 16px !important;
+}
+
+.h-18px {
+    height: 18px !important;
+}
+
+.max-w-63px {
+    max-width: 63px !important;
+}
+
+.min-w-120px {
+    min-width: 120px !important;
+}
+
+.min-w-150px {
+    min-width: 150px !important;
+}
+
+.min-w-180px {
+    min-width: 180px !important;
+}
+
+
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.min-vh-70 {
+    min-height: 70vh;
+}
+
+.min-w-100px {
+    min-width: 100px !important;
+}
+
+.min-w-180px {
+    min-width: 180px !important;
+}
+
+.min-w-160px {
+    min-width: 160px !important;
+}
+
+.max-w-1250px {
+    max-width: 1250px !important;
+}
+
+.max-w-529px {
+    max-width: 529px !important;
+}
+
+.min-w-85px {
+    max-width: 85px !important;
+}
+
+.min-w-800px {
+    min-width: 800px !important;
+}
+
+.h-100vh {
+    height: 100vh;
+}
+
+.vis-hidden {
+    visibility: hidden;
+}
+
+.table-striped-blue > tbody > tr:nth-child(even) {
+    --bs-table-accent-bg: #E9EFFB;
+    background-color: var(--bs-table-accent-bg) !important;
+}
+
+@media (max-width: 767.98px) {
+    .tool-parameter-wrap {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+        .tool-parameter-wrap label {
+            width: 100%;
+        }
+}
+
+@media (min-width: 1300px) {
+    .row > .custom-breakpoint {
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 1299.98px) {
+    .row > .custom-breakpoint {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .responsive-control {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+        .responsive-control label {
+            width: 100%;
+        }
+}
+
+.table-width2 {
+    min-width: 250px;
+}
+
+.w-130px {
+    width: 130px !important;
+}
+
+.force-summary-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3rem;
+}
+
+@media (min-width: 1041px) {
+    .force-summary-section {
+        flex-wrap: nowrap;
+        gap: 5rem;
+    }
+
+    .force-summary-buttons {
+        width: auto !important;
+    }
+}
+
+/* At 1040px and below, stack section children vertically, keep buttons in a row */
+@media (max-width: 1040px) {
+    .force-summary-section {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 1.5rem !important;
+    }
+
+    .force-summary-buttons {
+        width: 100% !important;
+        justify-content: center !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+    }
+
+        .force-summary-buttons > button {
+            width: 130px !important; /* Fixed width for buttons in row */
+            margin-bottom: 8px;
+        }
+}
+
+/* Small screens: Stack buttons vertically */
+@media (max-width: 546px) {
+    .force-summary-buttons {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+        .force-summary-buttons > button {
+            width: 100% !important; /* Full width for vertical stacking */
+            margin-bottom: 8px;
+        }
+
+            .force-summary-buttons > button:last-child {
+                margin-bottom: 0;
+            }
+}
+
+
+@media (max-width: 767.98px) {
+    .cs-card-responsive {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        gap: 1rem !important;
+    }
+
+        .cs-card-responsive > .d-flex.flex-column {
+            min-width: 0 !important;
+            align-items: flex-start !important;
+            text-align: left !important;
+        }
+}
+
+.cs-flex-row-gap {
+    column-gap: 2rem; /* or whatever you prefer */
+}
+
+/* Turn off min-width and left-align on small screens */
+@media (max-width: 1080px) {
+    .main-thickness-col {
+        min-width: 0 !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+    }
+
+        .main-thickness-col label {
+            text-align: left !important;
+            justify-content: flex-start !important;
+            display: block !important;
+        }
+
+        .main-thickness-col .d-flex.align-items-center.gap-2.justify-content-end {
+            justify-content: flex-start !important;
+        }
+}
+/**/
+@media (max-width: 1039px) {
+    .force-summary-section .table-responsive {
+        margin-bottom: 0 !important;
+    }
+}
+
+@media (min-width:862px) and (max-width: 983px) {
+    .max-limitcolumn {
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .cs-card-responsive > .prepenetrationrow {
+        flex-direction: row !important;
+        gap:9px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .prepenetrationrow label,
+    .main-thickness-col label,
+    .d-flex.flex-column.align-items-center.justify-content-center.gap-3 label {
+        min-width: 120px;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* All input containers inside your cards will be right-aligned */
+    .cs-card-responsive > .d-flex.align-items-center {
+        justify-content: flex-end !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .cs-card-responsive > div,
+    .d-flex.flex-column > div {
+        display: flex !important;
+    }
+
+    .cs-card-responsive label {
+        min-width: 150px !important;
+    }
+
+    .d-flex.align-items-center.gap-1,
+    .d-flex.align-items-center.gap-2,
+    .bord-col-215ED6.rounded {
+        margin-left: auto !important;
+    }
+    
+}
+@media (max-width: 768px) {
+    .prepenetrationrow .bord-col-215ED6 {
+        width: 56px !important; /* The 70px width you want ONLY for mobile */
+        min-width: 60px !important;
+    }
+}
+

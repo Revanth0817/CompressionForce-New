@@ -1,0 +1,79 @@
+﻿@model CompressionForce.Web.Models.LoginViewModel
+
+<div class="d-flex justify-content-center">
+    <div class="container-fluid shadow border-d2d2d2 mt-5">
+        <div class="row">
+            <!-- ✅ LEFT SECTION - Sign Up Button FIXED -->
+            <div class="col-md-6 login-section background-col-E9EFFB p-5 text-center d-flex flex-column justify-content-center height-500">
+                <h3 class="fw-bold font-size-20 col-242424">Welcome back!</h3>
+                <p class="font-size-16 col-242424">Your precision matters. Log in to monitor, adjust, and optimize compression force parameters with confidence. Continue your work with real-time insights and control at your fingertips.</p>
+
+                <!-- ✅ WORKING SIGN UP BUTTON - Clicks → /Account/Register -->
+                <a asp-controller="Account" asp-action="Register"
+                   class="btn shadow rounded-5 w-auto background-col-E9EFFB col-242424 font-size-16 mx-auto d-block d-flex align-items-center gap-1 justify-content-center text-decoration-none"
+                   style="height: 45px; padding: 0 20px;">
+                    <span>Don't have an account?</span>
+                    <span class="fw-semibold col-242424 font-size-16">Sign Up</span>
+                </a>
+            </div>
+
+            <!-- RIGHT SECTION - Login Form -->
+            <div class="col-md-6 login-section p-5 d-flex flex-column justify-content-center height-500">
+                <form asp-controller="Account" asp-action="Login" method="post">
+                    <!-- Success/Error Messages -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+                    <div asp-validation-summary="ModelOnly" class="text-danger font-size-12"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label font-size-14 fw-semibold col-242424">
+                            Email Address/User Name<span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Email" class="form-control font-size-14 col-242424" placeholder="Enter Username/Email">
+                        <span asp-validation-for="Email" class="text-danger font-size-12"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label font-size-14 fw-semibold col-242424 pe-5">
+                            Password <span class="text-danger">*</span>
+                        </label>
+                        <div class="position-relative">
+                            <input asp-for="Password" type="password" class="form-control col-242424 font-size-14" placeholder="Enter Password">
+                            <img src="~/icons/eyeicon.svg" alt="Toggle Password"
+                                 class="position-absolute top-50 translate-middle-y cursor-pointer end-0 me-2"
+                                 onclick="togglePasswordVisibility()">
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger font-size-12"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="form-check">
+                            <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="RememberMe">
+                            <label class="form-check-label col-242424 font-size-14" for="RememberMe">Remember Me</label>
+                        </div>
+                        <a href="#" class="text-decoration-none col-242424 font-size-14">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn background-col-215ED6 text-white font-size-16 fw-semibold ms-auto d-block w-100 py-2">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function togglePasswordVisibility() {
+            var pwd = document.querySelector('input[name="Password"]');
+            pwd.type = pwd.type === "password" ? "text" : "password";
+        }
+    </script>
+}

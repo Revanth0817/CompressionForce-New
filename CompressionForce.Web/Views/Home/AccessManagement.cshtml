@@ -1,0 +1,1245 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="accountManagementContainer">
+        <h4 class="clr-215ED6 fw-semibold mb-4 mt-0">Account Management</h4>
+        <div class="d-flex flex-wrap gap-3 pb-3">
+            <button type="button"
+                    class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white"
+                    data-bs-toggle="modal"
+                    data-bs-target="#changePasswordModal">
+                Change Password
+            </button>
+
+            <button class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#exampleModalToggle2" href="" role="button">Change Access</button>
+            <button class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" href="" role="button">Create Account</button>
+            <button type="button"
+                    class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addGroupModal">
+                Add Group
+            </button>
+
+
+
+
+          <button type="button"
+        class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white"
+        onclick="setInactive()">
+    Account Deactivate
+</button>
+
+<button type="button"
+        class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white"
+        onclick="setActive()">
+    Account Activate
+</button>
+
+
+            <button type="button"
+                    class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white"
+                    onclick="applyPasswordExpiry()">
+                Reset Password Expiry
+            </button>
+
+            <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#exampleModalToggle3" href="" role="button">Previlege</button>
+            <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#exampleModalToggle4" href="" role="button">Security Settings</button>
+        </div>
+        <div class="table-wrapper">
+            <table class="table table-bordered bord-D2D2D2 boxshadow bord-rad-4px">
+                <thead>
+                    <tr>
+                        <th scope="col" class="fw-semibold text-center"></th>
+                        <th scope="col" class="fw-semibold">User Name</th>
+                        <th scope="col" class="fw-semibold">Access</th>
+                        <th scope="col" class="fw-semibold">Expires On</th>
+                        <th scope="col" class="fw-semibold">Activate / Deactivate</th>
+                        <th scope="col" class="fw-semibold">Last Login</th>
+                    </tr>
+                </thead>
+
+                <tbody id="userTableBody">
+                    <!-- New users will be added here -->
+                </tbody>
+
+            </table>
+        </div>
+    </div>  
+</div>      
+<!--User create Popup-->
+<div class="modal fade" id="exampleModalToggle" tabindex="-1" aria-labelledby="exampleModalToggleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header bgcol-215ED6 text-white justify-content-between font-size-18px">
+                <h5 class="fw-semibold modal-title" id="exampleModalToggleLabel">
+                    User Creation
+                </h5>
+                <button type="button" class="bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="~/icons/closeicon.svg" />
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body p-4 userCreationScroll">
+                <div class="d-flex gap-4 flex-lg-row flex-column">
+
+                    <!-- LEFT INFO -->
+                    <div class="userCreationlefContainer">
+                        <div class="position-relative w-60">
+                            <div class="camera-preview d-flex align-items-center justify-content-center mb-3 rounded">
+                                Preview
+                            </div>
+
+                            <label class="btn btn-take-picture bord-D2D2D2 font-size-14 fw-semibold mb-3 boxshadow w-100">
+                                Take Picture
+                                <input type="file" accept="image/*" capture="user" hidden>
+                            </label>
+                        </div>
+
+                        <p class="font-size-14 fw-semibold">
+                            Note: Make sure your password follows these rules:
+                        </p>
+                        <ul class="ps-3">
+                            <li class="font-size-14 mb-2">8–15 characters</li>
+                            <li class="font-size-14 mb-2">Upper & lower case letters</li>
+                            <li class="font-size-14">1 number & 1 special character</li>
+                        </ul>
+                        <p class="font-size-14">
+                            <span class="fw-semibold">Example:</span> Admin@1234
+                        </p>
+                    </div>
+
+                    <!-- FORM -->
+                    <div class="flex-grow-1">
+                        <form id="createUserForm" onsubmit="createUser(event)">
+
+                            <div class="mb-2">
+                                <label class="form-label font-size-14 fw-semibold">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label font-size-14 fw-semibold">User Name</label>
+                                <input type="text" class="form-control" id="userName" required>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label font-size-14 fw-semibold">Password</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label font-size-14 fw-semibold">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+
+                            <!-- USER ROLE DROPDOWN -->
+                            <div class="mb-2">
+                                <label class="form-label font-size-14 fw-semibold">User Role</label>
+
+                                <div class="dropdown">
+                                    <input type="text"
+                                           class="form-control dropdown-toggle"
+                                           id="selectedRole"
+                                           placeholder="Select Role"
+                                           data-bs-toggle="dropdown"
+                                           readonly
+                                           required>
+
+                                    <ul class="dropdown-menu w-100">
+                                        <li><a class="dropdown-item" href="#" onclick="selectRole('Admin')">Admin</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="selectRole('User')">User</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="selectRole('Maintenance')">Maintenance</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- ACTION BUTTONS -->
+                            <div class="d-flex justify-content-end gap-3 mt-4">
+                                <button type="button"
+                                        class="btn col-215ED6 bord-215ED6 fw-semibold px-4 clr-215ED6"
+                                        data-bs-dismiss="modal">
+                                    Cancel
+                                </button>
+
+                                <button type="submit"
+                                        class="btn bgcol-215ED6 text-white fw-semibold px-4">
+                                    Create User
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--Change Access-->
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bgcol-215ED6 text-white justify-content-between font-size-18px">
+                <h5 class="fw-semibold modal-title" id="exampleModalToggleLabel">Change Access</h5>
+                <button type="button" class="bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="~/icons/closeicon.svg" />
+                </button>
+            </div>
+            <div class="modal-body px-4 pt-4 pb-3">
+                <form>
+                    <div class="d-md-flex d-block mb-3 align-items-center">
+                        <label for="userName" class="form-label font-size-14 w-md-50 w-100 mb-2 mb-md-0 fw-semibold">User Name</label>
+                        <div class="d-flex flex-grow-1 w-md-50 w-100 batchDropdown position-relative">
+                            <input type="text" class="form-control dropdownInput" id="changeUserName" readonly>
+                            <input type="hidden" id="changeUserId">
+                            <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" id="userDropdownList"></ul>
+                        </div>
+                    </div>
+                    <div class="d-md-flex d-block mb-3 align-items-center">
+                        <label for="userGroup" class="form-label font-size-14 w-50 mb-2 mb-md-0 fw-semibold">Current User Group</label>
+                        <input type="text" class="form-control w-226px bord-D2D2D2" id="currentRole" readonly>
+                    </div>
+                    <div class="d-md-flex d-block mb-3 align-items-center">
+                        <label for="exampleInputPassword1" class="form-label font-size-14 w-md-50 w-100 mb-2 mb-md-0 fw-semibold">New Group</label>
+                        <div class="d-flex RecipeCodeDropdown flex-grow-1 w-md-50 w-100 batchDropdown position-relative">
+                            <input type="text" class="form-control dropdownInput bord-D2D2D2" id="newRole" readonly>
+                            <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" onclick="selectNewRole(event, 'Admin')">Admin</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="selectNewRole(event, 'User')">User</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="selectNewRole(event, 'Maintenance')">Maintenance</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end border-top-0 mt-3 pt-0 gap-3">
+                        <button type="button" class="btn col-215ED6 bord-215ED6 fw-semibold font-size-16px px-4 clr-215ED6" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn bgcol-215ED6 text-white fw-semibold font-size-16px px-4" onclick="changeAccess()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- PRIVILEGES SETTINGS MODAL -->
+<div class="modal fade" id="exampleModalToggle3" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header bgcol-215ED6 text-white d-flex align-items-center">
+                <h5 class="fw-semibold mb-0">Privileges Settings</h5>
+                <button type="button"
+                        class="btn-close btn-close-white ms-auto"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body px-4 pt-4 pb-3">
+
+                <!-- GROUP SELECT -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <label class="form-label fw-semibold mb-0 w-25">
+                            Group
+                        </label>
+
+                        <div class="dropdown flex-grow-1">
+                            <input type="text"
+                                   id="privilegeGroup"
+                                   class="form-control dropdownInput"
+                                   placeholder="Select group"
+                                   readonly
+                                   data-bs-toggle="dropdown">
+
+                            <ul class="dropdown-menu w-100"
+                                id="privilegeGroupDropdown">
+                                <!-- groups injected by JS -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRIVILEGES LIST -->
+                <div class="previlageSettingsList" id="privilegeCheckboxes">
+
+                    <!-- Diagnostics -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="Diagnostics">
+                        Diagnostics
+                    </label>
+
+                    <!-- Recipe -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="Recipe">
+                        Recipe
+                    </label>
+
+                    <!-- Batch -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="Batch">
+                        Batch
+                    </label>
+
+                    <!-- Auto Mode -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="AutoMode">
+                        AutoMode
+                    </label>
+
+                    <!-- Report -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="Report">
+                        Report
+                    </label>
+
+                    <!-- Calibration -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="Calibration">
+                        Calibration
+                    </label>
+
+                    <!-- Alarm -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="Alarm">
+                        Alarm
+                    </label>
+
+                    <!-- Help Menu -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="HelpMenu">
+                        Help Menu
+                    </label>
+
+                    <!-- Auto Tare Mode -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="AutoTareMode">
+                        Auto Tare Mode
+                    </label>
+
+                    <!-- Access Management -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="AccessManagement">
+                        Access Management
+                    </label>
+
+                    <!-- Audit Trail -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="AuditTrail">
+                        Audit Trail
+                    </label>
+
+                    <!-- Change Password -->
+                    <label class="mb-3 d-flex align-items-center fw-semibold">
+                        <input type="checkbox" class="form-check-input me-2" data-privilege="ChangePassword">
+                        Change Password
+                    </label>
+
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="d-flex justify-content-end gap-3 mt-4">
+                    <button type="button"
+                            class="btn bord-215ED6 clr-215ED6"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="button"
+                            class="btn bgcol-215ED6 text-white"
+                            onclick="saveGroupPrivileges()">
+                        Save
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Security configuration-->
+<div class="modal fade" id="exampleModalToggle4" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header bgcol-215ED6 text-white justify-content-between font-size-18px">
+                <h5 class="fw-semibold modal-title" id="exampleModalToggleLabel">
+                    Security Configuration
+                </h5>
+                <button type="button"
+                        class="bgcol-215ED6 bord-215ED6"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <img src="~/icons/closeicon.svg" />
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body px-4 pt-4 pb-3">
+
+                <!-- Application Timeout -->
+                <div class="d-flex align-items-center gap-2 justify-content-between mb-3">
+                    <label class="mb-0 font-size-14 fw-semibold">
+                        Application Timeout
+                    </label>
+
+                    <div class="d-flex align-items-center gap-2 min-width-26">
+                        <div class="d-flex align-items-center bord-D2D2D2 rounded px-2 w-60px py-1">
+                            <div class="d-flex flex-column me-2 row-gap-1">
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'appTimeout')">
+                                    ▲
+                                </button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'appTimeout')">
+                                    ▼
+                                </button>
+                            </div>
+
+                            <!-- ✅ ID ADDED -->
+                            <input type="number"
+                                   id="appTimeout"
+                                   class="form-control arrows-text font-size-14 border-0 p-0 ps-1 text-start fw-semibold"
+                                   value="10">
+                        </div>
+                        <span class="font-size-14 fw-semibold">Minutes</span>
+                    </div>
+                </div>
+
+                <!-- Password Expiry -->
+                <div class="d-flex align-items-center gap-2 justify-content-between mb-3">
+                    <label class="mb-0 font-size-14 fw-semibold">
+                        Password Expiry Days
+                    </label>
+
+                    <div class="d-flex align-items-center gap-2 min-width-26">
+                        <div class="d-flex align-items-center bord-D2D2D2 rounded px-2 w-60px py-1">
+                            <div class="d-flex flex-column me-2 row-gap-1">
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'pwdExpiry')">
+                                    ▲
+                                </button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'pwdExpiry')">
+                                    ▼
+                                </button>
+                            </div>
+
+                            <!-- ✅ ID ADDED -->
+                            <input type="number"
+                                   id="passwordExpiry"
+                                   class="form-control arrows-text font-size-14 border-0 p-0 ps-1 text-start fw-semibold"
+                                   value="10">
+                        </div>
+                        <span class="font-size-14 fw-semibold">Days</span>
+                    </div>
+                </div>
+
+                <!-- Wrong Attempts -->
+                <div class="d-flex align-items-center gap-2 justify-content-between">
+                    <label class="mb-0 font-size-14 fw-semibold">
+                        No. of Wrong Attempt
+                    </label>
+
+                    <div class="d-flex align-items-center gap-2 min-width-26">
+                        <div class="d-flex align-items-center bord-D2D2D2 rounded px-2 w-60px py-1">
+                            <div class="d-flex flex-column me-2 row-gap-1">
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'wrongAttempts')">
+                                    ▲
+                                </button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'wrongAttempts')">
+                                    ▼
+                                </button>
+                            </div>
+
+                            <!-- ✅ ID ADDED -->
+                            <input type="number"
+                                   id="maxAttempts"
+                                   class="form-control arrows-text font-size-14 border-0 p-0 ps-1 text-start fw-semibold"
+                                   value="10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="d-flex justify-content-end border-top-0 mt-4 pt-0 gap-3">
+                    <button type="button"
+                            class="btn col-215ED6 bord-215ED6 fw-semibold font-size-16px px-4 clr-215ED6"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="button"
+                            class="btn bgcol-215ED6 text-white fw-semibold"
+                            onclick="saveSecuritySettings()">
+                        Save
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ✅ ADD GROUP MODAL  -->
+
+<div class="modal fade" id="addGroupModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- HEADER (FIXED X ALIGNMENT) -->
+            <div class="modal-header bgcol-215ED6 text-white d-flex align-items-center">
+                <h5 class="fw-semibold mb-0">Manage Groups</h5>
+
+                <!-- RIGHT CORNER CLOSE -->
+                <button type="button"
+                        class="btn-close btn-close-white ms-auto"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body px-4 py-3">
+
+                <!-- GROUP INPUT + DROPDOWN -->
+                <div class="mb-3 position-relative">
+                    <label class="form-label fw-semibold">Group Name</label>
+
+                    <input type="text"
+                           class="form-control dropdownInput"
+                           id="groupInput"
+                           placeholder="Type new group or select existing"
+                           autocomplete="off"
+                           data-bs-toggle="dropdown"
+                           oninput="hideGroupDropdown()">
+
+                    <ul class="dropdown-menu w-100"
+                        id="groupDropdownList">
+                        <!-- Groups injected by JS -->
+                    </ul>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="d-flex justify-content-end gap-3">
+                    <button type="button"
+                            class="btn btn-danger"
+                            onclick="deleteGroup()">
+                        Delete Group
+                    </button>
+
+                    <button type="button"
+                            class="btn bgcol-215ED6 text-white"
+                            onclick="addGroup()">
+                        Add Group
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🔐 CHANGE PASSWORD MODAL -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header bgcol-215ED6 text-white">
+                <h5 class="fw-semibold mb-0">Change Password</h5>
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body px-4 pt-4 pb-3">
+
+                <div class="mb-3">
+                    <label class="fw-semibold">New Password</label>
+                    <input type="password"
+                           id="newPassword"
+                           class="form-control"
+                           placeholder="Enter new password">
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-semibold">Confirm New Password</label>
+                    <input type="password"
+                           id="confirmNewPassword"
+                           class="form-control"
+                           placeholder="Confirm new password">
+                </div>
+
+                <div class="d-flex justify-content-end gap-3 mt-3">
+                    <button class="btn bord-215ED6 clr-215ED6"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button class="btn bgcol-215ED6 text-white"
+                            onclick="bulkChangePassword()">
+                        Save
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", loadUsers);
+
+    let cachedUsers = [];
+
+    /* ================= LOAD USERS ================= */
+    async function loadUsers() {
+        const res = await fetch("/AdminUser/List");
+        if (!res.ok) return;
+
+        const users = await res.json();
+        cachedUsers = users;
+
+        const tbody = document.getElementById("userTableBody");
+        tbody.innerHTML = "";
+
+        if (users.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-muted">
+                        No users found
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        users.forEach(u => {
+            const statusClass = u.isActive ? "text-success" : "text-danger";
+            const statusText = u.isActive ? "Active" : "Inactive";
+
+            tbody.innerHTML += `
+                <tr data-id="${u.id}">
+                    <td class="text-center">
+                        <input type="checkbox" class="row-checkbox" data-id="${u.id}">
+                    </td>
+                    <td class="td-username">${u.userName}</td>
+                    <td class="td-role">${u.role}</td>
+                    <td>${u.expiryDate ? new Date(u.expiryDate).toLocaleDateString() : "-"}</td>
+                    <td class="fw-semibold ${statusClass}">${statusText}</td>
+                    <td>${u.lastLoginDate ? new Date(u.lastLoginDate).toLocaleString() : "-"}</td>
+                </tr>`;
+        });
+
+        populateUserDropdown(users);
+    }
+
+    /* ================= CREATE ACCOUNT (FIXED) ================= */
+    async function createUser(event) {
+        event.preventDefault();
+
+        const userName = document.getElementById("userName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        const role = document.getElementById("selectedRole").value.trim();
+
+        if (!userName || !email || !password || !confirmPassword || !role) {
+            alert("All fields are required");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        const res = await fetch("/AdminUser/Create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userName: userName,
+                email: email,
+                password: password,
+                role: role
+            })
+        });
+
+        if (!res.ok) {
+            alert(await res.text());
+            return;
+        }
+
+        // ✅ RESET FORM
+        document.getElementById("createUserForm").reset();
+        document.getElementById("selectedRole").value = "";
+
+        // ✅ CLOSE MODAL
+        bootstrap.Modal.getInstance(
+            document.getElementById("exampleModalToggle")
+        ).hide();
+
+        // ✅ REFRESH TABLE
+        loadUsers();
+    }
+
+    /* ================= ROLE SELECT ================= */
+    function selectRole(role) {
+        document.getElementById("selectedRole").value = role;
+    }
+
+    /* ================= ACTIVATE / DEACTIVATE ================= */
+    async function setUsersActive(isActive) {
+        const ids = Array.from(document.querySelectorAll(".row-checkbox:checked"))
+            .map(cb => parseInt(cb.dataset.id));
+
+        if (ids.length === 0) {
+            alert("Please select at least one user");
+            return;
+        }
+
+        const res = await fetch("/AdminUser/SetActive", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userIds: ids,
+                isActive: isActive
+            })
+        });
+
+        if (!res.ok) {
+            alert(await res.text());
+            return;
+        }
+
+        loadUsers();
+    }
+
+    function setActive() {
+        setUsersActive(true);
+    }
+
+    function setInactive() {
+        setUsersActive(false);
+    }
+
+    /* ================= CHANGE ACCESS ================= */
+    function populateUserDropdown(users) {
+        const list = document.getElementById("userDropdownList");
+        list.innerHTML = "";
+
+        users.forEach(u => {
+            list.innerHTML += `
+                <li>
+                    <a class="dropdown-item"
+                       href="#"
+                       onclick="selectUserFromDropdown(event, ${u.id}, '${u.userName}', '${u.role}')">
+                       ${u.userName}
+                    </a>
+                </li>`;
+        });
+    }
+
+    function selectUserFromDropdown(e, id, userName, role) {
+        e.preventDefault();
+        document.getElementById("changeUserId").value = id;
+        document.getElementById("changeUserName").value = userName;
+        document.getElementById("currentRole").value = role;
+        document.getElementById("newRole").value = "";
+    }
+
+    function selectNewRole(e, role) {
+        e.preventDefault();
+        document.getElementById("newRole").value = role;
+    }
+
+    async function changeAccess() {
+        const userId = document.getElementById("changeUserId").value;
+        const newRole = document.getElementById("newRole").value.trim();
+
+        if (!userId || !newRole) {
+            alert("Select user and new group");
+            return;
+        }
+
+        const res = await fetch("/AdminUser/ChangeAccess", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: parseInt(userId),
+                newRole: newRole
+            })
+        });
+
+        if (!res.ok) {
+            alert(await res.text());
+            return;
+        }
+
+        bootstrap.Modal.getInstance(
+            document.getElementById("exampleModalToggle2")
+        ).hide();
+
+        loadUsers();
+    }
+</script>
+
+<script>
+    let groups = [];
+
+    document.addEventListener("DOMContentLoaded", loadGroups);
+
+    /* ================= LOAD GROUPS ================= */
+    async function loadGroups() {
+        const res = await fetch("/AdminUser/Groups");
+        if (!res.ok) return;
+
+        groups = await res.json();
+
+        renderGroupManagerDropdown();
+        renderCreateAccountRoles();
+        renderChangeAccessRoles();
+    }
+
+    /* ================= ADD GROUP ================= */
+    async function addGroup() {
+        const input = document.getElementById("groupInput");
+        const name = input.value.trim();
+
+        if (!name) {
+            alert("Group name required");
+            return;
+        }
+
+        const res = await fetch("/AdminUser/AddGroup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(name)
+        });
+
+        if (!res.ok) {
+            alert(await res.text());
+            return;
+        }
+
+        input.value = "";
+        loadGroups();
+    }
+
+    /* ================= DELETE GROUP ================= */
+    async function deleteGroup() {
+        const name = document.getElementById("groupInput").value.trim();
+
+        if (!name) {
+            alert("Select group to delete");
+            return;
+        }
+
+        const res = await fetch(`/AdminUser/DeleteGroup/${name}`, {
+            method: "DELETE"
+        });
+
+        if (!res.ok) {
+            alert(await res.text());
+            return;
+        }
+
+        document.getElementById("groupInput").value = "";
+        loadGroups();
+    }
+
+    /* ================= GROUP MANAGER DROPDOWN ================= */
+    function renderGroupManagerDropdown() {
+        const list = document.getElementById("groupDropdownList");
+        if (!list) return;
+
+        list.innerHTML = "";
+
+        groups.forEach(g => {
+            list.innerHTML += `
+                <li>
+                    <a class="dropdown-item"
+                       href="#"
+                       onclick="selectGroup('${g}')">
+                       ${g}
+                    </a>
+                </li>`;
+        });
+    }
+
+    function selectGroup(name) {
+        document.getElementById("groupInput").value = name;
+    }
+
+    /* ================= CREATE ACCOUNT ================= */
+    function renderCreateAccountRoles() {
+        const input = document.getElementById("selectedRole");
+        if (!input) return;
+
+        const menu = input.parentElement.querySelector(".dropdown-menu");
+        menu.innerHTML = "";
+
+        groups.forEach(g => {
+            menu.innerHTML += `
+                <li>
+                    <a class="dropdown-item"
+                       href="#"
+                       onclick="selectRole('${g}')">
+                       ${g}
+                    </a>
+                </li>`;
+        });
+    }
+
+    function selectRole(role) {
+        document.getElementById("selectedRole").value = role;
+    }
+
+    /* ================= CHANGE ACCESS ================= */
+    function renderChangeAccessRoles() {
+        const input = document.getElementById("newRole");
+        if (!input) return;
+
+        const menu = input.closest(".batchDropdown")
+            .querySelector(".dropdown-menu");
+
+        menu.innerHTML = "";
+
+        groups.forEach(g => {
+            menu.innerHTML += `
+                <li>
+                    <a class="dropdown-item"
+                       href="#"
+                       onclick="selectNewRole(event,'${g}')">
+                       ${g}
+                    </a>
+                </li>`;
+        });
+    }
+
+    function selectNewRole(e, role) {
+        e.preventDefault();
+        document.getElementById("newRole").value = role;
+    }
+</script>
+
+<script>
+    /* ================= HIDE DROPDOWN ON TYPING ================= */
+    function hideGroupDropdown() {
+        const input = document.getElementById("groupInput");
+
+        if (!input) return;
+
+        const dropdown =
+            bootstrap.Dropdown.getOrCreateInstance(input);
+
+        dropdown.hide();
+    }
+
+    /* ================= SELECT GROUP FROM DROPDOWN ================= */
+    function selectGroupFromDropdown(e, groupName) {
+        e.preventDefault();
+
+        document.getElementById("groupInput").value = groupName;
+
+        const dropdown =
+            bootstrap.Dropdown.getOrCreateInstance(
+                document.getElementById("groupInput")
+            );
+
+        dropdown.hide();
+    }
+</script>
+
+<script>
+    let selectedPrivilegeGroup = "";
+
+    /* ================= LOAD GROUPS INTO PRIVILEGE DROPDOWN ================= */
+    async function loadPrivilegeGroups() {
+        const res = await fetch("/AdminUser/Groups");
+        if (!res.ok) return;
+
+        const groups = await res.json();
+        const list = document.getElementById("privilegeGroupDropdown");
+        list.innerHTML = "";
+
+        groups.forEach(g => {
+            list.innerHTML += `
+                <li>
+                    <a class="dropdown-item"
+                       href="#"
+                       onclick="selectPrivilegeGroup('${g}')">
+                       ${g}
+                    </a>
+                </li>`;
+        });
+    }
+
+    /* ================= SELECT GROUP ================= */
+    async function selectPrivilegeGroup(group) {
+        selectedPrivilegeGroup = group;
+        document.getElementById("privilegeGroup").value = group;
+
+        // clear all checkboxes
+        document
+            .querySelectorAll("#privilegeCheckboxes input[type='checkbox']")
+            .forEach(cb => cb.checked = false);
+
+        // load saved privileges
+        const res = await fetch(`/AdminUser/GroupPrivileges/${group}`);
+        if (!res.ok) return;
+
+        const privileges = await res.json();
+
+        privileges.forEach(p => {
+            const cb = document.querySelector(
+                `input[data-privilege='${p.key}']`
+            );
+            if (cb) cb.checked = p.allowed;
+        });
+    }
+
+    /* ================= SAVE PRIVILEGES ================= */
+    async function saveGroupPrivileges() {
+        if (!selectedPrivilegeGroup) {
+            alert("Please select a group");
+            return;
+        }
+
+        const selected = Array.from(
+            document.querySelectorAll(
+                "#privilegeCheckboxes input[type='checkbox']:checked"
+            )
+        ).map(cb => cb.dataset.privilege);
+
+        const res = await fetch("/AdminUser/SaveGroupPrivileges", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                groupName: selectedPrivilegeGroup,
+                privileges: selected
+            })
+        });
+
+        if (!res.ok) {
+            alert(await res.text());
+            return;
+        }
+
+        bootstrap.Modal.getInstance(
+            document.getElementById("exampleModalToggle3")
+        ).hide();
+    }
+
+    /* ================= INIT ================= */
+    document
+        .getElementById("exampleModalToggle3")
+        .addEventListener("show.bs.modal", loadPrivilegeGroups);
+</script>
+
+<script>
+    /* ================= LOAD SETTINGS WHEN MODAL OPENS ================= */
+    document
+        .getElementById("exampleModalToggle4")
+        .addEventListener("show.bs.modal", loadSecuritySettings);
+
+    async function loadSecuritySettings() {
+
+        const res = await fetch("/AdminUser/GetSecuritySettings");
+        if (!res.ok) {
+            console.warn("No security settings found");
+            return;
+        }
+
+        const s = await res.json();
+
+        document.getElementById("appTimeout").value = s.applicationTimeoutMinutes;
+        document.getElementById("pwdExpiry").value = s.passwordExpiryDays;
+        document.getElementById("wrongAttempts").value = s.maxWrongAttempts;
+    }
+
+    /* ================= SAVE SETTINGS ================= */
+    async function saveSecuritySettings() {
+
+        const data = {
+            applicationTimeoutMinutes: parseInt(
+                document.getElementById("appTimeout").value
+            ),
+            passwordExpiryDays: parseInt(
+                document.getElementById("pwdExpiry").value
+            ),
+            maxWrongAttempts: parseInt(
+                document.getElementById("wrongAttempts").value
+            )
+        };
+
+        console.log("Saving security settings:", data);
+
+        const res = await fetch("/AdminUser/SaveSecuritySettings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if (!res.ok) {
+            alert(await res.text());
+            return;
+        }
+
+        alert("Security settings saved successfully");
+
+        bootstrap.Modal.getInstance(
+            document.getElementById("exampleModalToggle4")
+        ).hide();
+    }
+</script>
+
+<script>
+    const modalEl = document.getElementById("exampleModalToggle4");
+
+    // Load settings when modal opens
+    modalEl.addEventListener("show.bs.modal", async () => {
+        const res = await fetch("/AdminUser/GetSecuritySettings");
+        if (!res.ok) return;
+
+        const data = await res.json();
+        const inputs = document.querySelectorAll(".arrows-text");
+
+        inputs[0].value = data.applicationTimeoutMinutes;
+        inputs[1].value = data.passwordExpiryDays;
+        inputs[2].value = data.maxWrongAttempts;
+    });
+
+    async function saveSecuritySettings() {
+
+        const inputs = document.querySelectorAll(".arrows-text");
+
+        const payload = {
+            applicationTimeoutMinutes: parseInt(inputs[0].value),
+            passwordExpiryDays: parseInt(inputs[1].value),
+            maxWrongAttempts: parseInt(inputs[2].value)
+        };
+
+        const res = await fetch("/AdminUser/SaveSecuritySettings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            alert("Failed to save security settings");
+            return;
+        }
+
+        // Reload values from DB after save
+        const reload = await fetch("/AdminUser/GetSecuritySettings");
+        const data = await reload.json();
+
+        inputs[0].value = data.applicationTimeoutMinutes;
+        inputs[1].value = data.passwordExpiryDays;
+        inputs[2].value = data.maxWrongAttempts;
+
+        bootstrap.Modal.getInstance(modalEl).hide();
+    }
+</script>
+
+<script>
+    async function applyPasswordExpiry() {
+
+        const ids = Array.from(
+            document.querySelectorAll(".row-checkbox:checked")
+        ).map(cb => parseInt(cb.dataset.id));
+
+        if (ids.length === 0) {
+            alert("Please select at least one user");
+            return;
+        }
+
+        const res = await fetch("/AdminUser/ApplyPasswordExpiry", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(ids)
+        });
+
+        if (!res.ok) {
+            return;
+        }
+
+        loadUsers();
+    }
+</script>
+
+<script>
+    async function bulkChangePassword() {
+
+        const newPwd = document.getElementById("newPassword").value.trim();
+        const confirmPwd = document.getElementById("confirmNewPassword").value.trim();
+
+        if (!newPwd || !confirmPwd) {
+            alert("Password fields are required");
+            return;
+        }
+
+        if (newPwd !== confirmPwd) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        const userIds = Array.from(
+            document.querySelectorAll(".row-checkbox:checked")
+        ).map(cb => parseInt(cb.dataset.id));
+
+        if (userIds.length === 0) {
+            alert("Please select at least one user");
+            return;
+        }
+
+        const res = await fetch("/AdminUser/BulkChangePassword", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userIds: userIds,
+                newPassword: newPwd
+            })
+        });
+
+        if (!res.ok) {
+            alert(await res.text());
+            return;
+        }
+
+        // Reset inputs
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmNewPassword").value = "";
+
+        // Close modal
+        bootstrap.Modal.getInstance(
+            document.getElementById("changePasswordModal")
+        ).hide();
+
+        alert("Password updated successfully");
+    }
+</script>
+

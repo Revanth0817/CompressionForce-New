@@ -1,0 +1,141 @@
+﻿@using CompressionForce.Domain.Validation
+@using CompressionForce.Domain.Entities
+@model dynamic
+
+@{
+    var parameters = Model?.Parameters as List<RecipeParameter> ?? new();
+    var toolTypes = Model?.ToolTypes as List<string> ?? new();
+    var treatments = Model?.Treatments as List<string> ?? new();
+    var awc_arTypes = Model?.AWC_ARTypes as List<string> ?? new();
+    var forceFeederRatioS1Types = Model?.ForceFeederRatioS1Types as List<string> ?? new();
+    var forceFeederRatioS2Types = Model?.ForceFeederRatioS1Types as List<string> ?? new();
+    var recipeTypes = Model?.RecipeTypes as List<string> ?? new();
+
+    var enumOptions = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Treatment"] = treatments,
+        ["ToolType"] = toolTypes,
+        ["AWC&AR"] = awc_arTypes,
+        ["ForceFeederRatioS1"] = forceFeederRatioS1Types,
+        ["ForceFeederRatioS2"] = forceFeederRatioS2Types,
+        ["Recipe"] = recipeTypes
+    };
+    var rules = ViewBag.ValidationRules as IEnumerable<ParameterRule> ?? Enumerable.Empty<ParameterRule>();
+
+    ParameterRule? GetRule(string name) =>
+        rules.FirstOrDefault(r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+}
+
+<div class="card">
+    <div class="card-header">Recipe Parameters</div>
+    <div class="card-body">
+
+        @if (parameters.Any())
+        {
+            @for (int i = 0; i < parameters.Count; i++)
+            {
+                var p = parameters[i];
+                var rule = GetRule(p.Name);
+                var isRequired = rule?.Required == true;
+
+                <div class="mb-3">
+                    <label class="form-label">@p.Name</label>
+
+                    <input type="hidden" name="Parameters[@i].Name" value="@p.Name" />
+                    <input type="hidden" name="Parameters[@i].Type" value="@p.Type" />
+
+                    @* ENUM *@
+                    @if (p.Type.Equals("enum", StringComparison.OrdinalIgnoreCase)
+                                && enumOptions.TryGetValue(p.Name, out var options))
+                    {
+                        <select name="Parameters[@i].Value"
+                                class="form-select recipe-param"
+                                data-param-name="@p.Name"
+                                data-param-type="enum"
+                                @(isRequired ? "required" : null)>
+                            @foreach (var t in options)
+                            {
+                                @if (Equals(p.Value.ToString(), t.ToString()))
+                                {
+                                    <option value="@t" selected>@t</option>
+                                }
+                                else
+                                {
+                                    <option value="@t">@t</option>
+                                }
+
+                            }
+                        </select>
+                    }
+
+
+                    @* NUMERIC *@
+                    else if (p.Type.Equals("numeric", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var val = p.Value?.ToString() ?? rule?.Min?.ToString() ?? "0";
+                        var min = rule?.Min?.ToString() ?? "0";
+                        var max = rule?.Max?.ToString() ?? "100000";
+
+                        <input type="number"
+                               name="Parameters[@i].Value"
+                               value="@val"
+                               class="form-control recipe-param"
+                               step="any"
+                               min="@min"
+                               max="@max"
+                               data-param-name="@p.Name"
+                               data-param-type="numeric"
+                               @(isRequired ? "required" : null) />
+                    }
+
+                    @* MULTI ENUM *@
+                    else if (p.Type.Equals("multi-enum", StringComparison.OrdinalIgnoreCase)
+                    && p.Name.Equals("Treatment", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var selected = p.Value as IEnumerable<string> ?? Enumerable.Empty<string>();
+
+                        <select name="Parameters[@i].Value"
+                                class="form-select recipe-param"
+                                multiple
+                                data-param-name="@p.Name"
+                                data-param-type="multi-enum"
+                                @(isRequired ? "required" : null)>
+                            @foreach (var t in treatments)
+                            {
+                                <option value="@t" selected="@(selected.Contains(t))">@t</option>
+                            }
+                        </select>
+
+                        <small class="text-muted">
+                            Hold Ctrl (Windows) / Cmd (Mac) to select multiple.
+                        </small>
+                    }
+
+                    @* TEXT *@
+                    else
+                    {
+                        var maxLen = rule?.MaxLength ?? 200;
+                        var pattern = rule?.Regex;
+
+                        <input type="text"
+                               name="Parameters[@i].Value"
+                               value="@(p.Value?.ToString() ?? string.Empty)"
+                               class="form-control recipe-param"
+                               maxlength="@maxLen"
+                               data-param-name="@p.Name"
+                               data-param-type="text"
+                               @(pattern != null ? $"pattern={pattern}" : null)
+                               @(isRequired ? "required" : null) />
+                    }
+
+                    <small class="text-muted">Type: @p.Type</small>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">No parameters available.</div>
+        }
+
+    </div>
+</div>

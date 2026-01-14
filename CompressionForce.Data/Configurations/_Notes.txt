@@ -1,0 +1,2 @@
+Fluent Configurations
+	This avoids cluttering entities and gives full control over JSON, indexes, constraints.

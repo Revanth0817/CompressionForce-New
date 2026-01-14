@@ -1,0 +1,240 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var isLoginPage = ViewContext.RouteData.Values["Action"]?.ToString() == "Login";
+
+    var session = HttpContextAccessor.HttpContext?.Session;
+
+    var currentUserName = session?.GetString("UserName") ?? "Guest";
+    var appTimeout = session?.GetInt32("AppTimeout") ?? 10;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Compression_Force</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="~/css/site1.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site2.css" asp-append-version="true" />
+    <link href="~/css/batchPage.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="position-sticky top-0 start-0 z-3">
+        <nav class="navbar navbar-expand navbar-dark sticky-top px-3 navbar-custom">
+            <div class="container-fluid p-0 ">
+                <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
+                        aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle sidebar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <span class="navbar-brand navbar-heading-brand fw-bold text-white font-size-16">Kaar Infotech Private Limited</span>
+
+                <div class="collapse navbar-collapse justify-content-between">
+                    <div class="mx-auto fw-bold text-uppercase text-white font-size-20 custom-navbar-brand text-nowrap">
+                        SRC-51 Compression Force Control System
+                    </div>
+
+                    @if (!isLoginPage)
+                    {
+                        <div class="d-flex align-items-center gap-2 position-relative dropdown height-60">
+                            @* Display the logged-in username *@
+                            <span class="text-white font-size-14 me-2">@currentUserName</span>
+
+                            <img src="~/icons/user vector.png" alt="User" class="width-24 height-24">
+                            <div class="dropdown-content">
+                                @* Link to the Logout action *@
+                                <a asp-controller="Account" asp-action="Logout">Sign Out</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid p-0">
+        <main role="main" class="d-flex main-container">
+            @if (!isLoginPage)
+            {
+                <div class="collapse d-md-block position-relative z-0" id="sidebarMenu">
+                    <div class="sidebar-wrapper bg-white position-sticky z-0">
+                        <div class="nav flex-column nav-pills px-0 py-3">
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424 bg-color-E9EFFB active" data-nav-url="@Url.Action("Diagnostics", "Home")" data-privilege="Diagnostics" type="button">
+                                <img src="~/icons/diagnostics.svg" alt="Diagnostics" class="me-2 width-24 height-24"> Diagnostics
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("RecipeParameter", "Recipe")" data-privilege="Recipe" type="button">
+                                <img src="~/icons/recipe2.svg" alt="Recipe" class="me-2 width-24 height-24"> Recipe
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Batch", "Home")" data-privilege="Batch" type="button">
+                                <img src="~/icons/batch0.svg" alt="Batch" class="me-2 width-24 height-24"> Batch
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
+                                    data-nav-url="@Url.Action("AutoMode", "Home")" data-privilege="AutoMode"
+                                    type="button">
+                                <img src="~/icons/auto0.svg" class="me-2 width-24 height-24"> Auto Mode
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
+                                    type="button"
+                                    data-privilege="Report"
+                                    onclick="location.href='@Url.Action("Report", "Report")'">
+                                <img src="~/icons/reports.svg" alt="Report" class="me-2 width-24 height-24">
+                                Report
+                            </button>
+
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Calibration", "Home")" data-privilege="Calibration" type="button">
+                                <img src="~/icons/calibration1.svg" alt="Calibration" class="me-2 width-24 height-24"> Calibration
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Alarm", "Home")" data-privilege="Alarm" type="button">
+                                <img src="~/icons/alarmnew.svg" alt="Alarm" class="me-2 width-24 height-24"> Alarm
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
+                                    type="button"
+                                    data-privilege="HelpMenu"
+                                    onclick="location.href='@Url.Action("HelpMenu", "Home")'">
+                                <img src="~/icons/helpmenu.svg" alt="Help Menu" class="me-2 width-24 height-24"> Help Menu
+                            </button>
+
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
+                                    data-nav-url="@Url.Action("AutoTare", "Home")" data-privilege="AutoTare"
+                                    type="button">
+                                <img src="~/icons/autotaremode.svg" alt="Auto Tare" class="me-2 width-24 height-24"> Auto Tare Mode
+                            </button>
+
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("AccessManagement", "Home")" data-privilege="AccessManagement" type="button">
+                                <img src="~/icons/access.svg" alt="Access Management" class="me-2 width-24 height-24"> Access Management
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("AuditTrail", "AuditTrail")" data-privilege="AuditTrail" type="button">
+                                <img src="~/icons/audit new.svg" alt="Audit" class="me-2 width-24 height-24"> Audit Trail
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("ChangePassword", "Account")" data-privilege="ChangePassword" type="button">
+                                <img src="~/icons/password1.svg" alt="Password" class="me-2 width-24 height-24"> Change Password
+                            </button>
+                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424 sidebar-signout" type="button" onclick="location.href='@Url.Action("Logout", "Account")'">
+                                <img src="~/icons/sign out.svg" alt="SignOut" class="me-2 width-24 height-24"> Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="@(isLoginPage ? "w-100" : "w-100 table-width")">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    @if (!isLoginPage)
+    {
+        <div class="container-fluid pt-3">
+            <div class="card">
+                <div class="card-header fw-semibold font-size-18 text-white text-center background-col-215ED6">PLC PC Communication Disconnected</div>
+                <div class="card-body background-col-E9EFFB">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4 col-lg-1">
+                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">Date</label>
+                            <input type="text" class="form-control height-35 col-242424 font-size-14 border-radius-4" value="22 Nov 2024">
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-1">
+                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">Time</label>
+                            <input type="text" class="form-control height-35 col-242424 font-size-14 border-radius-4" value="12:45 PM">
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-2">
+                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">User Login On</label>
+                            <input type="text" class="form-control height-35">
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-1">
+                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">App. Run Time</label>
+                            <input type="text" class="form-control height-35 col-242424 font-size-14 border-radius-4" value="0H:5M">
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-2">
+                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">User Name</label>
+                            <input type="text" class="form-control height-35">
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-1">
+                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">User Level</label>
+                            <input type="text" class="form-control height-35">
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-2">
+                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">PLC IP</label>
+                            <input type="text" class="form-control height-35 col-242424 font-size-14" value="192.168.4.100">
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-1 text-start">
+                            <label class="font-size-14 fw-semibold mb-1 d-block col-242424">Local DB</label>
+                            <div class="mt-2"><img src="~/icons/local db.svg" class="width-18 height-18"></div>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-1 text-start">
+                            <label class="font-size-14 fw-semibold mb-1 d-block col-242424">PLC Comm</label>
+                            <div class="mt-2"><img src="~/icons/plc comm.svg" class="width-18 height-18"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        document.addEventListener("DOMContentLoaded", applyPrivileges);
+
+        async function applyPrivileges() {
+            const res = await fetch("/AdminUser/MyPrivileges");
+
+            if (!res.ok) {
+                console.warn("No privileges loaded");
+                return;
+            }
+
+            const allowed = await res.json(); // ["Recipe","Operation"]
+
+            document
+                .querySelectorAll("[data-privilege]")
+                .forEach(menu => {
+
+                    const key = menu.dataset.privilege;
+
+                    if (!allowed.includes(key)) {
+
+                        // Disable instead of hide
+                        menu.classList.add("disabled");
+                        menu.style.pointerEvents = "none";
+                        menu.style.opacity = "0.4";
+                        menu.style.cursor = "not-allowed";
+
+                        const link = menu.querySelector("a");
+                        if (link) {
+                            link.style.pointerEvents = "none";
+                            link.setAttribute("aria-disabled", "true");
+                        }
+                    }
+                });
+        }
+    </script>
+    <script>
+        let idleTimer;
+        const timeoutMinutes = @appTimeout;
+
+        function resetIdleTimer() {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(() => {
+                window.location.href = "/Account/Logout";
+            }, timeoutMinutes * 60 * 1000);
+        }
+
+        window.onload = resetIdleTimer;
+        document.onmousemove = resetIdleTimer;
+        document.onkeydown = resetIdleTimer;
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+</body>
+</html>

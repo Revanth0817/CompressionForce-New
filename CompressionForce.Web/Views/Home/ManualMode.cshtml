@@ -1,0 +1,158 @@
+﻿
+
+<div class="card border-0 mx-4 ps-0 pt-4">
+    <ul class="nav nav-tabs position-sticky row-gap-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active col-242424" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Input & Output</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link col-242424" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Signal Monitoring</button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <!-- Input & Output -->
+        <div class="tab-pane pt-3 fade show active" id="home-tab-pane" role="tabpanel" tabindex="0">
+            <div class="row row-cols-1 row-cols-lg g-4">
+
+                <!-- Card 1 -->
+                <div class="col-lg-7">
+                    <div class="card box-shadow-1">
+                        <div class="card-body p-0 bord-rad-4px">
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Inputs</h5>
+                            <div class="d-sm-flex px-4 pt-3">
+                                <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
+                                    <li class="manual-mode-list  font-size-14 fw-semibold col-242424">Emergency Control</li>
+                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Turret Drive Trip</li>
+                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Punch Proxy</li>
+                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Tablet Counter Proxy</li>
+                                </ul>
+                                <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
+                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Door Safety</li>
+                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Feeder Drive Trip</li>
+                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Revolution Proxy</li>
+                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Powder Level Sensor</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-lg-5">
+                    <div class="card box-shadow-1 h-100">
+                        <div class="card-body p-0 bord-rad-4px">
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Outputs</h5>
+                            <ul class="list-group list-group-flush row-gap-16px px-5 py-3">
+                                @{
+                                    var switchItems = new List<string>
+                                {
+                                "Red Lamp",
+                                "Yellow Lamp",
+                                "Green Lamp"
+                                };
+                                }
+
+                                @foreach (var item in switchItems)
+                                {
+                                    <li class="manual-mode-list-before">
+                                        <div class="form-check form-switch manual-mode-list text-start form-check-reverse mb-0">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="">
+                                            <label class="form-check-label font-size-14 fw-semibold col-242424" for="switchCheckDefault">@item</label>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-lg-12">
+                    <div class="card box-shadow-1">
+                        <div class="card-body p-0 bord-rad-4px">
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px">Analog Inputs</h5>
+                            <div class="card-body overflow-x-auto p-0 bord-rad-4px">
+                                <div class="container analog-container px-4 py-3">
+                                    <div class="row">
+                                        <!-- LEFT COLUMN -->
+                                        <div class="col-md-6">
+                                            <div class="row g-2 mb-2">
+                                                <div class="col-6"></div>
+                                                <div class="col-3 text-center font-size-12 col-242424 fw-semibold">kN</div>
+                                                <div class="col-3 text-center font-size-12 col-242424 fw-semibold">Volt</div>
+                                            </div>
+
+                                            <div class="row g-3 align-items-center">
+                                                <div class="col-6 font-size-14 col-242424 fw-semibold">Main Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 font-size-14 col-242424 fw-semibold">Pre Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 font-size-14 col-242424 fw-semibold">Ejection Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- RIGHT COLUMN -->
+                                        <div class="col-md-6">
+                                            <div class="row g-2 mb-2">
+                                                <div class="col-6"></div>
+                                                <div class="col-3 right-kN text-center font-size-12 fw-semibold col-242424">mm</div>
+                                                <div class="col-3 right-kN text-center font-size-12 fw-semibold col-242424">Volt</div>
+                                            </div>
+
+                                            <div class="row g-3 align-items-center">
+                                                <div class="col-6 font-size-14 col-242424 fw-semibold">Dozzer LVDT</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 font-size-14 col-242424 fw-semibold">Main Thickness LVDT</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 font-size-14 col-242424 fw-semibold">Pre Thickness LVDT</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6 font-size-12 col-242424 fw-semibold" value="0.000">
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                </div> 
+
+            </div> 
+        </div> 
+    </div> 
+</div> 

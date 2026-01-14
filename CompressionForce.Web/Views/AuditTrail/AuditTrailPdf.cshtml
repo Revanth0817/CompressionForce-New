@@ -1,0 +1,72 @@
+﻿@model List<CompressionForce.Domain.Entities.AuditTrail>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background: #215ED6;
+            color: white;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    @if (ViewBag.PrintMode == true)
+    {
+        <script>
+            window.onload = function () {
+                window.print();
+            }
+        </script>
+    }
+</head>
+
+<body>
+    <h3>Audit Trail Report</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date & Time</th>
+                <th>User Name</th>
+                <th>Activity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DateTime.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    <td>@item.UserName</td>
+                    <td>@item.Activity</td>
+                    <td>@item.EventDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

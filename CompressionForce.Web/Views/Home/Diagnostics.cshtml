@@ -1,0 +1,835 @@
+﻿@{
+    ViewData["Title"] = "Diagnostics";
+}
+
+<div class="card border-0 mx-4 ps-0 pt-4">
+    <ul class="nav nav-tabs row-gap-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Input & Output</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Servo Management</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Signal Monitoring</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">Servo Home & Retrieve Setting</button>
+        </li>
+    </ul>
+
+
+    <div class="tab-content" id="">
+
+        <!--Input & Output-->
+        <div class="tab-pane pt-3 fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            <div class="row row-cols-1 row-cols-lg-2 g-4">
+
+                <!--Card 1-->
+                <div class="col-lg-7">
+                    <div class="card box-shadow-1">
+
+                        <div class="card-body p-0 bord-rad-4px">
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Inputs</h5>
+                            <div class="d-sm-flex px-4 pt-3">
+                                <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
+                                    <li class="diagnostics-list fw-semibold">Emergency Control</li>
+                                    <li class="diagnostics-list fw-semibold">Door Safety</li>
+                                    <li class="diagnostics-list fw-semibold">Turret Drive Trip</li>
+                                    <li class="diagnostics-list fw-semibold">LHS Feeder Drive Trip</li>
+                                    <li class="diagnostics-list fw-semibold">RHS Feeder Drive Trip</li>
+                                    <li class="diagnostics-list fw-semibold">Lube Motor Trip</li>
+                                    <li class="diagnostics-list fw-semibold">S1 Upper Cam in Position</li>
+                                    <li class="diagnostics-list fw-semibold">S1 Lower Cam in Position</li>
+                                    <li class="diagnostics-list fw-semibold">S2 Upper Cam in Position</li>
+                                    <li class="diagnostics-list fw-semibold">S2 Lower Cam in Position</li>
+
+                                </ul>
+
+                                <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
+                                    <li class="diagnostics-list fw-semibold">S1 Main Penetration Roller in Position</li>
+                                    <li class="diagnostics-list fw-semibold">S1 Pre Penetration Roller in Position</li>
+                                    <li class="diagnostics-list fw-semibold">S2 Main Penetration Roller in Position</li>
+                                    <li class="diagnostics-list fw-semibold">S2 Pre Penetration Roller in Position</li>
+                                    <li class="diagnostics-list fw-semibold">Turret in Position</li>
+                                    <li class="diagnostics-list fw-semibold">S1 Scrapper in Position</li>
+                                    <li class="diagnostics-list fw-semibold">S2 Scrapper in Position</li>
+                                    <li class="diagnostics-list fw-semibold">RHS Powder Level Sensor</li>
+                                    <li class="diagnostics-list fw-semibold">LHS Powder Level Sensor</li>
+                                    <li class="diagnostics-list fw-semibold">Lube Oil Low</li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Card 2-->
+                <div class="col-lg-5">
+                    <div class="card box-shadow-1 h-100">
+
+                        <div class="card-body  p-0 bord-rad-4px">
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Outputs</h5>
+                            <ul class="list-group list-group-flush row-gap-16px px-4 py-3">
+
+                                @{
+                                    var switchItems = new List<string>
+                                                                {
+                                                                "S1 Initial Rej. Valve",
+                                                                "S2 Initial Rej. Valve",
+                                                                "S1 Sample Valve",
+                                                                "S2 Sample Valve",
+                                                                "S1 Rejection Valve",
+                                                                "S2 Rejection Valve",
+                                                                "Lubrication",
+                                                                "Red Lamp",
+                                                                "Yellow Lamp",
+                                                                "Green Lamp"
+
+                                                                };
+                                }
+
+                                @foreach (var item in switchItems)
+                                {
+                                    <li class="diagnostics-list-before">
+                                        <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="">
+                                            <label class="form-check-label fw-semibold" for="switchCheckDefault">@item</label>
+                                        </div>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Card 3-->
+                <div class="col-lg-7">
+                    <div class="card box-shadow-1">
+
+                        <div class="card-body  p-0 bord-rad-4px">
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px">Analog Inputs</h5>
+                            <div class="card-body overflow-x-auto p-0 bord-rad-4px">
+
+
+                                <div class="container analog-container px-4 py-3">
+                                    <div class="row">
+                                        <!-- LEFT COLUMN -->
+                                        <div class="col-md-6">
+                                            <!-- Header Row -->
+                                            <div class="row g-2 mb-2">
+                                                <div class="col-6"></div>
+                                                <div class="col-3 text-center fw-semibold">kN</div>
+                                                <div class="col-3 text-center fw-semibold">Volt</div>
+                                            </div>
+
+                                            <div class="row g-3 align-items-center">
+
+                                                <div class="col-6 fw-semibold">S1 Main Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                </div>
+
+
+                                                <div class="col-6 fw-semibold">S1 Pre Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 fw-semibold">S2 Main Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 fw-semibold">S2 Pre Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- RIGHT COLUMN -->
+                                        <div class="col-md-6">
+                                            <!-- Header Row -->
+                                            <div class="row g-2 mb-2">
+                                                <div class="col-6"></div>
+                                                <div class="col-3 right-kN text-center fw-semibold">kN</div>
+                                                <div class="col-3 right-kN text-center fw-semibold">Volt</div>
+                                            </div>
+
+                                            <div class="row g-3 align-items-center">
+                                                <div class="col-6 fw-semibold">S1 Eject Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 fw-semibold">S2 Eject Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 fw-semibold">Upper Punch Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                </div>
+
+                                                <div class="col-6 fw-semibold">Lower Punch Loadcell</div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                </div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Card 4-->
+                <div class="col-lg-5">
+                    <div class="card box-shadow-1 h-100">
+
+                        <div class="card-body">
+
+                            <div class="container py-4 h-100">
+                                <div class="d-flex justify-content-center h-100 ">
+                                    <div class="w-100 d-flex h-100 flex-column justify-content-center ">
+
+                                        <div class="container w-auto">
+                                            <div class="row mb-3 justify-content-center">
+                                                <!-- Left Label Column -->
+                                                <div class="col-auto pe-2 align-self-end mb-1" style="min-width: 140px;">
+                                                    <label class="fw-semibold text-nowrap">Revolution Count</label>
+                                                </div>
+
+                                                <!-- Right Input Column -->
+                                                <div class="col-auto">
+                                                    <input type="text" class="form-control form-control-sm text-center" value="0.000" style="width: 100px;">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3 justify-content-center">
+                                                <!-- Left Label Column -->
+                                                <div class="col-auto pe-2 align-self-end mb-1" style="min-width: 140px;">
+                                                    <label class="fw-semibold text-nowrap">Encoder Act Count</label>
+                                                </div>
+
+                                                <!-- Right Input Column -->
+                                                <div class="col-auto">
+                                                    <input type="text" class="form-control form-control-sm text-center" value="0.000" style="width: 100px;">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Servo Management-->
+        <div class="tab-pane pt-3 fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+            <div class="servo-container">
+
+                @{
+                    // List of titles for the servo management cards
+                    var titles = new List<string>
+                                {
+                                "S1 Fill Depth Servo-1",
+                                "S2 Fill Depth Servo-2",
+                                "S1 Main Lower Servo-3",
+                                "S1 Main Penetration Servo-4",
+                                "S1 Pre Lower Servo-5",
+                                "S1 Pre Penetration Servo-6",
+                                "S2 Main Lower Servo-7",
+                                "S2 Main Penetration Servo-8",
+                                "S1 Pre Lower Servo-9",
+                                "S2 Pre Penetration Servo-10"
+                                };
+                }
+                @foreach (var title in titles)
+                {
+                    <!--Cards 1 to 10-->
+                    <div class="col">
+                        <div class="card h-100 box-shadow-1">
+
+
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">@title</h5>
+                            <div class="card-body p-3 bord-rad-4px">
+
+                                <!--1st row-->
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px" type="button">Jog Up</button>
+                                    <button class="btn btn-primary bgcol-8434C6 fw-semibold w-100px" type="button">Jog Down</button>
+                                </div>
+
+                                <!--Counter component-->
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
+                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Jog Speed</label>
+
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                        <div class="d-flex flex-column me-2 row-gap-1">
+
+                                            <button class="btn btn-sm arrow-btns p-0">
+                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+
+                                            <button class="btn btn-sm arrow-btns p-0">
+                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+                                        </div>
+                                        <input type="" id="" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
+                                    </div>
+                                </div>
+
+                                <!--3rd and 4th rows-->
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp align-items-center">
+                                    <label for="colFormLabelSm" class="col-4 col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">Act Torque</label>
+                                    <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold" value="0">
+                                    <div class="form-check col-4 form-check-reverse">
+                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
+                                        <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
+                                            Ready
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp align-items-center">
+                                    <label for="colFormLabelSm" class="col-4 col-form-label me-auto col-form-label-sm fw-semibold">Act Pos.</label>
+                                    <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold" value="0">
+                                    <div class="form-check col-4 form-check-reverse">
+                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
+                                        <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
+                                            Alarm
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!--Buttons-->
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary bgcol-81D4FA me-auto fw-semibold col-242424 w-100px" type="button">Enable</button>
+                                    <button class="btn btn-primary bgcol-FF441F  fw-semibold w-100px col-242424" type="button">Stop</button>
+                                </div>
+
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary bgcol-34C63B me-auto fw-semibold opacity-50 w-100px col-242424" type="button">Run</button>
+                                    <button class="btn btn-primary bgcol-FFAB36 fw-semibold w-100px col-242424" type="button">Reset</button>
+                                </div>
+
+                                <!--Last rows-->
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
+                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Pos.</label>
+
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 opacity-50 rounded px-2 w-70px py-1">
+                                        <div class="d-flex flex-column me-2 row-gap-1">
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+                                        </div>
+                                        <input type="" id="" class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10.15">
+                                    </div>
+                                </div>
+
+
+                                <div class="row justify-content-start w-100 position-relative counter-comp">
+                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Speed</label>
+
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 opacity-50 rounded px-2 w-70px py-1">
+                                        <div class="d-flex flex-column me-2 row-gap-1">
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+                                        </div>
+                                        <input type="" id="" class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="30">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+
+            </div>
+        </div>
+
+        <!--Signal Monitoring-->
+        <div class="tab-pane h-100vh p-3 bgcol-E9EFFB fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <!--Side content-->
+            <section class="d-flex align-items-center signal-tabs">
+                <!--Tabs-->
+
+                <ul class="nav nav-tabs row-gap-3 mb-3 " id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">S1 Main Comp.</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">S1 Pre Comp.</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">S1 Ejection</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">S2 Main Comp.</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">S2 Pre Comp.</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">S2 Ejection</button>
+                    </li>
+                </ul>
+            </section>
+            <div class="">
+                <section class="d-flex gap-4">
+                    <!--Card 1-->
+                    <section class="card signal-card text-bg-light mb-3 box-shadow-1">
+                        <div class="card-body p-3">
+                            <div class="d-flex gap-2 mb-2 w-100">
+                                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold" type="button">Turret Start</button>
+                                <button class="btn btn-primary bgcol-8434C6 fw-semibold w-50" type="button">Turret Jog</button>
+                            </div>
+
+                            <button class="btn btn-primary bgcol-8434C6 fw-semibold opacity-50 w-100 mb-2 " type="button">Door Interlock</button>
+                            <!--Middle row-->
+                            <div class="row justify-content-start w-100 position-relative counter-comp">
+
+                                <div class="d-flex flex-column px-0">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Motor Status</label>
+                                        <div class="d-flex align-items-center">
+
+                                            <button type="button" class="btn btn-primary w-60px bgcol-47494A py-1">Off</button>
+
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="d-flex align-items-center mb-2">
+                                        <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Motor Trip</label>
+                                        <div class="d-flex align-items-center">
+
+                                            <button type="button" class="btn btn-primary w-60px bgcol-47494A py-1">Off</button>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!--Last row-->
+                            <div class="row justify-content-start w-100 position-relative counter-comp">
+                                <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm ps-0 fw-semibold">Set RPM</label>
+
+                                <div class="col-sm-3 d-flex align-items-center bgcol-81D4FA bord-D2D2D2 rounded px-2 w-60px h-29px">
+                                    <div class="d-flex flex-column me-2 row-gap-1">
+
+                                        <button class="btn btn-sm arrow-btns p-0">
+                                            <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                                <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                            </svg>
+                                        </button>
+
+
+
+                                        <button class="btn btn-sm arrow-btns p-0">
+                                            <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                                <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                            </svg>
+                                        </button>
+
+
+                                    </div>
+                                    <input type="" id="" class="form-control arrows-text bgcol-81D4FA font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!--Card 2 & 3-->
+                    @{
+                        // List of titles for the signal monitoring cards
+                        var titlesSignalMonitoring = new List<string>
+                                        {
+                                        "S1 Feeder",
+                                        "S2 Feeder",
+                                        };
+                    }
+
+                    @foreach (var title in titlesSignalMonitoring)
+                    {
+                        <section class="card signal-card text-bg-light mb-3 box-shadow-1">
+                            <div class="card-body p-3">
+                                <div class="d-flex gap-2 mb-2 w-100">
+                                    <button class="btn btn-primary bgcol-8434C6 w-100 mb-2 fw-semibold" type="button">@title</button>
+                                </div>
+
+                                <!--Middle row-->
+                                <div class="row justify-content-start w-100 position-relative counter-comp">
+
+                                    <div class="d-flex flex-column px-0">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Motor Status</label>
+                                            <div class="d-flex align-items-center">
+
+                                                <button type="button" class="btn btn-primary w-60px bgcol-47494A py-1">Off</button>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="d-flex align-items-center mb-2">
+                                            <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Motor Trip</label>
+                                            <div class="d-flex align-items-center">
+
+                                                <button type="button" class="btn btn-primary w-60px bgcol-47494A py-1">Off</button>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <!--Last row-->
+                                <div class="row justify-content-start w-100 position-relative counter-comp">
+                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm ps-0 fw-semibold">Set RPM</label>
+
+                                    <div class="col-sm-3 d-flex align-items-center bgcol-81D4FA bord-D2D2D2 rounded px-2 w-60px h-29px">
+                                        <div class="d-flex flex-column me-2 row-gap-1">
+
+                                            <button class="btn btn-sm arrow-btns p-0">
+                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+
+                                            <button class="btn btn-sm arrow-btns p-0">
+                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                </svg>
+                                            </button>
+
+
+                                        </div>
+                                        <input type="" id="" class="form-control arrows-text bgcol-81D4FA font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    }
+
+                </section>
+
+
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+
+        <!--Servo Home & Retrieve Setting-->
+        <div class="tab-pane pt-3 fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+
+            <div class="card box-shadow-1 w-100">
+
+                <div class="card-body  p-0 bord-rad-4px">
+                    <h5 class="card-title col-FFFFFF mb-4 bord-top-rad-4px">Turret Removing System</h5>
+                    <div class="card-body d-flex container-fluid p-0 bord-rad-4px">
+                        @{
+                            var servoLabels = new List<string>
+                                                {
+                                                "FILL DEPTH SERVO S1",
+                                                "PRE PENETRATION SERVO S1",
+                                                "PRE LOWER SERVO S1",
+                                                "MAIN PENETRATION SERVO S1",
+                                                "MAIN LOWER SERVO S1"
+                                                };
+
+                        }
+                        <div class="container-fluid box-shadow-1 ms-4 mb-4 me-2 card px-4 py-3 overflow-x-auto">
+                            <div class="container-fluid px-0" style="min-width:720px">
+                                <!-- Header -->
+                                <div class="d-flex g-2 mb-2 fw-semibold text-center">
+                                    <div class="me-auto shrink-label text-start"></div>
+                                    <div class="w-85px">Ready</div>
+                                    <div class="w-85px">Alarm</div>
+                                    <div class="w-85px">Act Pos.</div>
+                                    <div class="w-85px">Set Home</div>
+                                    <div class="w-85px">Retrieve</div>
+                                </div>
+
+
+                                @foreach (var servo in servoLabels)
+                                {
+                                    <div class="d-flex g-3 align-items-center mb-3">
+                                        <!-- Servo Label -->
+                                        <div class="me-auto shrink-label fw-semibold text-start">
+                                            @servo
+                                        </div>
+
+                                        <!-- Ready Radio -->
+                                        <div class="w-85px text-center">
+                                            <input class="form-check-input servo-radio" type="radio" name="ready_@servo" />
+                                        </div>
+
+                                        <!-- Alarm Radio -->
+                                        <div class="w-85px text-center">
+                                            <input class="form-check-input servo-radio" type="radio" name="alarm_@servo" />
+                                        </div>
+
+                                        <!-- Act Pos -->
+                                        <div class="w-85px d-flex justify-content-center">
+                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                <div class="d-flex flex-column me-2 row-gap-1">
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
+                                                    </button>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Set Home -->
+                                        <div class="w-85px d-flex justify-content-center">
+                                            <div class="d-flex align-items-center bord-col-8434C6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                <div class="d-flex flex-column me-2 row-gap-1">
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
+                                                    </button>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="10.15" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Retrieve -->
+                                        <div class="w-85px d-flex justify-content-center">
+                                            <div class="d-flex align-items-center bord-col-8434C6 opacity-50 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                <div class="d-flex flex-column me-2 row-gap-1">
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
+                                                    </button>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="10.15" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                            <!-- Rows -->
+                        </div>
+
+                        <aside class="d-block position-relative w-18px top-45 me-4">
+                            <p class="h-30px fw-normal">1</p>
+                            <p class="h-30px fw-normal">6</p>
+                            <p class="h-30px fw-normal">5</p>
+                            <p class="h-30px fw-normal">4</p>
+                            <p class="h-30px fw-normal">3</p>
+                        </aside>
+
+                    </div>
+
+                    <!--Card 2-->
+                    <div class="card-body d-flex container-fluid p-0 bord-rad-4px">
+                        @{
+                            var servoLabels2 = new List<string>
+                                                {
+                                                "FILL DEPTH SERVO S2",
+                                                "PRE PENETRATION SERVO S2",
+                                                "PRE LOWER SERVO S2",
+                                                "MAIN PENETRATION SERVO S2",
+                                                "MAIN LOWER SERVO S2"
+                                                };
+
+                        }
+                        <div class="container-fluid box-shadow-1 ms-4 mb-4 me-2 card px-4 py-3 overflow-x-auto">
+
+                            <div class="container-fluid px-0" style="min-width:720px">
+                                @foreach (var servo in servoLabels2)
+                                {
+                                    <div class="d-flex g-3 align-items-center mb-3">
+                                        <!-- Servo Label -->
+                                        <div class="me-auto shrink-label fw-semibold text-start">
+                                            @servo
+                                        </div>
+
+                                        <!-- Ready Radio -->
+                                        <div class="w-85px text-center">
+                                            <input class="form-check-input servo-radio" type="radio" name="ready_@servo" />
+                                        </div>
+
+                                        <!-- Alarm Radio -->
+                                        <div class="w-85px text-center">
+                                            <input class="form-check-input servo-radio" type="radio" name="alarm_@servo" />
+                                        </div>
+
+                                        <!-- Act Pos -->
+                                        <div class="w-85px d-flex justify-content-center">
+                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                <div class="d-flex flex-column me-2 row-gap-1">
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
+                                                    </button>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Set Home -->
+                                        <div class="w-85px d-flex justify-content-center">
+                                            <div class="d-flex align-items-center bord-col-8434C6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                <div class="d-flex flex-column me-2 row-gap-1">
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
+                                                    </button>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="10.15" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Retrieve -->
+                                        <div class="w-85px d-flex justify-content-center">
+                                            <div class="d-flex align-items-center bord-col-8434C6 opacity-50 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                <div class="d-flex flex-column me-2 row-gap-1">
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
+                                                    </button>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="10.15" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                            <!-- Rows -->
+                        </div>
+
+                        <aside class="d-block position-relative w-18px top-18 me-4">
+                            <p class="h-30px fw-normal">2</p>
+                            <p class="h-30px fw-normal">10</p>
+                            <p class="h-30px fw-normal">9</p>
+                            <p class="h-30px fw-normal">8</p>
+                            <p class="h-30px fw-normal">7</p>
+                        </aside>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*sample function for changing the value of counter elemant. Test for the first counter in Servo managament inside Diagnostics*@
+<script>
+    function changeValue(step) {
+      const input = document.querySelector(".arrows-text");
+      let currentValue = parseInt(input.value || 0);
+
+      if(currentValue + step >= 0){
+          input.value = currentValue + step;
+      }
+    }
+
+
+</script>
+

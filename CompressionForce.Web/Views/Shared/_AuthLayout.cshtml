@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Compression_Force</title>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="~/css/site1.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site2.css" asp-append-version="true" />
+    <link href="~/css/batchPage.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- 🔵 TOP NAV BAR (NO USER / NO GUEST) -->
+    <header class="position-sticky top-0 start-0 z-3">
+        <nav class="navbar navbar-expand navbar-dark sticky-top px-3 navbar-custom">
+            <div class="container-fluid p-0">
+
+                <span class="navbar-brand navbar-heading-brand fw-bold text-white font-size-16">
+                    Kaar Infotech Private Limited
+                </span>
+
+                <div class="mx-auto fw-bold text-uppercase text-white font-size-20 text-nowrap">
+                    SRC-51 Compression Force Control System
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <!-- 🔵 PAGE CONTENT -->
+    <div class="container-fluid p-0">
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

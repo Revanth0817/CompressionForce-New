@@ -1,0 +1,346 @@
+{
+  "parameters": [
+    {
+      "name": "ToolType",
+      "type": "enum",
+      "required": true,
+      "lookupCategory": "ToolType"
+    },
+    {
+      "name": "AWC&AR",
+      "type": "enum",
+      "required": true,
+      "lookupCategory": "AWC&AR"
+    },
+    {
+      "name": "Recipe",
+      "type": "enum",
+      "required": true,
+      "lookupCategory": "Recipe"
+    },
+    {
+      "name": "RecipeCode",
+      "type": "text",
+      "required": true,
+      "MaxLength": 20,
+      "Regex": "^[A-Za-z0-9_\\-]+$",
+      "DefaultValue": "RecipeCode"
+    },
+    {
+      "name": "ProductName",
+      "type": "text",
+      "required": true,
+      "MaxLength": 20,
+      "Regex": "^[A-Za-z0-9_\\-]+$",
+      "DefaultValue": "ProductName"
+
+    },
+    {
+      "name": "Shape",
+      "type": "text",
+      "required": true,
+      "MaxLength": 20,
+      "Regex": "^[A-Za-z0-9_\\-]+$",
+      "DefaultValue": "Shape",
+      "ValidationMsg": "Required. Max len 20. alphabets numbers _ - ",
+      "PlaceHolder":"Shape"
+    },
+    {
+      "name": "Size",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 10,
+      "DefaultValue": "1",
+      "ValidationMsg": "Required. Min 1 Max 20.",
+      "PlaceHolder": "1"
+    },
+    {
+      "name": "TabletThickness",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 10,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "TabletHardness",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 500,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "TabletWeight",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 2000,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "MaxTurretRpm",
+      "type": "numeric",
+      "required": true,
+      "min": 10,
+      "max": 35,
+      "DefaultValue": "10"
+    },
+    {
+      "name": "ForceFeederRatioS1",
+      "type": "enum",
+      "required": true,
+      "lookupCategory": "ForceFeederRatioS1"
+    },
+    {
+      "name": "FillDepthS1",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 20,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "MainPenetrationPositionS1",
+      "type": "numeric",
+      "required": true,
+      "min": 3.5,
+      "max": 16,
+      "DefaultValue": "3.5"
+    },
+    {
+      "name": "MainThicknessPositionS1",
+      "type": "numeric",
+      "required": true,
+      "min": 3.5,
+      "max": 16,
+      "DefaultValue": "3.5"
+    },
+    {
+      "name": "PrePenetrationPositionS1",
+      "type": "numeric",
+      "required": true,
+      "min": 3.5,
+      "max": 16,
+      "DefaultValue": "3.5"
+    },
+    {
+      "name": "PreThicknessPositionS1",
+      "type": "numeric",
+      "required": true,
+      "min": 3.5,
+      "max": 16,
+      "DefaultValue": "3.5"
+    },
+    {
+      "name": "SampleIntervalS1",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 10,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "SampleRevolutionQuantityS1",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 50,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "MaxMainCompForceS1",
+      "type": "numeric",
+      "required": true,
+      "min": 0.1,
+      "max": 80,
+      "DefaultValue": "0.1"
+    },
+    {
+      "name": "MaxPreCompForceS1",
+      "type": "numeric",
+      "required": true,
+      "min": 0.1,
+      "max": 80,
+      "DefaultValue": "0.1"
+    },
+    {
+      "name": "MaxEjectionForceS1",
+      "type": "numeric",
+      "required": true,
+      "min": 0.01,
+      "max": 1.8,
+      "DefaultValue": "0.01"
+    },
+    {
+      "name": "ForceFeederRatioS2",
+      "type": "enum",
+      "required": true,
+      "lookupCategory": "ForceFeederRatioS2"
+    },
+    {
+      "name": "FillDepthS2",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 20,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "MainPenetrationPositionS2",
+      "type": "numeric",
+      "required": true,
+      "min": 3.5,
+      "max": 16,
+      "DefaultValue": "3.5"
+    },
+    {
+      "name": "MainThicknessPositionS2",
+      "type": "numeric",
+      "required": true,
+      "min": 3.5,
+      "max": 16,
+      "DefaultValue": "3.5"
+    },
+    {
+      "name": "PrePenetrationPositionS2",
+      "type": "numeric",
+      "required": true,
+      "min": 3.5,
+      "max": 16,
+      "DefaultValue": "3.5"
+    },
+    {
+      "name": "PreThicknessPositionS2",
+      "type": "numeric",
+      "required": true,
+      "min": 3.5,
+      "max": 16,
+      "DefaultValue": "3.5"
+    },
+    {
+      "name": "SampleIntervalS2",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 10,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "SampleRevolutionQuantityS2",
+      "type": "numeric",
+      "required": true,
+      "min": 1,
+      "max": 50,
+      "DefaultValue": "1"
+    },
+    {
+      "name": "MaxMainCompForceS2",
+      "type": "numeric",
+      "required": true,
+      "min": 0.1,
+      "max": 80,
+      "DefaultValue": "0.1"
+    },
+    {
+      "name": "MaxPreCompForceS2",
+      "type": "numeric",
+      "required": true,
+      "min": 0.1,
+      "max": 80,
+      "DefaultValue": "0.1"
+    },
+    {
+      "name": "MaxEjectionForceS2",
+      "type": "numeric",
+      "required": true,
+      "min": 0.01,
+      "max": 1.8,
+      "DefaultValue": "0.01"
+    },
+    {
+      "name": "RejectionLimitMaxS1",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "AWCLimitMaxS1",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "AWCSetPointS1",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "AWCLimitMinS1",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "RejectionLimitMinS1",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "RejectionLimitMaxS2",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "AWCLimitMaxS2",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "AWCSetPointS2",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "AWCLimitMinS2",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    },
+    {
+      "name": "RejectionLimitMinS2",
+      "type": "numeric",
+      "required": true,
+      "min": 1.5,
+      "max": 4.5,
+      "DefaultValue": "1.5"
+    }
+  ],
+  "rules": {
+    "requireAtLeastOneParameter": true
+  }
+}

@@ -1,0 +1,952 @@
+﻿@{
+    ViewData["Title"] = "Operation Mode";
+}
+
+<div class="card border-0 mx-4 ps-0 pt-4">
+    <ul class="nav nav-tabs row-gap-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active col-242424 " id="" data-bs-toggle="tab" data-bs-target="#controlsandGraphs" type="button" role="tab" aria-controls="controlsandGraphs" aria-selected="true">Controls and Graphs</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link col-242424 " id="" data-bs-toggle="tab" data-bs-target="#parameters" type="button" role="tab" aria-controls="parameters" aria-selected="false">Parameters</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="">
+
+        <!--Controls and Graphs-->
+        <div class="tab-pane pt-3 fade show active" id="controlsandGraphs" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+
+            <!--table 1-->
+            <div class="table-responsive bord-top-rad-4px mb-3 w-100 max-w-1250px">
+                <table class="table table-bordered mb-1 w-100 max-w-1250px">
+                    <thead class="table-primary ">
+                        <tr>
+                            <th scope="col" class="text-center fw-semibold font-size-14px text-nowrap">Product Name</th>
+                            <th scope="col" class="text-center fw-semibold font-size-14px text-nowrap">Batch Number</th>
+                            <th scope="col" class="text-center fw-semibold font-size-14px text-nowrap">Batch Qty</th>
+                            <th scope="col" class="text-center fw-semibold font-size-14px text-nowrap">Produced Qty</th>
+                            <th scope="col" class="text-center fw-semibold font-size-14px text-nowrap">Left Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="invisible">Product</th>
+                            <td class="text-center fw-normal font-size-14px col-242424">Para0016</td>
+                            <td class="text-center fw-normal font-size-14px col-242424">120</td>
+                            <td class="text-center fw-normal font-size-14px col-242424">120</td>
+                            <td class="text-center fw-normal font-size-14px col-242424">120</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <section class="force-summary-section d-flex flex-wrap flex-lg-nowrap align-items-center gap-3">
+                <div class="table-responsive bord-top-rad-4px mb-3 mb-lg-0 w-100 max-w-529px">
+                    <table class="table table-bordered w-100 max-w-529px">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col" class="text-center fw-semibold font-size-14px text-nowrap">Avg. Main (kN)</th>
+                                <th scope="col" class="text-center fw-semibold font-size-14px text-nowrap">Avg. Pre (kN)</th>
+                                <th scope="col" class="text-center fw-semibold font-size-14px text-nowrap">Avg. Ejec (kN)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center fw-normal">NaN</td>
+                                <td class="text-center fw-normal">NaN</td>
+                                <td class="text-center fw-normal">NaN</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="force-summary-buttons d-flex flex-wrap flex-lg-nowrap gap-2 align-items-center w-100 w-lg-auto justify-content-center">
+                    <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold bord-rad-4px w-100 w-lg-130px py-2 px-3 bg-white">Counter</button>
+                    <button type="button" class="text-nowrap bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold bord-rad-4px w-100 w-lg-130px py-2 px-3 bg-white">Door interlock</button>
+                    <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold bord-rad-4px w-100 w-lg-130px py-2 px-3 bg-white">Run</button>
+                    <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold bord-rad-4px w-100 w-lg-130px py-2 px-3 bg-white">Ready</button>
+                    <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold bord-rad-4px w-100 w-lg-130px py-2 px-3 bg-white">Alarm</button>
+                </div>
+            </section>
+  
+            <!--Main body-->
+            <div class="d-flex flex-wrap flex-xxl-nowrap justify-content-center align-items-start">
+
+                <div class="d-flex w-100">
+
+
+                    <!--vertical tabs beside the cards-->
+                    <ul class="nav flex-column nav-tabs position-relative vertical-tabs" id="" role="tablist">
+                        <li class="nav-item vertical-item" role="presentation">
+                            <button class="nav-link active vertical-nav col-242424 " id="" data-bs-toggle="tab" data-bs-target="#control2" type="button" role="tab" aria-controls="control2" aria-selected="true">Controls</button>
+                        </li>
+                        <li class="nav-item vertical-item" role="presentation">
+                            <button class="nav-link vertical-nav col-242424 " id="" data-bs-toggle="tab" data-bs-target="#OperationforceGraph" type="button" role="tab" aria-controls="OperationforceGraph" aria-selected="false">Force Graph</button>
+                        </li>
+                        <li class="nav-item vertical-item" role="presentation">
+                            <button class="nav-link vertical-nav col-242424 " id="" data-bs-toggle="tab" data-bs-target="#Operationalarm" type="button" role="tab" aria-controls="Operationalarm" aria-selected="false">Alarm</button>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex flex-wrap flex-lg-nowrap w-100">
+                        <div class="tab-content w-100">
+                           
+
+                            <!--Controls-->
+                            <div class="tab-pane pt-3 fade show active me-3" id="control2" role="tabpanel" aria-labelledby="controls" tabindex="0">
+                               
+
+                                    <!--Left Section-->
+                                    <div class="order-last order-xxl-first">
+                                        <div class="bg-col-E9EFFB p-3">
+                                           
+
+                                            <!--1st row card-->
+                                            <section class="card text-bg-light mb-3 box-shadow-1 w-100">
+                                                <h5 class="card-title col-FFFFFF fw-semibold font-size-18px bord-top-rad-4px mb-0">Dozzer position</h5>
+
+                                                <div class="card-body p-3 px-5">
+
+
+                                                    <div class="row justify-content-start w-100 position-relative counter-comp">
+
+                                                        <div class="d-flex flex-column px-0">
+                                                            <div class="d-flex flex-wrap">
+
+                                                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2 me-auto">
+                                                                <label class="font-size-14px fw-semibold min-width-40p clr-242424 min-w-180px">Lubrication Motor ON Time</label>
+                                                                    <div class="d-flex align-items-center gap-10px max-width-115px">
+                                                                        <input type="text" class="bord-215ED6 bord-rad-4px px-1 py-1 w-60px text-center fw-semibold col-242424 h-29px" value ="3">
+                                                                        <span class="font-size-14px fw-semibold col-242424">sec</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                                                <label class="font-size-14px fw-semibold min-width-40p clr-242424 min-w-180px">Lubrication Motor OFF Time</label>
+                                                                    <div class="d-flex align-items-center gap-10px max-width-115px">
+                                                                    <input type="text" class="bord-215ED6 bord-rad-4px px-1 py-1 w-60px text-center fw-semibold col-242424 h-29px" value="4">
+                                                                        <span class="font-size-14px fw-semibold col-242424">sec</span>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </section>
+
+                                        <!-- 2nd row card -->
+                                        <section class="card text-bg-light mb-3 box-shadow-1 w-100">
+                                            <h5 class="card-title fw-semibold font-size-18px bord-top-rad-4px mb-0 text-center py-2 bgcol-215ED6 text-white">
+                                                Main Thickness Position
+                                            </h5>
+                                            <div class="card-body p-3 px-5">
+                                                <div class="row w-100">
+                                                    <div class="d-flex flex-wrap justify-content-between cs-flex-row-gap cs-card-responsive">
+                                                        <!-- Pre Penetration -->
+                                                        <div class="d-flex flex-column min-w-180px prepenetrationrow">
+                                                            <label class="font-size-14px fw-semibold clr-242424 mb-2">Main Penetration</label>
+                                                            <div class="d-flex align-items-center gap-1">
+                                                                <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                                    <div class="d-flex flex-column me-2 row-gap-1">
+                                                                        <button class="btn btn-sm arrow-btns p-0">
+                                                                            <img src="/images/up arrow.svg">
+                                                                        </button>
+                                                                        <button class="btn btn-sm arrow-btns p-0">
+                                                                            <img src="/images/down arrow.svg">
+                                                                        </button>
+                                                                    </div>
+                                                                    <input type="text" class="form-control arrows-text bgcol-transparent font-size-14px h-16px border-0 p-0 ps-1 fw-semibold" value="10">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Actual & Recipe Value -->
+                                                        <div class="d-flex flex-column align-items-center justify-content-center gap-3">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <label class="font-size-14px fw-semibold clr-242424">Actual value</label>
+                                                                <input type="text" class="bord-8434C6 bord-rad-4px px-2 py-1 w-60px h-29px text-center fw-semibold font-size-14px" value="0.00">
+                                                                <span class="font-size-14px fw-semibold clr-242424">mm</span>
+                                                            </div>
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <label class="font-size-14px fw-semibold clr-242424">Recipe Value</label>
+                                                                <input type="text" class="bord-215ED6 bord-rad-4px px-2 py-1 w-60px h-29px text-center fw-semibold font-size-14px" value="0.00">
+                                                                <span class="font-size-14px fw-semibold clr-242424">mm</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Main Thickness -->
+                                                        <div class="main-thickness-col d-flex flex-column min-w-160px prepenetrationrow">
+                                                            <label class="font-size-14px fw-semibold clr-242424 mb-2 text-end">Main Thickness</label>
+                                                            <div class="d-flex align-items-center gap-2 justify-content-end">
+                                                                <input type="text" class="bord-215ED6 bord-rad-4px px-2 py-1 w-60px h-29px text-center fw-semibold font-size-14px" value="0.00">
+                                                                <span class="font-size-14px fw-semibold clr-242424">mm</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <!-- 3rd row card -->
+                                        <section class="card text-bg-light mb-3 box-shadow-1 w-100">
+                                            <h5 class="card-title fw-semibold font-size-18px bord-top-rad-4px mb-0 text-center py-2 bgcol-215ED6 text-white">
+                                                Pre Thickness Position
+                                            </h5>
+                                            <div class="card-body p-3 px-5">
+                                                <div class="row w-100">
+                                                    <div class="d-flex flex-wrap justify-content-between cs-flex-row-gap cs-card-responsive">
+                                                        <!-- Pre Penetration -->
+                                                        <div class="d-flex flex-column min-w-180px prepenetrationrow">
+                                                            <label class="font-size-14px fw-semibold clr-242424 mb-2">Pre Penetration</label>
+                                                            <div class="d-flex align-items-center gap-1">
+                                                                <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                                    <div class="d-flex flex-column me-2 row-gap-1">
+                                                                        <button class="btn btn-sm arrow-btns p-0">
+                                                                            <img src="/images/up arrow.svg">
+                                                                        </button>
+                                                                        <button class="btn btn-sm arrow-btns p-0">
+                                                                            <img src="/images/down arrow.svg">
+                                                                        </button>
+                                                                    </div>
+                                                                    <input type="text" class="form-control arrows-text bgcol-transparent font-size-14px h-16px border-0 p-0 ps-1 fw-semibold" value="10">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Actual & Recipe Value -->
+                                                        <div class="d-flex flex-column align-items-center justify-content-center gap-3">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <label class="font-size-14px fw-semibold clr-242424">Actual value</label>
+                                                                <input type="text" class="bord-8434C6 bord-rad-4px px-2 py-1 w-60px h-29px text-center fw-semibold font-size-14px" value="0.00">
+                                                                <span class="font-size-14px fw-semibold clr-242424">mm</span>
+                                                            </div>
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <label class="font-size-14px fw-semibold clr-242424">Recipe Value</label>
+                                                                <input type="text" class="bord-215ED6 bord-rad-4px px-2 py-1 w-60px h-29px text-center fw-semibold font-size-14px" value="0.00">
+                                                                <span class="font-size-14px fw-semibold clr-242424">mm</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Pre Thickness -->
+                                                        <div class="main-thickness-col d-flex flex-column min-w-160px prepenetrationrow">
+                                                            <label class="font-size-14px fw-semibold clr-242424 mb-2 text-end">Pre Thickness</label>
+                                                            <div class="d-flex align-items-center gap-2 justify-content-end">
+                                                                <input type="text" class="bord-215ED6 bord-rad-4px px-2 py-1 w-60px h-29px text-center fw-semibold font-size-14px" value="0.00">
+                                                                <span class="font-size-14px fw-semibold clr-242424">mm</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <!-- 4th row card -->
+                                        <section class="card text-bg-light mb-3 box-shadow-1 w-100">
+                                            <h5 class="card-title fw-semibold font-size-18px bord-top-rad-4px mb-0 text-center py-2 bgcol-215ED6 text-white">
+                                                Force Limit (kN)
+                                            </h5>
+                                            <div class="card-body p-3 px-5">
+                                                <div class="row w-100">
+                                                    <div class="d-flex flex-row flex-wrap justify-content-between cs-flex-row-gap cs-card-responsive">
+                                                        <!-- Min Limits Column -->
+                                                        <div class="d-flex flex-column gap-3">
+                                                            <!-- Main Comp. Limit Min -->
+                                                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                                <label class="font-size-14px fw-semibold clr-242424 min-w-150px">Main Comp. Limit Min</label>
+                                                                <div class="d-flex align-items-center gap-1">
+                                                                    <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                                        <div class="d-flex flex-column me-2 row-gap-1">
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/up arrow.svg">
+                                                                            </button>
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/down arrow.svg">
+                                                                            </button>
+                                                                        </div>
+                                                                        <input type="text" class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 ps-1 fw-semibold" value="10">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Pre Comp. Limit Min -->
+                                                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                                <label class="font-size-14px fw-semibold clr-242424 min-w-150px">Pre Comp. Limit Min</label>
+                                                                <div class="d-flex align-items-center gap-1">
+                                                                    <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                                        <div class="d-flex flex-column me-2 row-gap-1">
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/up arrow.svg">
+                                                                            </button>
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/down arrow.svg">
+                                                                            </button>
+                                                                        </div>
+                                                                        <input type="text" class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 ps-1 fw-semibold" value="10">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Max Limits Column -->
+                                                        <div class="d-flex flex-column gap-3 max-limitcolumn">
+                                                            <!-- Main Comp. Limit Max -->
+                                                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                                <label class="font-size-14px fw-semibold clr-242424 min-w-150px">Main Comp. Limit Max</label>
+                                                                <div class="d-flex align-items-center gap-1">
+                                                                    <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                                        <div class="d-flex flex-column me-2 row-gap-1">
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/up arrow.svg">
+                                                                            </button>
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/down arrow.svg">
+                                                                            </button>
+                                                                        </div>
+                                                                        <input type="text" class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 ps-1 fw-semibold" value="10">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Pre Comp. Limit Max -->
+                                                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                                <label class="font-size-14px fw-semibold clr-242424 min-w-150px">Pre Comp. Limit Max</label>
+                                                                <div class="d-flex align-items-center gap-1">
+                                                                    <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                                        <div class="d-flex flex-column me-2 row-gap-1">
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/up arrow.svg">
+                                                                            </button>
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/down arrow.svg">
+                                                                            </button>
+                                                                        </div>
+                                                                        <input type="text" class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 ps-1 fw-semibold" value="10">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Ejection Limit Max -->
+                                                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                                <label class="font-size-14px fw-semibold clr-242424 min-w-150px">Ejection Limit Max</label>
+                                                                <div class="d-flex align-items-center gap-1">
+                                                                    <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
+                                                                        <div class="d-flex flex-column me-2 row-gap-1">
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/up arrow.svg">
+                                                                            </button>
+                                                                            <button class="btn btn-sm arrow-btns p-0">
+                                                                                <img src="/images/down arrow.svg">
+                                                                            </button>
+                                                                        </div>
+                                                                        <input type="text" class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 ps-1 fw-semibold" value="10">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        </div>
+
+                                    </div>
+
+
+                                    <!--Right section-->
+                                    
+                                
+
+
+
+
+                            </div>
+
+
+                            <!--Force Graph-->
+
+                            <div class="tab tab-pane pt-3 fade me-4" id="OperationforceGraph" role="tabpanel" aria-labelledby="forceGraph" tabindex="0" style="height:100vh;">
+                                <div class="p-3 bgcol-E9EFFB w-100 h-100 h-100vh d-flex flex-column justify-content-between align-items-center" style="min-height:100%;">
+                                    <!-- Main Content -->
+                                    <div class="w-100">
+                                        <!--horizontal tabs inside the card-->
+                                        <ul class="nav nav-tabs row-gap-3 position-relative " id="" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active col-242424 " id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s1Control" aria-selected="true">Main Compression</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link col-242424 " id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s2Control" aria-selected="false">Pre Compression</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link col-242424 " id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">Ejection</button>
+                                            </li>
+                                        </ul>
+                                        <!--Labels above graph-->
+                                        <div class="d-flex pt-3 justify-content-between">
+                                            <div class=" d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px">
+                                                <div class="d-flex flex-column me-2 row-gap-1">
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                        </svg>
+                                                    </button>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <input type="" id="" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
+                                            </div>
+                                            <p class=" mb-0">Main Compression Force</p>
+                                            <div class="mb-3 d-flex gap-2 justify-content-start align-items-center vis-hidden">
+                                                <label for="colFormLabelSm" class="col-auto col-form-label me-auto text-nowrap col-form-label-sm">SREL Value</label>
+                                                <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bgcol-E9EFFB bord-col-215ED6 fw-semibold" value="0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Checklist Bar (Bottom End) -->
+                                    <div class="d-flex gap-2 mb-3">
+                                        <!-- Checked boxes -->
+                                        <div class="d-flex align-items-center justify-content-center w-32px h-32px bgcol-215ED6 bord-rad-4px">
+                                            <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                                <polyline points="5,11 9,15 15,7" stroke="#fff" stroke-width="2" fill="none" />
+                                            </svg>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center w-32px h-32px bgcol-215ED6 bord-rad-4px">
+                                            <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                                <polyline points="5,11 9,15 15,7" stroke="#fff" stroke-width="2" fill="none" />
+                                            </svg>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center w-32px h-32px bgcol-215ED6 bord-rad-4px">
+                                            <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                                <polyline points="5,11 9,15 15,7" stroke="#fff" stroke-width="2" fill="none" />
+                                            </svg>
+                                        </div>
+                                        <!-- Unchecked boxes -->
+                                        <div class="d-flex align-items-center justify-content-center w-32px h-32px bg-white shadow-custom1 bord-rad-4px">
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center  w-32px h-32px bg-white shadow-custom1 bord-rad-4px">
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center  w-32px h-32px bg-white shadow-custom1 bord-rad-4px">
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center  w-32px h-32px bg-white shadow-custom1 bord-rad-4px">
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center  w-32px h-32px bg-white shadow-custom1 bord-rad-4px">
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center  w-32px h-32px bg-white shadow-custom1 bord-rad-4px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Alarm-->
+                            <div class="tab tab-pane pt-3 fade me-4" id="Operationalarm" role="tabpanel" aria-labelledby="alarm" tabindex="0">
+                                <div class="p-3 bgcol-E9EFFB w-100 h-100 overflow-y-auto max-height-1">
+                                    <div class="container py-4">
+                                        <div class="row g-3">
+                                            @{
+                                                var alarmTitles = new List<string>
+                                            {
+                                            "Emergency PB Healthy",
+                                            "S1 Main Penetration Roller In Position Healthy",
+                                            "Safety Door Healthy",
+                                            "S1 Pre Penetration Roller In Position Healthy",
+                                            "Turret Motor Healthy",
+                                            "S2 Main Penetration Roller In Position Healthy",
+                                            "S1 Feeder Motor Healthy",
+                                            "S2 Pre Penetration Roller In Position Healthy",
+                                            "LUBI Motor Healthy",
+                                            "Turret In Position Healthy",
+                                            "S1 Upper Cam In Position Healthy",
+                                            "S1 Scrapper In Position Healthy",
+                                            "S1 Lower Cam In Position Healthy",
+                                            "S2 Scrapper In Position Healthy",
+                                            "S2 Upper Cam IN Position Healthy",
+                                            "LUBI Oil Low Level Healthy",
+                                         
+                                            };
+                                            }
+                                            <!-- Item 1 -->
+                                            @foreach (var title in alarmTitles)
+                                            {
+                                                <div class="col-lg-6">
+                                                    <div class="bgcol-34C639 fw-semibold col-242424 bord-rad-4px text-center py-2">
+                                                        @title
+                                                    </div>
+                                                </div>
+                                            }
+
+
+                                            <div class="d-flex justify-content-center">
+                                                <button type="button" class="bgcol-8434C6 bord-8434C6 text-white bord-rad-4px text-center py-2 px-2">
+                                                    Alarm Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--COMMON RIGHT SIDE SECTION-->
+                <partial name="_RightControls" />
+
+            </div>
+
+            <!--Last row-->
+
+
+
+
+
+        </div>
+
+
+
+        <!--View Parameters-->
+        <div class="tab-pane fade" id="parameters" role="tabpanel" aria-labelledby="" tabindex="0">
+            <!--Common Product Parameter-->
+            <div class="commonProductParameter boxshadow bord-rad-4px mt-4">
+                <div class="commonProductHeader fw-semibold bgcol-215ED6 text-white text-center  font-size-18px p-10px">
+                    Common Product Parameter
+                </div>
+                <div class="py-4">
+                    <div class="px-lg-4 px-md-4 px-sm-3 px-3">
+                        <div class="commonProductHeaderSelectors d-flex flex-wrap gap-3 justify-content-between pb-4">
+                            <div class="d-flex gap-3 align-items-center">
+                                <label class="font-size-16px fw-semibold clr-242424">Tool Type</label>
+                                <div class="d-flex toolTypeDropdown batchDropdown position-relative">
+                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
+                                    <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">4444</a></li>
+                                        <li><a class="dropdown-item" href="#">2432</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center">
+                                <label class="font-size-16px fw-semibold clr-242424">AWC & AR</label>
+                                <div class="d-flex commonProductDropdown batchDropdown position-relative">
+                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
+                                    <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">4444</a></li>
+                                        <li><a class="dropdown-item" href="#">2432</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center">
+                                <label class="font-size-16px fw-semibold clr-242424">Recipe</label>
+                                <div class="d-flex commonProductDropdown batchDropdown position-relative">
+                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
+                                    <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">4444</a></li>
+                                        <li><a class="dropdown-item" href="#">2432</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row px-lg-4 px-md-4 px-sm-3 px-3 commonProductContainer">
+                        <div class="col-sm-12 order-md-1 order-lg-1 col-md-6 col-lg-5">
+                            <div class="d-flex gap-3 align-items-center pb-2">
+                                <label class="font-size-16px min-width-30 fw-semibold clr-242424">Recipe Code</label>
+                                <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px w-60 boxshadow" placeholder="Enter Recipe Code" />
+                            </div>
+                            <div class="d-flex gap-3 align-items-center pb-2">
+                                <label class="font-size-16px min-width-30 fw-semibold clr-242424">Product Name</label>
+                                <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px w-60 boxshadow" placeholder="Enter Product Name" />
+                            </div>
+                            <div class="d-flex gap-3 align-items-center pb-2">
+                                <label class="font-size-16px min-width-30 fw-semibold clr-242424">Shape</label>
+                                <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px w-60 boxshadow" placeholder="Shape" />
+                            </div>
+                            <div class="d-flex gap-3 align-items-center pb-2">
+                                <label class="font-size-16px min-width-30 fw-semibold clr-242424">Size</label>
+                                <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px w-60 boxshadow" placeholder="Size" />
+                            </div>
+                        </div>
+                        <div class="col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2"></div>
+                        <div class="col-sm-12 order-md-2 order-lg-3 col-md-6  col-lg-5">
+                            <div class="d-flex justify-content-lg-end flex-column">
+                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                    <label class="font-size-16 min-width-30 fw-semibold clr-242424">Table Thickness</label>
+                                    <div class="d-flex align-items-center gap-10px max-width-115px">
+                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px  boxshadow" placeholder="" />
+                                        <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                    </div>
+
+                                </div>
+                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Hardness</label>
+                                    <div class="d-flex align-items-center gap-10px max-width-115px">
+                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px  boxshadow" placeholder="" />
+                                        <span class="font-size-16px fw-semibold clr-242424">kpa</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Weight</label>
+                                    <div class="d-flex align-items-center gap-10px max-width-115px">
+                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  boxshadow" placeholder="" />
+                                        <span class="font-size-16px fw-semibold clr-242424">mg</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Max Turret RPM</label>
+                                    <div class="d-flex align-items-center gap-10px max-width-115px">
+                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                        <span class="font-size-16px fw-semibold clr-242424">rpm</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--S1 & S2 Product Parameters-->
+            <div class="container-fluid mt-4">
+                <div class="row productParameterMainContainer boxshadow bord-rad-4px">
+                    <div class="col-sm-12 productParameterContainer  order-md-1 order-lg-1 col-md-6 col-lg-5 px-0">
+                        <div class="productParameterHeader1 fw-semibold bgcol-215ED6 text-white px-lg-4 px-md-4 px-sm-3 font-size-18px p-10px">
+                            S1-Product Parameter
+                        </div>
+                        <div class="p-lg-4 p-sm-3 p-md-3 p-3">
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px  w-60 fw-semibold clr-242424">Force Feeder Ratio S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px  boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Fill Depth S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px  boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Main Penetration Position S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Main Thickness Position S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Pre Penetration Position S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Pre Thickness Position S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Sample Interval S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">rev</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Sample revolution Qty. S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">rev</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Max Main Comp. Force S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Max Pre Comp. Force S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Max Ejection Comp. Force S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="emptyParamerDiv col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
+                        <div class="productParamerHeader bgcol-215ED6 clr-215ED6 text-center  font-size-18px p-10px">
+                            Empty
+                        </div>
+                    </div>
+                    <div class="col-sm-12 order-md-2 productParameterContainer order-lg-3 col-md-6  col-lg-5 px-0">
+                        <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-0 px-md-0 px-sm-3">
+                            S2-Product Parameter
+                        </div>
+                        <div class="pe-lg-4 py-lg-4 ps-lg-0 pe-md-4 py-md-4 ps-md-0 p-sm-3 p-3">
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Force Feeder Ratio S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px  boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Fill Depth S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px  boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Main Penetration Position S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Main Thickness Position S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Pre Penetration Position S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Pre Thickness Position S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Sample Interval S2</label>
+                                <div class="d-flex align-items-center gap-3 max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">rev</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Sample revolution Qty. S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">rev</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Max Main Comp. Force S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Max Pre Comp. Force S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Max Ejection Comp. Force S2</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--S1 AWC & AR Set Parameter & S2 AWC & AR Set Parameter-->
+            <div class="container-fluid mt-4">
+                <div class="row productParameterMainContainer boxshadow bord-rad-4px">
+                    <div class="col-sm-12 productParameterContainer order-md-1 order-lg-1 col-md-6 col-lg-5 px-0">
+                        <div class="productParameterHeader1 fw-semibold bgcol-215ED6 text-white px-lg-4 px-md-4 px-sm-3  font-size-18px p-10px">
+                            S1 AWC & AR Set Parameter
+                        </div>
+                        <div class="p-lg-4 p-sm-3 p-md-3 p-3">
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px  w-60 fw-semibold clr-242424">Rejection Limit Max S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px  boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Limit Max S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px  boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Set Point S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Limit Min S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Rejection Limit Min S1</label>
+                                <div class="d-flex align-items-center gap-10px max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="emptyParamerDiv  col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
+                        <div class="productParameterHeader bgcol-215ED6 clr-215ED6 text-center  font-size-18px p-10px">
+                            Empty
+                        </div>
+                    </div>
+                    <div class="col-sm-12 order-md-2 productParameterContainer order-lg-3 col-md-6 col-lg-5 px-0">
+                        <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-0 px-md-0 px-sm-3">
+                            S2 AWC & AR Set Parameter
+                        </div>
+                        <div class="pe-lg-4 py-lg-4 ps-lg-0 pe-md-4 py-md-4 ps-md-0 p-sm-3 p-3">
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px  w-60 fw-semibold clr-242424">Rejection Limit Max S2</label>
+                                <div class="d-flex align-items-center gap-3 max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px  boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Limit Max S2</label>
+                                <div class="d-flex align-items-center gap-3 max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px  boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Set Point S2</label>
+                                <div class="d-flex align-items-center gap-3 max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Limit Min S2</label>
+                                <div class="d-flex align-items-center gap-3 max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                                <label class="font-size-16px w-60 fw-semibold clr-242424">Rejection Limit Min S2</label>
+                                <div class="d-flex align-items-center gap-3 max-width-115px">
+                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px boxshadow" placeholder="" />
+                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Fill Cam Guide-->
+
+        <div class="tab-pane fade" id="fillCamGuide" role="tabpanel" aria-labelledby="" tabindex="0">
+
+            <div class="d-flex justify-content-center h-64vh align-items-center">
+                <div class="col-lg-5 col-8">
+                    <div class="card box-shadow-1 h-100">
+
+                        <div class="card-body  p-0 bord-rad-4px">
+                            <div class="list-group row-gap-4 px-4 py-3">
+
+
+
+                                <!--card-->
+
+                                <div class="d-flex justify-content-between forceCamBox align-items-center mb-0">
+                                    <label class="form-check-label " for="switchCheckDefault">Shape Selection</label>
+                                    <div class="d-flex fillCamLabel position-relative w-130px h-30px">
+                                        <input type="text" class="form-control flex-grow-1 bg-white dropdownInput bord-D2D2D2" id="selectedItem" value="Round">
+                                        <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="visually-hidden">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#">4444</a></li>
+                                            <li><a class="dropdown-item" href="#">2432</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between forceCamBox align-items-center mb-0">
+                                    <label class="form-check-label" for="switchCheckDefault">Table Diameter(D)</label>
+                                    <input type="text" class="bord-D2D2D2 bord-rad-4px fillCamLabel px-12-py-6px w-130px h-30px" value="0.00">
+                                </div>
+                                <div class="d-flex justify-content-between forceCamBox align-items-center mb-0">
+                                    <label class="form-check-label" for="switchCheckDefault">Table Weight(mg)</label>
+                                    <input type="text" class="bord-D2D2D2 bord-rad-4px px-12 fillCamLabel px-12-py-6px w-130px h-30px" value="0.00">
+                                </div>
+                                <div class="d-flex justify-content-between forceCamBox align-items-center mb-0">
+                                    <label class="form-check-label" for="switchCheckDefault">Bulk Density (Rho)</label>
+                                    <input type="text" class="bord-D2D2D2 bord-rad-4px px-12-py-6px fillCamLabel w-130px h-30px" value="0.00">
+                                </div>
+
+                                <div class="d-flex justify-content-between forceCamBox align-items-center mb-0">
+                                    <label class="form-check-label" for="switchCheckDefault">Fill Cam</label>
+                                    <input type="text" class="bord-D2D2D2 bord-rad-4px px-12-py-6px fillCamLabel w-130px h-30px bgcol-81D4FA" value="0.00">
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+    
+

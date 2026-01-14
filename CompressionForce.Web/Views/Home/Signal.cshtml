@@ -1,0 +1,210 @@
+﻿<div class="container-fluid mt-3">
+    <ul class="nav nav-tabs position-sticky">
+        <li class="nav-item">
+            <a class="nav-link tab-nav-link active col-242424 font-size-14 fw-semibold" aria-current="page" href="#">Signal Monitoring</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold" href="#">Input & Output</a>
+        </li>
+    </ul>
+</div>
+
+<div class="container-fluid mt-3">
+    <div class="row g-3">
+        <!-- Card 1 -->
+        <div class="col-12 col-lg-6 col-xl-4 col-xxl-3">
+            <div class="card shadow p-2 h-100">
+
+                <!-- Button Row: tightly packed with no right white space -->
+               <div class="row g-2 mb-3">
+    <!-- Turret -->
+    <div class="col-12 col-sm-4">
+        <div class="d-flex flex-column w-100 h-100">
+            <button class="btn background-col-8434C6 fw-semibold font-size-14 text-white text-nowrap w-100">
+                Turret
+            </button>
+            <button class="btn background-col-47494A fw-semibold font-size-14 text-white text-nowrap w-100 mt-1">
+                Off
+            </button>
+        </div>
+    </div>
+
+    <!-- Clutch -->
+    <div class="col-12 col-sm-4">
+        <div class="d-flex flex-column w-100 h-100">
+            <button class="btn background-col-8434C6 fw-semibold font-size-14 text-white text-nowrap w-100">
+                Clutch
+            </button>
+            <button class="btn background-col-47494A fw-semibold font-size-14 text-white text-nowrap w-100 mt-1">
+                Off
+            </button>
+        </div>
+    </div>
+
+    <!-- Turret Jog (single button, natural height) -->
+    <div class="col-12 col-sm-4 d-flex align-items-start">
+        <button class="btn background-col-8434C6 fw-semibold font-size-14 text-white text-nowrap w-100">
+            Turret Jog
+        </button>
+    </div>
+</div>
+
+
+                <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
+                    <!-- Alarm Reset Button Container -->
+                    <div class="w-100 w-sm-auto">
+                        <button class="btn w-100 background-col-8434C6 fw-semibold font-size-14 text-white text-nowrap">
+                            Alarm Reset
+                        </button>
+                    </div>
+
+                    <!-- Set RPM Section -->
+                    <div class="d-flex justify-content-between align-items-center w-100 w-sm-auto mt-2 mt-sm-0">
+                        <label class="form-label text-nowrap font-size-14 m-0 me-2 font-size-14 fw-semibold col-24242">Set RPM</label>
+                        <input type="number"
+                               class="form-control text-center background-col-81D4FA col-242424 fw-semibold font-size-14 width-60"
+                            
+
+                               value="10" />
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+        <!-- Card 2 -->
+       
+        <div class="col-12 col-lg-3">
+            <div class="card shadow p-2 h-100">
+
+                <!-- Top Row Buttons -->
+                <div class="row g-2 mb-3 justify-content-center">
+                    <div class="col-12 col-lg-auto d-flex flex-column gap-2 align-items-stretch">
+                        <!-- Feeder -->
+                        <button class="btn w-100 background-col-8434C6 fw-semibold font-size-14 text-white text-nowrap">
+                            Feeder
+                        </button>
+
+                        <!-- Off -->
+                        <button class="btn w-100 background-col-47494A text-white d-flex justify-content-center align-items-center fw-semibold border-radius-4 height-30"
+                               >
+                            Off
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alarm Reset + Set RPM -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label text-nowrap m-0 font-size-14 fw-semibold col-24242">
+                        Set RPM
+                    </label>
+                    <input type="number"
+                           class="form-control text-center background-col-81D4FA col-242424 fw-semibold font-size-14 width-60"
+                        
+                           value="10">
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <!-- Card 3: Main Thickness -->
+        <div class="col-12 col-lg-2 wrap-below-1440">
+            <div class="card shadow h-100">
+                <div class="card-header font-size-14 fw-semibold text-white background-col-215ED6 text-center text-nowrap">Main Thickness Position</div>
+                <input type="range" class="form-range p-3" min="0" max="25">
+                <div class="d-flex justify-content-center align-items-center">
+                    <input type="text" class="form-control text-center mb-2 width-60 height-25 font-size-14 border-radius-4 fw-semibold" value="0.00">
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Pre Thickness -->
+        <div class="col-12 col-lg-2 wrap-below-1440">
+            <div class="card shadow h-100">
+                <div class="card-header font-size-14 fw-semibold text-white background-col-215ED6 text-center text-nowrap">Pre Thickness Position</div>
+                <input type="range" class="form-range p-3" min="0" max="25">
+                <div class="d-flex justify-content-center align-items-center">
+                    <input type="text" class="form-control text-center mb-2 width-60 height-25 font-size-14 border-radius-4 fw-semibold"  value="0.00">
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: Dozzer -->
+        <div class="col-12 col-lg-2 wrap-below-1440">
+            <div class="card shadow h-100">
+                <div class="card-header font-size-14 fw-semibold text-white background-col-215ED6 text-center text-nowrap">Dozzer Position</div>
+                <input type="range" class="form-range p-3" min="0" max="25">
+                <div class="d-flex justify-content-center align-items-center">
+                    <input type="text" class="form-control text-center mb-2 width-60 height-25 font-size-14 border-radius-4 fw-semibold" value="0.00">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proxy & Count Row (Above Graph) -->
+    <div class="container-fluid px-3 mb-3 mt-3">
+        <div class="row g-3 align-items-center flex-wrap">
+            <div class="col-auto d-flex align-items-center gap-2">
+                <span class="dot bg-danger rounded-circle d-inline-block width-16 height-16"></span>
+                <span class="fw-semibold font-size-14 col-242424">Revolution Proxy</span>
+            </div>
+            <div class="col-auto d-flex align-items-center gap-2">
+                <span class="dot bg-danger rounded-circle d-inline-block width-16 height-16" ></span>
+                <span class="font-size-14 fw-semibold col-242424">Punch Proxy</span>
+            </div>
+            <div class="col-auto d-flex align-items-center gap-2">
+                <span class="dot bg-danger rounded-circle d-inline-block width-16 height-16" ></span>
+                <span class="font-size-14 col-242424 fw-semibold">Tablet Counter Proxy</span>
+            </div>
+            <div class="col-auto d-flex align-items-center">
+                <label class="me-2 mb-0 font-size-14 col-242424 fw-semibold">Tablet Count</label>
+                <input type="text" class="form-control form-control-sm text-center width-60" value="0">
+            </div>
+            <div class="col-auto d-flex align-items-center">
+                <label class="me-2 mb-0 font-size-14 col-242424 fw-semibold">Revolution Count</label>
+                <input type="text" class="form-control form-control-sm text-center width-60"  value="0">
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section (Graph etc.) -->
+    <div class="col-12">
+        <div class="height-400 p-3 background-col-E9EFFB">
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                <!-- Input Box Left -->
+                <div class="border border-215ED6 d-flex align-items-center justify-content-between p-2 border-radius-4 background-col-E9EFFB width-60 height-25" 
+                >
+                    <img src="~/icons/updown icon.svg" alt="Up/Down">
+                    <span class="value fw-semibold font-size-16 col-242424">50</span>
+                </div>
+
+                <!-- Tabs Right -->
+                <ul class="nav nav-tabs position-sticky ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link tab-nav-link active col-242424 font-size-14 fw-semibold" aria-current="page" href="#">Main Compression</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold" href="#">Pre Compression</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold" href="#">Ejection</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
