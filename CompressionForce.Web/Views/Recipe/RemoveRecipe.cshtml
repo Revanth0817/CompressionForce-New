@@ -1,93 +1,48 @@
 ﻿@model CompressionForce.Web.Models.Recipes.DeleteRecipeVm
-@using System.Collections
 @using System.Linq
-<div class="container-fluid">
-    <div class="row">
-        <!-- Left Column -->
-        <div class="col-md-4">
-            <!-- Recipe Code -->
-            <div class="card mb-3">
-                <div class="card-header bgcol-215ED6 text-white text-center font-size-18px fw-semibold">Recipe Code</div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="input-group input-group-sm bord-D2D2D2 bord-rad-4px overflow-hidden w-100 p-0">
-                            <input type="text" id="awcAr"
-                                   class="form-control bg-white border-0 font-size-16px col-242424 fw-normal" value="@Model.Code" readonly />
-                            <button class="btn bgcol-215ED6 text-white border-0 dropdown-toggle font-size-14px" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false"></button>
-                            <ul class="dropdown-menu dropdown-menu-end font-size-14px">
-                                @*<li><a class="dropdown-item" href="#">4444</a></li>*@
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end gap-2">
-                        <button class="btn col-215ED6 bord-215ED6 fw-semibold font-size-16px" type="button"
-                                onclick="location.href='@Url.Action("RecipeParameter", new { code = Model.Code })'">
-                            Cancel
-                        </button>
-                        <button class="btn bgcol-215ED6 text-white fw-semibold font-size-16px" type="submit"
-                                form="deleteForm">
-                            Delete
-                        </button>
-                    </div>
-                    <form id="deleteForm"
-                          asp-action="DeleteConfirmed"
-                          method="post"
-                          class="d-none">
 
-                        @Html.AntiForgeryToken()
+<!-- Delete Recipe -->
+<form id="deleteForm" asp-action="DeleteConfirmed" method="post">
+    @Html.AntiForgeryToken()
 
-                        <input asp-for="Code" type="hidden" />
-                        <input asp-for="Name" type="hidden" />
-                    </form>
-                </div>
+    <input asp-for="Code" type="hidden" />
+    <input asp-for="Name" type="hidden" />
+
+    <div class="container-fluid px-lg-4 px-md-4 px-sm-3 pt-4 px-3">
+
+        <!-- Recipe Code Card -->
+        <div class="RecipeCodeContainer bord-rad-4px boxshadow">
+            <div class="AddRecipeHeader headerRadius fw-semibold bgcol-215ED6 text-white text-center font-size-18px p-10px">
+                Delete Recipe
             </div>
 
-            <!-- Parameter Table -->
-            <div class="card">
-                <div class="card-body p-0">
-                    <table class="table table-bordered table-sm mb-0 font-size-12px">
-                        <thead class="thead-light text-center">
-                            <tr>
-                                <th class="fw-semibold font-size-16px bgcol-215ED6 text-white">Parameter</th>
-                                <th class="fw-semibold font-size-16px bgcol-215ED6 text-white">Min. Limit</th>
-                                <th class="fw-semibold font-size-16px bgcol-215ED6 text-white">Max. Limit</th>
-                                <th class="fw-semibold font-size-16px bgcol-215ED6 text-white">Units</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Tablet Thickness</td><td>1</td><td>10</td><td>mm</td></tr>
-                            <tr><td>Tablet Hardness</td><td>1</td><td>500</td><td>N</td></tr>
-                            <tr><td>Tablet Weight</td><td>1</td><td>2000</td><td>mg</td></tr>
-                            <tr><td>Turret RPM</td><td>10</td><td>35</td><td>rpm</td></tr>
-                            <tr><td>Pre Fill Depth</td><td>1</td><td>20</td><td>mm</td></tr>
-                            <tr><td>Main Fill Depth</td><td>1</td><td>20</td><td>mm</td></tr>
-                            <tr><td>Main Thickness Position</td><td>3.5</td><td>16</td><td>mm</td></tr>
-                            <tr><td>Pre Thickness Position</td><td>3.5</td><td>16</td><td>mm</td></tr>
-                            <tr><td>Max Main Comp. Force</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>Max Pre Comp. Force</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>Max Rejection Comp. Force</td><td>0.01</td><td>1.8</td><td>kN</td></tr>
-                            <tr><td>Rej Pre Comp. Limit Max</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>AWC Pre Comp. Limit Max</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>AWC Pre Comp. Set Point</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>AWC Pre Comp. Limit Min</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>Rej Pre Comp. Limit Max</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>AWC Main Comp. Limit Max</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>AWC Main Comp. Set Point</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>AWC Main Comp. Limit Min</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>Rej Main Comp. Limit Min</td><td>0.1</td><td>80</td><td>kN</td></tr>
-                            <tr><td>Sample Interval Rev</td><td>1</td><td>100000</td><td>rev</td></tr>
-                            <tr><td>Sample Rev Qty</td><td>1</td><td>10</td><td>rev</td></tr>
-                        </tbody>
-                    </table>
+            <div class="AddRecipeCodeContent p-4">
+                <div class="mb-4">
+                    <input asp-for="Code"
+                           type="text"
+                           class="form-control boxshadow"
+                           readonly />
+                </div>
+
+                <div class="d-flex gap-3 align-items-center justify-content-end">
+                    <button type="button"
+                            onclick="location.href='@Url.Action("RecipeParameter", new { code = Model.Code })'"
+                            class="bg-white clr-215ED6 bord-215ED6 cancel-btn font-size-16px fw-semibold rounded-2 py-2 px-3">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="bord-215ED6 bgcol-215ED6 text-white save-btn font-size-16px fw-semibold rounded-2 py-2 px-3">
+                        Delete
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Right Column -->
-        <div id="recipeSection" class="card">
+        <!-- Read-only Parameters (Right section converted to below) -->
+        <div class="card mt-4">
             @Html.Partial(
-                                "_RecipeParametersIndex",
+                        "_RecipeParametersIndex",
                         new CompressionForce.Services.DTOs.RecipeDto
                         {
                             Code = Model.Code,
@@ -95,5 +50,41 @@
                             Parameters = Model.Parameters
                         })
         </div>
+
+        <!-- Static Reference Table -->
+        <div class="table-responsive">
+            <table class="table addRecipeTable table-bordered bord-D2D2D2 boxshadow bord-rad-4px mt-4">
+                <thead>
+                    <tr>
+                        <th>Parameter Name</th>
+                        <th>Min. Limit</th>
+                        <th>Max. Limit</th>
+                        <th>Units</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tablet Thickness</td><td>1</td><td>10</td><td>mm</td></tr>
+                    <tr><td>Tablet Hardness</td><td>1</td><td>500</td><td>N</td></tr>
+                    <tr><td>Tablet Weight</td><td>1</td><td>2000</td><td>mg</td></tr>
+                    <tr><td>Turret RPM</td><td>10</td><td>35</td><td>RPM</td></tr>
+                    <tr><td>Pre Fill Depth</td><td>1</td><td>20</td><td>mm</td></tr>
+                    <tr><td>Main Fill Depth</td><td>1</td><td>20</td><td>mm</td></tr>
+                    <tr><td>Main Thickness Position</td><td>3.5</td><td>16</td><td>mm</td></tr>
+                    <tr><td>Pre Thickness Position</td><td>3.5</td><td>16</td><td>mm</td></tr>
+                    <tr><td>Max Main Comp. Force</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>Max Pre Comp. Force</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>Max Rejection Comp. Force</td><td>0.01</td><td>1.8</td><td>kN</td></tr>
+                    <tr><td>Rej Pre Comp. Limit Max</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>AWC Pre Comp. Set Point</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>AWC Pre Comp. Limit Min</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>AWC Main Comp. Limit Max</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>AWC Main Comp. Set Point</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>AWC Main Comp. Limit Min</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>Rej Main Comp. Limit Min</td><td>0.1</td><td>80</td><td>kN</td></tr>
+                    <tr><td>Sample Interval Rev</td><td>1</td><td>100000</td><td>Rev</td></tr>
+                    <tr><td>Sample Rev Qty</td><td>1</td><td>10</td><td>Qty</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</form>
