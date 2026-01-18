@@ -1,3 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Batch";
 }
+
+@await Component.InvokeAsync("BatchHeader")
+
+@await Component.InvokeAsync(
+"BatchSummary",
+    new { Model.BatchDetails })
+
+@await Component.InvokeAsync(
+    "RecipeParameters",
+    new { json = Model.ParametersJson })
+
+@await Html.PartialAsync("_AddBatchModal")
+@await Html.PartialAsync("_EditBatchModal")
+@await Html.PartialAsync("_DeactivateBatchModal")

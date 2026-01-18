@@ -1,0 +1,14 @@
+﻿@model CompressionForce.Web.Models.Batch.RecipeParametersVM
+
+@if (Model == null)
+{
+    <div>No parameters available</div>
+}
+else
+{
+<partial name="_RecipeParametersPartial" model="Model" />
+}
+
+
+
+

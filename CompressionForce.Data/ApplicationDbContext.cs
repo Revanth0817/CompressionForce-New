@@ -19,9 +19,6 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<CurrentBatch> CurrentBatches { get; set; }
     public virtual DbSet<Privilage> Privilages { get; set; }
     public virtual DbSet<PrivilageHistory> PrivilageHistories { get; set; }
-    //public virtual DbSet<Recipe> Recipes { get; set; }
-    //public virtual DbSet<RecipeHistory> RecipeHistroys { get; set; }
-
     public DbSet<RecipeEntity> Recipes => Set<RecipeEntity>();
     public DbSet<RecipeHistoryEntity> RecipeHistories => Set<RecipeHistoryEntity>();
     public DbSet<LookupValueEntity> LookupValues => Set<LookupValueEntity>();

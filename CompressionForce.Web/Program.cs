@@ -1,6 +1,10 @@
 ﻿using CompressionForce.Data;
+using CompressionForce.Data.Repositories;
+using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Validation;
 using CompressionForce.Services.Audit;
+using CompressionForce.Services.Batch;
+using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
@@ -56,6 +60,13 @@ builder.Services.AddScoped<LookupRecipeValidator>();
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<ILookupService, LookupService>();
 
+// Batch Services
+builder.Services.AddScoped<IBatchQueryService, BatchQueryService>();
+builder.Services.AddScoped<IBatchApplicationService, BatchApplicationService>();
+
+builder.Services.AddScoped<IBatchRepository, BatchRepository>();
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+builder.Services.AddScoped<ICurrentBatchRepository, CurrentBatchRepository>();
 // -------------------- AUDIT --------------------
 builder.Services.AddScoped<AuditLogger>();
 
