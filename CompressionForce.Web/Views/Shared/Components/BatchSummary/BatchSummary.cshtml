@@ -1,0 +1,50 @@
+﻿@model CompressionForce.Web.Models.Batches.BatchSummaryVM
+
+@* Batch Summary Component *@
+<div class="p-lg-4 p-md-4 p-sm-3 p-3 bord-D2D2D2 bord-rad-4px boxshadow">
+    @if (Model == null)
+    {
+        <div class="text-muted">No batch selected</div>
+
+        <!-- JS anchor points (must always exist) -->
+        <div class="d-none">
+            <input id="batchSelectedItem" />
+            <ul id="batchDropdownMenu"></ul>
+        </div>
+    }
+    else
+    {
+        <div class="row px-0">
+            <div class="col-sm-12 order-md-1 order-lg-1 col-md-6 col-lg-5 mb-lg-0 mb-sm-3 mb-md-3 mb-3">
+            <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 mb-3">
+                <label class="font-size-16px fw-semibold clr-242424 min-width-30">Batch Number</label>
+                <div class="d-flex batchNumberDropdown batchDropdown flex-grow-1 position-relative">
+                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="batchSelectedItem" value="@Model.BatchCode" readonly>
+                    <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" id="batchDropdownMenu">
+
+                        <!-- populated by JS -->
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 BatchQtydiv">
+                <label class="font-size-16px fw-semibold clr-242424 min-width-30">Good Qty</label>
+                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px  goodQtyBgColor" value="@Model.GoodQty" readonly />
+            </div>
+        </div>
+        <div class="col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2"></div>
+        <div class="col-sm-12 order-md-2 order-lg-3 col-md-6 col-lg-5">
+            <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 BatchQtydiv mb-3">
+                <label class="font-size-16px fw-semibold clr-242424 min-width-30">Batch Qty</label>
+                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control batchLabelw-60 bord-rad-4px boxshadow" value="@Model.BatchQty" readonly />
+            </div>
+            <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 BatchQtydiv">
+                <label class="font-size-16px fw-semibold clr-242424 min-width-30">Batch Status</label>
+                    <input type="text" class="border-0 px-12-py-6px form-control batchLabelw-60 bord-rad-4px  inActiveBgColor" value="@Model.BatchStatus" readonly />
+            </div>
+        </div>
+    </div>
+    }
+</div>

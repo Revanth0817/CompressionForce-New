@@ -141,11 +141,11 @@ function updateDropdownSelection(e, value) {
  * @param {Event} e - The click event object
  * @param {string} value - The value selected from the list
  */
-    function updateDropdownSelection(e, value) {
+function updateDropdownSelection(e, value) {
     // Prevent the page from jumping/reloading
-        e.preventDefault();
-        console.log(e.currentTarget.firstChild.textContent);
-        console.log(e.currentTarget.textContent);
+    e.preventDefault();
+    console.log(e.currentTarget.firstChild.textContent);
+    console.log(e.currentTarget.textContent);
     // 1. Get the element that was clicked (the <a> tag)
     const clickedElement = e.currentTarget;
 

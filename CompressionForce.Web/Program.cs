@@ -1,9 +1,11 @@
 ﻿using CompressionForce.Data;
 using CompressionForce.Data.Repositories;
+using CompressionForce.Data.UnitOfWork;
 using CompressionForce.Domain.Abstractions;
+using CompressionForce.Domain.Abstractions.UnitOfWork;
 using CompressionForce.Domain.Validation;
 using CompressionForce.Services.Audit;
-using CompressionForce.Services.Batch;
+using CompressionForce.Services.Batches;
 using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
@@ -49,6 +51,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+// -------------------- TRANSACTION - UNIT OF WORK --------------------
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 // -------------------- VALIDATION --------------------
 builder.Services.Configure<RecipeValidationConfig>(builder.Configuration);
 builder.Services.AddSingleton<IRecipeValidationConfigProvider, JsonRecipeValidationConfigProvider>();
@@ -67,6 +72,7 @@ builder.Services.AddScoped<IBatchApplicationService, BatchApplicationService>();
 builder.Services.AddScoped<IBatchRepository, BatchRepository>();
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<ICurrentBatchRepository, CurrentBatchRepository>();
+
 // -------------------- AUDIT --------------------
 builder.Services.AddScoped<AuditLogger>();
 

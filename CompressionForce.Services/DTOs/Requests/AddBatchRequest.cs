@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CompressionForce.Domain.Entities;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +14,6 @@ namespace CompressionForce.Services.DTOs.Requests
         public string BatchCode { get; set; }
         public int BatchQty { get; set; }
         public int TabletQty { get; set; }
+
     }
 }

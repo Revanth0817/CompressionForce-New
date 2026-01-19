@@ -1,19 +1,58 @@
-﻿<div class="modal fade" id="editBatchModal">
-    <div class="modal-dialog">
+﻿@*
+    //_EditBatchModal
+*@
+<div class="modal fade" id="editBatchModal" aria-hidden="true" aria-labelledby="editBatchModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5>Edit Batch</h5>
+
+            <!-- Modal Header -->
+            <div class="modal-header bgcol-215ED6 text-white justify-content-between font-size-18px">
+                <h5 class="fw-semibold modal-title" id="editBatchModalLabel">
+                    Edit Batch
+                </h5>
+                <button type="button" class="bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="~/icons/closeicon.svg" />
+                </button>
             </div>
 
-            <div class="modal-body">
-                <select id="editBatchCode"></select>
-                <input id="editBatchQty" type="number" />
+            <!-- Modal Body -->
+            <div class="modal-body px-4 pt-4 pb-3">
+
+                <!-- Batch Code Listbox -->
+                <div class="mb-3">
+                    <label class="form-label font-size-14">Batch Code</label>
+                    <select class="form-select bord-D2D2D2" id="editBatchCode">
+                        <option value="">Select Batch</option>
+                    </select>
+                </div>
+
+                <!-- Batch Quantity -->
+                <div class="mb-3">
+                    <label class="form-label font-size-14">Batch Quantity</label>
+                    <input type="number"
+                           class="form-control bord-D2D2D2"
+                           id="editBatchQty"
+                           placeholder="Enter Batch Quantity">
+                </div>
+
             </div>
 
-            <div class="modal-footer">
-                <button onclick="updateBatch()">Save</button>
-                <button data-bs-dismiss="modal">Cancel</button>
+            <!-- Modal Footer -->
+            <div class="modal-footer justify-content-end border-top-0 p-3 pt-0 gap-2">
+                <button type="button"
+                        class="btn col-215ED6 bord-215ED6 fw-semibold font-size-16px px-4"
+                        data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button type="button"
+                        class="btn bgcol-215ED6 text-white fw-semibold font-size-16px px-4"
+                        onclick="saveEditedBatch()">
+                    Save
+                </button>
             </div>
+
         </div>
     </div>
 </div>
+

@@ -16,12 +16,12 @@ namespace CompressionForce.Services.DTOs.Batch
 
         public string BatchCode { get; set; }
 
-        public int BatchQty { get; set; }
-        public int GoodQty { get; set; }
-        public int RejectedQty { get; set; }
+        public int? BatchQty { get; set; }
+        public int? GoodQty { get; set; }
+        public int? RejectedQty { get; set; }
 
         public string BatchStatus { get; set; }
-        public int TabletQty { get; set; }
+        public int? TabletQty { get; set; }
 
         /// <summary>
         /// JSON parameters from Recipes or CurrentBatches

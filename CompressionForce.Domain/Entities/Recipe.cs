@@ -17,5 +17,6 @@ namespace CompressionForce.Domain.Entities
             Name = name;
             Parameters = parameters ?? new List<RecipeParameter>();
         }
+        
     }
 }

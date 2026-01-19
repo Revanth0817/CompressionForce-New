@@ -2,10 +2,30 @@
 @using System.Collections
 @using System.Linq
 
-
 @*@{   ViewData["Title"] = "RecipeParameter";}*@
 
 <div class="BatchContainer p-3">
+    @if (TempData.TryGetValue("Error", out var msg))
+    {
+        <div id="flashError" class="alert alert-danger">
+            @msg
+        </div>
+
+        <script>
+            setTimeout(() => {
+                const el = document.getElementById('flashError');
+                if (el) {
+                    el.classList.add('fade');
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 400);
+                }
+            }, 1000);
+        </script>
+    }
+
+
+
+
     <div class="w-100 BatchHeader">
         <div class="d-flex flex-wrap batchPageTabHeader gap-4">
             <nav class="flex-grow-1">
@@ -115,4 +135,5 @@
 
     <!-- Page-specific script -->
     <script src="~/js/recipeJS.js"></script>
+
 }

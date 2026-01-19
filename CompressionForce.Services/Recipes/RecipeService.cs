@@ -1,11 +1,12 @@
 ﻿using CompressionForce.Data;
 using CompressionForce.Data.Entities;
+using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Entities;
 using CompressionForce.Domain.Exceptions;
 using CompressionForce.Domain.Validation;
-using CompressionForce.Services.Validation;
-using CompressionForce.Services.Lookups;
+using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Mapping;
+using CompressionForce.Services.Validation;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CompressionForce.Services.Batches;
 
 namespace CompressionForce.Services.Recipes
 {
@@ -26,14 +28,17 @@ namespace CompressionForce.Services.Recipes
         private readonly IRecipeValidator _recipeValidator;
         private readonly LookupRecipeValidator _lookupValidator;
         private readonly ConfigRecipeValidator _configValidator;
+        private readonly IBatchRepository _batchRepo;
 
         public RecipeService(
             ApplicationDbContext dbContext,
+            IBatchRepository batchRepo,
             IRecipeValidator recipeValidator,
             LookupRecipeValidator lookupValidator,
             ConfigRecipeValidator configValidator)
         {
             _dbContext = dbContext;
+            _batchRepo = batchRepo;
             _recipeValidator = recipeValidator;
             _lookupValidator = lookupValidator;
             _configValidator = configValidator;
@@ -92,6 +97,14 @@ namespace CompressionForce.Services.Recipes
 
         public async Task DeleteAsync(string recipeCode, string user)
         {
+            // 🚨 Do NOT filter by status
+            var batches = await _batchRepo.GetByRecipeAsync(recipeCode);
+
+            if (batches.Any())
+                throw new DomainException(
+                    "Cannot delete recipe. Batches exist for this recipe."
+                );
+
             var entity = await _dbContext.Recipes
                 .FirstOrDefaultAsync(r => r.RecipeCode == recipeCode);
 

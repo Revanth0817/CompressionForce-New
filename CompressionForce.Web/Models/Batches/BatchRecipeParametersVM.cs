@@ -1,15 +1,16 @@
-﻿namespace CompressionForce.Web.Models.Batch
+﻿namespace CompressionForce.Web.Models.Batches
 {
-    public class RecipeParametersVM
+    public class BatchRecipeParametersVM
     {
         //CommonProductParameter
         public string ToolType { get; set; }
         public string AwcArType { get; set; }
+        public string RecipeType { get; set; }
         public string RecipeCode { get; set; }
 
         public string ProductName { get; set; }
         public string Shape { get; set; }
-        public string Size { get; set; }
+        public decimal Size { get; set; }
 
         public decimal TableThickness { get; set; }
         public decimal TableHardness { get; set; }

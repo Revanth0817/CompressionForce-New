@@ -1,4 +1,4 @@
-﻿using CompressionForce.Web.Models.Batch;
+﻿using CompressionForce.Web.Models.Batches;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompressionForce.Web.ViewComponents
@@ -9,7 +9,7 @@ namespace CompressionForce.Web.ViewComponents
     {
         public IViewComponentResult Invoke(BatchSummaryVM model)
         {
-            return View(model);
+            return View("BatchSummary",model);
         }
     }
 }

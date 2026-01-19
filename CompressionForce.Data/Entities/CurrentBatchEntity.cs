@@ -1,14 +1,14 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CompressionForce.Domain.Entities;
+namespace CompressionForce.Data.Entities;
 
-public partial class CurrentBatch
+[Table("CurrentBatches")]
+public partial class CurrentBatchEntity
 {
     public int Id { get; set; }   // ✅ PRIMARY KEY
     public DateTime? DateTime { get; set; }
     public string? BatchNumber { get; set; }
     public string Parameters { get; set; }
-
-    
 }
 

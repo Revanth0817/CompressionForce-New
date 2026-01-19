@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CompressionForce.Domain.Entities;
+namespace CompressionForce.Data.Entities;
 
-public class BatchHistory
+public class BatchHistoryEntity
 {
     public int Id { get; set; }   // ✅ PRIMARY KEY
 

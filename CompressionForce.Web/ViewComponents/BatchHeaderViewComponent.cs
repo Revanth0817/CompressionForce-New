@@ -8,7 +8,7 @@ namespace CompressionForce.Web.ViewComponents
     {
         public IViewComponentResult Invoke()
         {
-            return View();
+            return View("BatchHeader");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace CompressionForce.Web.Models.Batch
+﻿namespace CompressionForce.Web.Models.Batches
 {    public class EditBatchVM
     {
         public string BatchCode { get; set; }

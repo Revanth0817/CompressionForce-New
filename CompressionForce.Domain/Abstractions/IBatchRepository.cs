@@ -13,5 +13,7 @@ namespace CompressionForce.Domain.Abstractions
         Task<Batch> GetByBatchCodeAsync(string batchCode);
         Task AddAsync(Batch batch);
         Task UpdateAsync(Batch batch);
+        Task<bool> ExistsAsync(string batchCode);
+        Task<bool> ExistsNonDeactivatedBatchAsync(string recipeCode);
     }
 }
