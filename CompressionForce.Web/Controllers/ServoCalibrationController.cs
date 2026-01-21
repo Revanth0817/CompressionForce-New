@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CompressionForce.Data;
+﻿using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
+using CompressionForce.Domain.PLC;
+using CompressionForce.Services;
+using CompressionForce.Web.Hubs;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CompressionForce.Web.Controllers
 {
@@ -9,52 +15,186 @@ namespace CompressionForce.Web.Controllers
     public class ServoCalibrationController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPlcProtocol _plc;
+        private readonly PlcTagConfig _plcConfig;
+        private readonly PlcMemoryCache _cache;
+        private readonly IHubContext<ServoHub> _hub;
 
-        public ServoCalibrationController(ApplicationDbContext context)
+        public ServoCalibrationController(
+            ApplicationDbContext context,
+            IPlcProtocol plc,
+            PlcTagConfig plcConfig,
+            PlcMemoryCache cache,
+            IHubContext<ServoHub> hub)
         {
             _context = context;
+            _plc = plc;
+            _plcConfig = plcConfig;
+            _cache = cache;
+            _hub = hub;
         }
 
-        // =============================
-        // SAVE SERVO CALIBRATION
-        // =============================
+        /* ============================================================
+           DB : SAVE SERVO CALIBRATION
+        ============================================================ */
         [HttpPost]
         public IActionResult SaveServoCalibration([FromBody] ServoCalibration model)
         {
-            if (model == null)
-                return BadRequest("Payload is null");
+            if (model == null || string.IsNullOrWhiteSpace(model.ServoCode))
+                return BadRequest("Invalid payload");
 
-            if (string.IsNullOrWhiteSpace(model.ServoCode))
-                return BadRequest("ServoCode missing");
+            model.CreatedAt = DateTime.UtcNow;
 
-            var entity = new ServoCalibration
-            {
-                ServoCode = model.ServoCode,
-                ServoName = model.ServoName,
-                JogSpeed = model.JogSpeed,
-                TorqueLimit = model.TorqueLimit,
-                SetPosition = model.SetPosition,
-                SetSpeed = model.SetSpeed
-            };
-
-            _context.ServoCalibrations.Add(entity);
+            _context.ServoCalibrations.Add(model);
             _context.SaveChanges();
 
             return Ok(new { message = "Servo calibration saved successfully" });
         }
 
-        // =============================
-        // GET LAST CALIBRATION
-        // =============================
+        /* ============================================================
+           DB : LOAD LAST SERVO CALIBRATION
+        ============================================================ */
         [HttpGet]
         public IActionResult GetLastServoCalibration(string servoCode)
         {
+            if (string.IsNullOrWhiteSpace(servoCode))
+                return BadRequest("ServoCode missing");
+
             var last = _context.ServoCalibrations
                 .Where(x => x.ServoCode == servoCode)
                 .OrderByDescending(x => x.CreatedAt)
                 .FirstOrDefault();
 
-            return Json(last);
+            return Ok(last);
+        }
+
+        /* ============================================================
+           PLC TAG RESOLVER (STRICT)
+        ============================================================ */
+        private PlcTag GetTagOrThrow(string key)
+        {
+            var tag = _plcConfig.Tags.FirstOrDefault(t => t.Key == key);
+            if (tag == null)
+                throw new Exception($"PLC tag not found: {key}");
+
+            return tag;
+        }
+
+        /* ============================================================
+           PLC COIL PULSE (SIMULATOR SAFE)
+        ============================================================ */
+        private async Task PulseCoil(string tagKey)
+        {
+            var tag = GetTagOrThrow(tagKey);
+
+            Console.WriteLine($"PLC WRITE → {tagKey} @ {tag.Address}");
+
+            await _plc.WriteCoilAsync(tag.Address, true);
+            
+        }
+
+        /* ============================================================
+           JOG CONTROLS
+        ============================================================ */
+        [HttpPost]
+        public async Task<IActionResult> JogUp(string servoCode)
+        {
+            await PulseCoil($"{servoCode}_JOG_UP");
+            await PublishServoStatus(servoCode);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> JogDown(string servoCode)
+        {
+            await PulseCoil($"{servoCode}_JOG_DOWN");
+            await PublishServoStatus(servoCode);
+            return Ok();
+        }
+
+        /* ============================================================
+           RUN / STOP
+        ============================================================ */
+        [HttpPost]
+        public async Task<IActionResult> Run(string servoCode)
+        {
+            await PulseCoil($"{servoCode}_RUN");
+            await PublishServoStatus(servoCode);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Stop(string servoCode)
+        {
+            await PulseCoil($"{servoCode}_STOP");
+            await PublishServoStatus(servoCode);
+            return Ok();
+        }
+
+        /* ============================================================
+           APPLY SET VALUES (HOLDING REGISTERS)
+        ============================================================ */
+        [HttpPost]
+        public async Task<IActionResult> ApplySet([FromBody] ServoSetDto dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.ServoCode))
+                return BadRequest("Invalid payload");
+
+            // WRITE: Set Position
+            var posTag = GetTagOrThrow($"{dto.ServoCode}_SET_POS");
+            await _plc.WriteHoldingRegisterAsync(
+                posTag.Address,
+                (int)(dto.SetPosition * 100)
+            );
+
+            // WRITE: Set Speed
+            var speedTag = GetTagOrThrow($"{dto.ServoCode}_SET_SPEED");
+            await _plc.WriteHoldingRegisterAsync(
+                speedTag.Address,
+                (int)dto.SetSpeed
+            );
+
+            // WRITE: Jog Speed  ✅ (NEW)
+            var jogSpeedTag = GetTagOrThrow($"{dto.ServoCode}_JOG_SPEED");
+            await _plc.WriteHoldingRegisterAsync(
+                jogSpeedTag.Address,
+                (int)dto.JogSpeed
+            );
+
+            return Ok();
+        }
+
+
+
+        /* ============================================================
+           LIVE SERVO STATUS (CACHE)
+        ============================================================ */
+        [HttpGet]
+        public IActionResult GetServoStatus(string servoCode)
+        {
+            bool ready = (_cache.Get($"{servoCode}_READY") as bool?) ?? false;
+            bool alarm = (_cache.Get($"{servoCode}_ALARM") as bool?) ?? false;
+            int torque = (_cache.Get($"{servoCode}_ACT_TORQUE") as int?) ?? 0;
+
+            return Ok(new { ready, alarm, torque });
+        }
+
+        /* ============================================================
+           SIGNALR PUSH (CALLED AFTER PLC ACTION)
+        ============================================================ */
+        private async Task PublishServoStatus(string servoCode)
+        {
+            bool ready = (_cache.Get($"{servoCode}_READY") as bool?) ?? false;
+            bool alarm = (_cache.Get($"{servoCode}_ALARM") as bool?) ?? false;
+            int torque = (_cache.Get($"{servoCode}_ACT_TORQUE") as int?) ?? 0;
+
+            await _hub.Clients.All.SendAsync(
+                "ServoStatusUpdated",
+                servoCode,
+                ready,
+                alarm,
+                torque
+            );
         }
     }
 }

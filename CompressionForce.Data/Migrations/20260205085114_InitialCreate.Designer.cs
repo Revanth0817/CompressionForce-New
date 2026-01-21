@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CompressionForce.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260119103241_Initial_Create_All_Tables")]
-    partial class Initial_Create_All_Tables
+    [Migration("20260205085114_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

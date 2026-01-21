@@ -33,7 +33,11 @@
                             <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Inputs</h5>
                             <div class="d-sm-flex px-4 pt-3">
                                 <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
-                                    <li class="diagnostics-list fw-semibold">Emergency Control</li>
+                                    <li data-di="DI_EMERGENCY" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        
+                                        Emergency Control
+                                    </li>
+
                                     <li class="diagnostics-list fw-semibold">Door Safety</li>
                                     <li class="diagnostics-list fw-semibold">Turret Drive Trip</li>
                                     <li class="diagnostics-list fw-semibold">LHS Feeder Drive Trip</li>
@@ -73,31 +77,36 @@
                             <ul class="list-group list-group-flush row-gap-16px px-4 py-3">
 
                                 @{
-                                    var switchItems = new List<string>
+                                    var digitalOutputs = new Dictionary<string, string>
                                                                 {
-                                                                "S1 Initial Rej. Valve",
-                                                                "S2 Initial Rej. Valve",
-                                                                "S1 Sample Valve",
-                                                                "S2 Sample Valve",
-                                                                "S1 Rejection Valve",
-                                                                "S2 Rejection Valve",
-                                                                "Lubrication",
-                                                                "Red Lamp",
-                                                                "Yellow Lamp",
-                                                                "Green Lamp"
-
+                                                                { "DO_S1_INIT_REJ", "S1 Initial Rej. Valve" },
+                                                                { "DO_S2_INIT_REJ", "S2 Initial Rej. Valve" },
+                                                                { "DO_S1_SAMPLE",  "S1 Sample Valve" },
+                                                                { "DO_S2_SAMPLE",  "S2 Sample Valve" },
+                                                                { "DO_S1_REJ",     "S1 Rejection Valve" },
+                                                                { "DO_S2_REJ",     "S2 Rejection Valve" },
+                                                                { "DO_LUBE",       "Lubrication" },
+                                                                { "DO_RED_LAMP",   "Red Lamp" },
+                                                                { "DO_YEL_LAMP",   "Yellow Lamp" },
+                                                                { "DO_GRN_LAMP",   "Green Lamp" }
                                                                 };
                                 }
 
-                                @foreach (var item in switchItems)
+                                @foreach (var item in digitalOutputs)
                                 {
                                     <li class="diagnostics-list-before">
                                         <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="">
-                                            <label class="form-check-label fw-semibold" for="switchCheckDefault">@item</label>
+                                            <input class="form-check-input do-switch"
+                                                   type="checkbox"
+                                                   data-do="@item.Key"
+                                                   onchange="writeDigitalOutput(this)">
+                                            <label class="form-check-label fw-semibold">
+                                                @item.Value
+                                            </label>
                                         </div>
                                     </li>
                                 }
+
 
                             </ul>
                         </div>
@@ -797,3 +806,88 @@
 
 </script>
 
+
+<script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.0/dist/browser/signalr.min.js"></script>
+
+<script>
+    /* ==========================================
+       SIGNALR – DIGITAL INPUTS (PSEUDO ::before)
+    ========================================== */
+
+    const diHub = new signalR.HubConnectionBuilder()
+        .withUrl("/servoHub")
+        .withAutomaticReconnect()
+        .build();
+
+    /* RECEIVE DIGITAL INPUT STATE */
+    diHub.on("DigitalInputUpdated", (tagKey, value) => {
+
+        const li = document.querySelector(
+            `.diagnostics-list1[data-di='${tagKey}']`
+        );
+
+        if (!li) return;
+
+        li.classList.remove("di-true", "di-false");
+        li.classList.add(value === true ? "di-true" : "di-false");
+    });
+
+    /* START CONNECTION */
+    diHub.start()
+        .then(() => console.log("✅ Digital Inputs SignalR connected"))
+        .catch(err => console.error("❌ DI SignalR error", err));
+</script>
+
+<script>
+    let plcWriteLock = false;
+
+    function writeDigitalOutput(el) {
+
+        const tagKey = el.dataset.do;
+        const value = el.checked;
+
+        plcWriteLock = true;
+
+        fetch("/Diagnostics/WriteDigitalOutput", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                tagKey: tagKey,
+                value: value
+            })
+        })
+        .catch(err => {
+            console.error("❌ PLC write failed", err);
+            el.checked = !value; // rollback UI
+        })
+        .finally(() => {
+            setTimeout(() => plcWriteLock = false, 200);
+        });
+    }
+</script>
+<script>
+    /* ==========================================
+       SIGNALR – DIGITAL OUTPUTS
+    ========================================== */
+
+    const doHub = new signalR.HubConnectionBuilder()
+        .withUrl("/servoHub")
+        .withAutomaticReconnect()
+        .build();
+
+    doHub.on("DigitalOutputUpdated", (tagKey, value) => {
+
+        const checkbox = document.querySelector(
+            `.do-switch[data-do='${tagKey}']`
+        );
+
+        if (!checkbox) return;
+        if (plcWriteLock) return;
+
+        checkbox.checked = value === true;
+    });
+
+    doHub.start()
+        .then(() => console.log("✅ Digital Outputs SignalR connected"))
+        .catch(err => console.error("❌ DO SignalR error", err));
+</script>

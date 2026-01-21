@@ -7,7 +7,10 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
+		<PackageReference Include="System.IO.Ports" Version="10.0.2" />
 	</ItemGroup>
 	
 </Project>

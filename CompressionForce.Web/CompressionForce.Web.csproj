@@ -8,6 +8,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -15,10 +17,13 @@
 		</PackageReference>
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
 		<PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
+		<PackageReference Include="System.IO.Ports" Version="10.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\CompressionForce.Data\CompressionForce.Data.csproj" />
+		<ProjectReference Include="..\CompressionForce.Domain\CompressionForce.Domain.csproj" />
+		<ProjectReference Include="..\CompressionForce.Integrations\CompressionForce.Integrations.csproj" />
 		<ProjectReference Include="..\CompressionForce.Services\CompressionForce.Services.csproj" />
 	</ItemGroup>
 

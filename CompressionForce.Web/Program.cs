@@ -1,23 +1,31 @@
 ﻿using CompressionForce.Data;
+using CompressionForce.Domain.Calibration;
+using CompressionForce.Domain.PLC;
+using CompressionForce.Domain.PLC;
 using CompressionForce.Domain.Validation;
+using CompressionForce.Integrations.PLC.Modbus;
+using CompressionForce.Services;
 using CompressionForce.Services;
 using CompressionForce.Services.Audit;
 using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
+using CompressionForce.Web.Hubs;
 using CompressionForce.Web.ModelBinding;
-
+using CompressionForce.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Rotativa.AspNetCore;
 using System;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +71,10 @@ builder.Services.AddScoped<AutoTareService>();
 
 // -------------------- AUDIT --------------------
 builder.Services.AddScoped<AuditLogger>();
+builder.Services.AddMemoryCache();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IServoStatusPublisher, SignalRServoStatusPublisher>();
+
 
 // -------------------- MVC --------------------
 builder.Services
@@ -86,7 +98,74 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
     options.Cookie.Name = ".CompressionForce.Session";
 });
+builder.Services.AddMemoryCache();
 
+builder.Services.AddSingleton<IPlcProtocol>(sp =>
+{
+    var cfg = sp.GetRequiredService<IConfiguration>();
+    return new ModbusTcpProtocol(
+        cfg["Plc:Ip"]!,
+        int.Parse(cfg["Plc:Port"]!)
+    );
+});
+
+builder.Services.AddSingleton<PlcMemoryCache>();
+builder.Services.AddHostedService<PlcPollingBackgroundService>();
+
+builder.Services.AddSingleton<CalibrationCurve>(sp =>
+{
+    var curve = new CalibrationCurve();
+    curve.Fit(
+        new double[] { 0, 1000, 2000 },
+        new double[] { 0, 50, 100 }
+    );
+    return curve;
+});
+// ===============================
+// Load PLC Tags from JSON file
+// ===============================
+var plcTagsFile = builder.Configuration["Plc:TagsFile"];
+
+if (string.IsNullOrWhiteSpace(plcTagsFile))
+    throw new Exception("Plc:TagsFile is not configured in appsettings.json");
+
+// Build absolute path
+var plcTagsFullPath = Path.Combine(
+    builder.Environment.ContentRootPath,
+    plcTagsFile
+);
+
+if (!File.Exists(plcTagsFullPath))
+    throw new FileNotFoundException(
+        $"PLC tags file not found: {plcTagsFullPath}"
+    );
+
+// 🔴 THIS WAS MISSING
+var plcJson = File.ReadAllText(plcTagsFullPath);
+
+// Deserialize with enum support
+var plcTagConfig = JsonSerializer.Deserialize<PlcTagConfig>(
+    plcJson,
+    new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true,
+        Converters =
+        {
+            new JsonStringEnumConverter()
+        }
+    }
+);
+
+if (plcTagConfig == null || plcTagConfig.Tags.Count == 0)
+    throw new Exception("Failed to load PLC tags from plc-tags.json");
+
+// Register into DI
+builder.Services.AddSingleton(plcTagConfig);
+
+
+
+
+builder.Services.AddSingleton<ForceService>();
 var app = builder.Build();
 
 // -----------------------------------------------------------------------------
@@ -157,6 +236,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Welcome}/{id?}"
 );
+app.MapHub<ServoHub>("/servoHub");
+
 
 // -----------------------------------------------------------------------------
 // ROTATIVA (PDF)

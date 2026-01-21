@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
+using CompressionForce.Domain.PLC;
 using System;
 using System.Linq;
 
@@ -9,10 +11,17 @@ namespace CompressionForce.Web.Controllers
     public class CalibrationController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMemoryCache _cache;
+        private readonly PlcTagConfig _plcConfig;
 
-        public CalibrationController(ApplicationDbContext context)
+        public CalibrationController(
+            ApplicationDbContext context,
+            IMemoryCache cache,
+            PlcTagConfig plcConfig)
         {
             _context = context;
+            _cache = cache;
+            _plcConfig = plcConfig;
         }
 
         // ==============================
@@ -29,54 +38,58 @@ namespace CompressionForce.Web.Controllers
         [HttpGet]
         public IActionResult GetLoadCells()
         {
-            var loadcells = _context.LoadCells
-                .Where(x => x.IsActive)
-                .Select(x => new
-                {
-                    x.LoadCellCode,
-                    x.LoadCellName
-                })
-                .ToList();
+            try
+            {
+                var loadcells = _context.LoadCells
+                    .Where(x => x.IsActive)
+                    .Select(x => new
+                    {
+                        loadCellCode = x.LoadCellCode,
+                        loadCellName = x.LoadCellName
+                    })
+                    .ToList();
 
-            return Json(loadcells);
+                return Ok(loadcells);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "Failed to load loadcells",
+                    detail = ex.Message
+                });
+            }
         }
 
         // ==============================
         // POST: Save calibration values
         // ==============================
         [HttpPost]
-        [IgnoreAntiforgeryToken] // 🔴 REQUIRED FOR FETCH + JSON
+        [IgnoreAntiforgeryToken]
         public IActionResult SaveCalibration([FromBody] LoadCellCalibration model)
         {
-            try
+            if (model == null)
+                return BadRequest(new { error = "Calibration model is null" });
+
+            if (string.IsNullOrWhiteSpace(model.LoadCellCode))
+                return BadRequest(new { error = "LoadCellCode is required" });
+
+            var calibration = new LoadCellCalibration
             {
-                if (model == null)
-                    return BadRequest("Calibration model is null");
+                LoadCellCode = model.LoadCellCode,
+                MinVolt = model.MinVolt,
+                MaxVolt = model.MaxVolt,
+                MinValue = model.MinValue,
+                MaxValue = model.MaxValue,
+                Factor = model.Factor,
+                Offset = model.Offset,
+                CreatedAt = DateTime.UtcNow
+            };
 
-                if (string.IsNullOrWhiteSpace(model.LoadCellCode))
-                    return BadRequest("LoadCellCode is required");
+            _context.LoadCellCalibrations.Add(calibration);
+            _context.SaveChanges();
 
-                var calibration = new LoadCellCalibration
-                {
-                    LoadCellCode = model.LoadCellCode,
-                    MinVolt = model.MinVolt,
-                    MaxVolt = model.MaxVolt,
-                    MinValue = model.MinValue,
-                    MaxValue = model.MaxValue,
-                    Factor = model.Factor,
-                    Offset = model.Offset,
-                    CreatedAt = DateTime.UtcNow
-                };
-
-                _context.LoadCellCalibrations.Add(calibration);
-                _context.SaveChanges();
-
-                return Ok(new { message = "Calibration saved successfully" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException?.Message ?? ex.Message);
-            }
+            return Ok(new { message = "Calibration saved successfully" });
         }
 
         // ==============================
@@ -86,7 +99,7 @@ namespace CompressionForce.Web.Controllers
         public IActionResult GetLastCalibration(string loadCellCode)
         {
             if (string.IsNullOrWhiteSpace(loadCellCode))
-                return BadRequest("LoadCellCode is required");
+                return BadRequest(new { error = "LoadCellCode is required" });
 
             var lastCalibration = _context.LoadCellCalibrations
                 .Where(x => x.LoadCellCode == loadCellCode)
@@ -94,9 +107,37 @@ namespace CompressionForce.Web.Controllers
                 .FirstOrDefault();
 
             if (lastCalibration == null)
-                return NotFound();
+                return NotFound(new { error = "No calibration found" });
 
-            return Json(lastCalibration);
+            return Ok(lastCalibration);
+        }
+
+        // ==============================
+        // GET: Sensor Voltage (FROM CACHE)
+        // ==============================
+        [HttpGet]
+        public IActionResult GetSensorVoltage(string loadCellCode)
+        {
+            if (string.IsNullOrWhiteSpace(loadCellCode))
+                return BadRequest(new { error = "LoadCellCode missing" });
+
+            var tag = _plcConfig.Tags
+                .FirstOrDefault(t => t.LoadCellCode == loadCellCode);
+
+            if (tag == null)
+            {
+                return NotFound(new
+                {
+                    error = "PLC tag not configured",
+                    loadCellCode
+                });
+            }
+
+            // IMPORTANT: cache is the ONLY voltage source
+            if (!_cache.TryGetValue(tag.Key, out double voltage))
+                voltage = 0.0;
+
+            return Ok(new { voltage });
         }
     }
 }
