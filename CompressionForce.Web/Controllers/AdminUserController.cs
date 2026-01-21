@@ -6,21 +6,17 @@ using CompressionForce.Services.Audit;
 using BCrypt.Net;
 
 
-namespace CompressionForce.Controllers
+namespace Compression_Force.Controllers
 {
     [ApiController]
     [Route("AdminUser")]
     public class AdminUserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly AuditLogger _auditLogger;
 
-        public AdminUserController(
-            ApplicationDbContext context,
-            AuditLogger auditLogger)
+        public AdminUserController(ApplicationDbContext context)
         {
             _context = context;
-            _auditLogger = auditLogger;
         }
 
         /* ================= USERS ================= */
@@ -38,8 +34,11 @@ namespace CompressionForce.Controllers
                     userName = u.ERname,
                     email = u.ERemail,
                     role = u.ERlevel,
+
+                    // 🔴 AUTO INACTIVE IF EXPIRED
                     isActive = u.IsActive &&
                                (u.ExpiryDate == null || u.ExpiryDate >= now),
+
                     createdDate = u.CreatedDate,
                     expiryDate = u.ExpiryDate,
                     lastLoginDate = u.LastLoginDate
@@ -86,12 +85,6 @@ namespace CompressionForce.Controllers
             _context.UserManagements.Add(user);
             await _context.SaveChangesAsync();
 
-            // 🔥 AUDIT LOG
-            _auditLogger.Log(
-                "Access Management",
-                $"Admin created user '{username}' with role '{model.Role}'"
-            );
-
             return Ok();
         }
 
@@ -103,13 +96,6 @@ namespace CompressionForce.Controllers
 
             user.ERlevel = dto.NewRole;
             await _context.SaveChangesAsync();
-
-            // 🔥 AUDIT LOG
-            _auditLogger.Log(
-                "Access Management",
-                $"Role changed for user '{user.ERname}' to '{dto.NewRole}'"
-            );
-
             return Ok();
         }
 
@@ -124,13 +110,6 @@ namespace CompressionForce.Controllers
                 u.IsActive = dto.IsActive;
 
             await _context.SaveChangesAsync();
-
-            // 🔥 AUDIT LOG
-            _auditLogger.Log(
-                "Access Management",
-                $"Users {(dto.IsActive ? "activated" : "deactivated")} (IDs: {string.Join(",", dto.UserIds)})"
-            );
-
             return Ok();
         }
 
@@ -157,13 +136,6 @@ namespace CompressionForce.Controllers
 
             _context.UserGroups.Add(new UserGroup { Name = name });
             await _context.SaveChangesAsync();
-
-            // 🔥 AUDIT LOG
-            _auditLogger.Log(
-                "Access Management",
-                $"Group '{name}' created"
-            );
-
             return Ok();
         }
 
@@ -178,17 +150,25 @@ namespace CompressionForce.Controllers
 
             _context.UserGroups.Remove(group);
             await _context.SaveChangesAsync();
-
-            // 🔥 AUDIT LOG
-            _auditLogger.Log(
-                "Access Management",
-                $"Group '{name}' deleted"
-            );
-
             return Ok();
         }
 
         /* ================= GROUP PRIVILEGES ================= */
+
+        [HttpGet("GroupPrivileges/{groupName}")]
+        public async Task<IActionResult> GetGroupPrivileges(string groupName)
+        {
+            var data = await _context.GroupPrivileges
+                .Where(p => p.GroupName == groupName)
+                .Select(p => new
+                {
+                    key = p.PrivilegeKey,
+                    allowed = p.IsAllowed
+                })
+                .ToListAsync();
+
+            return Ok(data);
+        }
 
         [HttpPost("SaveGroupPrivileges")]
         public async Task<IActionResult> SaveGroupPrivileges(
@@ -214,13 +194,108 @@ namespace CompressionForce.Controllers
             }
 
             await _context.SaveChangesAsync();
+            return Ok();
+        }
 
-            // 🔥 AUDIT LOG
-            _auditLogger.Log(
-                "Access Management",
-                $"Privileges updated for group '{dto.GroupName}'"
-            );
+        /* ================= 🔐 SECURITY SETTINGS ================= */
 
+        [HttpGet("GetSecuritySettings")]
+        public async Task<IActionResult> GetSecuritySettings()
+        {
+            var s = await _context.SecuritySettings.FirstOrDefaultAsync();
+
+            if (s == null)
+            {
+                s = new SecuritySettings
+                {
+                    ApplicationTimeoutMinutes = 10,
+                    PasswordExpiryDays = 10,
+                    MaxWrongAttempts = 10
+                };
+
+                _context.SecuritySettings.Add(s);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok(new
+            {
+                applicationTimeoutMinutes = s.ApplicationTimeoutMinutes,
+                passwordExpiryDays = s.PasswordExpiryDays,
+                maxWrongAttempts = s.MaxWrongAttempts
+            });
+        }
+
+        [HttpPost("SaveSecuritySettings")]
+        public async Task<IActionResult> SaveSecuritySettings(
+            [FromBody] SecuritySettingsDto dto)
+        {
+            if (dto.ApplicationTimeoutMinutes <= 0 ||
+                dto.PasswordExpiryDays <= 0 ||
+                dto.MaxWrongAttempts <= 0)
+                return BadRequest("Invalid values");
+
+            var s = await _context.SecuritySettings.FirstOrDefaultAsync()
+                    ?? new SecuritySettings();
+
+            s.ApplicationTimeoutMinutes = dto.ApplicationTimeoutMinutes;
+            s.PasswordExpiryDays = dto.PasswordExpiryDays;
+            s.MaxWrongAttempts = dto.MaxWrongAttempts;
+
+            _context.SecuritySettings.Update(s);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        /* ================= 🔑 APPLY PASSWORD EXPIRY ================= */
+
+        [HttpPost("ApplyPasswordExpiry")]
+        public async Task<IActionResult> ApplyPasswordExpiry(
+            [FromBody] List<int> userIds)
+        {
+            if (userIds == null || userIds.Count == 0)
+                return BadRequest("No users selected");
+
+            var settings = await _context.SecuritySettings.FirstOrDefaultAsync();
+            if (settings == null)
+                return BadRequest("Security settings not found");
+
+            var expiryDate = DateTime.UtcNow.AddDays(settings.PasswordExpiryDays);
+
+            var users = await _context.UserManagements
+                .Where(u => userIds.Contains(u.Id))
+                .ToListAsync();
+
+            foreach (var user in users)
+                user.ExpiryDate = expiryDate;
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        /* ================= 🔐 BULK CHANGE PASSWORD ================= */
+
+        [HttpPost("BulkChangePassword")]
+        public async Task<IActionResult> BulkChangePassword(
+            [FromBody] BulkChangePasswordDto dto)
+        {
+            if (dto.UserIds == null || dto.UserIds.Count == 0)
+                return BadRequest("No users selected");
+
+            if (string.IsNullOrWhiteSpace(dto.NewPassword))
+                return BadRequest("Password required");
+
+            var users = await _context.UserManagements
+                .Where(u => dto.UserIds.Contains(u.Id))
+                .ToListAsync();
+
+            foreach (var user in users)
+            {
+                user.ERpassword = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+                user.FailedLoginAttempts = 0;
+                user.LockedUntil = null;
+            }
+
+            await _context.SaveChangesAsync();
             return Ok();
         }
     }
@@ -251,5 +326,18 @@ namespace CompressionForce.Controllers
     {
         public string GroupName { get; set; } = "";
         public List<string> Privileges { get; set; } = new();
+    }
+
+    public class SecuritySettingsDto
+    {
+        public int ApplicationTimeoutMinutes { get; set; }
+        public int PasswordExpiryDays { get; set; }
+        public int MaxWrongAttempts { get; set; }
+    }
+
+    public class BulkChangePasswordDto
+    {
+        public List<int> UserIds { get; set; } = new();
+        public string NewPassword { get; set; } = "";
     }
 }

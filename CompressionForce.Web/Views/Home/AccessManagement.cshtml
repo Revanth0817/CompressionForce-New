@@ -131,12 +131,36 @@
 
                             <div class="mb-2">
                                 <label class="form-label font-size-14 fw-semibold">Password</label>
-                                <input type="password" class="form-control" id="password" required>
+
+                                <div class="input-group password-group">
+                                    <input type="password"
+                                           class="form-control password-input"
+                                           id="password"
+                                           placeholder="Password"
+                                           required>
+
+                                    <span class="input-group-text password-eye"
+                                          onclick="togglePassword(this)">
+                                        <img src="~/icons/password_show.svg" alt="Show">
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="mb-2">
                                 <label class="form-label font-size-14 fw-semibold">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirmPassword" required>
+
+                                <div class="input-group password-group">
+                                    <input type="password"
+                                           class="form-control password-input"
+                                           id="confirmPassword"
+                                           placeholder="Confirm password"
+                                           required>
+
+                                    <span class="input-group-text password-eye"
+                                          onclick="togglePassword(this)">
+                                        <img src="~/icons/password_show.svg" alt="Show">
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- USER ROLE DROPDOWN -->
@@ -574,19 +598,38 @@
 
                 <div class="mb-3">
                     <label class="fw-semibold">New Password</label>
-                    <input type="password"
-                           id="newPassword"
-                           class="form-control"
-                           placeholder="Enter new password">
+
+                    <div class="input-group">
+                        <input type="password"
+                               id="newPassword"
+                               class="form-control"
+                               placeholder="Enter new password">
+
+                        <span class="input-group-text password-eye"
+                              data-target="newPassword"
+                              onclick="togglePassword(this)">
+                            <img src="~/icons/password_show.svg" class="eye-icon" alt="Show password">
+                        </span>
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="fw-semibold">Confirm New Password</label>
-                    <input type="password"
-                           id="confirmNewPassword"
-                           class="form-control"
-                           placeholder="Confirm new password">
+
+                    <div class="input-group">
+                        <input type="password"
+                               id="confirmNewPassword"
+                               class="form-control"
+                               placeholder="Confirm new password">
+
+                        <span class="input-group-text password-eye"
+                              data-target="confirmNewPassword"
+                              onclick="togglePassword(this)">
+                            <img src="~/icons/password_show.svg" class="eye-icon" alt="Show password">
+                        </span>
+                    </div>
                 </div>
+
 
                 <div class="d-flex justify-content-end gap-3 mt-3">
                     <button class="btn bord-215ED6 clr-215ED6"
@@ -1242,4 +1285,41 @@
         alert("Password updated successfully");
     }
 </script>
+
+<script>
+    function togglePassword(el) {
+
+        let input = null;
+
+        // Case 1: data-target based (recommended)
+        const targetId = el.getAttribute("data-target");
+        if (targetId) {
+            input = document.getElementById(targetId);
+        }
+
+        // Case 2: password-group based (fallback)
+        if (!input) {
+            const group = el.closest('.password-group');
+            if (group) {
+                input = group.querySelector('.password-input');
+            }
+        }
+
+        // Safety check
+        if (!input) {
+            console.warn("Password input not found");
+            return;
+        }
+
+        // Toggle password visibility
+        if (input.type === "password") {
+            input.type = "text";
+            el.classList.add("active");
+        } else {
+            input.type = "password";
+            el.classList.remove("active");
+        }
+    }
+</script>
+
 

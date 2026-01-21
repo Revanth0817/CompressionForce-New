@@ -32,7 +32,7 @@ namespace CompressionForce.Data.Entities
         [Required]
         public DateTime ChangedAt { get; set; }
 
-        public string OldParameters { get; set; }
-        public string NewParameters { get; set; }
+        public string OldParameters { get; set; } 
+        public string NewParameters { get; set; } 
     }
 }
