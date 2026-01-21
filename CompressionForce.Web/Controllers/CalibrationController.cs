@@ -24,17 +24,11 @@ namespace CompressionForce.Web.Controllers
             _plcConfig = plcConfig;
         }
 
-        // ==============================
-        // Load Calibration Page
-        // ==============================
         public IActionResult Index()
         {
             return View();
         }
 
-        // ==============================
-        // GET: Loadcell list for dropdown
-        // ==============================
         [HttpGet]
         public IActionResult GetLoadCells()
         {
@@ -61,9 +55,6 @@ namespace CompressionForce.Web.Controllers
             }
         }
 
-        // ==============================
-        // POST: Save calibration values
-        // ==============================
         [HttpPost]
         [IgnoreAntiforgeryToken]
         public IActionResult SaveCalibration([FromBody] LoadCellCalibration model)
@@ -92,16 +83,13 @@ namespace CompressionForce.Web.Controllers
             return Ok(new { message = "Calibration saved successfully" });
         }
 
-        // ==============================
-        // GET: Last saved calibration
-        // ==============================
         [HttpGet]
         public IActionResult GetLastCalibration(string loadCellCode)
         {
             if (string.IsNullOrWhiteSpace(loadCellCode))
                 return BadRequest(new { error = "LoadCellCode is required" });
 
-            var lastCalibration = _context.LoadCellCalibrations
+            var last = _context.LoadCellCalibrations
                 .Where(x => x.LoadCellCode == loadCellCode)
                 .OrderByDescending(x => x.CreatedAt)
                 .FirstOrDefault();

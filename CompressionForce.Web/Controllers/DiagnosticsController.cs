@@ -1,5 +1,6 @@
 ﻿using CompressionForce.Domain.PLC;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CompressionForce.Web.Controllers
 {
@@ -37,26 +38,30 @@ namespace CompressionForce.Web.Controllers
                 return BadRequest("Invalid payload");
 
             // 🔹 Resolve tag → address
-            var tag = _tagConfig.Tags.FirstOrDefault(t =>
+                var tag = _tagConfig.Tags.FirstOrDefault(t =>
                 t.Key == dto.TagKey &&
                 t.Type == PlcDataType.Coil
             );
 
-            if (tag == null)
+                if (tag == null)
                 return NotFound($"Unknown DO tag: {dto.TagKey}");
 
             // 🔹 Write to PLC
             await _plc.WriteCoilAsync(tag.Address, dto.Value);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-    }
 
     // -------------------------------
     // DTO
     // -------------------------------
     public class DigitalOutputWriteDto
-    {
+        {
         public string TagKey { get; set; } = string.Empty;
         public bool Value { get; set; }
     }

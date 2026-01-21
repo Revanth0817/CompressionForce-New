@@ -148,16 +148,16 @@
     // Display title → PLC servo code mapping
     var servos = new Dictionary<string, string>
                 {
-                { "S1 Fill Depth Servo-1", "S1_Fill_Depth_Servo-1" },
-                { "S1 Main Penetration Servo-4", "S1_Main_Penetration_Servo-4" },
-                { "S2 Main Penetration Servo-8", "S2_Main_Penetration_Servo-8" },
-                { "S1 Pre Penetration Servo-6", "S1_Pre_Penetration_Servo-6" },
-                { "S2 Pre Penetration Servo-10", "S2_Pre_Penetration_Servo-10" },
-                { "S2 Fill Depth Servo-2", "S2_Fill_Depth_Servo-2" },
-                { "S1 Main Lower Servo-3", "S1_Main_Lower_Servo-3" },
-                { "S2 Main Lower Servo-7", "S2_Main_Lower_Servo-7" },
-                { "S1 Pre Lower Servo-5", "S1_Pre_Lower_Servo-5" },
-                { "S1 Pre Lower Servo-9", "S1_Pre_Lower_Servo-9" }
+                { "S1 Fill Depth Servo-1",        "S1_Fill_Depth_Servo-1" },
+                { "S2 Fill Depth Servo-2",        "S2_Fill_Depth_Servo-2" },
+                { "S1 Main Lower Servo-3",        "S1_Main_Lower_Servo-3" },
+                { "S1 Main Penetration Servo-4",  "S1_Main_Penetration_Servo-4" },
+                { "S1 Pre Lower Servo-5",         "S1_Pre_Lower_Servo-5" },
+                { "S1 Pre Penetration Servo-6",   "S1_Pre_Penetration_Servo-6" },
+                { "S2 Main Lower Servo-7",        "S2_Main_Lower_Servo-7" },
+                { "S2 Main Penetration Servo-8",  "S2_Main_Penetration_Servo-8" },
+                { "S1 Pre Lower Servo-9",         "S1_Pre_Lower_Servo-9" },
+                { "S2 Pre Penetration Servo-10",  "S2_Pre_Penetration_Servo-10" }
                 };
 }
 
@@ -221,7 +221,7 @@
 
 
                                         </div>
-                                        <input class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold jog-speed" value="10">
+                                        <input class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold jog-speed" value="0">
                                     </div>
                                 </div>
 
@@ -239,7 +239,13 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-3 justify-content-end w-100 position-relative counter-comp align-items-center">
+                                <div class="row mb-3 justify-content-start w-100 position-relative counter-comp align-items-center">
+                                    <label for="colFormLabelSm" class="col-4 col-form-label me-auto col-form-label-sm fw-semibold">Act Pos.</label>
+                                    <input type="text"
+                                           class="form-control form-control-sm me-auto col-4 text-center w-60px
+                  bord-col-215ED6 fw-semibold act-pos"
+                                           value="0"
+                                           readonly>
 
                                     <div class="form-check col-4 form-check-reverse">
                                         <input class="form-check-input servo-radio alarm-radio"
@@ -311,7 +317,7 @@
 
 
                                     </div>
-                                    <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-value" value="10.15">
+                                    <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-value" value="0">
                                 </div>
                             </div>
 
@@ -346,7 +352,7 @@
 
 
                                     </div>
-                                    <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-pos" value="10.15">
+                                    <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-pos" value="0">
                                 </div>
                             </div>
 
@@ -381,7 +387,7 @@
 
 
                                     </div>
-                                    <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-speed" value="30">
+                                    <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-speed" value="0">
                                 </div>
                             </div>
 
@@ -393,9 +399,6 @@
 
 
 
-                
-
-
                 <script>
                     /* ===============================
                        GLOBAL STATE
@@ -403,31 +406,33 @@
                     let voltageTimer = null;
 
                     /* ===============================
-                       START / STOP POLLING
+                       START / STOP LIVE VOLTAGE
                     ================================ */
                     function startVoltagePolling() {
                         stopVoltagePolling(); // safety
 
-                        voltageTimer = setInterval(() => {
-                            const code = document.getElementById("selectedItem")?.dataset.code;
+                        voltageTimer = setInterval(async () => {
+                            const selected = document.getElementById("selectedItem");
+                            const code = selected?.dataset.code;
                             if (!code) return;
 
-                            fetch(`/Calibration/GetSensorVoltage?loadCellCode=${code}`)
-                                .then(r => {
-                                    if (!r.ok) throw new Error("PLC tag not found");
-                                    return r.json();
-                                })
-                                                    .then(d => {
-                                            document.getElementById("sensorVoltage").value =
-                                                Number(d.voltage).toFixed(3);
+                            try {
+                                const res = await fetch(`/Calibration/GetSensorVoltage?loadCellCode=${code}`);
+                                if (!res.ok) throw new Error("Voltage not available");
 
-                                            updateCalibratedValueLive(); // 🔥 AUTO UPDATE FORCE
-                                        })
+                                const data = await res.json();
+                                const voltage = Number(data.voltage) || 0;
 
-                                .catch(() => {
-                                    document.getElementById("sensorVoltage").value = "0.000";
-                                });
-                        }, 500); // 500 ms UI refresh
+                                document.getElementById("sensorVoltage").value =
+                                    voltage.toFixed(3);
+
+                                updateCalibratedValueLive(voltage);
+                            }
+                            catch {
+                                document.getElementById("sensorVoltage").value = "0.000";
+                                document.getElementById("calibratedValue").value = "0.000";
+                            }
+                        }, 500); // 500 ms
                     }
 
                     function stopVoltagePolling() {
@@ -436,86 +441,70 @@
                             voltageTimer = null;
                         }
                     }
-                                        function updateCalibratedValueLive() {
 
-                                            const voltage = Number(document.getElementById("sensorVoltage").value);
-                                            const minVolt = Number(document.getElementById("minVolt").value);
-                                            const maxVolt = Number(document.getElementById("maxVolt").value);
-                                            const minVal  = Number(document.getElementById("minValue").value);
-                                            const maxVal  = Number(document.getElementById("maxValue").value);
+                    /* ===============================
+                       FORCE CALCULATION (SINGLE SOURCE)
+                    ================================ */
+                    function updateCalibratedValueLive(voltage) {
 
-                                            if (maxVolt === minVolt) return;
-                                            if (isNaN(voltage)) return;
+                        const factor = Number(document.getElementById("factor").value);
+                        const offset = Number(document.getElementById("offset").value);
 
-                                            const factor = (maxVal - minVal) / (maxVolt - minVolt);
-                                            const offset = minVal - (minVolt * factor);
-                                            const force  = (voltage * factor) + offset;
+                        if (isNaN(voltage) || isNaN(factor) || isNaN(offset))
+                            return;
 
-                                            document.getElementById("calibratedValue").value = force.toFixed(3);
-                                        }
+                        const force = (voltage * factor) + offset;
 
+                        document.getElementById("calibratedValue").value =
+                            force.toFixed(3);
+                    }
 
                     /* ===============================
                        LOADCELL SELECTION
                     ================================ */
-                                        function selectLoadCell(code, name) {
+                    function selectLoadCell(code, name) {
 
-                                            stopVoltagePolling();
+                        stopVoltagePolling();
 
-                                            const input = document.getElementById("selectedItem");
-                                            input.value = name;
-                                            input.dataset.code = code;
+                        const input = document.getElementById("selectedItem");
+                        input.value = name;
+                        input.dataset.code = code;
 
-                                            // 🔥 LOAD LAST CALIBRATION
-                                            loadLastCalibration(code);
+                        loadLastCalibration(code);
 
-                                            // 🔥 START LIVE VOLTAGE
-                                            startVoltagePolling();
-                                        }
-
+                        // ⏳ wait for calibration to load before polling
+                        setTimeout(startVoltagePolling, 300);
+                    }
 
                     /* ===============================
-                       PAGE LOAD → LOAD DROPDOWN
+                       PAGE LOAD → DROPDOWN
                     ================================ */
-                    document.addEventListener("DOMContentLoaded", function () {
+                    document.addEventListener("DOMContentLoaded", () => {
 
                         fetch('@Url.Action("GetLoadCells", "Calibration")')
-                            .then(response => {
-                                if (!response.ok)
-                                    throw new Error("HTTP " + response.status);
-                                return response.json();
-                            })
-                            .then(data => {
+                            .then(r => r.json())
+                            .then(list => {
+
                                 const dropdown = document.getElementById("loadcellDropdown");
                                 dropdown.innerHTML = "";
 
-                                if (!Array.isArray(data) || data.length === 0) {
-                                    dropdown.innerHTML =
-                                        `<li><span class="dropdown-item text-muted">No loadcells found</span></li>`;
-                                    return;
-                                }
-
-                                data.forEach(lc => {
+                                list.forEach(lc => {
                                     const li = document.createElement("li");
                                     li.innerHTML = `
                                         <a class="dropdown-item"
                                            href="#"
-                                           onclick="selectLoadCell('${lc.loadCellCode}', '${lc.loadCellName}')">
+                                           onclick="selectLoadCell('${lc.loadCellCode}','${lc.loadCellName}')">
                                             ${lc.loadCellName}
                                         </a>`;
                                     dropdown.appendChild(li);
                                 });
-                            })
-                            .catch(err => {
-                                console.error("Loadcell API error:", err);
-                                alert("Failed to load loadcells. Check server logs.");
                             });
                     });
 
                     /* ===============================
-                       CALIBRATION CALCULATION
+                       CALIBRATE + SAVE
                     ================================ */
-                    function calculateCalibration() {
+                                        function calculateCalibration() {
 
                         const loadCellCode = document.getElementById("selectedItem")?.dataset.code;
                         if (!loadCellCode) {
@@ -523,26 +512,47 @@
                             return;
                         }
 
-                        const minVolt = Number(document.getElementById("minVolt").value);
-                        const maxVolt = Number(document.getElementById("maxVolt").value);
-                        const minVal  = Number(document.getElementById("minValue").value);
-                        const maxVal  = Number(document.getElementById("maxValue").value);
-                        const voltage = Number(document.getElementById("sensorVoltage").value);
+                        /* ✅ READ ELEMENTS SAFELY */
+                        const minVoltEl = document.getElementById("minVolt");
+                        const maxVoltEl = document.getElementById("maxVolt");
+                        const minValEl  = document.getElementById("minValue");
+                        const maxValEl  = document.getElementById("maxValue");
+                        const voltEl    = document.getElementById("sensorVoltage");
+
+                        if (!minVoltEl || !maxVoltEl || !minValEl || !maxValEl || !voltEl) {
+                            alert("Calibration inputs missing in DOM");
+                            return;
+                        }
+
+                        /* ✅ PARSE NUMBERS */
+                        const minVolt = Number(minVoltEl.value);
+                        const maxVolt = Number(maxVoltEl.value);
+                        const minVal  = Number(minValEl.value);
+                        const maxVal  = Number(maxValEl.value);
+                        const voltage = Number(voltEl.value);
+
+                        if (isNaN(minVolt) || isNaN(maxVolt) || isNaN(minVal) || isNaN(maxVal)) {
+                            alert("Invalid numeric values");
+                            return;
+                        }
 
                         if (maxVolt === minVolt) {
                             alert("Min Volt and Max Volt cannot be same");
                             return;
                         }
 
+                        /* ✅ CALCULATION */
                         const factor = (maxVal - minVal) / (maxVolt - minVolt);
                         const offset = minVal - (minVolt * factor);
                         const force  = (voltage * factor) + offset;
 
+                        /* ✅ UPDATE UI */
                         document.getElementById("factor").value = factor.toFixed(4);
                         document.getElementById("offset").value = offset.toFixed(4);
                         document.getElementById("calibratedValue").value = force.toFixed(3);
 
-                        fetch('@Url.Action("SaveCalibration", "Calibration")', {
+                        /* ✅ SAVE TO SERVER */
+                        fetch('/Calibration/SaveCalibration', {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
@@ -555,7 +565,10 @@
                                 offset
                             })
                         })
-                        .then(res => res.json())
+                        .then(r => {
+                            if (!r.ok) throw new Error("Save failed");
+                            return r.json();
+                        })
                         .then(() => alert("Calibration saved successfully"))
                         .catch(err => {
                             console.error(err);
@@ -564,59 +577,36 @@
                     }
 
                     /* ===============================
-                       TAB VISIBILITY SAFETY (OPTIONAL)
+                       LOAD LAST CALIBRATION
                     ================================ */
-                    document.addEventListener("visibilitychange", () => {
-                        if (document.hidden) {
-                            stopVoltagePolling();
-                        }
-                    });
-                </script>
-
-
-
-                <script>
                     function loadLastCalibration(loadCellCode) {
 
                         fetch(`/Calibration/GetLastCalibration?loadCellCode=${loadCellCode}`)
-                            .then(r => {
-                                if (!r.ok) return null; // no previous calibration
-                                return r.json();
-                            })
+                            .then(r => r.ok ? r.json() : null)
                             .then(d => {
                                 if (!d) return;
 
-                                // Populate calibration fields
-                                document.getElementById("minVolt").value  = d.minVolt;
-                                document.getElementById("maxVolt").value  = d.maxVolt;
-                                document.getElementById("minValue").value = d.minValue;
-                                document.getElementById("maxValue").value = d.maxValue;
+                                minVolt.value  = d.minVolt;
+                                maxVolt.value  = d.maxVolt;
+                                minValue.value = d.minValue;
+                                maxValue.value = d.maxValue;
 
-                                document.getElementById("factor").value = Number(d.factor).toFixed(4);
-                                document.getElementById("offset").value = Number(d.offset).toFixed(4);
-                            })
-                            .catch(err => console.error("Load calibration failed", err));
+                                factor.value = Number(d.factor).toFixed(4);
+                                offset.value = Number(d.offset).toFixed(4);
+                            });
                     }
+
+                    /* ===============================
+                       TAB VISIBILITY SAFETY
+                    ================================ */
+                    document.addEventListener("visibilitychange", () => {
+                        if (document.hidden) stopVoltagePolling();
+                    });
                 </script>
-                <script>
-                    function updateCalibratedValueLive() {
 
-                        const voltage = Number(document.getElementById("sensorVoltage").value);
-                        const factor  = Number(document.getElementById("factor").value);
-                        const offset  = Number(document.getElementById("offset").value);
-
-                        if (isNaN(voltage) || isNaN(factor) || isNaN(offset))
-                            return;
-
-                        const force = (voltage * factor) + offset;
-
-                        document.getElementById("calibratedValue").value =
-                            force.toFixed(3);
-                    }
-                </script>
                 <script>
                     /* ==========================================
-                       SIGNALR : SERVO LIVE STATUS (FINAL – CLEAN)
+                       SIGNALR : SERVO LIVE STATUS (FINAL)
                     ========================================== */
 
                     let servoHubConnection = new signalR.HubConnectionBuilder()
@@ -624,11 +614,12 @@
                         .withAutomaticReconnect()
                         .build();
 
+                    /* 🔥 MUST MATCH BACKEND PARAM ORDER */
                     servoHubConnection.on(
                         "ServoStatusUpdated",
-                        (servoCode, ready, alarm, torque) => {
+                        (servoCode, ready, alarm, torque, actPos) => {
 
-                            console.log("SignalR:", servoCode, ready, alarm, torque);
+                            console.log("SignalR:", servoCode, ready, alarm, torque, actPos);
 
                             document.querySelectorAll(".servo-card").forEach(card => {
 
@@ -636,26 +627,35 @@
                                 if (!title) return;
                                 if (title.dataset.servo !== servoCode) return;
 
-                                /* ✅ ACTUAL TORQUE */
+                                /* ================= ACTUAL TORQUE ================= */
                                 const torqueInput = card.querySelector(".act-torque");
                                 if (torqueInput) {
-                                    torqueInput.value = torque;
+                                    torqueInput.value = torque ?? 0;
                                 }
 
-                                /* ✅ READY / ALARM */
+                                /* ================= ACTUAL POSITION ================= */
+                                const posInput = card.querySelector(".act-pos");
+                                if (posInput) {
+                                    posInput.value = actPos ?? 0;
+                                }
+
+                                /* ================= READY / ALARM ================= */
                                 const readyRadio = card.querySelector(".ready-radio");
                                 const alarmRadio = card.querySelector(".alarm-radio");
 
-                                if (readyRadio) readyRadio.checked = ready;
-                                if (alarmRadio) alarmRadio.checked = alarm;
+                                if (readyRadio) readyRadio.checked = ready ?? false;
+                                if (alarmRadio) alarmRadio.checked = alarm ?? false;
                             });
                         }
                     );
 
+                    /* ================= START CONNECTION ================= */
                     servoHubConnection.start()
                         .then(() => console.log("✅ Servo SignalR connected"))
                         .catch(err => console.error("❌ Servo SignalR failed", err));
+
                 </script>
+
                 <script>
                     /* ==========================================
                        SAVE + APPLY SERVO (PLC ➜ DB)
@@ -673,6 +673,7 @@
                         const servoName = titleEl.innerText.trim();
 
                         const jogSpeed = Number(card.querySelector(".jog-speed")?.value ?? 0);
+                        const setValue = Number(card.querySelector(".set-value")?.value ?? 0);
                         const setPos   = Number(card.querySelector(".set-pos")?.value ?? 0);
                         const setSpeed = Number(card.querySelector(".set-speed")?.value ?? 0);
 
@@ -681,6 +682,7 @@
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
                                 servoCode,
+                                 setValue,
                                 setPosition: setPos,
                                 setSpeed,
                                 jogSpeed
@@ -697,7 +699,8 @@
                                 servoName,
                                 setPosition: setPos,
                                 setSpeed,
-                                jogSpeed
+                                    jogSpeed, 
+                                    setValue
                             })
                         }))
                         .then(r => {
@@ -709,6 +712,41 @@
                             alert("❌ Servo apply/save failed");
                         });
                     }
+                    document.addEventListener("DOMContentLoaded", () => {
+
+                        document.querySelectorAll(".servo-card").forEach(card => {
+
+                            const servoCode = card
+                                .querySelector(".card-title")
+                                ?.dataset?.servo;
+
+                            if (!servoCode) return;
+
+                            fetch(`/ServoCalibration/GetLastServoCalibration?servoCode=${servoCode}`)
+
+                                .then(r => {
+                                    if (!r.ok) throw new Error("PLC read failed");
+                                    return r.json();
+                                })
+                                .then(data => {
+
+                                    const setPos = card.querySelector(".set-pos");
+                                    const setSpeed = card.querySelector(".set-speed");
+                                    const jogSpeed = card.querySelector(".jog-speed");
+                                    const setValue = card.querySelector(".set-value");
+
+                                    if (setPos) setPos.value = data.setPosition ?? 0;
+                                    if (setSpeed) setSpeed.value = data.setSpeed ?? 0;
+                                    if (jogSpeed) jogSpeed.value = data.jogSpeed ?? 0;
+                                    if (setValue) setValue.value = data.setValue ?? 0;
+                                })
+                                .catch(err => {
+                                    console.error("PLC load error:", err);
+                                });
+                        });
+
+                    });
+
                 </script>
                 <script>
                     /* ==========================================
@@ -758,5 +796,24 @@
                             .forEach(r => r.checked = false);
 
                         alert("Servo values reset");
+                    }
+                </script>
+                <script>
+                    function changeValue(btn, step) {
+
+                        // Find nearest input in same control block
+                        const container = btn.closest(".bord-D2D2D2");
+                        if (!container) return;
+
+                        const input = container.querySelector("input");
+                        if (!input) return;
+
+                        let value = Number(input.value) || 0;
+                        value += step;
+
+                        // Prevent negative values
+                        if (value < 0) value = 0;
+
+                        input.value = value;
                     }
                 </script>

@@ -5,6 +5,8 @@ using CompressionForce.Domain.PLC;
 using CompressionForce.Domain.Validation;
 using CompressionForce.Integrations.PLC.Modbus;
 using CompressionForce.Services;
+
+
 using CompressionForce.Services;
 using CompressionForce.Services.Audit;
 using CompressionForce.Services.Interfaces;
@@ -14,6 +16,7 @@ using CompressionForce.Services.Validation;
 using CompressionForce.Web.Hubs;
 using CompressionForce.Web.ModelBinding;
 using CompressionForce.Web.Services;
+using MathNet.Numerics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +28,7 @@ using System;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,6 +80,7 @@ builder.Services.AddSignalR();
 builder.Services.AddSingleton<IServoStatusPublisher, SignalRServoStatusPublisher>();
 
 
+
 // -------------------- MVC --------------------
 builder.Services
     .AddControllersWithViews(options =>
@@ -89,7 +94,7 @@ builder.Services
     .AddSessionStateTempDataProvider();
 
 // -------------------- SESSION --------------------
-builder.Services.AddDistributedMemoryCache();
+
 
 builder.Services.AddSession(options =>
 {
@@ -98,18 +103,22 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
     options.Cookie.Name = ".CompressionForce.Session";
 });
-builder.Services.AddMemoryCache();
+
 
 builder.Services.AddSingleton<IPlcProtocol>(sp =>
 {
-    var cfg = sp.GetRequiredService<IConfiguration>();
-    return new ModbusTcpProtocol(
-        cfg["Plc:Ip"]!,
-        int.Parse(cfg["Plc:Port"]!)
-    );
+    var config = sp.GetRequiredService<IConfiguration>();
+    var ip = config["Plc:Ip"];
+    var port = int.Parse(config["Plc:Port"]);
+
+    return new ModbusTcpProtocol(ip, port);
 });
 
+
 builder.Services.AddSingleton<PlcMemoryCache>();
+builder.Services.AddHostedService<CalibrationCacheLoader>();
+
+builder.Services.AddScoped<ICalibrationRepository, CalibrationRepository>();
 builder.Services.AddHostedService<PlcPollingBackgroundService>();
 
 builder.Services.AddSingleton<CalibrationCurve>(sp =>
@@ -161,6 +170,7 @@ if (plcTagConfig == null || plcTagConfig.Tags.Count == 0)
 
 // Register into DI
 builder.Services.AddSingleton(plcTagConfig);
+
 
 
 

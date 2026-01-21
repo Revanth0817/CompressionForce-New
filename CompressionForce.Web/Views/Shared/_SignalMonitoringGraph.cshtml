@@ -1,40 +1,125 @@
 ﻿@* Signal Monitoring Graph (FINAL FIXED) *@
+<ul class="nav nav-tabs mb-3 signal-header-tabs" role="tablist">
 
-<div class="signal-right">
+    <button class="nav-link active"
+            data-bs-toggle="tab"
+            data-key="S1_MAIN_FORCE"
+            data-bs-target="#s1-main"
+            type="button">
+        S1 Main Comp.
+    </button>
 
-    <!-- Graph Header -->
-    <div class="graph-header">
-        <input type="number" value="50"
-               class="form-control form-control-sm w-60px">
-    </div>
+    <button class="nav-link"
+            data-bs-toggle="tab"
+            data-key="S1_PRE_FORCE"
+            data-bs-target="#s1-pre"
+            type="button">
+        S1 Pre Comp.
+    </button>
 
-    <!-- Graph -->
-    <div class="hmi-graph">
+    <button class="nav-link"
+            data-bs-toggle="tab"
+            data-key="S1_EJECT_FORCE"
+            data-bs-target="#s1-eject"
+            type="button">
+        S1 Ejection
+    </button>
 
-        <!-- Y AXIS -->
-        <div class="y-axis">
-            <div class="y-title">S1 Main Force</div>
-            <div class="y-scale">
-                @for (int i = 25; i >= 0; i -= 2)
-                {
-                    <span>@i</span>
-                }
-            </div>
-        </div>
+    <button class="nav-link"
+            data-bs-toggle="tab"
+            data-key="S2_MAIN_FORCE"
+            data-bs-target="#s2-main"
+            type="button">
+        S2 Main Comp.
+    </button>    
 
-        <!-- PLOT AREA -->
-        <div class="plot-area"></div>
+    <button class="nav-link"
+            data-bs-toggle="tab"
+            data-key="S2_PRE_FORCE"
+            data-bs-target="#s2-pre"
+            type="button">
+        S2 Pre Comp.
+    </button>
 
-        <!-- X AXIS -->
-        <div class="x-axis">
-            <div class="x-scale">
-                @for (int i = 0; i <= 25; i += 2)
-                {
-                    <span>@i</span>
-                }
-            </div>
-            <div class="x-title">Punch Tool</div>
-        </div>
+    <button class="nav-link"
+            data-bs-toggle="tab"
+            data-key="S2_EJECT_FORCE"
+            data-bs-target="#s2-eject"
+            type="button">
+        S2 Ejection
+    </button>
 
-    </div>
+
+</ul>
+
+<div class="plot-area" style="height:400px; width:100%;">
+    <canvas id="forceChart"></canvas>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('forceChart').getContext('2d');
+
+    // Labels: Punch numbers 1 to 50
+    const punchLabels = Array.from({ length: 50 }, (_, i) => "" + (i + 1));
+
+    // Initialize forces with a random starting value
+    let currentForces = Array.from({ length: 52 }, () => Math.floor(Math.random() * 101));
+
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: punchLabels,
+            datasets: [{
+                label: 'Force (kN)',
+                data: currentForces,
+                borderColor: 'blue',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            animation: false,
+            responsive: true,
+            scales: {
+                x: { title: { display: true, text: 'Punches' } },
+                y: {
+                    title: { display: true, text: 'Force (kN)' },
+                    min: 0,
+                    max: 50
+                }
+            }
+        }
+    });
+
+    function updateForces() {
+        let newForces = [];
+
+        // Start from the previous first punch value
+        let prevForce = currentForces[0];
+
+        for (let i = 0; i < 50; i++) {
+            let newForce = prevForce;
+
+            // Occasionally allow a +1 or -1 change
+            if (Math.random() < 0.1) { // 10% chance of deviation
+                const change = Math.random() < 0.5 ? -1 : 1;
+                newForce = prevForce + change;
+                if (newForce < 0) newForce = 0;
+                if (newForce > 100) newForce = 100;
+            }
+
+            newForces.push(newForce);
+            prevForce = newForce; // next punch depends on this one
+        }
+
+        currentForces = newForces;
+        chart.data.datasets[0].data = currentForces;
+        chart.update();
+    }
+
+    // Update every second
+    setInterval(updateForces, 1000);
+</script>

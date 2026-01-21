@@ -22,6 +22,18 @@ public class PlcMemoryCache
         _cache.TryGetValue(key, out object? value);
         return value;
     }
+    public bool TryGet<T>(string key, out T value)
+    {
+        if (_cache.TryGetValue(key, out var obj) && obj is T typed)
+        {
+            value = typed;
+            return true;
+        }
+
+        value = default!;
+        return false;
+    }
+
 
     // ✅ GENERIC VERSION (THIS FIXES YOUR ERROR)
     public T? Get<T>(string key)

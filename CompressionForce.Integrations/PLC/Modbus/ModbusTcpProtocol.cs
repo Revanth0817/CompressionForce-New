@@ -1,102 +1,187 @@
 ﻿using EasyModbus;
 using CompressionForce.Domain.PLC;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace CompressionForce.Integrations.PLC.Modbus;
-
-public class ModbusTcpProtocol : IPlcProtocol
+namespace CompressionForce.Integrations.PLC.Modbus
 {
-    private readonly ModbusClient _client;
+    public class ModbusTcpProtocol : IPlcProtocol
+    {
+        private readonly ModbusClient _client;
     private readonly object _lock = new();
 
-    // 🔥 STORE IP & PORT HERE
-    private readonly string _ip;
-    private readonly int _port;
+        // GLOBAL async lock (protects all PLC access)
+        private static readonly SemaphoreSlim _plcLock = new SemaphoreSlim(1, 1);
 
-    public ModbusTcpProtocol(string ip, int port)
-    {
-        _ip = ip;
-        _port = port;
+        private readonly string _ip;
+        private readonly int _port;
 
-        _client = new ModbusClient(ip, port)
+        public ModbusTcpProtocol(string ip, int port)
         {
-            ConnectionTimeout = 3000,
-            UnitIdentifier = 1
-        };
-    }
+            _ip = ip;
+            _port = port;
 
-    // ===============================
-    // CONNECTION
-    // ===============================
-    public Task ConnectAsync()
-    {
+            _client = new ModbusClient(ip, port)
+            {
+                ConnectionTimeout = 3000,
+                UnitIdentifier = 1
+            };
+        }
+
+        // =====================================
+        // SAFE CONNECT
+        // =====================================
+        private void EnsureConnected()
+        {
         Console.WriteLine("PLC CONNECT ATTEMPT");
 
         lock (_lock)
         {
             if (!_client.Connected)
             {
-                _client.Connect();
-                Console.WriteLine("PLC CONNECTED");
+                try
+                {
+                    Console.WriteLine("PLC reconnecting...");
+                    _client.Connect();
+                    Console.WriteLine("PLC reconnected.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Reconnect failed: {ex.Message}");
+                    throw;
+                }
+
+        return Task.CompletedTask;
             }
         }
 
-        return Task.CompletedTask;
-    }
-
-    public Task DisconnectAsync()
-    {
-        lock (_lock)
+        private void SafeReconnect()
         {
-            if (_client.Connected)
-                _client.Disconnect();
+            try
+            {
+                if (_client.Connected)
+                    _client.Disconnect();
+            }
+            catch { }
+
+            Thread.Sleep(200);
+
+            _client.Connect();
         }
 
-        return Task.CompletedTask;
-    }
+        // =====================================
+        // CONNECTION
+        // =====================================
+        public async Task ConnectAsync()
+        {
+            await _plcLock.WaitAsync();
+            try
+            {
+                EnsureConnected();
+            }
+            finally
+            {
+                _plcLock.Release();
+            }
+        }
 
-    // ===============================
-    // READ
-    // ===============================
-    public Task<bool> ReadDiscreteInputAsync(int address)
-    {
+        public async Task DisconnectAsync()
+        {
+            await _plcLock.WaitAsync();
+            try
+            {
+                if (_client.Connected)
+                    _client.Disconnect();
+            }
+            finally
+            {
+                _plcLock.Release();
+            }
+        }
+
+        // =====================================
+        // READ METHODS
+        // =====================================
+        public async Task<bool> ReadDiscreteInputAsync(int address)
+        {
+            return await ExecuteAsync(() =>
+                _client.ReadDiscreteInputs(address, 1)[0]);
+        }
+
+        public async Task<bool> ReadCoilAsync(int address)
+        {
+            return await ExecuteAsync(() =>
+                _client.ReadCoils(address, 1)[0]);
+        }
+
+        public async Task<int> ReadInputRegisterAsync(int address)
+        {
+            return await ExecuteAsync(() =>
+                _client.ReadInputRegisters(address, 1)[0]);
+        }
+
+        public async Task<int> ReadHoldingRegisterAsync(int address)
+        {
+            return await ExecuteAsync(() =>
+                _client.ReadHoldingRegisters(address, 1)[0]);
+        }
+
+        // =====================================
+        // WRITE METHODS
+        // =====================================
+        public async Task WriteCoilAsync(int address, bool value)
+        {
+            await ExecuteAsync(() =>
+            {
         lock (_lock)
-            return Task.FromResult(_client.ReadDiscreteInputs(address, 1)[0]);
-    }
+                _client.WriteSingleCoil(address, value);
+                return true;
+            });
+        }
 
-    public Task<bool> ReadCoilAsync(int address)
-    {
+        public async Task WriteHoldingRegisterAsync(int address, int value)
+        {
+            await ExecuteAsync(() =>
+            {
         lock (_lock)
-            return Task.FromResult(_client.ReadCoils(address, 1)[0]);
-    }
+                _client.WriteSingleRegister(address, value);
+                return true;
+            });
+        }
 
-    public Task<int> ReadInputRegisterAsync(int address)
-    {
-        lock (_lock)
-            return Task.FromResult(_client.ReadInputRegisters(address, 1)[0]);
-    }
+        // =====================================
+        // CORE SAFE EXECUTOR
+        // =====================================
+        private async Task<T> ExecuteAsync<T>(Func<T> action)
+        {
+            await _plcLock.WaitAsync();
 
-    public Task<int> ReadHoldingRegisterAsync(int address)
-    {
-        lock (_lock)
-            return Task.FromResult(_client.ReadHoldingRegisters(address, 1)[0]);
-    }
+            try
+            {
+                EnsureConnected();
+                return action();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"PLC Error: {ex.Message}");
 
-    // ===============================
-    // WRITE
-    // ===============================
-    public Task WriteCoilAsync(int address, bool value)
-    {
-        lock (_lock)
-            _client.WriteSingleCoil(address, value);
-
-        return Task.CompletedTask;
-    }
-
-    public Task WriteHoldingRegisterAsync(int address, int value)
-    {
-        lock (_lock)
-            _client.WriteSingleRegister(address, value);
-
-        return Task.CompletedTask;
+                // Attempt auto recovery
+                try
+                {
+                    SafeReconnect();
+                    return action();
+                }
+                catch
+                {
+                    Console.WriteLine("PLC recovery failed.");
+                    throw;
+                }
+            }
+            finally
+            {
+                _plcLock.Release();
+            }
+        }
     }
 }

@@ -38,29 +38,29 @@
                                         Emergency Control
                                     </li>
 
-                                    <li class="diagnostics-list fw-semibold">Door Safety</li>
-                                    <li class="diagnostics-list fw-semibold">Turret Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">LHS Feeder Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">RHS Feeder Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">Lube Motor Trip</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Upper Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Lower Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Upper Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Lower Cam in Position</li>
+                                    <li data-di="DI_DOOR_SAFETY" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">Door Safety</li>
+                                    <li data-di="DI_TURRET_DRIVE_TRIP" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">Turret Drive Trip</li>
+                                    <li data-di="DI_LHS_FEEDER_DRIVE_TRIP" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">LHS Feeder Drive Trip</li>
+                                    <li data-di="DI_RHS_FEEDER_DRIVE_TRIP" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">RHS Feeder Drive Trip</li>
+                                    <li data-di="DI_LUBE_MOTOR_TRIP" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">Lube Motor Trip</li>
+                                    <li data-di="DI_S1UPPER_CAM" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S1 Upper Cam in Position</li>
+                                    <li data-di="DI_S1LOWER_CAM" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S1 Lower Cam in Position</li>
+                                    <li data-di="DI_S2UPPER_CAM" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S2 Upper Cam in Position</li>
+                                    <li data-di="DI_S2LOWER_CAM" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S2 Lower Cam in Position</li>
 
                                 </ul>
 
                                 <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
-                                    <li class="diagnostics-list fw-semibold">S1 Main Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Pre Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Main Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Pre Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">Turret in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Scrapper in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Scrapper in Position</li>
-                                    <li class="diagnostics-list fw-semibold">RHS Powder Level Sensor</li>
-                                    <li class="diagnostics-list fw-semibold">LHS Powder Level Sensor</li>
-                                    <li class="diagnostics-list fw-semibold">Lube Oil Low</li>
+                                    <li data-di="DI_S1MAINPEN" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S1 Main Penetration Roller in Position</li>
+                                    <li data-di="DI_S1PREPEN" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S1 Pre Penetration Roller in Position</li>
+                                    <li data-di="DI_S2MAINPEN" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S2 Main Penetration Roller in Position</li>
+                                    <li data-di="DI_S2PREPEN" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S2 Pre Penetration Roller in Position</li>
+                                    <li data-di="DI_TURRETINPOSITION" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">Turret in Position</li>
+                                    <li data-di="DI_S1SCRAPPER" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S1 Scrapper in Position</li>
+                                    <li data-di="DI_S2SCRAPPER" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">S2 Scrapper in Position</li>
+                                    <li data-di="DI_RHSPOWDER" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">RHS Powder Level Sensor</li>
+                                    <li data-di="DI_LHSPOWDER" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">LHS Powder Level Sensor</li>
+                                    <li data-di="DI_LUBEOIL" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">Lube Oil Low</li>
 
                                 </ul>
                             </div>
@@ -137,10 +137,18 @@
 
                                                 <div class="col-6 fw-semibold">S1 Main Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input type="text"
+                                                           class="form-control form-control-sm text-center bord-col-215ED6"
+                                                           data-ai-force="S1_MAIN"
+                                                           value="0.000"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input type="text"
+                                                           class="form-control form-control-sm text-center bord-col-8434C6"
+                                                           data-ai-voltage="S1_MAIN"
+                                                           value="0.000"
+                                                           readonly />
                                                 </div>
 
 
@@ -241,7 +249,12 @@
 
                                                 <!-- Right Input Column -->
                                                 <div class="col-auto">
-                                                    <input type="text" class="form-control form-control-sm text-center" value="0.000" style="width: 100px;">
+                                                    <input id="revCount"
+                                                           type="text"
+                                                           class="form-control form-control-sm text-center"
+                                                           value="0.000"
+                                                           style="width: 100px;"
+                                                           readonly>
                                                 </div>
                                             </div>
 
@@ -253,7 +266,13 @@
 
                                                 <!-- Right Input Column -->
                                                 <div class="col-auto">
-                                                    <input type="text" class="form-control form-control-sm text-center" value="0.000" style="width: 100px;">
+
+                                                    <input id="encoderCount"
+                                                           type="text"
+                                                           class="form-control form-control-sm text-center"
+                                                           value="0.000"
+                                                           style="width: 100px;"
+                                                           readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -274,35 +293,49 @@
             <div class="servo-container">
 
                 @{
-                    // List of titles for the servo management cards
-                    var titles = new List<string>
+                    // Display title → PLC servo code mapping
+                    var servos = new Dictionary<string, string>
                                 {
-                                "S1 Fill Depth Servo-1",
-                                "S2 Fill Depth Servo-2",
-                                "S1 Main Lower Servo-3",
-                                "S1 Main Penetration Servo-4",
-                                "S1 Pre Lower Servo-5",
-                                "S1 Pre Penetration Servo-6",
-                                "S2 Main Lower Servo-7",
-                                "S2 Main Penetration Servo-8",
-                                "S1 Pre Lower Servo-9",
-                                "S2 Pre Penetration Servo-10"
+                                { "S1 Fill Depth Servo-1",        "S1_Fill_Depth_Servo-1" },
+                                { "S2 Fill Depth Servo-2",        "S2_Fill_Depth_Servo-2" },
+                                { "S1 Main Lower Servo-3",        "S1_Main_Lower_Servo-3" },
+                                { "S1 Main Penetration Servo-4",  "S1_Main_Penetration_Servo-4" },
+                                { "S1 Pre Lower Servo-5",         "S1_Pre_Lower_Servo-5" },
+                                { "S1 Pre Penetration Servo-6",   "S1_Pre_Penetration_Servo-6" },
+                                { "S2 Main Lower Servo-7",        "S2_Main_Lower_Servo-7" },
+                                { "S2 Main Penetration Servo-8",  "S2_Main_Penetration_Servo-8" },
+                                { "S1 Pre Lower Servo-9",         "S1_Pre_Lower_Servo-9" },
+                                { "S2 Pre Penetration Servo-10",  "S2_Pre_Penetration_Servo-10" }
                                 };
                 }
-                @foreach (var title in titles)
+
+                @foreach (var servo in servos)
                 {
-                    <!--Cards 1 to 10-->
                     <div class="col">
-                        <div class="card h-100 box-shadow-1">
+                        <div class="card h-100 box-shadow-1 servo-card">
 
 
-                            <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">@title</h5>
+                            <!-- 🔥 IMPORTANT: data-servo -->
+                            <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0"
+                                data-servo="@servo.Value">
+                                @servo.Key
+                            </h5>
+
                             <div class="card-body p-3 bord-rad-4px">
 
                                 <!--1st row-->
                                 <div class="d-flex gap-2 mb-3">
-                                    <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px" type="button">Jog Up</button>
-                                    <button class="btn btn-primary bgcol-8434C6 fw-semibold w-100px" type="button">Jog Down</button>
+                                    <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px"
+                                            type="button"
+                                            onclick="jogUp(this)">
+                                        Jog Up
+                                    </button>
+
+                                    <button class="btn btn-primary bgcol-8434C6 fw-semibold w-100px"
+                                            type="button"
+                                            onclick="jogDown(this)">
+                                        Jog Down
+                                    </button>
                                 </div>
 
                                 <!--Counter component-->
@@ -312,32 +345,42 @@
                                     <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
-                                            <button class="btn btn-sm arrow-btns p-0">
-                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, 1)">
                                                     <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
                                                 </svg>
                                             </button>
 
 
 
-                                            <button class="btn btn-sm arrow-btns p-0">
-                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                            <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, -1)">
                                                     <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
                                                 </svg>
                                             </button>
 
 
                                         </div>
-                                        <input type="" id="" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
+                                        <input class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold jog-speed" value="0">
                                     </div>
                                 </div>
 
                                 <!--3rd and 4th rows-->
                                 <div class="row mb-3 justify-content-start w-100 position-relative counter-comp align-items-center">
                                     <label for="colFormLabelSm" class="col-4 col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">Act Torque</label>
-                                    <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold" value="0">
+                                    <input class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold act-torque" value="0" readonly>
                                     <div class="form-check col-4 form-check-reverse">
-                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
+                                        <input class="form-check-input servo-radio ready-radio"
+                                               type="radio"
+                                               name="radio_@servo.Value">
                                         <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
                                             Ready
                                         </label>
@@ -346,9 +389,16 @@
 
                                 <div class="row mb-3 justify-content-start w-100 position-relative counter-comp align-items-center">
                                     <label for="colFormLabelSm" class="col-4 col-form-label me-auto col-form-label-sm fw-semibold">Act Pos.</label>
-                                    <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold" value="0">
+                                    <input type="text"
+                                           class="form-control form-control-sm me-auto col-4 text-center w-60px
+                      bord-col-215ED6 fw-semibold act-pos"
+                                           value="0"
+                                           readonly>
+
                                     <div class="form-check col-4 form-check-reverse">
-                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
+                                        <input class="form-check-input servo-radio alarm-radio"
+                                               type="radio"
+                                               name="radio_@servo.Value">
                                         <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
                                             Alarm
                                         </label>
@@ -357,24 +407,53 @@
 
                                 <!--Buttons-->
                                 <div class="d-flex gap-2 mb-3">
-                                    <button class="btn btn-primary bgcol-81D4FA me-auto fw-semibold col-242424 w-100px" type="button">Enable</button>
-                                    <button class="btn btn-primary bgcol-FF441F  fw-semibold w-100px col-242424" type="button">Stop</button>
+                                    <button class="btn btn-primary bgcol-81D4FA me-auto fw-semibold col-242424 w-100px enable-btn"
+                                            type="button"
+                                            onclick="toggleEnable(this)">
+                                        Enable
+                                    </button>
+
+                                    <button class="btn btn-primary bgcol-FF441F fw-semibold w-100px"
+                                            type="button"
+                                            onclick="stopServo(this)">
+                                        Stop
+                                    </button>
                                 </div>
 
                                 <div class="d-flex gap-2 mb-3">
-                                    <button class="btn btn-primary bgcol-34C63B me-auto fw-semibold opacity-50 w-100px col-242424" type="button">Run</button>
-                                    <button class="btn btn-primary bgcol-FFAB36 fw-semibold w-100px col-242424" type="button">Reset</button>
+                                    <button class="btn btn-primary bgcol-34C63B me-auto fw-semibold w-100px"
+                                            type="button"
+                                            disabled
+                                            onclick="runServo(this)">
+                                        Run
+                                    </button>
+                                    <button class="btn btn-primary bgcol-81D4FA me-auto fw-semibold w-100px"
+                                            type="button"
+                                            onclick="saveServoCalibration(this)">
+                                        Set
+                                    </button>
+                                    <button class="btn btn-primary bgcol-FFAB36 fw-semibold w-100px"
+                                            type="button"
+                                            onclick="resetServoCalibration(this)">
+                                        Reset
+                                    </button>
+                                    
                                 </div>
 
                                 <!--Last rows-->
                                 <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Pos.</label>
+                                    
 
                                     <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 opacity-50 rounded px-2 w-70px py-1">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, 1)">
                                                     <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
                                                 </svg>
                                             </button>
@@ -382,26 +461,35 @@
 
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, -1)">
                                                     <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
                                                 </svg>
                                             </button>
 
 
                                         </div>
-                                        <input type="" id="" class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10.15">
+                                        <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-pos" disabled value="0">
                                     </div>
                                 </div>
 
 
                                 <div class="row justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Speed</label>
+                                    
 
                                     <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 opacity-50 rounded px-2 w-70px py-1">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, 1)">
                                                     <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
                                                 </svg>
                                             </button>
@@ -409,14 +497,18 @@
 
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
+                                                <svg width="6" height="5"
+                                                     viewBox="0 0 6 5"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     onclick="changeValue(this, -1)">
                                                     <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
                                                 </svg>
                                             </button>
 
 
                                         </div>
-                                        <input type="" id="" class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="30">
+                                        <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-speed" disabled value="0">
                                     </div>
                                 </div>
 
@@ -436,72 +528,7 @@
              role="tabpanel">
 
 
-            <!-- SIGNAL TABS -->
-            <ul class="nav nav-tabs mb-3 signal-header-tabs" role="tablist">
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active"
-                            data-bs-toggle="tab"
-                            data-bs-target="#s1-main"
-                            type="button"
-                            role="tab">
-                        S1 Main Comp.
-                    </button>
-                </li>
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link"
-                            data-bs-toggle="tab"
-                            data-bs-target="#s1-pre"
-                            type="button"
-                            role="tab">
-                        S1 Pre Comp.
-                    </button>
-                </li>
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link"
-                            data-bs-toggle="tab"
-                            data-bs-target="#s1-eject"
-                            type="button"
-                            role="tab">
-                        S1 Ejection
-                    </button>
-                </li>
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link"
-                            data-bs-toggle="tab"
-                            data-bs-target="#s2-main"
-                            type="button"
-                            role="tab">
-                        S2 Main Comp.
-                    </button>
-                </li>
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link"
-                            data-bs-toggle="tab"
-                            data-bs-target="#s2-pre"
-                            type="button"
-                            role="tab">
-                        S2 Pre Comp.
-                    </button>
-                </li>
-
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link"
-                            data-bs-toggle="tab"
-                            data-bs-target="#s2-eject"
-                            type="button"
-                            role="tab">
-                        S2 Ejection
-                    </button>
-                </li>
-
-            </ul>
-
-
+           
             <!-- MAIN LAYOUT -->
             <div class="signal-monitoring-layout">
 
@@ -513,27 +540,47 @@
                         <div class="card-body p-3">
 
                             <div class="d-flex gap-2 mb-2">
-                                <button class="btn bgcol-8434C6 w-50 fw-semibold text-white">Turret Start</button>
-                                <button class="btn bgcol-8434C6 w-50 fw-semibold text-white">Turret Jog</button>
+                                <button class="btn bgcol-8434C6 w-50 fw-semibold text-white"
+                                        data-tag="TURRET_START"
+                                        onclick="writeCoil(this)">
+                                    Turret Start
+                                </button>
+                                <button class="btn bgcol-8434C6 w-50 fw-semibold text-white"
+                                        data-tag="TURRET_JOG"
+                                        onclick="writeCoil(this)">
+                                    Turret Jog
+                                </button>
                             </div>
 
-                            <button class="btn bgcol-8434C6 opacity-50 w-100 mb-2 text-white">
+                            <button class="btn bgcol-8434C6 opacity-50 w-100 mb-2 text-white" data-tag="TURRET_DOOR_INTERLOCK">
                                 Door Interlock
                             </button>
 
                             <div class="mb-2 d-flex justify-content-between">
                                 <span class="fw-semibold">Motor Status</span>
-                                <button class="btn bgcol-47494A w-60px text-white py-1">Off</button>
+                                <button class="btn bgcol-47494A w-60px text-white"
+                                        data-tag="TURRET_MOTOR_STATUS">
+                                    OFF
+                                </button>
                             </div>
 
                             <div class="mb-2 d-flex justify-content-between">
                                 <span class="fw-semibold">Motor Trip</span>
-                                <button class="btn bgcol-47494A w-60px text-white py-1">Off</button>
+                                <button class="btn bgcol-47494A w-60px text-white"
+                                        data-tag="TURRET_MOTOR_TRIP">
+                                    OFF
+                                </button>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="fw-semibold">Set RPM</span>
-                                <div class="rpm-box">10</div>
+                                <input type="number"
+                                       class="form-control form-control-sm text-center rpm-input"
+                                       data-tag="TURRET_SET_RPM"
+                                       onchange="writeRegister(this)"
+                                       value="0"
+                                       >
+
                             </div>
                         </div>
                     </section>
@@ -545,6 +592,8 @@
 
                     @foreach (var title in titlesSignalMonitoring)
                     {
+                        var prefix = title.StartsWith("S1") ? "S1" : "S2";
+
                         <section class="card signal-card box-shadow-1">
                             <div class="card-body p-3">
 
@@ -554,17 +603,29 @@
 
                                 <div class="mb-2 d-flex justify-content-between">
                                     <span class="fw-semibold">Motor Status</span>
-                                    <button class="btn bgcol-47494A w-60px text-white py-1">Off</button>
+                                    <button class="btn bgcol-47494A w-60px"
+                                            data-tag="@($"{prefix}_MOTOR_STATUS")">
+                                        OFF
+                                    </button>
                                 </div>
 
                                 <div class="mb-2 d-flex justify-content-between">
                                     <span class="fw-semibold">Motor Trip</span>
-                                    <button class="btn bgcol-47494A w-60px text-white py-1">Off</button>
+                                    <button class="btn bgcol-47494A w-60px"
+                                            data-tag="@($"{prefix}_MOTOR_TRIP")">
+                                        OFF
+                                    </button>
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-semibold">Set RPM</span>
-                                    <div class="rpm-box">10</div>
+                                    <input type="number"
+                                           class="form-control form-control-sm text-center rpm-input"
+                                           data-tag="@($"{prefix}_SET_RPM")"
+                                           onchange="writeRegister(this)"
+                                           value="0"
+                                           >
+
                                 </div>
 
                             </div>
@@ -589,16 +650,16 @@
                     <h5 class="card-title col-FFFFFF mb-4 bord-top-rad-4px">Turret Removing System</h5>
                     <div class="card-body d-flex container-fluid p-0 bord-rad-4px">
                         @{
-                            var servoLabels = new List<string>
+                            var servoLabels = new Dictionary<string, string>
                                                 {
-                                                "FILL DEPTH SERVO S1",
-                                                "PRE PENETRATION SERVO S1",
-                                                "PRE LOWER SERVO S1",
-                                                "MAIN PENETRATION SERVO S1",
-                                                "MAIN LOWER SERVO S1"
+                                                { "FILL DEPTH SERVO S1",        "S1_Fill_Depth_Servo-1" },
+                                                { "PRE PENETRATION SERVO S1",   "S1_Pre_Penetration_Servo-6" },
+                                                { "PRE LOWER SERVO S1",         "S1_Pre_Lower_Servo-5" },
+                                                { "MAIN PENETRATION SERVO S1",  "S1_Main_Penetration_Servo-4" },
+                                                { "MAIN LOWER SERVO S1",        "S1_Main_Lower_Servo-3" }
                                                 };
-
                         }
+
                         <div class="container-fluid box-shadow-1 ms-4 mb-4 me-2 card px-4 py-3 overflow-x-auto">
                             <div class="container-fluid px-0" style="min-width:720px">
                                 <!-- Header -->
@@ -614,49 +675,67 @@
 
                                 @foreach (var servo in servoLabels)
                                 {
-                                    <div class="d-flex g-3 align-items-center mb-3">
+                                    <div class="d-flex g-3 align-items-center mb-3" data-servo="@servo.Value">
                                         <!-- Servo Label -->
-                                        <div class="me-auto shrink-label fw-semibold text-start">
-                                            @servo
+                                        <div class="me-auto shrink-label fw-semibold text-start" >
+                                            @servo.Key
                                         </div>
 
                                         <!-- Ready Radio -->
                                         <div class="w-85px text-center">
-                                            <input class="form-check-input servo-radio" type="radio" name="ready_@servo" />
+                                            <input class="form-check-input servo-radio ready-radio"
+                                                   type="radio"
+                                                  
+                                                   name="radio_@servo.Value">
                                         </div>
 
                                         <!-- Alarm Radio -->
                                         <div class="w-85px text-center">
-                                            <input class="form-check-input servo-radio" type="radio" name="alarm_@servo" />
+                                            <input class="form-check-input servo-radio alarm-radio"
+                                                   type="radio"
+                                                   
+                                                   name="radio_@servo.Value">
                                         </div>
 
                                         <!-- Act Pos -->
                                         <div class="w-85px d-flex justify-content-center">
-                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
-                                                <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/up arrow.svg" />
-                                                    </button>
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/down arrow.svg" />
-                                                    </button>
-                                                </div>
-                                                <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000" />
-                                            </div>
+                                            
+                                                
+                                                <input type="text"
+                                                       class="form-control form-control-sm me-auto col-4 text-center w-60px
+                          bord-col-215ED6 fw-semibold act-pos"
+                                                       value="0"
+                                                       readonly>
+                                            
                                         </div>
 
                                         <!-- Set Home -->
                                         <div class="w-85px d-flex justify-content-center">
                                             <div class="d-flex align-items-center bord-col-8434C6 rounded px-2 w-70px py-1 h-29px min-width-70">
                                                 <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/up arrow.svg" />
+                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                        <svg width="6" height="5"
+                                                             viewBox="0 0 6 5"
+                                                             fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             onclick="changeValue(this, 1)">
+                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                        </svg>
                                                     </button>
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/down arrow.svg" />
+
+
+
+                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                        <svg width="6" height="5"
+                                                             viewBox="0 0 6 5"
+                                                             fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             onclick="changeValue(this, -1)">
+                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                        </svg>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="10.15" />
+                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0" />
                                             </div>
                                         </div>
 
@@ -664,14 +743,29 @@
                                         <div class="w-85px d-flex justify-content-center">
                                             <div class="d-flex align-items-center bord-col-8434C6 opacity-50 rounded px-2 w-70px py-1 h-29px min-width-70">
                                                 <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/up arrow.svg" />
+                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                        <svg width="6" height="5"
+                                                             viewBox="0 0 6 5"
+                                                             fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             onclick="changeValue(this, 1)">
+                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                        </svg>
                                                     </button>
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/down arrow.svg" />
+
+
+
+                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                        <svg width="6" height="5"
+                                                             viewBox="0 0 6 5"
+                                                             fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             onclick="changeValue(this, -1)">
+                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                        </svg>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="10.15" />
+                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold set-pos" value="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -694,64 +788,84 @@
                     <!--Card 2-->
                     <div class="card-body d-flex container-fluid p-0 bord-rad-4px">
                         @{
-                            var servoLabels2 = new List<string>
+                            var servoLabels2 = new Dictionary<string, string>
                                                 {
-                                                "FILL DEPTH SERVO S2",
-                                                "PRE PENETRATION SERVO S2",
-                                                "PRE LOWER SERVO S2",
-                                                "MAIN PENETRATION SERVO S2",
-                                                "MAIN LOWER SERVO S2"
+                                                { "FILL DEPTH SERVO S2",        "S2_Fill_Depth_Servo-2" },
+                                                { "PRE PENETRATION SERVO S2",   "S2_Pre_Penetration_Servo-10" },
+                                                { "PRE LOWER SERVO S2",         "S2_Pre_Lower_Servo-9" },
+                                                { "MAIN PENETRATION SERVO S2",  "S2_Main_Penetration_Servo-8" },
+                                                { "MAIN LOWER SERVO S2",        "S2_Main_Lower_Servo-7" }
                                                 };
-
                         }
+
                         <div class="container-fluid box-shadow-1 ms-4 mb-4 me-2 card px-4 py-3 overflow-x-auto">
 
                             <div class="container-fluid px-0" style="min-width:720px">
                                 @foreach (var servo in servoLabels2)
                                 {
-                                    <div class="d-flex g-3 align-items-center mb-3">
+                                    <div class="d-flex g-3 align-items-center mb-3" data-servo="@servo.Value">
                                         <!-- Servo Label -->
-                                        <div class="me-auto shrink-label fw-semibold text-start">
-                                            @servo
+                                        <div class="me-auto shrink-label fw-semibold text-start" >
+                                            @servo.Key
                                         </div>
 
                                         <!-- Ready Radio -->
                                         <div class="w-85px text-center">
-                                            <input class="form-check-input servo-radio" type="radio" name="ready_@servo" />
+                                            
+                                        <input class="form-check-input servo-radio ready-radio"
+                                               type="radio"
+                                                  
+                                               name="radio_@servo.Value">
+                                        
                                         </div>
 
                                         <!-- Alarm Radio -->
                                         <div class="w-85px text-center">
-                                            <input class="form-check-input servo-radio" type="radio" name="alarm_@servo" />
+                                            <input class="form-check-input servo-radio alarm-radio"
+                                                   type="radio"
+                                                  
+                                                   name="radio_@servo.Value">
                                         </div>
 
                                         <!-- Act Pos -->
                                         <div class="w-85px d-flex justify-content-center">
-                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
-                                                <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/up arrow.svg" />
-                                                    </button>
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/down arrow.svg" />
-                                                    </button>
-                                                </div>
-                                                <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000" />
-                                            </div>
+                                            
+                                               
+                                                <input type="text"
+                                                       class="form-control form-control-sm me-auto col-4 text-center w-60px
+                          bord-col-215ED6 fw-semibold act-pos"
+                                                       value="0"
+                                                       readonly>
+                                            
                                         </div>
 
                                         <!-- Set Home -->
                                         <div class="w-85px d-flex justify-content-center">
                                             <div class="d-flex align-items-center bord-col-8434C6 rounded px-2 w-70px py-1 h-29px min-width-70">
                                                 <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/up arrow.svg" />
+                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                        <svg width="6" height="5"
+                                                             viewBox="0 0 6 5"
+                                                             fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             onclick="changeValue(this, 1)">
+                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                        </svg>
                                                     </button>
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/down arrow.svg" />
+
+
+
+                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                        <svg width="6" height="5"
+                                                             viewBox="0 0 6 5"
+                                                             fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             onclick="changeValue(this, -1)">
+                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                        </svg>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="10.15" />
+                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0" />
                                             </div>
                                         </div>
 
@@ -759,14 +873,29 @@
                                         <div class="w-85px d-flex justify-content-center">
                                             <div class="d-flex align-items-center bord-col-8434C6 opacity-50 rounded px-2 w-70px py-1 h-29px min-width-70">
                                                 <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/up arrow.svg" />
+                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                        <svg width="6" height="5"
+                                                             viewBox="0 0 6 5"
+                                                             fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             onclick="changeValue(this, 1)">
+                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
+                                                        </svg>
                                                     </button>
-                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                        <img src="~/images/down arrow.svg" />
+
+
+
+                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
+                                                        <svg width="6" height="5"
+                                                             viewBox="0 0 6 5"
+                                                             fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             onclick="changeValue(this, -1)">
+                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
+                                                        </svg>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="10.15" />
+                                                <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -783,8 +912,25 @@
                             <p class="h-30px fw-normal">8</p>
                             <p class="h-30px fw-normal">7</p>
                         </aside>
+                        
 
                     </div>
+                    <!-- Turret Action Buttons -->
+                        <div class="d-flex justify-content-center gap-3 my-4">
+
+                            <button class="btn btn-primary px-4"
+                                    id="btnTurretHome"
+                                    onclick="turretHome()">
+                                Turret Home
+                            </button>
+
+                            <button class="btn btn-outline-primary px-4"
+                                    id="btnTurretRetrieve"
+                                onclick="turretRetrieve()">
+                                Turret Retrieve
+                            </button>
+
+                        </div>
                 </div>
             </div>
 
@@ -792,61 +938,219 @@
     </div>
 </div>
 
-@*sample function for changing the value of counter elemant. Test for the first counter in Servo managament inside Diagnostics*@
-<script>
-    function changeValue(step) {
-      const input = document.querySelector(".arrows-text");
-      let currentValue = parseInt(input.value || 0);
-
-      if(currentValue + step >= 0){
-          input.value = currentValue + step;
-      }
-    }
-
-
-</script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.0/dist/browser/signalr.min.js"></script>
 
 <script>
-    /* ==========================================
-       SIGNALR – DIGITAL INPUTS (PSEUDO ::before)
-    ========================================== */
+    /* ============================================================
+       GLOBAL VARIABLES
+    ============================================================ */
+    let hub;
+    let servoWriteTimers = {};
 
-    const diHub = new signalR.HubConnectionBuilder()
-        .withUrl("/servoHub")
-        .withAutomaticReconnect()
-        .build();
 
-    /* RECEIVE DIGITAL INPUT STATE */
-    diHub.on("DigitalInputUpdated", (tagKey, value) => {
+    /* ============================================================
+       INITIALIZE EVERYTHING
+    ============================================================ */
+    document.addEventListener("DOMContentLoaded", function () {
 
-        const li = document.querySelector(
+        initializeSignalR();
+        initializeServoAutoWrite();
+    });
+
+
+    /* ============================================================
+       SIGNALR CONNECTION (SINGLE CONNECTION)
+    ============================================================ */
+    function initializeSignalR() {
+
+        hub = new signalR.HubConnectionBuilder()
+            .withUrl("/servoHub")
+            .withAutomaticReconnect()
+            .build();
+
+
+        /* ---------------- DIGITAL INPUT ---------------- */
+        hub.on("DigitalInputUpdated", (tagKey, value) => {
+
+            const li = document.querySelector(
+                `.diagnostics-list1[data-di='${tagKey}']`
+            );
+
+            if (!li) return;
+
+            li.classList.remove("di-true", "di-false");
+            li.classList.add(value ? "di-true" : "di-false");
+        });
+
+
+            hub.on("DigitalInputUpdated", (tagKey, value) => {
+
+
+              const li = document.querySelector(
             `.diagnostics-list1[data-di='${tagKey}']`
         );
 
         if (!li) return;
 
         li.classList.remove("di-true", "di-false");
-        li.classList.add(value === true ? "di-true" : "di-false");
+        li.classList.add(value ? "di-true" : "di-false");
     });
 
-    /* START CONNECTION */
-    diHub.start()
-        .then(() => console.log("✅ Digital Inputs SignalR connected"))
-        .catch(err => console.error("❌ DI SignalR error", err));
-</script>
+        /* ---------------- ANALOG INPUT ---------------- */
+        hub.on("AnalogInputUpdated", (key, voltage, force) => {
 
-<script>
-    let plcWriteLock = false;
+            const v = document.querySelector(`[data-ai-voltage='${key}']`);
+            const f = document.querySelector(`[data-ai-force='${key}']`);
 
+            if (v) v.value = Number(voltage).toFixed(3);
+            if (f) f.value = Number(force).toFixed(3);
+
+            if (key === "REVOLUTION_COUNT") {
+                document.getElementById("revCount").value =
+                    Number(voltage).toFixed(0);
+            }
+
+            if (key === "ENCODER_ACT_COUNT") {
+                document.getElementById("encoderCount").value =
+                    Number(voltage).toFixed(0);
+            }
+        });
+
+
+          hub.on("ServoStatusUpdated",
+        (servoCode, ready, alarm, torque, actPos) => {
+
+            /* ===============================
+               1️⃣ SERVO MANAGEMENT PAGE
+            =============================== */
+
+            document.querySelectorAll(".servo-card").forEach(card => {
+
+                const title = card.querySelector(".card-title");
+                if (!title || title.dataset.servo !== servoCode) return;
+
+                const torqueInput = card.querySelector(".act-torque");
+                const posInput = card.querySelector(".act-pos");
+                const readyRadio = card.querySelector(".ready-radio");
+                const alarmRadio = card.querySelector(".alarm-radio");
+
+                if (torqueInput) torqueInput.value = torque ?? 0;
+                if (posInput) posInput.value = actPos ?? 0;
+                if (readyRadio) readyRadio.checked = ready ?? false;
+                if (alarmRadio) alarmRadio.checked = alarm ?? false;
+            });
+
+
+            /* ===============================
+               2️⃣ SERVO HOME & RETRIEVE PAGE
+            =============================== */
+
+                /* ===============================
+       2️⃣ SERVO HOME & RETRIEVE PAGE
+    =============================== */
+
+    document
+        .querySelectorAll("#disabled-tab-pane [data-servo]")
+        .forEach(row => {
+
+            if (row.dataset.servo !== servoCode) return;
+
+            const readyRadio = row.querySelector(".ready-radio");
+            const alarmRadio = row.querySelector(".alarm-radio");
+            const actPosInput = row.querySelector(".act-pos");
+
+            if (readyRadio) readyRadio.checked = ready ?? false;
+            if (alarmRadio) alarmRadio.checked = alarm ?? false;
+
+            if (actPosInput) {
+                actPosInput.value = actPos ?? 0;
+            }
+    });
+
+    });
+
+      hub.on("TagUpdated", (tagKey, value) => {
+
+        const el = document.querySelector(`[data-tag='${tagKey}']`);
+        if (!el) return;
+
+        /* ================= DOOR INTERLOCK ================= */
+        if (tagKey === "TURRET_DOOR_INTERLOCK") {
+
+            // Always keep purple
+            el.classList.add("bgcol-8434C6");
+            el.classList.remove("bg-danger");
+
+            if (value === true) {
+                // TRUE → full visibility
+                el.classList.remove("opacity-50");
+                el.style.opacity = "1";
+            } else {
+                // FALSE → dim
+                el.classList.add("opacity-50");
+            }
+
+            return;
+        }
+
+        /* 🚫 DO NOT TOUCH START / JOG */
+        if (tagKey === "TURRET_START" || tagKey === "TURRET_JOG") {
+            return;
+        }
+
+        /* ================= BOOLEAN TAGS ================= */
+        if (typeof value === "boolean") {
+
+            el.innerText = value ? "ON" : "OFF";
+
+            el.classList.remove(
+                "bg-success",
+                "bg-danger",
+                "bg-secondary",
+                "bgcol-47494A"
+            );
+
+            if (value === true) {
+                el.classList.add("bg-success");
+            } else {
+                el.classList.add("bg-danger");
+            }
+        }
+
+            /* ================= ANALOG / RPM ================= */
+    else {
+
+        if (el.tagName === "INPUT") {
+
+            // 🔥 DO NOT overwrite while typing
+            if (document.activeElement !== el) {
+                el.value = value;
+            }
+
+        } else {
+            el.innerText = value;
+        }
+    }
+
+    });
+
+
+
+
+
+        hub.start()
+            .then(() => console.log("✅ Unified SignalR Connected"))
+            .catch(err => console.error("❌ SignalR Error:", err));
+    }
+
+
+    /* ============================================================
+       DIGITAL OUTPUT WRITE (PLC CONFIRMATION BASED)
+    ============================================================ */
     function writeDigitalOutput(el) {
 
         const tagKey = el.dataset.do;
         const value = el.checked;
-
-        plcWriteLock = true;
 
         fetch("/Diagnostics/WriteDigitalOutput", {
             method: "POST",
@@ -857,37 +1161,384 @@
             })
         })
         .catch(err => {
-            console.error("❌ PLC write failed", err);
-            el.checked = !value; // rollback UI
+            console.error("PLC write failed", err);
+            alert("PLC communication error");
+        });
+
+        // Do NOT change UI manually
+        // Wait for SignalR update
+    }
+
+
+    /* ============================================================
+       SERVO COMMAND HELPERS
+    ============================================================ */
+    function getServoCode(btn) {
+        const card = btn.closest(".servo-card");
+        return card?.querySelector(".card-title")?.dataset?.servo ?? null;
+    }
+
+    function sendServoCommand(url, servoCode) {
+
+        if (!servoCode) return alert("Servo mapping error");
+
+        fetch(`${url}?servoCode=${encodeURIComponent(servoCode)}`, {
+            method: "POST"
         })
-        .finally(() => {
-            setTimeout(() => plcWriteLock = false, 200);
+        .catch(err => {
+            console.error("PLC error", err);
+            alert("PLC communication error");
         });
     }
-</script>
-<script>
-    /* ==========================================
-       SIGNALR – DIGITAL OUTPUTS
+
+    function jogUp(btn) { sendServoCommand("/ServoCalibration/JogUp", getServoCode(btn)); }
+    function jogDown(btn) { sendServoCommand("/ServoCalibration/JogDown", getServoCode(btn)); }
+    function runServo(btn) { sendServoCommand("/ServoCalibration/Run", getServoCode(btn)); }
+    function stopServo(btn) { sendServoCommand("/ServoCalibration/Stop", getServoCode(btn)); }
+
+
+    /* ============================================================
+       SERVO APPLY SET VALUES (MANUAL SET BUTTON)
+    ============================================================ */
+    function saveServoCalibration(btn) {
+
+        const card = btn.closest(".servo-card");
+        if (!card) return;
+
+        const servoCode = card.querySelector(".card-title")?.dataset?.servo;
+        if (!servoCode) return;
+
+        const payload = {
+            servoCode: servoCode,
+            setPosition: Number(card.querySelector(".set-pos")?.value ?? 0),
+            setSpeed: Number(card.querySelector(".set-speed")?.value ?? 0),
+            jogSpeed: Number(card.querySelector(".jog-speed")?.value ?? 0)
+        };
+
+        fetch("/ServoCalibration/ApplySet", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        .then(r => {
+            if (!r.ok) throw new Error("PLC write failed");
+            alert("✅ Values applied to PLC");
+        })
+        .catch(err => {
+            console.error(err);
+            alert("❌ PLC write failed");
+        });
+    }
+     /* ==========================================
+       LOAD LAST CALIBRATION FROM DB
     ========================================== */
 
-    const doHub = new signalR.HubConnectionBuilder()
-        .withUrl("/servoHub")
-        .withAutomaticReconnect()
-        .build();
+    document.querySelectorAll(".servo-card").forEach(card => {
 
-    doHub.on("DigitalOutputUpdated", (tagKey, value) => {
+        const servoCode = card
+            .querySelector(".card-title")
+            ?.dataset?.servo;
 
-        const checkbox = document.querySelector(
-            `.do-switch[data-do='${tagKey}']`
-        );
+        if (!servoCode) return;
 
-        if (!checkbox) return;
-        if (plcWriteLock) return;
+        fetch(`/ServoCalibration/GetCurrentSetValues?servoCode=${encodeURIComponent(servoCode)}`)
+            .then(r => {
+                if (!r.ok) throw new Error("DB read failed");
+                return r.json();
+            })
+            .then(data => {
 
-        checkbox.checked = value === true;
+                if (!data) return;
+
+                const setPos = card.querySelector(".set-pos");
+                const setSpeed = card.querySelector(".set-speed");
+                const jogSpeed = card.querySelector(".jog-speed");
+                
+
+                if (setPos) setPos.value = data.setPosition ?? 0;
+                if (setSpeed) setSpeed.value = data.setSpeed ?? 0;
+                if (jogSpeed) jogSpeed.value = data.jogSpeed ?? 0;
+            })
+            .catch(err => {
+                console.error("PLC load error:", err);
+            });
+    });
+   
+
+
+        function initializeServoAutoWrite() {
+
+        document.querySelectorAll(".servo-card").forEach(card => {
+
+            const servoCode = card.querySelector(".card-title")?.dataset?.servo;
+            if (!servoCode) return;
+
+            const setPos = card.querySelector(".set-pos");
+            const setSpeed = card.querySelector(".set-speed");
+            const jogSpeed = card.querySelector(".jog-speed");
+
+            function writeNow() {
+
+                const payload = {
+                    servoCode: servoCode,
+                    setPosition: Number(setPos?.value ?? 0),
+                    setSpeed: Number(setSpeed?.value ?? 0),
+                    jogSpeed: Number(jogSpeed?.value ?? 0)
+                };
+
+                fetch("/ServoCalibration/ApplySet", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                })
+                .then(r => {
+                    if (!r.ok) throw new Error("PLC write failed");
+                    console.log("✅ Servo values written");
+                })
+                .catch(err => {
+                    console.error("PLC write error:", err);
+                });
+            }
+
+            /* 🔥 WRITE ON CHANGE */
+            setPos?.addEventListener("change", writeNow);
+            setSpeed?.addEventListener("change", writeNow);
+            jogSpeed?.addEventListener("change", writeNow);
+
+            /* 🔥 WRITE ON ENTER KEY */
+            [setPos, setSpeed, jogSpeed].forEach(input => {
+
+                input?.addEventListener("keydown", function (e) {
+
+                    if (e.key === "Enter") {
+
+                        e.preventDefault();   // stop form submit
+                        this.blur();          // remove focus
+                        writeNow();           // write immediately
+                    }
+                });
+            });
+        });
+    }
+
+
+    /* ============================================================
+       COUNTER ARROW CONTROL
+    ============================================================ */
+    function changeValue(btn, step) {
+
+        const container = btn.closest(".bord-D2D2D2");
+        if (!container) return;
+
+        const input = container.querySelector("input");
+        if (!input) return;
+
+        let value = Number(input.value) || 0;
+        value += step;
+        if (value < 0) value = 0;
+
+        input.value = value;
+    }
+
+
+    /* ============================================================
+       SERVO ENABLE / DISABLE
+    ============================================================ */
+    function toggleEnable(btn) {
+
+        const card = btn.closest(".servo-card");
+        if (!card) return;
+
+        const runBtn = card.querySelector("button[onclick='runServo(this)']");
+        const setPos = card.querySelector(".set-pos");
+        const setSpeed = card.querySelector(".set-speed");
+        const jogSpeed = card.querySelector(".jog-speed");
+
+        const enabled = btn.dataset.enabled === "true";
+
+        if (enabled) {
+
+            btn.innerText = "Enable";
+            btn.dataset.enabled = "false";
+            btn.classList.remove("bgcol-FF441F");
+            btn.classList.add("bgcol-81D4FA");
+
+            if (runBtn) runBtn.disabled = true;
+
+            setPos.disabled = true;
+            setSpeed.disabled = true;
+            jogSpeed.disabled = true;
+
+        } else {
+
+            btn.innerText = "Disable";
+            btn.dataset.enabled = "true";
+            btn.classList.remove("bgcol-81D4FA");
+            btn.classList.add("bgcol-FF441F");
+
+            if (runBtn) runBtn.disabled = false;
+
+            setPos.disabled = false;
+            setSpeed.disabled = false;
+            jogSpeed.disabled = false;
+        }
+    }
+               function writeCoil(btn) {
+
+        const tag = btn.dataset.tag;
+        const isOn = btn.innerText === "ON";
+
+        fetch("/Diagnostics/WriteTag", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                tagKey: tag,
+                value: !isOn
+            })
+        })
+        .catch(err => {
+            console.error("Coil write failed", err);
+            alert("PLC write failed");
+        });
+    }
+
+
+              function writeRegister(input) {
+
+        const tag = input.dataset.tag;
+        const value = Number(input.value);
+
+        if (isNaN(value)) {
+            alert("Invalid value");
+            return;
+        }
+
+        fetch("/Diagnostics/WriteTag", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                tagKey: tag,
+                value: value
+            })
+        })
+        .then(r => {
+            if (!r.ok) throw new Error("Write failed");
+        })
+        .catch(err => {
+            console.error("Register write failed", err);
+            alert("PLC write failed");
+        });
+    }
+                   
+</script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        loadRetrieveValues();
+
     });
 
-    doHub.start()
-        .then(() => console.log("✅ Digital Outputs SignalR connected"))
-        .catch(err => console.error("❌ DO SignalR error", err));
+
+    /* =========================================
+       LOAD LAST PLC SET_POS INTO RETRIEVE COLUMN
+    ========================================= */
+    function loadRetrieveValues() {
+
+        document
+            .querySelectorAll("#disabled-tab-pane [data-servo]")
+            .forEach(row => {
+
+                const servoCode = row.dataset.servo;
+
+                if (!servoCode) return;
+
+                fetch(`/ServoCalibration/GetCurrentSetValues?servoCode=${encodeURIComponent(servoCode)}`)
+                    .then(r => {
+                        if (!r.ok) throw new Error("PLC read failed");
+                        return r.json();
+                    })
+                    .then(data => {
+
+                        if (!data) return;
+
+                        const retrieveInput = row.querySelector(".set-pos");
+
+                        if (retrieveInput) {
+                            retrieveInput.value = data.setPosition ?? 0;
+                        }
+
+                    })
+                    .catch(err => {
+                        console.error("Retrieve load error:", err);
+                    });
+            });
+    }
+
+
+    /* =========================================
+       TURRET RETRIEVE BUTTON
+       SEND RETRIEVE VALUE TO PLC
+    ========================================= */
+    function turretRetrieve() {
+
+        document
+            .querySelectorAll("#disabled-tab-pane [data-servo]")
+            .forEach(row => {
+
+                const servoCode = row.dataset.servo;
+                const input = row.querySelector(".set-pos");
+
+                if (!servoCode || !input) return;
+
+                const position = Number(input.value);
+
+                fetch(`/ServoCalibration/HomeServo?servoCode=${encodeURIComponent(servoCode)}&position=${position}`, {
+                    method: "POST"
+                })
+                .then(r => {
+                    if (!r.ok) throw new Error("PLC write failed");
+                })
+                .catch(err => {
+                    console.error("Retrieve write error:", err);
+                    alert("PLC write failed");
+                });
+
+            });
+    }
+
+
+    /* =========================================
+       TURRET HOME BUTTON
+    ========================================= */
+    function turretHome() {
+
+        document
+            .querySelectorAll("#disabled-tab-pane [data-servo]")
+            .forEach(row => {
+
+                const servoCode = row.dataset.servo;
+
+                const setHomeInput =
+                    row.querySelector(".bord-col-8434C6 input");
+
+                if (!servoCode || !setHomeInput) return;
+
+                const position = Number(setHomeInput.value);
+
+                fetch(`/ServoCalibration/HomeServo?servoCode=${encodeURIComponent(servoCode)}&position=${position}`, {
+                    method: "POST"
+                })
+                .then(r => {
+                    if (!r.ok) throw new Error("PLC write failed");
+                })
+                .catch(err => {
+                    console.error("Home write error:", err);
+                    alert("PLC write failed");
+                });
+
+            });
+    }
+
 </script>

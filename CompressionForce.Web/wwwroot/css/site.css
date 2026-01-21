@@ -609,27 +609,32 @@ height-18{
 ================================ */
 .signal-monitoring-layout {
     display: flex;
-    gap: 12px;
-    height: 100%;
+    flex-direction: column; /* 🔥 IMPORTANT */
+    gap: 20px;
 }
+
 
 /* ================================
    LEFT PANEL (CARDS)
 ================================ */
 .signal-left {
-    width: 280px;
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    flex-wrap: wrap; /* allows wrapping on small screens */
 }
+
 
 /* ================================
    CARD STYLING
 ================================ */
 .signal-card {
+    flex: 1;
+    min-width: 260px; /* prevents too small cards */
     border-radius: 6px;
     border: none;
 }
+
 
     .signal-card .card-body {
         padding: 8px !important;
@@ -689,7 +694,9 @@ height-18{
     padding: 10px;
     display: flex;
     flex-direction: column;
+    min-height: 500px; /* IMPORTANT */
 }
+
 
 /* ================================
    GRAPH HEADER
@@ -702,13 +709,13 @@ height-18{
    GRAPH GRID (LOCKED TO PLOT)
 ================================ */
 .hmi-graph {
-    flex: 1;
+    height: 600px; /* 🔥 increase here */
     display: grid;
     grid-template-columns: 70px 1fr;
     grid-template-rows: 1fr 55px;
     gap: 8px;
-    align-items: stretch;
 }
+
 
 /* ================================
    Y AXIS (CORRECTED)
@@ -716,7 +723,8 @@ height-18{
 .y-axis {
     position: relative;
     display: flex;
-    align-items: stretch; /* ✅ IMPORTANT */
+    flex-direction: column;
+    align-items: center; /* ✅ IMPORTANT */
 }
 
 /* Y AXIS TITLE */
@@ -726,8 +734,8 @@ height-18{
     top: 50%;
     transform: translateY(-50%) rotate(180deg);
     writing-mode: vertical-rl;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 500;
     color: #242424;
 }
 
@@ -897,4 +905,23 @@ height-18{
 /* PLC FALSE */
 .di-false::before {
     background-color: #FF441F; /* RED */
+}
+.graph-input-box {
+    width: 110px;
+}
+
+.graph-input {
+    width: 55px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 14px;
+}
+
+.arrow-btn {
+    border: none;
+    background: transparent;
+    font-size: 10px;
+    line-height: 10px;
+    padding: 0;
 }

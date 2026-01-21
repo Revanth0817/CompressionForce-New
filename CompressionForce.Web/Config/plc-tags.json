@@ -49,23 +49,36 @@
     {
       "key": "S1_Fill_Depth_Servo-1_SET_POS",
       "type": "HoldingRegister",
-      "address": 0
+      "address": 2
     },
     {
       "key": "S1_Fill_Depth_Servo-1_SET_SPEED",
       "type": "HoldingRegister",
-      "address": 1
+      "address": 3
     },
     {
       "key": "S1_Fill_Depth_Servo-1_JOG_SPEED",
       "type": "HoldingRegister",
-      "address": 2
+      "address": 0
     },
+    {
+      "key": "S1_Fill_Depth_Servo-1_SET",
+      "type": "HoldingRegister",
+      "address": 1,
+      "polling": "Slow"
+    },
+
 
     {
       "key": "S1_Fill_Depth_Servo-1_ACT_TORQUE",
       "type": "InputRegister",
       "address": 9
+    },
+    {
+      "key": "S1_Fill_Depth_Servo-1_ACT_POS",
+      "type": "InputRegister",
+      "address": 10,
+      "polling": "Fast"
     },
     {
       "key": "S1_Fill_Depth_Servo-1_READY",
@@ -154,6 +167,81 @@
       "Type": "Coil",
       "Address": 14,
       "Polling": "Slow"
+    },
+    {
+      "key": "REVOLUTION_COUNT",
+      "type": "InputRegister",
+      "address": 20,
+      "polling": "Fast"
+    },
+    {
+      "key": "ENCODER_ACT_COUNT",
+      "type": "InputRegister",
+      "address": 21,
+      "polling": "Fast"
+    },
+    {
+      "key": "TURRET_START",
+      "type": "Coil",
+      "address": 30
+    },
+    {
+      "key": "TURRET_JOG",
+      "type": "Coil",
+      "address": 31
+    },
+
+    {
+      "key": "TURRET_DOOR_INTERLOCK",
+      "type": "DiscreteInput",
+      "address": 30
+    },
+    {
+      "key": "TURRET_MOTOR_STATUS",
+      "type": "DiscreteInput",
+      "address": 31
+    },
+    {
+      "key": "TURRET_MOTOR_TRIP",
+      "type": "DiscreteInput",
+      "address": 32
+    },
+    {
+      "key": "TURRET_SET_RPM",
+      "type": "HoldingRegister",
+      "address": 30
+    },
+
+    {
+      "key": "S1_MOTOR_STATUS",
+      "type": "DiscreteInput",
+      "address": 33
+    },
+    {
+      "key": "S1_MOTOR_TRIP",
+      "type": "DiscreteInput",
+      "address": 34
+    },
+    {
+      "key": "S1_SET_RPM",
+      "type": "HoldingRegister",
+      "address": 31
+    },
+
+    {
+      "key": "S2_MOTOR_STATUS",
+      "type": "DiscreteInput",
+      "address": 35
+    },
+    {
+      "key": "S2_MOTOR_TRIP",
+      "type": "DiscreteInput",
+      "address": 36
+    },
+    {
+      "key": "S2_SET_RPM",
+      "type": "HoldingRegister",
+      "address": 32
     }
 
   ]
