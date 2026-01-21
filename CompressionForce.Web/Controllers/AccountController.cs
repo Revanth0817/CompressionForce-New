@@ -112,8 +112,10 @@ namespace CompressionForce.WebControllers
 
             await _context.SaveChangesAsync();
 
+            // ===================== SESSION VALUES (🔥 IMPORTANT) =====================
             HttpContext.Session.SetString("UserName", user.ERname);
             HttpContext.Session.SetString("UserLevel", user.ERlevel ?? "User");
+            HttpContext.Session.SetString("LoginTime", DateTime.UtcNow.ToString("O"));
             HttpContext.Session.SetString("LastActivity", DateTime.UtcNow.ToString("O"));
 
             // 🔥 AUDIT LOG

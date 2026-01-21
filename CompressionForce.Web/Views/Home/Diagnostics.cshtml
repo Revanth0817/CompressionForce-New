@@ -421,191 +421,155 @@
             </div>
         </div>
 
-        <!--Signal Monitoring-->
-        <div class="tab-pane h-100vh p-3 bgcol-E9EFFB fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-            <!--Side content-->
-            <section class="d-flex align-items-center signal-tabs">
-                <!--Tabs-->
+        <!-- Signal Monitoring -->
+        <div class="tab-pane fade p-3 bgcol-E9EFFB"
+             id="contact-tab-pane"
+             role="tabpanel">
 
-                <ul class="nav nav-tabs row-gap-3 mb-3 " id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">S1 Main Comp.</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">S1 Pre Comp.</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">S1 Ejection</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">S2 Main Comp.</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">S2 Pre Comp.</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">S2 Ejection</button>
-                    </li>
-                </ul>
-            </section>
-            <div class="">
-                <section class="d-flex gap-4">
-                    <!--Card 1-->
-                    <section class="card signal-card text-bg-light mb-3 box-shadow-1">
+
+            <!-- SIGNAL TABS -->
+            <ul class="nav nav-tabs mb-3 signal-header-tabs" role="tablist">
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active"
+                            data-bs-toggle="tab"
+                            data-bs-target="#s1-main"
+                            type="button"
+                            role="tab">
+                        S1 Main Comp.
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            data-bs-toggle="tab"
+                            data-bs-target="#s1-pre"
+                            type="button"
+                            role="tab">
+                        S1 Pre Comp.
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            data-bs-toggle="tab"
+                            data-bs-target="#s1-eject"
+                            type="button"
+                            role="tab">
+                        S1 Ejection
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            data-bs-toggle="tab"
+                            data-bs-target="#s2-main"
+                            type="button"
+                            role="tab">
+                        S2 Main Comp.
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            data-bs-toggle="tab"
+                            data-bs-target="#s2-pre"
+                            type="button"
+                            role="tab">
+                        S2 Pre Comp.
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            data-bs-toggle="tab"
+                            data-bs-target="#s2-eject"
+                            type="button"
+                            role="tab">
+                        S2 Ejection
+                    </button>
+                </li>
+
+            </ul>
+
+
+            <!-- MAIN LAYOUT -->
+            <div class="signal-monitoring-layout">
+
+                <!-- LEFT SIDE CARDS -->
+                <div class="signal-left">
+
+                    <!-- CARD 1 -->
+                    <section class="card signal-card box-shadow-1">
                         <div class="card-body p-3">
-                            <div class="d-flex gap-2 mb-2 w-100">
-                                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold" type="button">Turret Start</button>
-                                <button class="btn btn-primary bgcol-8434C6 fw-semibold w-50" type="button">Turret Jog</button>
+
+                            <div class="d-flex gap-2 mb-2">
+                                <button class="btn bgcol-8434C6 w-50 fw-semibold text-white">Turret Start</button>
+                                <button class="btn bgcol-8434C6 w-50 fw-semibold text-white">Turret Jog</button>
                             </div>
 
-                            <button class="btn btn-primary bgcol-8434C6 fw-semibold opacity-50 w-100 mb-2 " type="button">Door Interlock</button>
-                            <!--Middle row-->
-                            <div class="row justify-content-start w-100 position-relative counter-comp">
+                            <button class="btn bgcol-8434C6 opacity-50 w-100 mb-2 text-white">
+                                Door Interlock
+                            </button>
 
-                                <div class="d-flex flex-column px-0">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Motor Status</label>
-                                        <div class="d-flex align-items-center">
-
-                                            <button type="button" class="btn btn-primary w-60px bgcol-47494A py-1">Off</button>
-
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="d-flex align-items-center mb-2">
-                                        <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Motor Trip</label>
-                                        <div class="d-flex align-items-center">
-
-                                            <button type="button" class="btn btn-primary w-60px bgcol-47494A py-1">Off</button>
-
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
+                            <div class="mb-2 d-flex justify-content-between">
+                                <span class="fw-semibold">Motor Status</span>
+                                <button class="btn bgcol-47494A w-60px text-white py-1">Off</button>
                             </div>
 
+                            <div class="mb-2 d-flex justify-content-between">
+                                <span class="fw-semibold">Motor Trip</span>
+                                <button class="btn bgcol-47494A w-60px text-white py-1">Off</button>
+                            </div>
 
-                            <!--Last row-->
-                            <div class="row justify-content-start w-100 position-relative counter-comp">
-                                <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm ps-0 fw-semibold">Set RPM</label>
-
-                                <div class="col-sm-3 d-flex align-items-center bgcol-81D4FA bord-D2D2D2 rounded px-2 w-60px h-29px">
-                                    <div class="d-flex flex-column me-2 row-gap-1">
-
-                                        <button class="btn btn-sm arrow-btns p-0">
-                                            <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
-                                                <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
-                                            </svg>
-                                        </button>
-
-
-
-                                        <button class="btn btn-sm arrow-btns p-0">
-                                            <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
-                                                <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
-                                            </svg>
-                                        </button>
-
-
-                                    </div>
-                                    <input type="" id="" class="form-control arrows-text bgcol-81D4FA font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
-                                </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-semibold">Set RPM</span>
+                                <div class="rpm-box">10</div>
                             </div>
                         </div>
                     </section>
-                    <!--Card 2 & 3-->
+
+                    <!-- CARD 2 & 3 -->
                     @{
-                        // List of titles for the signal monitoring cards
-                        var titlesSignalMonitoring = new List<string>
-                                        {
-                                        "S1 Feeder",
-                                        "S2 Feeder",
-                                        };
+                        var titlesSignalMonitoring = new List<string> { "S1 Feeder", "S2 Feeder" };
                     }
 
                     @foreach (var title in titlesSignalMonitoring)
                     {
-                        <section class="card signal-card text-bg-light mb-3 box-shadow-1">
+                        <section class="card signal-card box-shadow-1">
                             <div class="card-body p-3">
-                                <div class="d-flex gap-2 mb-2 w-100">
-                                    <button class="btn btn-primary bgcol-8434C6 w-100 mb-2 fw-semibold" type="button">@title</button>
+
+                                <button class="btn bgcol-8434C6 w-100 fw-semibold text-white mb-2">
+                                    @title
+                                </button>
+
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <span class="fw-semibold">Motor Status</span>
+                                    <button class="btn bgcol-47494A w-60px text-white py-1">Off</button>
                                 </div>
 
-                                <!--Middle row-->
-                                <div class="row justify-content-start w-100 position-relative counter-comp">
-
-                                    <div class="d-flex flex-column px-0">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Motor Status</label>
-                                            <div class="d-flex align-items-center">
-
-                                                <button type="button" class="btn btn-primary w-60px bgcol-47494A py-1">Off</button>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="d-flex align-items-center mb-2">
-                                            <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Motor Trip</label>
-                                            <div class="d-flex align-items-center">
-
-                                                <button type="button" class="btn btn-primary w-60px bgcol-47494A py-1">Off</button>
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <span class="fw-semibold">Motor Trip</span>
+                                    <button class="btn bgcol-47494A w-60px text-white py-1">Off</button>
                                 </div>
 
-
-                                <!--Last row-->
-                                <div class="row justify-content-start w-100 position-relative counter-comp">
-                                    <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm ps-0 fw-semibold">Set RPM</label>
-
-                                    <div class="col-sm-3 d-flex align-items-center bgcol-81D4FA bord-D2D2D2 rounded px-2 w-60px h-29px">
-                                        <div class="d-flex flex-column me-2 row-gap-1">
-
-                                            <button class="btn btn-sm arrow-btns p-0">
-                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(1)">
-                                                    <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
-                                                </svg>
-                                            </button>
-
-
-
-                                            <button class="btn btn-sm arrow-btns p-0">
-                                                <svg width="6" height="5" viewBox="0 0 6 5" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="changeValue(-1)">
-                                                    <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
-                                                </svg>
-                                            </button>
-
-
-                                        </div>
-                                        <input type="" id="" class="form-control arrows-text bgcol-81D4FA font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
-                                    </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold">Set RPM</span>
+                                    <div class="rpm-box">10</div>
                                 </div>
+
                             </div>
                         </section>
                     }
+                </div>
 
-                </section>
-
-
+                <!-- RIGHT SIDE GRAPH (SHARED PARTIAL) -->
+                @await Html.PartialAsync("_SignalMonitoringGraph")
 
             </div>
-
-
-
-
-
-
-
         </div>
+
+
 
         <!--Servo Home & Retrieve Setting-->
         <div class="tab-pane pt-3 fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">

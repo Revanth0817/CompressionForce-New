@@ -128,51 +128,8 @@
 
     @if (!isLoginPage)
     {
-        <div class="container-fluid pt-3">
-            <div class="card">
-                <div class="card-header fw-semibold font-size-18 text-white text-center background-col-215ED6">PLC PC Communication Disconnected</div>
-                <div class="card-body background-col-E9EFFB">
-                    <div class="row g-3">
-                        <div class="col-12 col-md-4 col-lg-1">
-                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">Date</label>
-                            <input type="text" class="form-control height-35 col-242424 font-size-14 border-radius-4" value="22 Nov 2024">
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-1">
-                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">Time</label>
-                            <input type="text" class="form-control height-35 col-242424 font-size-14 border-radius-4" value="12:45 PM">
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-2">
-                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">User Login On</label>
-                            <input type="text" class="form-control height-35">
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-1">
-                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">App. Run Time</label>
-                            <input type="text" class="form-control height-35 col-242424 font-size-14 border-radius-4" value="0H:5M">
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-2">
-                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">User Name</label>
-                            <input type="text" class="form-control height-35">
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-1">
-                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">User Level</label>
-                            <input type="text" class="form-control height-35">
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-2">
-                            <label class="font-size-14 fw-semibold mb-1 text-truncate w-100 col-242424">PLC IP</label>
-                            <input type="text" class="form-control height-35 col-242424 font-size-14" value="192.168.4.100">
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-1 text-start">
-                            <label class="font-size-14 fw-semibold mb-1 d-block col-242424">Local DB</label>
-                            <div class="mt-2"><img src="~/icons/local db.svg" class="width-18 height-18"></div>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-1 text-start">
-                            <label class="font-size-14 fw-semibold mb-1 d-block col-242424">PLC Comm</label>
-                            <div class="mt-2"><img src="~/icons/plc comm.svg" class="width-18 height-18"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @await Component.InvokeAsync("PlcStatus")
+
     }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

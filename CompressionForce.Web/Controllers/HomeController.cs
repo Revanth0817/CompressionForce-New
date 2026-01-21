@@ -1,12 +1,13 @@
 ﻿using CompressionForce.Data;
 using CompressionForce.Models;
+using CompressionForce.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using CompressionForce.Services.DTOs;
+
 
 namespace CompressionForce.WebControllers
 {
@@ -14,13 +15,16 @@ namespace CompressionForce.WebControllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly AutoTareService _autoTareService;
 
         public HomeController(
             ILogger<HomeController> logger,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            AutoTareService autoTareService)
         {
             _logger = logger;
             _context = context;
+            _autoTareService = autoTareService;
         }
 
         public IActionResult Index()
@@ -45,12 +49,14 @@ namespace CompressionForce.WebControllers
             return View();
         }
 
-        /* Auto Tare */
+        /* ===================== AUTO TARE ===================== */
         public IActionResult AutoTare()
         {
-            return View();
-        }
+            CompressionForce.Services.DTOs.AutoTareVm model =
+                _autoTareService.GetStatus();
 
+            return View(model);
+        }
         public IActionResult Welcome()
         {
             return View();
@@ -71,7 +77,6 @@ namespace CompressionForce.WebControllers
         /* ===================== AUDIT TRAIL ===================== */
         public async Task<IActionResult> AuditTrail()
         {
-            // Dropdown users
             ViewBag.Users = await _context.UserManagements
                 .Where(u => u.IsActive)
                 .Select(u => u.ERname)
@@ -79,16 +84,12 @@ namespace CompressionForce.WebControllers
                 .OrderBy(u => u)
                 .ToListAsync();
 
-            // AuditTrail table data
             var auditLogs = await _context.AuditTrails
-                .OrderByDescending(a => a.DateTime) // ✅ CORRECT PROPERTY
+                .OrderByDescending(a => a.DateTime)
                 .ToListAsync();
 
             return View(auditLogs);
         }
-
-
-        /* ======================================================= */
 
         /* Auto Mode pages */
         public IActionResult AutoMode()
@@ -96,7 +97,6 @@ namespace CompressionForce.WebControllers
             return View();
         }
 
-        /* Operation Mode pages */
         public IActionResult OperationMode()
         {
             return View();

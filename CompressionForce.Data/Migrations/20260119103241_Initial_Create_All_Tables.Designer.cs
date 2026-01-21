@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CompressionForce.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260114095205_AddMissingTables")]
-    partial class AddMissingTables
+    [Migration("20260119103241_Initial_Create_All_Tables")]
+    partial class Initial_Create_All_Tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,49 @@ namespace CompressionForce.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AutoTareStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("MotorStatus")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("MotorTrip")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Revolutions")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("S1Eject")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("S1Main")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("S1Pre")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("S2Eject")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("S2Main")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("S2Pre")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("last_updated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("auto_tare_status", "public");
+                });
 
             modelBuilder.Entity("CompressionForce.Data.Entities.LookupValueEntity", b =>
                 {
@@ -56,6 +99,42 @@ namespace CompressionForce.Data.Migrations
                     b.ToTable("LookupValues");
                 });
 
+            modelBuilder.Entity("CompressionForce.Data.Entities.PlcStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("Id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsLocalDbConnected")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_local_db_connected");
+
+                    b.Property<bool>("IsPlcConnected")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_plc_connected");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_updated");
+
+                    b.Property<DateTime>("PlcHeartbeat")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("plc_heartbeat");
+
+                    b.Property<string>("PlcIp")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("plc_ip");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("plc_status", "public");
+                });
+
             modelBuilder.Entity("CompressionForce.Data.Entities.RecipeEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -66,7 +145,7 @@ namespace CompressionForce.Data.Migrations
 
                     b.Property<string>("Parameters")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.Property<string>("RecipeCode")
                         .IsRequired()
@@ -106,11 +185,11 @@ namespace CompressionForce.Data.Migrations
 
                     b.Property<string>("NewParameters")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.Property<string>("OldParameters")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.Property<string>("RecipeCode")
                         .IsRequired()
