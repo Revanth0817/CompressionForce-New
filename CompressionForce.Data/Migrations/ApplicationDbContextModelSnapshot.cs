@@ -65,6 +65,25 @@ namespace CompressionForce.Data.Migrations
                     b.ToTable("auto_tare_status", "public");
                 });
 
+            modelBuilder.Entity("CompressionForce.Data.Entities.LoadCellCalibrationRuntimeEntity", b =>
+                {
+                    b.Property<string>("LoadCellName")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Factor")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Offset")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("LoadCellName");
+
+                    b.ToTable("LoadCellCalibrationRuntimeEntity");
+                });
+
             modelBuilder.Entity("CompressionForce.Data.Entities.LookupValueEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -477,45 +496,6 @@ namespace CompressionForce.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GroupPrivileges");
-                });
-
-            modelBuilder.Entity("CompressionForce.Domain.Entities.LoadCellCalibration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("Factor")
-                        .HasColumnType("numeric(18,8)");
-
-                    b.Property<string>("LoadCellCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<decimal>("MaxValue")
-                        .HasColumnType("numeric(10,4)");
-
-                    b.Property<decimal>("MaxVolt")
-                        .HasColumnType("numeric(10,4)");
-
-                    b.Property<decimal>("MinValue")
-                        .HasColumnType("numeric(10,4)");
-
-                    b.Property<decimal>("MinVolt")
-                        .HasColumnType("numeric(10,4)");
-
-                    b.Property<decimal>("Offset")
-                        .HasColumnType("numeric(18,8)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LoadCellCalibrations");
                 });
 
             modelBuilder.Entity("CompressionForce.Domain.Entities.Privilage", b =>
@@ -2357,37 +2337,6 @@ namespace CompressionForce.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserSettings");
-                });
-
-            modelBuilder.Entity("LoadCell", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("LoadCellCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("LoadCellName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LoadCells");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,20 +1,23 @@
 ﻿using CompressionForce.Data;
+using CompressionForce.Domain.Calibration;
+using CompressionForce.Domain.Plc;
 using CompressionForce.Domain.Validation;
+using CompressionForce.Integrations.Services;
 using CompressionForce.Services;
 using CompressionForce.Services.Audit;
 using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
+using CompressionForce.Web.Hubs;
 using CompressionForce.Web.ModelBinding;
-
+using CompressionForce.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Rotativa.AspNetCore;
 using System;
 using System.IO;
@@ -87,7 +90,35 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = ".CompressionForce.Session";
 });
 
+builder.Services.AddSingleton<ModbusService>();
+// SignalR
+builder.Services.AddSignalR();
+
+// Services layer
+builder.Services.AddSingleton<DiagnosticsService>();
+builder.Services.AddSingleton<DiagnosticsStateStore>();
+builder.Services.AddHostedService<PlcPollingService>();
+
+// Web layer push
+builder.Services.AddHostedService<DiagnosticsPushService>();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<PlcService>();
+builder.Services.AddSingleton<CalibrationRuntimeService>();
+
+
+builder.Services.AddSingleton<PlcModbusClient>(sp =>
+{
+    var mapping = sp.GetRequiredService<PlcMappingProvider>().Mapping;
+    return new PlcModbusClient(mapping.Plc.Ip, mapping.Plc.Port);
+});
+builder.Services.AddSingleton<PlcMappingProvider>();
+
+
+
+
+
 var app = builder.Build();
+
 
 // -----------------------------------------------------------------------------
 // MIDDLEWARE PIPELINE
@@ -109,6 +140,8 @@ app.UseRouting();
 
 // ⚠️ Session MUST be before custom middleware
 app.UseSession();
+
+app.MapHub<DiagnosticsHub>("/diagnosticsHub");
 
 // -----------------------------------------------------------------------------
 // APPLICATION TIMEOUT MIDDLEWARE
@@ -165,5 +198,6 @@ RotativaConfiguration.Setup(
     app.Environment.WebRootPath,
     "Rotativa"
 );
+
 
 app.Run();

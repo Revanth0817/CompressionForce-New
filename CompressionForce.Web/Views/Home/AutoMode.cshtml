@@ -152,7 +152,7 @@
 
                                             <!--Graph cards section-->
                                             <div class="tab-pane pt-3 fade show active" id="s1Control" role="tabpanel" aria-labelledby="S1Control" tabindex="0">
-                                                
+
                                                 <div class="row tab-content s1-card-container">
                                                     <!--Card 1-->
                                                     <div class="col-md-12 s1Control col-xl-4 d-flex">
@@ -953,29 +953,31 @@
 
                             <!--Force Graph-->
 
-                        <div class="tab tab-pane pt-3 fade me-4" id="forceGraph" role="tabpanel" aria-labelledby="forceGraph" tabindex="0">
-                            <div class="p-3 bgcol-E9EFFB w-100 h-100vh">
-                                <!--horizontal tabs inside the card-->
-                                <ul class="nav nav-tabs row-gap-3 position-relative " id="" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s1Control" aria-selected="true">S1 Main Comp.</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s2Control" aria-selected="false">S1 Pre Comp.</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S1 Ejection</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Main Comp.</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Pre Comp.</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Ejection</button>
-                                    </li>
-                                </ul>
+                            <div class="tab tab-pane pt-3 fade  me-4"
+                                 id="forceGraph"
+                                 role="tabpanel">
+                                <div class="p-3 bgcol-E9EFFB w-100 h-100vh">
+                                    <!--horizontal tabs inside the card-->
+                                    <ul class="nav nav-tabs row-gap-3 position-relative " id="" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s1Control" aria-selected="true">S1 Main Comp.</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s2Control" aria-selected="false">S1 Pre Comp.</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S1 Ejection</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Main Comp.</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Pre Comp.</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Ejection</button>
+                                        </li>
+                                    </ul>
 
                                     <!--Labels above graph-->
                                     <div class="d-flex pt-3 justify-content-between">
@@ -1001,22 +1003,34 @@
                                             <input type="" id="" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
                                         </div>
 
-                                    <p class=" mb-0 fw-semibold">Last Revolution Main S1</p>
+                                        <p class="mb-0 fw-semibold text-black-custom">
+                                            Last Revolution Main S1
+                                        </p>
+
+                                        <div class="mb-3 d-flex gap-2 justify-content-start align-items-center text-black-custom">
+                                            <label class="col-auto col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">
+                                                SREL Value
+                                            </label>
+                                            <input type="text"
+                                                   class="form-control form-control-sm me-auto col-4 text-center w-60px bgcol-E9EFFB bord-col-215ED6 fw-semibold"
+                                                   value="0">
+                                        </div>
 
 
-                                    <div class="mb-3 d-flex gap-2 justify-content-start align-items-center">
-                                        <label for="colFormLabelSm" class="col-auto col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">SREL Value</label>
-                                        <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bgcol-E9EFFB bord-col-215ED6 fw-semibold" value="0">
 
                                     </div>
+                                    <!-- Graph Container -->
+                                    <div class="card mt-3 shadow-sm">
+                                        <div class="card-body p-2">
+                                            <canvas id="forceGraphCanvas" height="400px"></canvas>
+                                        </div>
+                                    </div>
+
+
+
+
 
                                 </div>
-
-
-
-
-
-                            </div>
 
                             </div>
 
@@ -1545,3 +1559,87 @@
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('forceGraphCanvas').getContext('2d');
+
+    const forceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: Array.from({ length: 52 }, (_, i) => i + 1), // Punch Tool
+            datasets: [
+                // Actual Force (main curve)
+                {
+                    label: 'Compression Force',
+                    data: Array(52).fill(0),
+                    borderColor: '#4DA3FF',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    pointRadius: 0
+                },
+
+                // Upper Limit
+                {
+                    label: 'Upper Limit',
+                    data: Array(52).fill(6),
+                    borderColor: '#FF4D4F',
+                    borderWidth: 1,
+                    borderDash: [6, 6],
+                    pointRadius: 0
+                },
+
+                // Lower Limit
+                {
+                    label: 'Lower Limit',
+                    data: Array(52).fill(4),
+                    borderColor: '#52C41A',
+                    borderWidth: 1,
+                    borderDash: [6, 6],
+                    pointRadius: 0
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Punch Tool',
+                        color: '#FFFFFF'
+                    },
+                    ticks: {
+                        color: '#FFFFFF'
+                    },
+                    grid: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                },
+                y: {
+                    min: 0,
+                    max: 50,
+                    title: {
+                        display: true,
+                        text: 'Load Force',
+                        color: '#FFFFFF'
+                    },
+                    ticks: {
+                        color: '#FFFFFF'
+                    },
+                    grid: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,203 @@
+﻿{
+  "plc": {
+    "ip": "127.0.0.1",
+    "port": 502
+  },
+
+  "digitalInputs": {
+    "EmergencyControl": 0,
+    "DoorSafety": 1,
+    "TurretDriveTrip": 2,
+    "LhsFeederTrip": 3,
+    "RhsFeederTrip": 4,
+    "LubeMotorTrip": 5,
+    "S1UpperCam": 6,
+    "S1LowerCam": 7,
+    "S2UpperCam": 8,
+    "S2LowerCam": 9,
+
+    "S1MainPenetration": 10,
+    "S1PrePenetration": 11,
+    "S2MainPenetration": 12,
+    "S2PrePenetration": 13,
+    "TurretPosition": 14,
+    "S1Scrapper": 15,
+    "S2Scrapper": 16,
+    "RhsPowderLevel": 17,
+    "LhsPowderLevel": 18,
+    "LubeOilLow": 19
+  },
+
+  "digitalOutputs": {
+    "S1InitialReject": 0,
+    "S2InitialReject": 1,
+    "S1SampleValve": 2,
+    "S2SampleValve": 3,
+    "S1RejectValve": 4,
+    "S2RejectValve": 5,
+    "Lubrication": 6,
+    "RedLamp": 7,
+    "YellowLamp": 8,
+    "GreenLamp": 9
+  },
+
+  "analogInputs": {
+    "S1MainLoadcell": 0,
+    "S1PreLoadcell": 1,
+    "S2MainLoadcell": 2,
+    "S2PreLoadcell": 3,
+    "S1EjectLoadcell": 4,
+    "S2EjectLoadcell": 5,
+    "UpperPunchLoadcell": 6,
+    "LowerPunchLoadcell": 7
+  },
+
+  "counters": {
+    "RevolutionCount": 0,
+    "EncoderActCount": 1
+  },
+ 
+    "Servos": {
+      "S1_FILL_DEPTH_1": {
+        "Name": "S1 Fill Depth Servo-1",
+        "JogSpeed": 2,
+        "SetPosition": 3,
+        "SetSpeed": 4,
+        "ActTorque": 5,
+        "JogUp": 10,
+        "JogDown": 11,
+        "Run": 12,
+        "Stop": 13,
+        "Ready": 20,
+        "Alarm": 21
+      },
+
+      "S1_MAIN_PEN_4": {
+        "Name": "S1 Main Penetration Servo-4",
+        "JogSpeed": 6,
+        "SetPosition": 7,
+        "SetSpeed": 8,
+        "ActTorque": 9,
+        "JogUp": 14,
+        "JogDown": 15,
+        "Run": 16,
+        "Stop": 17,
+        "Ready": 22,
+        "Alarm": 23
+      },
+
+      "S2_MAIN_PEN_8": {
+        "Name": "S2 Main Penetration Servo-8",
+        "JogSpeed": 10,
+        "SetPosition": 11,
+        "SetSpeed": 12,
+        "ActTorque": 13,
+        "JogUp": 18,
+        "JogDown": 19,
+        "Run": 20,
+        "Stop": 21,
+        "Ready": 24,
+        "Alarm": 25
+      },
+
+      "S1_PRE_PEN_6": {
+        "Name": "S1 Pre Penetration Servo-6",
+        "JogSpeed": 14,
+        "SetPosition": 15,
+        "SetSpeed": 16,
+        "ActTorque": 17,
+        "JogUp": 22,
+        "JogDown": 23,
+        "Run": 24,
+        "Stop": 25,
+        "Ready": 26,
+        "Alarm": 27
+      },
+
+      "S2_PRE_PEN_10": {
+        "Name": "S2 Pre Penetration Servo-10",
+        "JogSpeed": 18,
+        "SetPosition": 19,
+        "SetSpeed": 20,
+        "ActTorque": 21,
+        "JogUp": 26,
+        "JogDown": 27,
+        "Run": 28,
+        "Stop": 29,
+        "Ready": 28,
+        "Alarm": 29
+      },
+
+      "S2_FILL_DEPTH_2": {
+        "Name": "S2 Fill Depth Servo-2",
+        "JogSpeed": 22,
+        "SetPosition": 23,
+        "SetSpeed": 24,
+        "ActTorque": 25,
+        "JogUp": 30,
+        "JogDown": 31,
+        "Run": 32,
+        "Stop": 33,
+        "Ready": 30,
+        "Alarm": 31
+      },
+
+      "S1_MAIN_LOW_3": {
+        "Name": "S1 Main Lower Servo-3",
+        "JogSpeed": 26,
+        "SetPosition": 27,
+        "SetSpeed": 28,
+        "ActTorque": 29,
+        "JogUp": 34,
+        "JogDown": 35,
+        "Run": 36,
+        "Stop": 37,
+        "Ready": 32,
+        "Alarm": 33
+      },
+
+      "S2_MAIN_LOW_7": {
+        "Name": "S2 Main Lower Servo-7",
+        "JogSpeed": 30,
+        "SetPosition": 31,
+        "SetSpeed": 32,
+        "ActTorque": 33,
+        "JogUp": 38,
+        "JogDown": 39,
+        "Run": 40,
+        "Stop": 41,
+        "Ready": 34,
+        "Alarm": 35
+      },
+
+      "S1_PRE_LOW_5": {
+        "Name": "S1 Pre Lower Servo-5",
+        "JogSpeed": 34,
+        "SetPosition": 35,
+        "SetSpeed": 36,
+        "ActTorque": 37,
+        "JogUp": 42,
+        "JogDown": 43,
+        "Run": 44,
+        "Stop": 45,
+        "Ready": 36,
+        "Alarm": 37
+      },
+
+      "S1_PRE_LOW_9": {
+        "Name": "S1 Pre Lower Servo-9",
+        "JogSpeed": 38,
+        "SetPosition": 39,
+        "SetSpeed": 40,
+        "ActTorque": 41,
+        "JogUp": 46,
+        "JogDown": 47,
+        "Run": 48,
+        "Stop": 49,
+        "Ready": 38,
+        "Alarm": 39
+      }
+    }
+  
+
+}

@@ -7,7 +7,15 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="EasyModbusTCP" Version="5.6.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />
 		<PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
+		<PackageReference Include="System.IO.Ports" Version="9.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CompressionForce.Data\CompressionForce.Data.csproj" />
+	  <ProjectReference Include="..\CompressionForce.Domain\CompressionForce.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CompressionForce.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_Create_All_Tables : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -175,39 +175,17 @@ namespace CompressionForce.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LoadCellCalibrations",
+                name: "LoadCellCalibrationRuntimeEntity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    LoadCellCode = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    MinVolt = table.Column<decimal>(type: "numeric(10,4)", nullable: false),
-                    MaxVolt = table.Column<decimal>(type: "numeric(10,4)", nullable: false),
-                    MinValue = table.Column<decimal>(type: "numeric(10,4)", nullable: false),
-                    MaxValue = table.Column<decimal>(type: "numeric(10,4)", nullable: false),
-                    Factor = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
-                    Offset = table.Column<decimal>(type: "numeric(18,8)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LoadCellName = table.Column<string>(type: "text", nullable: false),
+                    Factor = table.Column<decimal>(type: "numeric", nullable: false),
+                    Offset = table.Column<decimal>(type: "numeric", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LoadCellCalibrations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LoadCells",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    LoadCellCode = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    LoadCellName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Unit = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LoadCells", x => x.Id);
+                    table.PrimaryKey("PK_LoadCellCalibrationRuntimeEntity", x => x.LoadCellName);
                 });
 
             migrationBuilder.CreateTable(
@@ -1053,10 +1031,7 @@ namespace CompressionForce.Data.Migrations
                 name: "GroupPrivileges");
 
             migrationBuilder.DropTable(
-                name: "LoadCellCalibrations");
-
-            migrationBuilder.DropTable(
-                name: "LoadCells");
+                name: "LoadCellCalibrationRuntimeEntity");
 
             migrationBuilder.DropTable(
                 name: "LookupValues");

@@ -40,7 +40,6 @@ namespace CompressionForce.Data
 
         // ================= CALIBRATION =================
         public virtual DbSet<ServoCalibration> ServoCalibrations { get; set; }
-        public DbSet<LoadCell> LoadCells { get; set; }
         public DbSet<LoadCellCalibration> LoadCellCalibrations { get; set; }
 
         // ================= USERS & SECURITY =================
@@ -58,6 +57,9 @@ namespace CompressionForce.Data
         public DbSet<PlcStatus> PlcStatuses { get; set; }
 
         public DbSet<AutoTareStatus> AutoTareStatuses { get; set; }
+
+        public DbSet<LoadCellCalibrationRuntimeEntity> LoadCellCalibrationRuntime { get; set; }
+
 
 
         // ================= MODEL CONFIGURATION =================

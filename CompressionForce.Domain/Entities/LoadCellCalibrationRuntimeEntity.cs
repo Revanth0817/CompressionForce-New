@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CompressionForce.Data.Entities
 {
-    public class LoadCellCalibration
+    public class LoadCellCalibrationRuntimeEntity
     {
         [Key]
         public string LoadCellName { get; set; }

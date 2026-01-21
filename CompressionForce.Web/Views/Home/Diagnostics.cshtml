@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Diagnostics";
 }
+@model CompressionForce.Domain.ViewModels.DiagnosticsFixedVM
+
 
 <div class="card border-0 mx-4 ps-0 pt-4">
     <ul class="nav nav-tabs row-gap-3" id="myTab" role="tablist">
@@ -33,32 +35,96 @@
                             <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Inputs</h5>
                             <div class="d-sm-flex px-4 pt-3">
                                 <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
-                                    <li class="diagnostics-list fw-semibold">Emergency Control</li>
-                                    <li class="diagnostics-list fw-semibold">Door Safety</li>
-                                    <li class="diagnostics-list fw-semibold">Turret Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">LHS Feeder Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">RHS Feeder Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">Lube Motor Trip</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Upper Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Lower Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Upper Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Lower Cam in Position</li>
+
+                                    <li id="emergencyControl" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        Emergency Control
+                                    </li>
+
+                                    <li id="doorSafety" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        Door Safety
+                                    </li>
+
+                                    <li id="turretDriveTrip" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        Turret Drive Trip
+                                    </li>
+
+                                    <li id="lhsFeederDriveTrip" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        LHS Feeder Drive Trip
+                                    </li>
+
+                                    <li id="rhsFeederDriveTrip" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        RHS Feeder Drive Trip
+                                    </li>
+
+                                    <li id="lubeMotorTrip" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        Lube Motor Trip
+                                    </li>
+
+                                    <li id="s1UpperCam" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S1 Upper Cam in Position
+                                    </li>
+
+                                    <li id="s1LowerCam" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S1 Lower Cam in Position
+                                    </li>
+
+                                    <li id="s2UpperCam" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S2 Upper Cam in Position
+                                    </li>
+
+                                    <li id="s2LowerCam" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S2 Lower Cam in Position
+                                    </li>
 
                                 </ul>
+
+
 
                                 <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
-                                    <li class="diagnostics-list fw-semibold">S1 Main Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Pre Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Main Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Pre Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">Turret in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Scrapper in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Scrapper in Position</li>
-                                    <li class="diagnostics-list fw-semibold">RHS Powder Level Sensor</li>
-                                    <li class="diagnostics-list fw-semibold">LHS Powder Level Sensor</li>
-                                    <li class="diagnostics-list fw-semibold">Lube Oil Low</li>
+
+                                    <li id="s1MainPenRollerPos" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S1 Main Penetration Roller in Position
+                                    </li>
+
+                                    <li id="s1PrePenRollerPos" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S1 Pre Penetration Roller in Position
+                                    </li>
+
+                                    <li id="s2MainPenRollerPos" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S2 Main Penetration Roller in Position
+                                    </li>
+
+                                    <li id="s2PrePenRollerPos" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S2 Pre Penetration Roller in Position
+                                    </li>
+
+                                    <li id="turretInPosition" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        Turret in Position
+                                    </li>
+
+                                    <li id="s1ScrapperPos" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S1 Scrapper in Position
+                                    </li>
+
+                                    <li id="s2ScrapperPos" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        S2 Scrapper in Position
+                                    </li>
+
+                                    <li id="rhsPowderLevel" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        RHS Powder Level Sensor
+                                    </li>
+
+                                    <li id="lhsPowderLevel" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        LHS Powder Level Sensor
+                                    </li>
+
+                                    <li id="lubeOilLow" class="diagnostics-list1 fw-semibold d-flex align-items-center di-false">
+                                        Lube Oil Low
+                                    </li>
 
                                 </ul>
+
+
                             </div>
                         </div>
                     </div>
@@ -72,34 +138,119 @@
                             <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Outputs</h5>
                             <ul class="list-group list-group-flush row-gap-16px px-4 py-3">
 
-                                @{
-                                    var switchItems = new List<string>
-                                                                {
-                                                                "S1 Initial Rej. Valve",
-                                                                "S2 Initial Rej. Valve",
-                                                                "S1 Sample Valve",
-                                                                "S2 Sample Valve",
-                                                                "S1 Rejection Valve",
-                                                                "S2 Rejection Valve",
-                                                                "Lubrication",
-                                                                "Red Lamp",
-                                                                "Yellow Lamp",
-                                                                "Green Lamp"
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doS1InitialRej"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'S1InitialReject')" />
+                                        <label class="form-check-label fw-semibold">S1 Initial Rej. Valve</label>
+                                    </div>
+                                </li>
 
-                                                                };
-                                }
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doS2InitialRej"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'S2InitialReject')" />
+                                        <label class="form-check-label fw-semibold">S2 Initial Rej. Valve</label>
+                                    </div>
+                                </li>
 
-                                @foreach (var item in switchItems)
-                                {
-                                    <li class="diagnostics-list-before">
-                                        <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="">
-                                            <label class="form-check-label fw-semibold" for="switchCheckDefault">@item</label>
-                                        </div>
-                                    </li>
-                                }
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doS1Sample"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'S1SampleValve')" />
+                                        <label class="form-check-label fw-semibold">S1 Sample Valve</label>
+                                    </div>
+                                </li>
+
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doS2Sample"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'S2SampleValve')" />
+                                        <label class="form-check-label fw-semibold">S2 Sample Valve</label>
+                                    </div>
+                                </li>
+
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doS1Reject"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'S1RejectValve')" />
+                                        <label class="form-check-label fw-semibold">S1 Rejection Valve</label>
+                                    </div>
+                                </li>
+
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doS2Reject"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'S2RejectValve')" />
+                                        <label class="form-check-label fw-semibold">S2 Rejection Valve</label>
+                                    </div>
+                                </li>
+
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doLubrication"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'Lubrication')" />
+                                        <label class="form-check-label fw-semibold">Lubrication</label>
+                                    </div>
+                                </li>
+
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doRedLamp"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'RedLamp')" />
+                                        <label class="form-check-label fw-semibold">Red Lamp</label>
+                                    </div>
+                                </li>
+
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doYellowLamp"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'YellowLamp')" />
+                                        <label class="form-check-label fw-semibold">Yellow Lamp</label>
+                                    </div>
+                                </li>
+
+                                <li class="diagnostics-list-before">
+                                    <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <input id="doGreenLamp"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch"
+                                               onchange="onToggleChanged(this, 'GreenLamp')" />
+                                        <label class="form-check-label fw-semibold">Green Lamp</label>
+                                    </div>
+                                </li>
 
                             </ul>
+
+
                         </div>
                     </div>
                 </div>
@@ -128,35 +279,52 @@
 
                                                 <div class="col-6 fw-semibold">S1 Main Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input id="S1MainLoadcell_kn"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input id="S1MainLoadcell_v"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
+
                                                 </div>
 
 
                                                 <div class="col-6 fw-semibold">S1 Pre Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input id="S1PreLoadcell_kn"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input id="S1PreLoadcell_v"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
 
                                                 <div class="col-6 fw-semibold">S2 Main Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input id="S2MainLoadcell_kn"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input id="S2MainLoadcell_v"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
 
                                                 <div class="col-6 fw-semibold">S2 Pre Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input id="S2PreLoadcell_kn"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input id="S2PreLoadcell_v"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
 
                                             </div>
@@ -174,34 +342,50 @@
                                             <div class="row g-3 align-items-center">
                                                 <div class="col-6 fw-semibold">S1 Eject Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input id="S1EjectLoadcell_kn"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input id="S1EjectLoadcell_v"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
 
                                                 <div class="col-6 fw-semibold">S2 Eject Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input id="S2EjectLoadcell_kn"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input id="S2EjectLoadcell_v"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
 
                                                 <div class="col-6 fw-semibold">Upper Punch Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input id="UpperPunchLoadcell_kn"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input id="UpperPunchLoadcell_v"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
 
                                                 <div class="col-6 fw-semibold">Lower Punch Loadcell</div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                    <input id="LowerPunchLoadcell_kn"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                                 <div class="col-3">
-                                                    <input type="text" class="form-control form-control-sm text-center bord-col-8434C6" value="0.000">
+                                                    <input id="LowerPunchLoadcell_v"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                             </div>
                                         </div>
@@ -232,7 +416,10 @@
 
                                                 <!-- Right Input Column -->
                                                 <div class="col-auto">
-                                                    <input type="text" class="form-control form-control-sm text-center" value="0.000" style="width: 100px;">
+                                                    <input id="revolutionCount"
+                                                           type="text"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
                                                 </div>
                                             </div>
 
@@ -244,7 +431,11 @@
 
                                                 <!-- Right Input Column -->
                                                 <div class="col-auto">
-                                                    <input type="text" class="form-control form-control-sm text-center" value="0.000" style="width: 100px;">
+                                                    <input id="encoderActCount"
+                                                           type="text"
+                                                           class="form-control form-control-sm text-center"
+                                                           readonly />
+
                                                 </div>
                                             </div>
                                         </div>
@@ -783,17 +974,198 @@
     </div>
 </div>
 
-@*sample function for changing the value of counter elemant. Test for the first counter in Servo managament inside Diagnostics*@
-<script>
-    function changeValue(step) {
-      const input = document.querySelector(".arrows-text");
-      let currentValue = parseInt(input.value || 0);
 
-      if(currentValue + step >= 0){
-          input.value = currentValue + step;
-      }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/diagnosticsHub")
+        .withAutomaticReconnect()
+        .build();
+
+    connection.on("DiagnosticsUpdate", function (data) {
+        console.log("LIVE PLC DATA", data);
+
+        /* =========================
+           DIGITAL INPUTS (DOTS)
+        ========================= */
+
+            /* =========================
+       DIGITAL INPUTS – LEFT COLUMN
+    ========================= */
+
+    setStatus("emergencyControl", data.emergencyControl);
+    setStatus("doorSafety", data.doorSafety);
+    setStatus("turretDriveTrip", data.turretDriveTrip);
+    setStatus("lhsFeederDriveTrip", data.lhsFeederDriveTrip);
+    setStatus("rhsFeederDriveTrip", data.rhsFeederDriveTrip);
+    setStatus("lubeMotorTrip", data.lubeMotorTrip);
+
+    setStatus("s1UpperCam", data.s1UpperCam);
+    setStatus("s1LowerCam", data.s1LowerCam);
+    setStatus("s2UpperCam", data.s2UpperCam);
+    setStatus("s2LowerCam", data.s2LowerCam);
+
+        setStatus("s1MainPenRollerPos", data.s1MainPenRollerPos);
+    setStatus("s1PrePenRollerPos", data.s1PrePenRollerPos);
+    setStatus("s2MainPenRollerPos", data.s2MainPenRollerPos);
+    setStatus("s2PrePenRollerPos", data.s2PrePenRollerPos);
+
+    setStatus("turretInPosition", data.turretInPosition);
+
+    setStatus("s1ScrapperPos", data.s1ScrapperPos);
+    setStatus("s2ScrapperPos", data.s2ScrapperPos);
+
+    setStatus("rhsPowderLevel", data.rhsPowderLevel);
+    setStatus("lhsPowderLevel", data.lhsPowderLevel);
+
+    setStatus("lubeOilLow", data.lubeOilLow);
+
+
+        /* =========================
+           COUNTERS
+        ========================= */
+
+        setInputValue("revolutionCount", data.revolutionCount);
+        setInputValue("encoderActCount", data.encoderActCount);
+
+        /* =========================
+           DIGITAL OUTPUT TOGGLES
+        ========================= */
+
+        setToggle("doS1InitialRej", data.s1InitialRej);
+        setToggle("doS2InitialRej", data.s2InitialRej);
+        setToggle("doS1Sample", data.s1Sample);
+        setToggle("doS2Sample", data.s2Sample);
+        setToggle("doS1Reject", data.s1Reject);
+        setToggle("doS2Reject", data.s2Reject);
+        setToggle("doLubrication", data.lubrication);
+        setToggle("doRedLamp", data.redLamp);
+        setToggle("doYellowLamp", data.yellowLamp);
+        setToggle("doGreenLamp", data.greenLamp);
+    });
+
+    /* =========================
+       HELPER FUNCTIONS
+    ========================= */
+
+    function setStatus(id, value) {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        el.classList.remove("di-true", "di-false");
+        el.classList.add(value ? "di-true" : "di-false");
+    }
+
+    function setInputValue(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.value = value ?? 0;
+    }
+        function setToggle(id, value) {
+
+        // Do NOT override user click while writing
+        if (plcWriteLock) return;
+
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        el.checked = value === true;
     }
 
 
+    connection.start()
+        .then(() => console.log("✅ SignalR connected"))
+        .catch(err => console.error("❌ SignalR error", err));
 </script>
+
+
+<script>
+    function onToggleChanged(el, plcKey) {
+
+        const value = el.checked;
+        console.log("UI → PLC:", plcKey, value);
+
+        fetch("/Diagnostics/SetOutput", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                key: plcKey,
+                value: value
+            })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("PLC write failed");
+            console.log("✅ PLC updated");
+        })
+        .catch(err => {
+            console.error(err);
+            // rollback UI if failed
+            el.checked = !value;
+        });
+    }
+</script>
+<script>
+    /* =========================
+       ANALOG INPUTS – FINAL
+    ========================= */
+
+    function refreshAnalogInputs() {
+
+        fetch("/Diagnostics/GetAnalogInputs")
+            .then(res => res.json())
+            .then(data => {
+
+                data.forEach(item => {
+
+                    const vEl  = document.getElementById(`${item.key}_v`);
+                    const knEl = document.getElementById(`${item.key}_kn`);
+
+                    if (vEl) {
+                        vEl.value = Number(item.voltage).toFixed(3);
+                    }
+
+                    if (knEl) {
+                        knEl.value = Number(item.kn).toFixed(3);
+                    }
+                });
+            })
+            .catch(err => console.error("Analog refresh failed", err));
+    }
+
+    // ▶ Run once
+    refreshAnalogInputs();
+
+    // 🔁 Run every second
+    setInterval(refreshAnalogInputs, 1000);
+</script>
+
+<script>
+    function setInputValue(id, value) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.value = value ?? 0;
+    }
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/diagnosticsHub")
+        .withAutomaticReconnect()
+        .build();
+
+    connection.on("DiagnosticsUpdate", function (data) {
+
+        // 🔄 COUNTERS (FROM PLC)
+        setInputValue("revolutionCount", data.revolutionCount);
+        setInputValue("encoderActCount", data.encoderActCount);
+
+    });
+
+    connection.start()
+        .then(() => console.log("✅ SignalR connected"))
+        .catch(err => console.error("❌ SignalR error", err));
+</script>
+
+
+
 
