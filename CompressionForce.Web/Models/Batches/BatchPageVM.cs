@@ -1,7 +1,4 @@
-﻿using CompressionForce.Services.DTOs.Batch;
-using System.Collections.Generic;
-
-namespace CompressionForce.Web.Models.Batches
+﻿namespace CompressionForce.Web.Models.Batches
 {
     public class BatchPageVM
     {
@@ -15,9 +12,9 @@ namespace CompressionForce.Web.Models.Batches
         public BatchPageVM(
             List<RecipeVM>? recipes = null,
             List<BatchVM>? batches = null,
-            BatchSummaryVM? batchsummary =null,
+            BatchSummaryVM? batchsummary = null,
             BatchRecipeParametersVM? reciparameters = null
-            
+
             )
         {
             Recipes = recipes ?? new List<RecipeVM>();

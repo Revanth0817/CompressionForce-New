@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CompressionForce.Web.Models.Batches;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CompressionForce.Web.ViewComponents
 {
@@ -6,9 +7,9 @@ namespace CompressionForce.Web.ViewComponents
 
     public class BatchHeaderViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(BatchHeaderVM vm)
         {
-            return View("BatchHeader");
+            return View("BatchHeader", vm);
         }
     }
 }

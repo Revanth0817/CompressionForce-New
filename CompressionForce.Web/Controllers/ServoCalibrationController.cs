@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CompressionForce.Data;
+﻿using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
-using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CompressionForce.Web.Controllers
 {

@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using CompressionForce.Web.Models.Batches;
+﻿using CompressionForce.Web.Models.Batches;
+using System.Text.Json;
 namespace CompressionForce.Web.Mapping
 {
     public static class RecipeParametersMapper

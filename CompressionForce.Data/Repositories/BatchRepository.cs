@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CompressionForce.Data.Mappers;
 using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using CompressionForce.Data.Mappers;
 namespace CompressionForce.Data.Repositories
 {
 
@@ -20,9 +15,6 @@ namespace CompressionForce.Data.Repositories
             _ctx = ctx;
         }
 
-        /*public Task<List<Batch>> GetByRecipeAsync(string recipeCode) =>
-            _ctx.Batches.Where(b => b.RecipeCode == recipeCode).ToListAsync();*/
-
         public async Task<List<Batch>> GetByRecipeAsync(string recipeCode)
         {
             var entities = await _ctx.Batches
@@ -34,9 +26,6 @@ namespace CompressionForce.Data.Repositories
                 .ToList();
         }
 
-
-        /*public Task<Batch> GetByBatchCodeAsync(string batchCode) =>
-             _ctx.Batches.FirstAsync(b => b.BatchCode == batchCode);*/
 
         public async Task<Batch?> GetByBatchCodeAsync(string batchCode)
         {
@@ -74,8 +63,8 @@ namespace CompressionForce.Data.Repositories
 
         public async Task<bool> ExistsNonDeactivatedBatchAsync(string recipeCode)
         {
-                        return await _ctx.Batches
-                .AnyAsync(b => b.RecipeCode == recipeCode && b.BatchStatus != "Deactivated");
+            return await _ctx.Batches
+    .AnyAsync(b => b.RecipeCode == recipeCode && b.BatchStatus != "Deactivated");
         }
 
     }

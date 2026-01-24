@@ -2,8 +2,6 @@
 @using CompressionForce.Domain.Entities
 @model CompressionForce.Web.Models.Recipes.AddEditRecipeVm
 
-@*CompressionForce.Web.Models.Recipes.AddEditRecipeVm*@
-
 @functions
 {
     string GetParamValue(Dictionary<string, RecipeParameter> dict, string key)
@@ -37,20 +35,7 @@
 
     ParameterRule? GetRule(string name) =>
         rules.FirstOrDefault(r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-    Console.WriteLine(Model.Code);
-    Console.WriteLine("----------------------------------vm.code----------------------------------");
-    Console.WriteLine(Model.Parameters.Count);
-    Console.WriteLine("----------------------------------Parameters.Count in AddRecipe View----------------------------------");
-    Console.WriteLine(rules.Count());
-    Console.WriteLine("----------------------------------rules.Count in AddRecipe View----------------------------------");
-
-    Console.WriteLine("----------------------------------Im going to print value of ProductName----------------------------------");
-    Console.WriteLine(@GetParamValue(parametersDict, "ProductName"));
-    
 }
-
-
 
 <div class="p-4 bord-rad-4px boxshadow mt-4">
     <!--Common Product Parameter-->
@@ -288,11 +273,7 @@
                     </div>
                 </div>
             </div>
-            @* <div class="emptyParamerDiv col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
-                        <div class="productParamerHeader bgcol-215ED6 clr-215ED6 text-center  font-size-18px p-10px">
-                            Empty
-                        </div>
-                    </div> *@
+
             <div class="col-sm-12 productParameterContainer order-lg-3 col-md-6  col-lg-6 px-0">
                 <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-4 px-md-4 px-sm-3">
                     S2-Product Parameter
@@ -439,11 +420,7 @@
                     </div>
                 </div>
             </div>
-            @* <div class="emptyParamerDiv  col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
-                        <div class="productParameterHeader bgcol-215ED6 clr-215ED6 text-center  font-size-18px p-10px">
-                            Empty
-                        </div>
-                    </div> *@
+
             <div class="col-sm-12 order-md-2 productParameterContainer col-md-6 col-lg-6 px-0">
                 <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-4 px-md-4 px-sm-3">
                     S2 AWC & AR Set Parameter

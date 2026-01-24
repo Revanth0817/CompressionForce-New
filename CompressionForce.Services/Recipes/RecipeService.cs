@@ -1,20 +1,13 @@
 ﻿using CompressionForce.Data;
 using CompressionForce.Data.Entities;
 using CompressionForce.Domain.Abstractions;
+using CompressionForce.Domain.Abstractions.UnitOfWork;
 using CompressionForce.Domain.Entities;
-using CompressionForce.Domain.Exceptions;
 using CompressionForce.Domain.Validation;
-using CompressionForce.Services.Recipes;
-using CompressionForce.Services.Mapping;
+using CompressionForce.Services.Exceptions;
+using CompressionForce.Services.Mappers;
 using CompressionForce.Services.Validation;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using CompressionForce.Services.Batches;
 
 namespace CompressionForce.Services.Recipes
 {
@@ -29,19 +22,22 @@ namespace CompressionForce.Services.Recipes
         private readonly LookupRecipeValidator _lookupValidator;
         private readonly ConfigRecipeValidator _configValidator;
         private readonly IBatchRepository _batchRepo;
+        private readonly IUnitOfWork _uow;
 
         public RecipeService(
             ApplicationDbContext dbContext,
             IBatchRepository batchRepo,
             IRecipeValidator recipeValidator,
             LookupRecipeValidator lookupValidator,
-            ConfigRecipeValidator configValidator)
+            ConfigRecipeValidator configValidator,
+            IUnitOfWork uow)
         {
             _dbContext = dbContext;
             _batchRepo = batchRepo;
             _recipeValidator = recipeValidator;
             _lookupValidator = lookupValidator;
             _configValidator = configValidator;
+            _uow = uow;
         }
 
         public async Task<IReadOnlyList<string>> GetRecipeCodesAsync()
@@ -64,15 +60,30 @@ namespace CompressionForce.Services.Recipes
         public async Task AddAsync(Recipe recipe, string user)
         {
             if (await _dbContext.Recipes.AnyAsync(r => r.RecipeCode == recipe.Code))
-                throw new DomainException($"Recipe code '{recipe.Code}' already exists.");
+                throw new ServiceException($"Recipe code '{recipe.Code}' already exists.");
 
             ValidateRecipe(recipe);
 
             var entity = RecipeMapper.ToEntity(recipe);
-            _dbContext.Recipes.Add(entity);
-            AddHistory(recipe.Code, "ADD", user, null, entity.Parameters);
+            await _uow.BeginAsync();
+            try
+            {
 
-            await _dbContext.SaveChangesAsync();
+
+                _dbContext.Recipes.Add(entity);
+                AddHistory(recipe.Code, "ADD", user, null, entity.Parameters);
+
+
+                await _dbContext.SaveChangesAsync();
+
+                // Commit
+                await _uow.CommitAsync();
+            }
+            catch
+            {
+                await _uow.RollbackAsync();
+                throw new ServiceException("Deactivating Batch not successful");
+            }
         }
 
         public async Task UpdateAsync(Recipe recipe, string user)
@@ -81,27 +92,41 @@ namespace CompressionForce.Services.Recipes
                 .FirstOrDefaultAsync(r => r.RecipeCode == recipe.Code);
 
             if (entity == null)
-                throw new DomainException("Recipe does not exist.");
+                throw new ServiceException("Recipe does not exist.");
 
             ValidateRecipe(recipe);
 
             var oldParameters = entity.Parameters;
 
-            entity.RecipeName = string.IsNullOrEmpty(recipe.Name) ? recipe.Code : recipe.Name;
-            entity.Parameters = System.Text.Json.JsonSerializer.Serialize(recipe.Parameters);
+            await _uow.BeginAsync();
+            try
+            {
 
-            AddHistory(recipe.Code, "UPDATE", user, oldParameters, entity.Parameters);
+                entity.RecipeName = string.IsNullOrEmpty(recipe.Name) ? recipe.Code : recipe.Name;
+                entity.Parameters = System.Text.Json.JsonSerializer.Serialize(recipe.Parameters);
 
-            await _dbContext.SaveChangesAsync();
+                AddHistory(recipe.Code, "UPDATE", user, oldParameters, entity.Parameters);
+
+                await _dbContext.SaveChangesAsync();
+
+                // Commit
+                await _uow.CommitAsync();
+            }
+            catch
+            {
+                await _uow.RollbackAsync();
+                throw new ServiceException("Deactivating Batch not successful");
+            }
         }
+
 
         public async Task DeleteAsync(string recipeCode, string user)
         {
-            // 🚨 Do NOT filter by status
+            // Do NOT filter by status
             var batches = await _batchRepo.GetByRecipeAsync(recipeCode);
 
             if (batches.Any())
-                throw new DomainException(
+                throw new ServiceException(
                     "Cannot delete recipe. Batches exist for this recipe."
                 );
 
@@ -109,12 +134,23 @@ namespace CompressionForce.Services.Recipes
                 .FirstOrDefaultAsync(r => r.RecipeCode == recipeCode);
 
             if (entity == null)
-                throw new DomainException("Recipe does not exist.");
+                throw new ServiceException("Recipe does not exist.");
+            await _uow.BeginAsync();
+            try
+            {
+                _dbContext.Recipes.Remove(entity);
+                AddHistory(recipeCode, "DELETE", user, entity.Parameters, null);
 
-            _dbContext.Recipes.Remove(entity);
-            AddHistory(recipeCode, "DELETE", user, entity.Parameters, null);
+                await _dbContext.SaveChangesAsync();
 
-            await _dbContext.SaveChangesAsync();
+                // Commit
+                await _uow.CommitAsync();
+            }
+            catch
+            {
+                await _uow.RollbackAsync();
+                throw new ServiceException("Deactivating Batch not successful");
+            }
         }
 
         public async Task<bool> ExistsByCodeAsync(string recipeCode)
@@ -130,7 +166,7 @@ namespace CompressionForce.Services.Recipes
             _lookupValidator.Validate(recipe, result);      // enums membership
 
             if (!result.IsValid)
-                throw new DomainException(string.Join(" | ", result.Errors));
+                throw new ServiceException(string.Join(" | ", result.Errors));
         }
 
         private void AddHistory(

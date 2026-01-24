@@ -2,14 +2,9 @@
 using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CompressionForce.Data.Repositories
-{ 
+{
     public class CurrentBatchRepository : ICurrentBatchRepository
     {
         private readonly ApplicationDbContext _ctx;

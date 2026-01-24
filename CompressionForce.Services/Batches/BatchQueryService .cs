@@ -1,13 +1,8 @@
-﻿using CompressionForce.Data.Repositories;
-using CompressionForce.Domain.Abstractions;
-using CompressionForce.Domain.Entities;
+﻿using CompressionForce.Domain.Abstractions;
 using CompressionForce.Services.DTOs.Batch;
-using CompressionForce.Services.DTOs.Responses;
 using CompressionForce.Services.Interfaces;
-using CompressionForce.Services.Mapping;
-using Microsoft.IdentityModel.Tokens;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using CompressionForce.Services.Mappers;
+
 
 
 namespace CompressionForce.Services.Batches
@@ -33,9 +28,7 @@ namespace CompressionForce.Services.Batches
         /// </summary>
         public async Task<IReadOnlyList<RecipeListItem>> GetRecipesfromRecipe()
         {
-            //var recipes =  _recipeRepo.GetAllAsync().Result;
             var recipes = await _recipeRepo.GetAllAsync();
-            Console.WriteLine("---------------------------Inside Batch Query Service---------------------------");
             if (recipes == null)
                 return new List<RecipeListItem>();
             return recipes
@@ -55,7 +48,6 @@ namespace CompressionForce.Services.Batches
             if (string.IsNullOrWhiteSpace(recipeCode))
                 return new List<BatchListItem>();
 
-            //var batches = _batchRepo.GetByRecipeAsync(recipeCode).Result;
             var batches = await _batchRepo.GetByRecipeAsync(recipeCode);
 
             return batches
@@ -72,23 +64,21 @@ namespace CompressionForce.Services.Batches
         /// <summary>
         /// Used when BatchCode dropdown changes
         /// </summary>
-        public async Task<BatchDetails> GetBatchDetails(string batchCode)
+        public async Task<BatchDetailsDto> GetBatchDetails(string batchCode)
         {
             if (string.IsNullOrWhiteSpace(batchCode))
                 return null;
 
-            //var batch = _batchRepo.GetByBatchCodeAsync(batchCode).Result;
             var batch = await _batchRepo.GetByBatchCodeAsync(batchCode);
             if (batch == null)
                 return null;
 
-            //var currentBatch = _currentRepo.GetByBatchCodeAsync(batchCode).Result;
             var currentBatch = await _currentRepo.GetByBatchNumberAsync(batchCode);
 
             if (currentBatch == null)
                 return null;
 
-            return new BatchDetails
+            return new BatchDetailsDto
             {
                 RecipeCode = batch.RecipeCode,
                 BatchCode = batch.BatchCode,
@@ -109,22 +99,6 @@ namespace CompressionForce.Services.Batches
         /// </summary>
         public async Task<RecipeDetailsDto?> GetRecipeDetailsAsync(string recipeCode)
         {
-            /*if (string.IsNullOrWhiteSpace(recipeCode))
-                return null;
-
-            var recipe = await _recipeRepo.GetByCodeAsync(recipeCode);
-
-            if (recipe == null)
-                return null;
-
-            return new RecipeDetailsDto
-            {
-                RecipeCode = recipe.Code,
-                RecipeName = recipe.Name,
-                ParametersJson = Serialize(recipe.Parameters)
-
-            };*/
-
             var recipe = await _recipeRepo.GetByCodeAsync(recipeCode);
             if (recipe == null) return null;
 

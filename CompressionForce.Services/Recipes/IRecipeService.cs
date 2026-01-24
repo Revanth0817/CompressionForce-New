@@ -1,9 +1,4 @@
 ﻿using CompressionForce.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CompressionForce.Services.Recipes
 {
@@ -20,7 +15,7 @@ namespace CompressionForce.Services.Recipes
         Task DeleteAsync(string recipeCode, string user);
 
 
-        // helpers for requirements (3,5,8,10,12)
+        // helpers
         Task<bool> ExistsByCodeAsync(string recipeCode);
         Task<bool> ExistsByNameAsync(string recipeName);
 

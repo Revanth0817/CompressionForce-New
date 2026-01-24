@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CompressionForce.Services.DTOs.Batch
+﻿namespace CompressionForce.Services.DTOs.Batch
 {
     public class RecipeDetailsDto
     {

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CompressionForce.Services.DTOs.Batch
+﻿namespace CompressionForce.Services.DTOs.Batch
 {
     /// <summary>
     /// Aggregate DTO for the Batch page
     /// </summary>
-    public class BatchDetails
+    public class BatchDetailsDto
     {
         public string RecipeCode { get; set; }
         public string RecipeName { get; set; }

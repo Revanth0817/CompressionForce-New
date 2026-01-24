@@ -41,7 +41,7 @@
 
         <!-- Read-only Parameters (Right section converted to below) -->
         <div class="card mt-4">
-            @Html.Partial(
+            @await Html.PartialAsync(
                         "_RecipeParametersIndex",
                         new CompressionForce.Services.DTOs.RecipeDto
                         {

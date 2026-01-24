@@ -1,6 +1,5 @@
 ﻿
 using CompressionForce.Domain.Entities;
-using System.Collections.Generic;
 
 namespace CompressionForce.Web.Models.Recipes
 {

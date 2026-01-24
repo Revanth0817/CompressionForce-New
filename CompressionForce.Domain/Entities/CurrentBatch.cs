@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CompressionForce.Domain.Entities;
+﻿namespace CompressionForce.Domain.Entities;
 
 public partial class CurrentBatch
 {
@@ -9,6 +7,6 @@ public partial class CurrentBatch
     public string? BatchNumber { get; set; }
     public string Parameters { get; set; }
 
-    
+
 }
 

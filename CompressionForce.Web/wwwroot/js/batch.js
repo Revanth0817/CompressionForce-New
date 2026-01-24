@@ -1,23 +1,46 @@
 ﻿function saveBatch() {
+    const recipeCode = $('#selectedItem').val();
+
     $.post('/Batch/AddBatch', {
-        recipeCode: $('#selectedItem').val(),   // main page
+        recipeCode: recipeCode,
         batchCode: $('#batchCode').val(),
         batchQty: $('#batchQty').val(),
         tabletQty: $('#tabletQty').val()
-    }).done(() => location.reload());
+    }).done(() => {
+        location.reload();
+    });
 }
 
+
 function saveEditedBatch() {
+    const recipeCode = $('#selectedItem').val();
+
     $.post('/Batch/EditBatch', {
         batchCode: $('#editBatchCode').val(),
         batchQty: $('#editBatchQty').val()
-    }).done(() => location.reload());
+    }).done(() => {
+        location.reload();
+    });
 }
 
+
 function deactivateBatch() {
+    const recipeCode = $('#selectedItem').val();
+
     $.post('/Batch/DeactivateBatch', {
         batchCode: $('#deactivateBatchCode').val()
-    }).done(() => location.reload());
+    }).done(() => {
+        location.reload();
+    });
+}
+
+function refreshBatchHeader(recipeCode) {
+    if (!recipeCode) return;
+
+    $.get('/Batch/GetBatchHeader', { recipeCode })
+        .done(function (html) {
+            $('#batchHeaderContainer').html(html);
+        });
 }
 
 
@@ -33,11 +56,12 @@ $(document).ready(function () {
         $.get('/Batch/GetBatchesByRecipe', { recipeCode })
             .done(function (batches) {
 
+                refreshBatchHeader(recipeCode);
                 populateBatchDropdown([]);
 
                 if (!batches || batches.length === 0) {
 
-                    // 🔹 Summary must say "No batches"
+                    
                     $('#batchSummaryContainer').html(`
                     <div class="p-lg-4 p-md-4 p-sm-3 p-3 bord-D2D2D2 bord-rad-4px boxshadow">
                         <div class="text-muted">No batches</div>
@@ -142,9 +166,9 @@ function loadBatchSummaryAndParameters(batchCode) {
             $('#batchSummaryContainer').html(data.summaryHtml);
             $('#recipeParametersContainer').html(data.parametersHtml);
 
-            // 🔁 REPOPULATE batch dropdown after DOM replacement
+            // REPOPULATE batch dropdown after DOM replacement
             const recipeCode = $('#selectedItem').val();
-
+            refreshBatchHeader(recipeCode);
             $.get('/Batch/GetBatchesByRecipe', { recipeCode })
                 .done(function (batches) {
                     populateBatchDropdown(batches);
@@ -195,7 +219,7 @@ function isPositiveNumber(val) {
 }
 
 
-//Validations and Balidation Bindings
+//Validations and Validation Bindings
 function validateAddBatchModal() {
     const batchCode = $('#batchCode').val();
     const batchQty = $('#batchQty').val();
@@ -209,9 +233,11 @@ function validateAddBatchModal() {
     $('#addBatchModal button[onclick="saveBatch()"]')
         .prop('disabled', !isValid);
 }
+
 $('#addBatchModal').on('shown.bs.modal', function () {
     validateAddBatchModal();
 });
+
 $('#batchCode, #batchQty, #tabletQty').on('input change', function () {
     validateAddBatchModal();
 });
@@ -227,6 +253,7 @@ function validateEditBatchModal() {
     $('#editBatchModal button[onclick="saveEditedBatch()"]')
         .prop('disabled', !isValid);
 }
+
 $('#editBatchModal').on('show.bs.modal', function () {
 
     const recipeCode = $('#selectedItem').val();
@@ -239,16 +266,14 @@ $('#editBatchModal').on('show.bs.modal', function () {
             ddl.empty();
             ddl.append(`<option value="">Select Batch</option>`);
 
-            if (!batches || batches.length === 0) {
-                ddl.append(`<option disabled>No active batches</option>`);
-                return;
-            }
+            if (!batches || batches.length === 0) { return; }
 
             batches.forEach(b => {
                 ddl.append(`<option value="${b.batchCode}">${b.batchCode}</option>`);
             });
         });
 });
+
 $('#editBatchCode, #editBatchQty').on('input change', function () {
     validateEditBatchModal();
 });
@@ -261,6 +286,7 @@ function validateDeactivateBatchModal() {
     $('#deactivateBatchModal button[onclick="deactivateBatch()"]')
         .prop('disabled', !isValid);
 }
+
 $('#deactivateBatchModal').on('show.bs.modal', function () {
 
     const recipeCode = $('#selectedItem').val();
@@ -273,16 +299,14 @@ $('#deactivateBatchModal').on('show.bs.modal', function () {
             ddl.empty();
             ddl.append(`<option value="">Select Batch</option>`);
 
-            if (!batches || batches.length === 0) {
-                ddl.append(`<option disabled>No active batches</option>`);
-                return;
-            }
+            if (!batches || batches.length === 0) { return; }
 
             batches.forEach(b => {
                 ddl.append(`<option value="${b.batchCode}">${b.batchCode}</option>`);
             });
         });
 });
+
 $('#deactivateBatchCode').on('change', function () {
     validateDeactivateBatchModal();
 });

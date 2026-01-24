@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CompressionForce.Data;
+﻿using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
 using CompressionForce.Models;
-using BCrypt.Net;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CompressionForce.Controllers
 {

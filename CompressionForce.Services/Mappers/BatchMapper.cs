@@ -1,16 +1,8 @@
-﻿using CompressionForce.Data.Entities;
-using CompressionForce.Domain.Entities;
+﻿using CompressionForce.Domain.Entities;
 using CompressionForce.Services.DTOs.Batch;
-using CompressionForce.Services.DTOs.Requests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace CompressionForce.Services.Mapping
+namespace CompressionForce.Services.Mappers
 {
 
     public static class BatchMapper
@@ -21,9 +13,9 @@ namespace CompressionForce.Services.Mapping
             {
                 //IReadOnlyList<RecipeParameter> 
             };
-                
+
         }
-        public static CurrentBatch ToDomain(BatchDetails entity)
+        public static CurrentBatch ToDomain(BatchDetailsDto entity)
         {
             return new CurrentBatch()
             {

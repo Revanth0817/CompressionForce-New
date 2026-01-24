@@ -1,12 +1,10 @@
-﻿using CompressionForce.Data.Configurations;
-using CompressionForce.Data.Entities;
+﻿using CompressionForce.Data.Entities;
 using CompressionForce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 namespace CompressionForce.Data;
 
 public partial class ApplicationDbContext : DbContext
 {
-    // ❌ REMOVE parameterless constructor if possible
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
@@ -15,6 +13,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<AlarmLog> AlarmLogs { get; set; }
     public virtual DbSet<AuditTrail> AuditTrails { get; set; }
+
     // ================= BATCH =================
     public virtual DbSet<BatchEntity> Batches { get; set; }
     public virtual DbSet<BatchHistoryEntity> BatchHistories { get; set; }

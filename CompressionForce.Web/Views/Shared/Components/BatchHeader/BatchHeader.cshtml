@@ -1,13 +1,12 @@
 ﻿@* Batch Header Component *@
-@model CompressionForce.Web.Models.Batches.BatchPageVM
+@model CompressionForce.Web.Models.Batches.BatchHeaderVM
 
 @{
-    bool hasRecipes = Model.Recipes != null && Model.Recipes.Any();
-    bool hasBatches = Model.Batches != null && Model.Batches.Any();
+    bool hasRecipes = Model.hasRecipes != null && Model.hasRecipes;
+    bool hasBatches = Model.hasBatches != null && Model.hasBatches;
 }
-<div class="d-flex flex-wrap gap-3 py-4">
+
     <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#addBatchModal" href="" role="button" @(hasRecipes ? "" : "disabled")>Add Batch</button>
     <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#editBatchModal" href="" role="button" @(hasRecipes && hasBatches ? "" : "disabled")>Edit Batch</button>
     <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#deactivateBatchModal" href="" role="button" @(hasRecipes && hasBatches ? "" : "disabled")>Deactivate Batch</button>
     <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Print Batch</button>
-</div>

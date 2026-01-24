@@ -81,7 +81,7 @@ namespace CompressionForce.Controllers
                 FileName = $"Alarm_Report_{DateTime.Now:ddMMyyyy_HHmm}.pdf",
                 PageSize = Size.A4,
                 PageOrientation = Orientation.Portrait, // same as AuditTrail
-            
+
             };
         }
     }

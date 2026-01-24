@@ -11,16 +11,8 @@ using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
 using CompressionForce.Web.ModelBinding;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Rotativa.AspNetCore;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,14 +57,16 @@ builder.Services.AddScoped<LookupRecipeValidator>();
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<ILookupService, LookupService>();
 
-// Batch Services
+// Recipe
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+// Batch
 builder.Services.AddScoped<IBatchQueryService, BatchQueryService>();
 builder.Services.AddScoped<IBatchApplicationService, BatchApplicationService>();
 
 builder.Services.AddScoped<IBatchRepository, BatchRepository>();
-builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<ICurrentBatchRepository, CurrentBatchRepository>();
 
+builder.Services.AddScoped<IBatchHistoryRepository, BatchHistoryRepository>();
 // -------------------- AUDIT --------------------
 builder.Services.AddScoped<AuditLogger>();
 

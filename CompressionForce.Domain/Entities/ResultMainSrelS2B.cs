@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CompressionForce.Domain.Entities;
+﻿namespace CompressionForce.Domain.Entities;
 
 public partial class ResultMainSrelS2B
 {

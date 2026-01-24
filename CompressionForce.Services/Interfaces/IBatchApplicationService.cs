@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CompressionForce.Services.DTOs.Requests;
-using CompressionForce.Services.DTOs.Batch;
+﻿using CompressionForce.Services.DTOs.Batch;
 
 namespace CompressionForce.Services.Interfaces
 {

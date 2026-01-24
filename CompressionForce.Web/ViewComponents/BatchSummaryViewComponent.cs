@@ -9,7 +9,7 @@ namespace CompressionForce.Web.ViewComponents
     {
         public IViewComponentResult Invoke(BatchSummaryVM model)
         {
-            return View("BatchSummary",model);
+            return View("BatchSummary", model);
         }
     }
 }

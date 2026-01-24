@@ -1,20 +1,13 @@
-﻿using Azure.Core;
-using CompressionForce.Domain.Entities;
-using CompressionForce.Services.DTOs.Batch;
-using CompressionForce.Services.DTOs.Requests;
+﻿//using CompressionForce.Services.DTOs.Requests;
+using CompressionForce.Domain.Exceptions;
 using CompressionForce.Services.Interfaces;
 using CompressionForce.Web.Mapping;
 using CompressionForce.Web.Models.Batches;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using CompressionForce.Domain.Exceptions;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.IO;
-using System.Linq;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 
 namespace CompressionForce.Web.Controllers
@@ -60,7 +53,6 @@ namespace CompressionForce.Web.Controllers
 
             // ---------------- Batches ----------------
             var batchDtos = await _batchqueryService.GetBatchesByRecipe(vm.SelectedRecipeCode);
-            Console.WriteLine("-----------------------2.Batches count: " + batchDtos.Count);
 
             // CASE 1: No batches → recipe parameters only
             if (batchDtos == null || !batchDtos.Any())
@@ -87,7 +79,7 @@ namespace CompressionForce.Web.Controllers
             vm.Summary = BatchPageMapper.ToSummaryVM(batchDetails);
 
 
-            // ✅ PARAMETERS MUST COME FROM BATCH
+            // PARAMETERS MUST COME FROM BATCH
             vm.Parameters = BatchPageMapper.ToParametersVM(batchDetails);
             return View(vm);
         }
@@ -95,6 +87,7 @@ namespace CompressionForce.Web.Controllers
         // --------------------------------------------------
         // AJAX endpoints
         // --------------------------------------------------
+
 
         [HttpGet]
         public async Task<IActionResult> GetActiveBatchesByRecipe(string recipeCode)
@@ -127,6 +120,7 @@ namespace CompressionForce.Web.Controllers
             if (batchDetails == null)
                 return NotFound();
 
+            //var headerVm = BatchPageMapper.ToHeaderVM(batchDetails);
             var summaryVm = BatchPageMapper.ToSummaryVM(batchDetails);
             var parametersVm = BatchPageMapper.ToParametersVM(batchDetails);
 
@@ -140,6 +134,20 @@ namespace CompressionForce.Web.Controllers
             });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetBatchHeader(string recipeCode)
+        {
+            var batchDtos = await _batchqueryService.GetBatchesByRecipe(recipeCode);
+
+            var vm = new BatchHeaderVM
+            {
+                hasRecipes = !string.IsNullOrWhiteSpace(recipeCode),
+                hasBatches = batchDtos != null && batchDtos.Any()
+            };
+
+            return ViewComponent("BatchHeader", vm);
+        }
+
 
         //recipe-level parameters endpoint(for no-batch case)
         [HttpGet]
@@ -151,6 +159,7 @@ namespace CompressionForce.Web.Controllers
 
             return Json(BatchPageMapper.ToVM(recipe));
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetRecipeParametersHtml(string recipeCode)
@@ -203,13 +212,15 @@ namespace CompressionForce.Web.Controllers
         public async Task<IActionResult> AddBatch(AddBatchVM vm)
         {
             BatchPageMapper.ToDto(vm);
-            Console.WriteLine("--------------------Printing from AddBatch in Controller");
-            Console.WriteLine($"RecipeCode: {vm.RecipeCode}, BatchCode: {vm.BatchCode}, BatchQty: {vm.BatchQty}, TabletQty: {vm.TabletQty}");
             try
             {
                 await _batchapplicationService.AddBatchAsync(BatchPageMapper.ToDto(vm));
             }
             catch (DomainException ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
             }
@@ -225,7 +236,7 @@ namespace CompressionForce.Web.Controllers
 
         [HttpPost]
         public async Task<IActionResult> DeactivateBatch(DeactivateBatchVM vm)
-        {   
+        {
             await _batchapplicationService.DeactivateBatchAsync(BatchPageMapper.ToDto(vm));
             return Ok();
         }

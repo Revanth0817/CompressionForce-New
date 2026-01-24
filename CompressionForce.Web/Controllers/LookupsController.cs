@@ -1,6 +1,6 @@
 ﻿using CompressionForce.Services.Lookups;
-using Microsoft.AspNetCore.Mvc;
 using CompressionForce.Web.DTOs;
+using Microsoft.AspNetCore.Mvc;
 namespace CompressionForce.Web.Controllers
 {
     [ApiController]

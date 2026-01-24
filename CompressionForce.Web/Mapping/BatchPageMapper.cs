@@ -3,7 +3,6 @@ using CompressionForce.Services.DTOs.Batch;
 using CompressionForce.Web.Models.Batches;
 using System.Reflection;
 using System.Text.Json;
-using CompressionForce.Services.DTOs.Requests;
 
 namespace CompressionForce.Web.Mapping
 {
@@ -54,7 +53,7 @@ namespace CompressionForce.Web.Mapping
         // --------------------------------------------------
         // Batch Summary
         // --------------------------------------------------
-        public static BatchSummaryVM ToSummaryVM(BatchDetails dto)
+        public static BatchSummaryVM ToSummaryVM(BatchDetailsDto dto)
         {
             return new BatchSummaryVM
             {
@@ -70,65 +69,8 @@ namespace CompressionForce.Web.Mapping
         // --------------------------------------------------
         // Batch Parameters mapping
         // --------------------------------------------------
-        public static BatchRecipeParametersVM ToParametersVM(BatchDetails dto)
+        public static BatchRecipeParametersVM ToParametersVM(BatchDetailsDto dto)
         {
-            /*
-            return new BatchRecipeParametersVM
-            {
-                ToolType = dto.ToolType,
-                AwcArType = dto.AwcArType,
-                RecipeType = dto.RecipeType,
-                RecipeCode = dto.RecipeCode,
-
-                ProductName = dto.ProductName,
-                Shape = dto.Shape,
-                Size = dto.Size,
-
-                TableThickness = dto.TableThickness,
-                TableHardness = dto.TableHardness,
-                TableWeight = dto.TableWeight,
-                MaxTurretRpm = dto.MaxTurretRpm,
-
-                // S1
-                ForceFeederRatioS1 = dto.ForceFeederRatioS1,
-                FillDepthS1 = dto.FillDepthS1,
-                MainPenetrationPositionS1 = dto.MainPenetrationPositionS1,
-                MainThicknessPositionS1 = dto.MainThicknessPositionS1,
-                PrePenetrationPositionS1 = dto.PrePenetrationPositionS1,
-                PreThicknessPositionS1 = dto.PreThicknessPositionS1,
-                SampleIntervalS1 = dto.SampleIntervalS1,
-                SampleRevolutionQtyS1 = dto.SampleRevolutionQtyS1,
-                MaxMainCompressionForceS1 = dto.MaxMainCompressionForceS1,
-                MaxPreCompressionForceS1 = dto.MaxPreCompressionForceS1,
-                MaxEjectionCompressionForceS1 = dto.MaxEjectionCompressionForceS1,
-
-                // S2
-                ForceFeederRatioS2 = dto.ForceFeederRatioS2,
-                FillDepthS2 = dto.FillDepthS2,
-                MainPenetrationPositionS2 = dto.MainPenetrationPositionS2,
-                MainThicknessPositionS2 = dto.MainThicknessPositionS2,
-                PrePenetrationPositionS2 = dto.PrePenetrationPositionS2,
-                PreThicknessPositionS2 = dto.PreThicknessPositionS2,
-                SampleIntervalS2 = dto.SampleIntervalS2,
-                SampleRevolutionQtyS2 = dto.SampleRevolutionQtyS2,
-                MaxMainCompressionForceS2 = dto.MaxMainCompressionForceS2,
-                MaxPreCompressionForceS2 = dto.MaxPreCompressionForceS2,
-                MaxEjectionCompressionForceS2 = dto.MaxEjectionCompressionForceS2,
-
-                // AWC / AR
-                RejectionLimitMaxS1 = dto.RejectionLimitMaxS1,
-                AwcLimitMaxS1 = dto.AwcLimitMaxS1,
-                AwcSetPointS1 = dto.AwcSetPointS1,
-                AwcLimitMinS1 = dto.AwcLimitMinS1,
-                RejectionLimitMinS1 = dto.RejectionLimitMinS1,
-
-                RejectionLimitMaxS2 = dto.RejectionLimitMaxS2,
-                AwcLimitMaxS2 = dto.AwcLimitMaxS2,
-                AwcSetPointS2 = dto.AwcSetPointS2,
-                AwcLimitMinS2 = dto.AwcLimitMinS2,
-                RejectionLimitMinS2 = dto.RejectionLimitMinS2
-            };
-            */
             if (dto == null)
                 return null;
 
@@ -180,13 +122,6 @@ namespace CompressionForce.Web.Mapping
 
                 // Debug log
                 var actualType = param.Value?.GetType().Name ?? "null";
-                Console.WriteLine($"[DEBUG] Parameter Name: {param.Name}, Type: {param.Type}, Value: {param.Value}, ActualValueType: {actualType}");
-
-                if (prop == null || !prop.CanWrite)
-                {
-                    Console.WriteLine($"[BatchPageMapper] No matching VM property for parameter '{param.Name}'");
-                    continue;
-                }
 
                 try
                 {
@@ -288,13 +223,7 @@ namespace CompressionForce.Web.Mapping
 
                 // Debug log
                 var actualType = param.Value?.GetType().Name ?? "null";
-                Console.WriteLine($"[DEBUG] Parameter Name: {param.Name}, Type: {param.Type}, Value: {param.Value}, ActualValueType: {actualType}");
 
-                if (prop == null || !prop.CanWrite)
-                {
-                    Console.WriteLine($"[BatchPageMapper] No matching VM property for parameter '{param.Name}'");
-                    continue;
-                }
 
                 try
                 {
@@ -323,7 +252,7 @@ namespace CompressionForce.Web.Mapping
             // -----------------------------
             if (value is JsonElement json)
             {
-                // 1️⃣ STRING JSON VALUES
+                // STRING JSON VALUES
                 if (json.ValueKind == JsonValueKind.String)
                 {
                     var str = json.GetString();
@@ -343,7 +272,7 @@ namespace CompressionForce.Web.Mapping
                     return str; // fallback
                 }
 
-                // 2️⃣ NUMBER JSON VALUES
+                // NUMBER JSON VALUES
                 if (json.ValueKind == JsonValueKind.Number)
                 {
                     if (targetType == typeof(decimal))
@@ -359,7 +288,7 @@ namespace CompressionForce.Web.Mapping
                         return json.GetInt64();
                 }
 
-                // 3️⃣ BOOLEAN JSON VALUES
+                // BOOLEAN JSON VALUES
                 if (json.ValueKind == JsonValueKind.True || json.ValueKind == JsonValueKind.False)
                 {
                     if (targetType == typeof(bool))

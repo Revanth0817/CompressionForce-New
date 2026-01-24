@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CompressionForce.Domain.Entities
+﻿namespace CompressionForce.Domain.Entities
 {
     public class Recipe
     {
@@ -17,6 +15,6 @@ namespace CompressionForce.Domain.Entities
             Name = name;
             Parameters = parameters ?? new List<RecipeParameter>();
         }
-        
+
     }
 }

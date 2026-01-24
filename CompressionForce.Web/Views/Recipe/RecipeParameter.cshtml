@@ -3,7 +3,9 @@
 @using System.Linq
 
 @*@{   ViewData["Title"] = "RecipeParameter";}*@
-
+@{
+    bool hasRecipes = Model.RecipeCodes != null && Model.RecipeCodes.Any();
+}
 <div class="BatchContainer p-3">
     @if (TempData.TryGetValue("Error", out var msg))
     {
@@ -17,14 +19,11 @@
                 if (el) {
                     el.classList.add('fade');
                     el.style.opacity = '0';
-                    setTimeout(() => el.remove(), 400);
+                    setTimeout(() => el.remove(), 1000);
                 }
             }, 1000);
         </script>
     }
-
-
-
 
     <div class="w-100 BatchHeader">
         <div class="d-flex flex-wrap batchPageTabHeader gap-4">
@@ -66,7 +65,7 @@
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                 <div class="d-flex flex-wrap gap-3 py-4">
-                    <button type="button"  id="btnAdd" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white"
+                    <button type="button" id="btnAdd" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white"
                             data-bs-toggle="modal"
                             data-bs-target="#addRecipeModal">
                         Add Recipe
@@ -76,11 +75,23 @@
                     <button type="button" id="btnPrint" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Print Recipe</button>
                 </div>
 
-            <!-- The wrapper we will replace with partial HTML -->
-            <div id="recipeSection" class="card">
-                @Html.Partial("_RecipeParametersIndex", Model.Recipe)
-            </div>
+                <!-- The wrapper we will replace with partial HTML -->
+                @if (!hasRecipes)
+                {
+                    <!-- NO RECIPES -->
+                    <div class="p-lg-4 p-md-4 p-sm-3 p-3 bord-D2D2D2 bord-rad-4px boxshadow">
+                        <div class="text-muted text-center">
+                            No recipes available
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div id="recipeSection" class="card">
+                        @await Html.PartialAsync("_RecipeParametersIndex", Model.Recipe)
 
+                    </div>
+                }
 
             </div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
@@ -119,21 +130,21 @@
 </div>
 
 <script>
-     // Auto-show modal if there's an error from the Controller
-     document.addEventListener("DOMContentLoaded", function () {
-         var error = '@TempData["ErrorMessage"]';
-         if (error && error.length > 0) {
-             var myModal = new bootstrap.Modal(document.getElementById('addRecipeModal'));
-             myModal.show();
-         }
-     });
+    // Auto-show modal if there's an error from the Controller
+    document.addEventListener("DOMContentLoaded", function () {
+        var error = '@TempData["ErrorMessage"]';
+        if (error && error.length > 0) {
+            var myModal = new bootstrap.Modal(document.getElementById('addRecipeModal'));
+            myModal.show();
+        }
+    });
 </script>
 
-    @section Scripts {
+@section Scripts {
     <!-- jQuery Validation (depends on jQuery in _Layout) -->
     <partial name="_ValidationScriptsPartial" />
 
     <!-- Page-specific script -->
-    <script src="~/js/recipeJS.js"></script>
+    <script src="~/js/recipe.js"></script>
 
 }

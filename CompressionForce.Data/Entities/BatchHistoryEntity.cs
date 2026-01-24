@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CompressionForce.Data.Entities;
+﻿namespace CompressionForce.Data.Entities;
 
 public class BatchHistoryEntity
 {
