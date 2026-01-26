@@ -4,15 +4,26 @@ using CompressionForce.Data.UnitOfWork;
 using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Abstractions.UnitOfWork;
 using CompressionForce.Domain.Validation;
+using CompressionForce.Services;
 using CompressionForce.Services.Audit;
-using CompressionForce.Services.Batches;
-using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
 using CompressionForce.Web.ModelBinding;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Rotativa.AspNetCore;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +67,8 @@ builder.Services.AddScoped<LookupRecipeValidator>();
 // -------------------- APPLICATION SERVICES --------------------
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<ILookupService, LookupService>();
+builder.Services.AddScoped<IPlcStatusService, PlcStatusService>();
+builder.Services.AddScoped<AutoTareService>();
 
 // Recipe
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
@@ -98,7 +111,6 @@ var app = builder.Build();
 // -----------------------------------------------------------------------------
 // MIDDLEWARE PIPELINE
 // -----------------------------------------------------------------------------
-
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -114,7 +126,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// SESSION MUST BE BEFORE CUSTOM MIDDLEWARE
+// ⚠️ Session MUST be before custom middleware
 app.UseSession();
 
 // -----------------------------------------------------------------------------
@@ -136,28 +148,27 @@ app.Use(async (context, next) =>
             if (!string.IsNullOrEmpty(lastActivityStr) &&
                 DateTime.TryParse(lastActivityStr, out var lastActivity))
             {
-                var idleMinutes =
-                    (DateTime.UtcNow - lastActivity).TotalMinutes;
+                var idleMinutes = (DateTime.UtcNow - lastActivity).TotalMinutes;
 
                 if (idleMinutes > settings.ApplicationTimeoutMinutes)
                 {
                     context.Session.Clear();
-                    context.Response.Redirect("/Account/Login");
-                    return;
-                }
-            }
-
             context.Session.SetString(
                 "LastActivity",
                 DateTime.UtcNow.ToString("O")
             );
+                    return;
+                }
+            }
+
+            context.Session.SetString("LastActivity", DateTime.UtcNow.ToString("O"));
         }
     }
 
     await next();
 });
 
-// Authentication if needed
+// Authentication (if enabled later)
 // app.UseAuthentication();
 app.UseAuthorization();
 

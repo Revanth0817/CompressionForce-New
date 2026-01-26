@@ -1,31 +1,32 @@
 ﻿using CompressionForce.Data.Entities;
 using CompressionForce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-namespace CompressionForce.Data;
 
-public partial class ApplicationDbContext : DbContext
+namespace CompressionForce.Data
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+    public partial class ApplicationDbContext : DbContext
     {
-    }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
 
+        // ================= CORE TABLES =================
+        public virtual DbSet<AlarmLog> AlarmLogs { get; set; }
+        public virtual DbSet<AuditTrail> AuditTrails { get; set; }
+        public virtual DbSet<BatchEntity> Batches { get; set; }
+        public virtual DbSet<BatchHistoryEntity> BatchHistories { get; set; }
+        public virtual DbSet<CurrentBatchEntity> CurrentBatches { get; set; }
 
-    public virtual DbSet<AlarmLog> AlarmLogs { get; set; }
-    public virtual DbSet<AuditTrail> AuditTrails { get; set; }
+        public DbSet<RecipeEntity> RecipesforBatches { get; set; }
 
-    // ================= BATCH =================
-    public virtual DbSet<BatchEntity> Batches { get; set; }
-    public virtual DbSet<BatchHistoryEntity> BatchHistories { get; set; }
-    public virtual DbSet<CurrentBatchEntity> CurrentBatches { get; set; }
-    public DbSet<RecipeEntity> RecipesforBatches { get; set; }
-    // ================= RECIPE =================
+        // ================= PRIVILEGES =================
+        public virtual DbSet<Privilage> Privilages { get; set; }
+        public virtual DbSet<PrivilageHistory> PrivilageHistories { get; set; }
+
     public DbSet<RecipeEntity> Recipes => Set<RecipeEntity>();
     public DbSet<RecipeHistoryEntity> RecipeHistories => Set<RecipeHistoryEntity>();
     public DbSet<LookupValueEntity> LookupValues => Set<LookupValueEntity>();
-    // ================= OTHERS =================
-    public virtual DbSet<Privilage> Privilages { get; set; }
-    public virtual DbSet<PrivilageHistory> PrivilageHistories { get; set; }
     public virtual DbSet<ResultEjectLoadS1B> ResultEjectLoadS1Bs { get; set; }
     public virtual DbSet<ResultEjectLoadS2B> ResultEjectLoadS2Bs { get; set; }
     public virtual DbSet<ResultMainLoadS1B> ResultMainLoadS1Bs { get; set; }
@@ -42,40 +43,37 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<UserSetting> UserSettings { get; set; }
     public DbSet<SecuritySettings> SecuritySettings { get; set; }
 
-    // ================= USERS & SECURITY =================
-    public DbSet<UserGroup> UserGroups { get; set; }
-    public DbSet<GroupPrivilege> GroupPrivileges { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<GroupPrivilege> GroupPrivileges { get; set; }
 
-    // ================= LOAD CELL =================
-    public DbSet<LoadCell> LoadCells { get; set; }
-    public DbSet<LoadCellCalibration> LoadCellCalibrations { get; set; }
+        // ================= PLC STATUS =================
+        public DbSet<PlcStatus> PlcStatuses { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        // Map RecipeEntity.Parameters to jsonb
-        modelBuilder.Entity<RecipeEntity>()
-            .Property(r => r.Parameters)
-            .HasColumnType("jsonb");
+        public DbSet<AutoTareStatus> AutoTareStatuses { get; set; }
 
-        // Map RecipeHistoryEntity.OldParameters to jsonb
-        modelBuilder.Entity<RecipeHistoryEntity>()
-            .Property(r => r.OldParameters)
-            .HasColumnType("jsonb");
 
-        // Map RecipeHistoryEntity.NewParameters to jsonb
-        modelBuilder.Entity<RecipeHistoryEntity>()
-            .Property(r => r.NewParameters)
-            .HasColumnType("jsonb");
+        // ================= MODEL CONFIGURATION =================
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-        // Map CurrentBatchEntity.Parameters to jsonb
-        modelBuilder.Entity<CurrentBatchEntity>()
-            .Property(e => e.Parameters)
-            .HasColumnType("jsonb");
+            // ---------- JSONB MAPPINGS ----------
+            modelBuilder.Entity<RecipeEntity>()
+                .Property(r => r.Parameters)
+                .HasColumnType("jsonb");
+
+            modelBuilder.Entity<RecipeHistoryEntity>()
+                .Property(r => r.OldParameters)
+                .HasColumnType("jsonb");
+
+            modelBuilder.Entity<RecipeHistoryEntity>()
+                .Property(r => r.NewParameters)
+                .HasColumnType("jsonb");
 
         // Call partial method for any additional configurations
         OnModelCreatingPartial(modelBuilder);
     }
 
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    }
 }

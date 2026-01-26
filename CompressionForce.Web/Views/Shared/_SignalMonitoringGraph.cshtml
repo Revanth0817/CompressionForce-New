@@ -1,0 +1,40 @@
+﻿@* Signal Monitoring Graph (FINAL FIXED) *@
+
+<div class="signal-right">
+
+    <!-- Graph Header -->
+    <div class="graph-header">
+        <input type="number" value="50"
+               class="form-control form-control-sm w-60px">
+    </div>
+
+    <!-- Graph -->
+    <div class="hmi-graph">
+
+        <!-- Y AXIS -->
+        <div class="y-axis">
+            <div class="y-title">S1 Main Force</div>
+            <div class="y-scale">
+                @for (int i = 25; i >= 0; i -= 2)
+                {
+                    <span>@i</span>
+                }
+            </div>
+        </div>
+
+        <!-- PLOT AREA -->
+        <div class="plot-area"></div>
+
+        <!-- X AXIS -->
+        <div class="x-axis">
+            <div class="x-scale">
+                @for (int i = 0; i <= 25; i += 2)
+                {
+                    <span>@i</span>
+                }
+            </div>
+            <div class="x-title">Punch Tool</div>
+        </div>
+
+    </div>
+</div>

@@ -1,167 +1,109 @@
-﻿<div class="container-fluid border-d2d2d2 border-radius-4 p-4 m-3  ">
-    <!-- Header -->
+﻿@using Microsoft.AspNetCore.Html
+@model CompressionForce.Services.DTOs.AutoTareVm
+
+<div class="container-fluid border-d2d2d2 border-radius-4 p-4 m-3">
     <div class="card custom-card-height">
-        <div class="card-header text-white font-size-18 fw-semibold text-center background-col-215ED6"> Loadcell 'No Load' Offset Setting</div>
+
+        <!-- HEADER -->
+        <div class="card-header text-white font-size-18 fw-semibold text-center background-col-215ED6">
+            Loadcell 'No Load' Offset Setting
+        </div>
+
         <div class="card-body">
             <div class="p-4">
-                <!-- Top Buttons -->
 
+                <!-- TOP SECTION -->
                 <div class="d-flex justify-content-center mb-4">
-                    <div class="d-flex flex-nowrap flex-md-wrap align-items-center gap-3 mt-2 mt-md-0">
+                    <div class="d-flex flex-wrap align-items-center gap-3">
 
-                        <!-- Combined Buttons and Status -->
-                        <div class="d-flex flex-wrap align-items-center gap-3 flex-grow-1">
+                        <!-- Door Interlock (Display Only) -->
+                        <button class="btn text-white font-size-14 fw-semibold custom-background-col-8434C6 border-radius-4"
+                                disabled>
+                            Door Interlock
+                        </button>
 
-                            <!-- Buttons -->
-                            <button class="btn text-white font-size-14 fw-semibold custom-background-col-8434C6 border-radius-4 d-inline-block w-auto">
-                                Door Interlock
-                            </button>
-                            <button class="btn text-white font-size-14 fw-semibold background-col-8434C6 border-radius-4 d-inline-block w-auto">
-                                Turret Start
-                            </button>
+                        <!-- Turret Start (Display Only) -->
+                        <button class="btn text-white font-size-14 fw-semibold background-col-8434C6 border-radius-4"
+                                disabled>
+                            Turret Start
+                        </button>
 
-                            <!-- Status Items -->
-                          
-                                <!-- Motor Status -->
-                                <div class="d-flex align-items-center" >
-                                    <label class="font-size-14 fw-semibold col-242424 me-2">Motor Status</label>
-                                    <input type="text" class="form-control text-white font-size-12 fw-semibold text-center background-col-47494A shadow-lg border-radius-4 width-60 height-25"
-                                          value="Off" readonly>
-                                </div>
+                        <!-- Motor Status -->
+                        <div class="d-flex align-items-center">
+                            <label class="font-size-14 fw-semibold col-242424 me-2">Motor Status</label>
+                            <input class="form-control text-white font-size-12 fw-semibold text-center background-col-47494A border-radius-4 width-60 height-25"
+                                   value="@Model.MotorStatus"
+                                   readonly />
+                        </div>
 
-                                <!-- Motor Trip -->
-                            <div class="d-flex align-items-center">
-                                <label class="font-size-14 fw-semibold col-242424 me-2">Motor Trip</label>
-                                <input type="text" class="form-control text-white font-size-12 fw-semibold text-center background-col-47494A shadow-lg border-radius-4 width-60 height-25"
-                                       value="Off" readonly>
-                            </div>
-                                
+                        <!-- Motor Trip -->
+                        <div class="d-flex align-items-center">
+                            <label class="font-size-14 fw-semibold col-242424 me-2">Motor Trip</label>
+                            <input class="form-control text-white font-size-12 fw-semibold text-center background-col-47494A border-radius-4 width-60 height-25"
+                                   value="@Model.MotorTrip"
+                                   readonly />
+                        </div>
 
-                                <!-- RPM -->
-                                <div class="d-flex align-items-center">
-                                    <label class="font-size-14 fw-semibold col-242424 me-2" >Revolutions</label>
-                                    <input type="text" class="form-control font-size-12 fw-semibold text-center background-col-81D4FA col-242424 border-radius-4 width-60 height-25"
-                                           value="10" readonly>
-                                </div>
+                        <!-- Revolutions -->
+                        <div class="d-flex align-items-center">
+                            <label class="font-size-14 fw-semibold col-242424 me-2">Revolutions</label>
+                            <input class="form-control font-size-12 fw-semibold text-center background-col-81D4FA col-242424 border-radius-4 width-60 height-25"
+                                   value="@Model.Revolutions"
+                                   readonly />
+                        </div>
 
-                            </div>
-
-
-                      
                     </div>
                 </div>
 
-                <!-- Loadcell Rows -->
+                <!-- LOADCELL VALUES -->
                 <div class="row justify-content-center mt-1 gx-5">
-                    <!-- Column 1 -->
-                    <div class="col-md-4 responsive-full-col d-flex justify-content-start justify-content-md-center">
-                        <div>
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label  font-size-14 fw-semibold col-242424">S1 Main Compaction Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2 custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424  font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
 
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S2 Main Compaction Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2 custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424 font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-
-                            <div class="d-flex   justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S1 Pre Compaction Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2 custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424 font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-
-                            <div class="d-flex   justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S2 Pre Compaction Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2 custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424 font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label  font-size-14 fw-semibold col-242424">S1 Ejection Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2 custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424 font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label  font-size-14 fw-semibold col-242424">S2 Ejection Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2 custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424 font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-                           
-                        </div>
+                    <!-- COLUMN 1 -->
+                    <div class="col-md-4">
+                        @LoadCell("S1 Main Compaction Loadcell", Model.S1Main)
+                        @LoadCell("S2 Main Compaction Loadcell", Model.S2Main)
+                        @LoadCell("S1 Pre Compaction Loadcell", Model.S1Pre)
+                        @LoadCell("S2 Pre Compaction Loadcell", Model.S2Pre)
+                        @LoadCell("S1 Ejection Loadcell", Model.S1Eject)
+                        @LoadCell("S2 Ejection Loadcell", Model.S2Eject)
                     </div>
-                    <!-- Column 2 -->
-                    <div class="col-md-4 responsive-full-col d-flex justify-content-start justify-content-md-center">
-                        <div>
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S1 Main Compaction Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2  custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424  font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25 text-center" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S2 Main Compaction Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2  custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424  font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25 text-center" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
 
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S1 Pre Compaction Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2  custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424  font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25 text-center" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S2 Pre  Compaction Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2  custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424  font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25 text-center" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S1 Ejection Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2  custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424 font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25 text-center" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex  justify-content-between align-items-center mb-3 flex-wrap">
-                                <div class="loadcell-label font-size-14 fw-semibold col-242424">S2 Ejection  Loadcell</div>
-                                <div class="d-flex align-items-center flex-shrink-0 gap-2 mt-2  custom-margin-start-below-1400">
-                                    <input type="text" class="form-control col-242424 font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25" value="0.00" readonly>
-                                    <span class="font-size-14 text-nowrap fw-semibold">kN</span>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- COLUMN 2 (Mirror / Redundancy) -->
+                    <div class="col-md-4">
+                        @LoadCell("S1 Main Compaction Loadcell", Model.S1Main)
+                        @LoadCell("S2 Main Compaction Loadcell", Model.S2Main)
+                        @LoadCell("S1 Pre Compaction Loadcell", Model.S1Pre)
+                        @LoadCell("S2 Pre Compaction Loadcell", Model.S2Pre)
+                        @LoadCell("S1 Ejection Loadcell", Model.S1Eject)
+                        @LoadCell("S2 Ejection Loadcell", Model.S2Eject)
                     </div>
+
                 </div>
-
             </div>
+
+            <!-- PROGRESS BAR -->
             <div class="container-fluid mt-4 mb-3">
-                <div class="progress" style="height: 10px;">
-                    <div class="progress-bar background-col-215ED6" style="width: 4%;"></div>
+                <div class="progress" style="height:10px;">
+                    <div class="progress-bar background-col-215ED6"
+                         style="width:100%;"></div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
+@functions {
+    private IHtmlContent LoadCell(string label, decimal value)
+    {
+        return new HtmlString($@"
+        <div class='d-flex justify-content-between align-items-center mb-3'>
+            <div class='font-size-14 fw-semibold col-242424'>{label}</div>
+            <div class='d-flex align-items-center gap-2'>
+                <input class='form-control col-242424 font-size-12 fw-semibold text-center border-d2d2d2 border-radius-4 width-60 height-25'
+                       value='{value:F2}'
+                       readonly />
+                <span class='font-size-14 fw-semibold'>kN</span>
+            </div>
+        </div>");
+    }
+}

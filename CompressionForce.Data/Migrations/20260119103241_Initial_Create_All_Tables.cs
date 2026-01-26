@@ -6,11 +6,14 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CompressionForce.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddMissingTables : Migration
+    public partial class Initial_Create_All_Tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "public");
+
             migrationBuilder.CreateTable(
                 name: "AlarmLogs",
                 columns: table => new
@@ -41,6 +44,29 @@ namespace CompressionForce.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AuditTrails", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "auto_tare_status",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MotorStatus = table.Column<bool>(type: "boolean", nullable: false),
+                    MotorTrip = table.Column<bool>(type: "boolean", nullable: false),
+                    Revolutions = table.Column<int>(type: "integer", nullable: false),
+                    S1Main = table.Column<decimal>(type: "numeric", nullable: false),
+                    S2Main = table.Column<decimal>(type: "numeric", nullable: false),
+                    S1Pre = table.Column<decimal>(type: "numeric", nullable: false),
+                    S2Pre = table.Column<decimal>(type: "numeric", nullable: false),
+                    S1Eject = table.Column<decimal>(type: "numeric", nullable: false),
+                    S2Eject = table.Column<decimal>(type: "numeric", nullable: false),
+                    last_updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_auto_tare_status", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,6 +226,24 @@ namespace CompressionForce.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "plc_status",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    last_updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    plc_heartbeat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    plc_ip = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    is_local_db_connected = table.Column<bool>(type: "boolean", nullable: false),
+                    is_plc_connected = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_plc_status", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PrivilageHistories",
                 columns: table => new
                 {
@@ -260,8 +304,8 @@ namespace CompressionForce.Data.Migrations
                     Action = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     ChangedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    OldParameters = table.Column<string>(type: "text", nullable: false),
-                    NewParameters = table.Column<string>(type: "text", nullable: false)
+                    OldParameters = table.Column<string>(type: "jsonb", nullable: false),
+                    NewParameters = table.Column<string>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -276,7 +320,7 @@ namespace CompressionForce.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RecipeCode = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     RecipeName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Parameters = table.Column<string>(type: "text", nullable: false)
+                    Parameters = table.Column<string>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -992,6 +1036,10 @@ namespace CompressionForce.Data.Migrations
                 name: "AuditTrails");
 
             migrationBuilder.DropTable(
+                name: "auto_tare_status",
+                schema: "public");
+
+            migrationBuilder.DropTable(
                 name: "Batches");
 
             migrationBuilder.DropTable(
@@ -1011,6 +1059,10 @@ namespace CompressionForce.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "LookupValues");
+
+            migrationBuilder.DropTable(
+                name: "plc_status",
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "PrivilageHistories");

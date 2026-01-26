@@ -1,0 +1,97 @@
+﻿@model CompressionForce.Services.DTOs.PlcStatusVm
+
+<div class="container-fluid pt-3">
+    <div class="card">
+
+        <!-- HEADER -->
+        <div class="card-header fw-semibold font-size-18 text-white text-center background-col-215ED6">
+            PLC PC Communication @(Model.PlcConnected ? "Connected" : "Disconnected")
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body background-col-E9EFFB">
+            <div class="row g-3">
+
+                <!-- Date -->
+                <div class="col-12 col-md-4 col-lg-1">
+                    <label class="font-size-14 fw-semibold mb-1 col-242424">Date</label>
+                    <input type="text"
+                           class="form-control height-35 col-242424 font-size-14 border-radius-4"
+                           value="@Model.Date"
+                           readonly />
+                </div>
+
+                <!-- Time -->
+                <div class="col-12 col-md-4 col-lg-1">
+                    <label class="font-size-14 fw-semibold mb-1 col-242424">Time</label>
+                    <input type="text"
+                           class="form-control height-35 col-242424 font-size-14 border-radius-4"
+                           value="@Model.Time"
+                           readonly />
+                </div>
+
+                <!-- User Login On -->
+                <div class="col-12 col-md-4 col-lg-2">
+                    <label class="font-size-14 fw-semibold mb-1 col-242424">User Login On</label>
+                    <input class="form-control height-35"
+                           value="@Model.UserLoginOn"
+                           readonly />
+                </div>
+
+                <!-- App Run Time -->
+                <div class="col-12 col-md-4 col-lg-1">
+                    <label class="font-size-14 fw-semibold mb-1 col-242424">App.RunTime</label>
+                    <input class="form-control height-35 col-242424 font-size-14 border-radius-4"
+                           value="@Model.AppRunTime"
+                           readonly />
+
+                </div>
+
+                <!-- User Name -->
+                <div class="col-12 col-md-4 col-lg-2">
+                    <label class="font-size-14 fw-semibold mb-1 col-242424">User Name</label>
+                    <input class="form-control height-35"
+                           value="@Model.UserName"
+                           readonly />
+
+                </div>
+
+                <!-- User Level -->
+                <div class="col-12 col-md-4 col-lg-1">
+                    <label class="font-size-14 fw-semibold mb-1 col-242424">User Level</label>
+                    <input class="form-control height-35"
+                           value="@Model.UserLevel"
+                           readonly />
+                </div>
+
+                <!-- PLC IP -->
+                <div class="col-12 col-md-4 col-lg-2">
+                    <label class="font-size-14 fw-semibold mb-1 col-242424">PLC IP</label>
+                    <input type="text"
+                           class="form-control height-35 col-242424 font-size-14"
+                           value="@Model.PlcIp"
+                           readonly />
+                </div>
+
+                <!-- Local DB -->
+                <div class="col-12 col-md-4 col-lg-1 text-start">
+                    <label class="font-size-14 fw-semibold mb-1 d-block col-242424">Local DB</label>
+                    <div class="mt-2">
+                        <img src="~/icons/@(Model.LocalDbConnected ? "local db.svg" : "db_error.svg")"
+                             class="width-18 height-18" />
+                    </div>
+                </div>
+
+                <!-- PLC Comm -->
+                <div class="col-12 col-md-4 col-lg-1 text-start">
+                    <label class="font-size-14 fw-semibold mb-1 d-block col-242424">PLC Comm</label>
+                    <div class="mt-2">
+                        <img src="~/icons/@(Model.PlcConnected ? "plc comm.svg" : "plc_error.svg")"
+                             class="width-18 height-18" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
