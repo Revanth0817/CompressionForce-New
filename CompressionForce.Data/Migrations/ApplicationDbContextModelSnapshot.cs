@@ -65,6 +65,121 @@ namespace CompressionForce.Data.Migrations
                     b.ToTable("auto_tare_status", "public");
                 });
 
+            modelBuilder.Entity("CompressionForce.Data.Entities.BatchEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BatchCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BatchCondition")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BatchNumber")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("BatchQty")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("BatchSize")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BatchStatus")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("GoodQty")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LeftQty")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ProdusedQty")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RecipeCode")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("RejectionQty")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("S2GoodQty")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("S2RejectionQty")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TabletQty")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Batches");
+                });
+
+            modelBuilder.Entity("CompressionForce.Data.Entities.BatchHistoryEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BatchCode")
+                        .HasColumnType("text");
+
+                    b.Property<long?>("BatchSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EReventType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RecipeCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BatchHistories");
+                });
+
+            modelBuilder.Entity("CompressionForce.Data.Entities.CurrentBatchEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BatchNumber")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Parameters")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CurrentBatches");
+                });
+
             modelBuilder.Entity("CompressionForce.Data.Entities.LookupValueEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -255,204 +370,6 @@ namespace CompressionForce.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AuditTrails");
-                });
-
-            modelBuilder.Entity("CompressionForce.Domain.Entities.Batch", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BatchCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BatchCondition")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BatchNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BatchQty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BatchSize")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BatchStatus")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("GoodQty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LeftQty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProdusedQty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RecipeCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RejectionQty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2GoodQty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2RejectionQty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TabletQty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Batches");
-                });
-
-            modelBuilder.Entity("CompressionForce.Domain.Entities.BatchHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BatchCode")
-                        .HasColumnType("text");
-
-                    b.Property<long?>("BatchSize")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("EReventType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RecipeCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BatchHistories");
-                });
-
-            modelBuilder.Entity("CompressionForce.Domain.Entities.CurrentBatch", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AwcLower")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AwcUpper")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BatchNumber")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("RejLower")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RejUpper")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1AwcLowerLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1AwcSetLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1AwcUpperLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1FeederRatio")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1FillCam")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1FillDepth")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1MainPenetration")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1MainThickness")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1PrePenetration")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1PreThickness")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1RejLowerLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S1RejUpperLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2AwcLowerLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2AwcSetLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2AwcUpperLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2FeederRatio")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2FillCam")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2FillDepth")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2MainPenetration")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2MainThickness")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2PrePenetration")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2PreThickness")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2RejLowerLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("S2RejUpperLimit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TurretRpm")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CurrentBatches");
                 });
 
             modelBuilder.Entity("CompressionForce.Domain.Entities.GroupPrivilege", b =>

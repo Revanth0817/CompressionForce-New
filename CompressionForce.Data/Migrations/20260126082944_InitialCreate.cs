@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -6,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CompressionForce.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_Create_All_Tables : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,20 +77,20 @@ namespace CompressionForce.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserName = table.Column<string>(type: "text", nullable: true),
                     RecipeCode = table.Column<string>(type: "text", nullable: true),
                     BatchCode = table.Column<string>(type: "text", nullable: true),
-                    BatchSize = table.Column<string>(type: "text", nullable: true),
-                    BatchNumber = table.Column<string>(type: "text", nullable: true),
-                    ProdusedQty = table.Column<string>(type: "text", nullable: true),
-                    LeftQty = table.Column<string>(type: "text", nullable: true),
-                    UserName = table.Column<string>(type: "text", nullable: true),
+                    BatchQty = table.Column<int>(type: "integer", nullable: true),
+                    TabletQty = table.Column<int>(type: "integer", nullable: true),
                     BatchStatus = table.Column<string>(type: "text", nullable: true),
-                    GoodQty = table.Column<string>(type: "text", nullable: true),
-                    RejectionQty = table.Column<string>(type: "text", nullable: true),
-                    S2GoodQty = table.Column<string>(type: "text", nullable: true),
-                    S2RejectionQty = table.Column<string>(type: "text", nullable: true),
-                    TabletQty = table.Column<string>(type: "text", nullable: true),
-                    BatchQty = table.Column<string>(type: "text", nullable: true),
+                    GoodQty = table.Column<int>(type: "integer", nullable: true),
+                    RejectionQty = table.Column<int>(type: "integer", nullable: true),
+                    BatchSize = table.Column<int>(type: "integer", nullable: true),
+                    BatchNumber = table.Column<string>(type: "text", nullable: true),
+                    ProdusedQty = table.Column<int>(type: "integer", nullable: true),
+                    LeftQty = table.Column<int>(type: "integer", nullable: true),
+                    S2GoodQty = table.Column<int>(type: "integer", nullable: true),
+                    S2RejectionQty = table.Column<int>(type: "integer", nullable: true),
                     BatchCondition = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -123,35 +124,7 @@ namespace CompressionForce.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     BatchNumber = table.Column<string>(type: "text", nullable: true),
-                    TurretRpm = table.Column<string>(type: "text", nullable: true),
-                    S1FeederRatio = table.Column<string>(type: "text", nullable: true),
-                    S2FeederRatio = table.Column<string>(type: "text", nullable: true),
-                    S1FillDepth = table.Column<string>(type: "text", nullable: true),
-                    S1PreThickness = table.Column<string>(type: "text", nullable: true),
-                    S1MainThickness = table.Column<string>(type: "text", nullable: true),
-                    S1PrePenetration = table.Column<string>(type: "text", nullable: true),
-                    S1MainPenetration = table.Column<string>(type: "text", nullable: true),
-                    S2FillDepth = table.Column<string>(type: "text", nullable: true),
-                    S2PreThickness = table.Column<string>(type: "text", nullable: true),
-                    S2MainThickness = table.Column<string>(type: "text", nullable: true),
-                    S2PrePenetration = table.Column<string>(type: "text", nullable: true),
-                    S2MainPenetration = table.Column<string>(type: "text", nullable: true),
-                    S1RejUpperLimit = table.Column<string>(type: "text", nullable: true),
-                    S1AwcUpperLimit = table.Column<string>(type: "text", nullable: true),
-                    S1AwcSetLimit = table.Column<string>(type: "text", nullable: true),
-                    S1AwcLowerLimit = table.Column<string>(type: "text", nullable: true),
-                    S1RejLowerLimit = table.Column<string>(type: "text", nullable: true),
-                    S2RejUpperLimit = table.Column<string>(type: "text", nullable: true),
-                    S2AwcUpperLimit = table.Column<string>(type: "text", nullable: true),
-                    S2AwcSetLimit = table.Column<string>(type: "text", nullable: true),
-                    S2AwcLowerLimit = table.Column<string>(type: "text", nullable: true),
-                    S2RejLowerLimit = table.Column<string>(type: "text", nullable: true),
-                    S1FillCam = table.Column<string>(type: "text", nullable: true),
-                    S2FillCam = table.Column<string>(type: "text", nullable: true),
-                    AwcUpper = table.Column<string>(type: "text", nullable: true),
-                    AwcLower = table.Column<string>(type: "text", nullable: true),
-                    RejUpper = table.Column<string>(type: "text", nullable: true),
-                    RejLower = table.Column<string>(type: "text", nullable: true)
+                    Parameters = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
