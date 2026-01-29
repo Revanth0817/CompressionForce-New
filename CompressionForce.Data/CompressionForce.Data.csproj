@@ -25,4 +25,8 @@
 		<ProjectReference Include="..\CompressionForce.Domain\CompressionForce.Domain.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
+
 </Project>
