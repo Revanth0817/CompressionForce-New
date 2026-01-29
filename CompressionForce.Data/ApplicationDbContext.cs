@@ -74,11 +74,13 @@ namespace CompressionForce.Data
 
             modelBuilder.Entity<RecipeHistoryEntity>()
                 .Property(r => r.OldParameters)
-                .HasColumnType("jsonb");
+                .HasColumnType("jsonb")
+                .IsRequired(false);
 
             modelBuilder.Entity<RecipeHistoryEntity>()
                 .Property(r => r.NewParameters)
-                .HasColumnType("jsonb");
+                .HasColumnType("jsonb")
+                .IsRequired(false);
 
             modelBuilder.Entity<CurrentBatchEntity>()
                 .Property(e => e.Parameters)
