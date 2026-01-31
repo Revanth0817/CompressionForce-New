@@ -50,14 +50,6 @@ namespace CompressionForce.WebControllers
             return View();
         }
 
-        /* ===================== AUTO TARE ===================== */
-        public IActionResult AutoTare()
-        {
-            CompressionForce.Services.DTOs.AutoTareVm model =
-                _autoTareService.GetStatus();
-
-            return View(model);
-        }
         public IActionResult Welcome()
         {
             return View();

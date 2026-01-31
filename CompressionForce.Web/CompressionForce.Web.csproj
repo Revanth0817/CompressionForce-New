@@ -20,6 +20,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\CompressionForce.Data\CompressionForce.Data.csproj" />
 		<ProjectReference Include="..\CompressionForce.Services\CompressionForce.Services.csproj" />
+		<ProjectReference Include="..\CompressionForce.Integrations\CompressionForce.Integrations.csproj" />
 	</ItemGroup>
 
 </Project>

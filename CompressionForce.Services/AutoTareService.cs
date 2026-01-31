@@ -1,40 +1,48 @@
 ﻿using CompressionForce.Data;
 using CompressionForce.Services.DTOs;
 using System.Linq;
+using CompressionForce.Domain.Abstractions;
+using CompressionForce.Services.DTOs;
+using CompressionForce.Services.Interfaces;
+using CompressionForce.Services.Plc;
 
 namespace CompressionForce.Services
 {
-    public class AutoTareService
-    {
-        private readonly ApplicationDbContext _db;
 
-        public AutoTareService(ApplicationDbContext db)
+
+    public sealed class AutoTareService : IAutoTareService
+    {
+        private readonly PlcSignalCache _cache;
+
+        public AutoTareService(PlcSignalCache cache)
         {
-            _db = db;
+            _cache = cache;
         }
 
-        public AutoTareVm GetStatus()
+        public AutoTareDto GetSnapshot()
         {
-            var row = _db.AutoTareStatuses.FirstOrDefault();
-
-            if (row == null)
+            return new AutoTareDto
             {
-                return new AutoTareVm(); // prevents NullReferenceException
-            }
+                MotorStatus = GetBool("MOTOR_STATUS"),
+                MotorTrip = GetBool("MOTOR_TRIP"),
+                Revolutions = GetInt("REVOLUTIONS"),
 
-            return new AutoTareVm
-            {
-                MotorStatus = row.MotorStatus ? "On" : "Off",
-                MotorTrip = row.MotorTrip ? "On" : "Off",
-                Revolutions = row.Revolutions,
-
-                S1Main = row.S1Main,
-                S2Main = row.S2Main,
-                S1Pre = row.S1Pre,
-                S2Pre = row.S2Pre,
-                S1Eject = row.S1Eject,
-                S2Eject = row.S2Eject
+                S1Main = GetDecimal("LC_S1_MAIN"),
+                S2Main = GetDecimal("LC_S2_MAIN"),
+                S1Pre = GetDecimal("LC_S1_PRE"),
+                S2Pre = GetDecimal("LC_S2_PRE"),
+                S1Eject = GetDecimal("LC_S1_EJECT"),
+                S2Eject = GetDecimal("LC_S2_EJECT")
             };
         }
+
+        private bool GetBool(string key)
+            => _cache.TryGet(key, out var v) && v is bool b && b;
+
+        private int GetInt(string key)
+            => _cache.TryGet(key, out var v) && v is int i ? i : 0;
+
+        private decimal GetDecimal(string key)
+            => _cache.TryGet(key, out var v) && v is decimal d ? d : 0m;
     }
 }

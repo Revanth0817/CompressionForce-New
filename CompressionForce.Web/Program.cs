@@ -3,15 +3,22 @@ using CompressionForce.Data.Repositories;
 using CompressionForce.Data.UnitOfWork;
 using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Abstractions.UnitOfWork;
+using CompressionForce.Domain.Plc;
 using CompressionForce.Domain.Validation;
-using CompressionForce.Services.Interfaces;
 using CompressionForce.Services;
-using CompressionForce.Services.Batches;
 using CompressionForce.Services.Audit;
+using CompressionForce.Services.Batches;
+using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
+using CompressionForce.Services.Plc;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
 using CompressionForce.Web.ModelBinding;
+using CompressionForce.Domain.Plc;
+using CompressionForce.Integrations.Plc;
+using CompressionForce.Integrations.Plc.Config;
+using CompressionForce.Integrations.Plc.Polling;
+using CompressionForce.Web.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -70,8 +77,7 @@ builder.Services.AddScoped<LookupRecipeValidator>();
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<ILookupService, LookupService>();
 builder.Services.AddScoped<IPlcStatusService, PlcStatusService>();
-builder.Services.AddScoped<AutoTareService>();
-
+builder.Services.AddScoped<IAutoTareService, AutoTareService>();
 // Recipe
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 // Batch
@@ -82,6 +88,33 @@ builder.Services.AddScoped<IBatchRepository, BatchRepository>();
 builder.Services.AddScoped<ICurrentBatchRepository, CurrentBatchRepository>();
 
 builder.Services.AddScoped<IBatchHistoryRepository, BatchHistoryRepository>();
+
+//Plc
+builder.Services.AddSingleton<PlcSignalCache>();
+builder.Services.AddSingleton<IPlcRealtimeNotifier, SignalRPlcNotifier>();
+builder.Services.AddHostedService<PlcPollingService>();
+
+builder.Services.AddSingleton<PlcSignalCache>();
+
+builder.Services.AddSingleton<PlcSignalRegistry>(sp =>
+{
+    var signals = PlcConfigLoader.Load("plc-signals.json");
+    return new PlcSignalRegistry(signals);
+});
+
+builder.Services.AddSingleton(sp =>
+{
+    var registry = sp.GetRequiredService<PlcSignalRegistry>();
+    return PlcPollPlan.Create(registry.GetAll());
+});
+
+builder.Services.AddSingleton<IPlcSignalReader, ModbusPlcSignalReader>();
+builder.Services.AddSingleton<IPlcSignalWriter, ModbusPlcSignalWriter>();
+builder.Services.AddSingleton<IPlcWriteConfirmService, PlcWriteConfirmService>();
+builder.Services.AddSingleton<IPlcRealtimeNotifier, SignalRPlcNotifier>();
+
+builder.Services.AddHostedService<PlcPollingService>();
+builder.Services.AddSignalR();
 // -------------------- AUDIT --------------------
 builder.Services.AddScoped<AuditLogger>();
 
