@@ -14,8 +14,36 @@ namespace CompressionForce.Integrations.Plc.Config
 
         public PlcSignalRegistry(IEnumerable<PlcSignalDefinition> signals)
         {
-            _signals = signals.ToDictionary(s => s.Key);
+            if (signals == null)
+                throw new ArgumentNullException(nameof(signals));
+
+            var list = signals.ToList();
+
+            var invalid = list
+                .Where(s => string.IsNullOrWhiteSpace(s.Key))
+                .ToList();
+
+            if (invalid.Any())
+            {
+                throw new InvalidOperationException(
+                    $"PLC config error: {invalid.Count} signal(s) have null/empty keys");
+            }
+
+            var duplicates = list
+                .GroupBy(s => s.Key)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            if (duplicates.Any())
+            {
+                throw new InvalidOperationException(
+                    $"PLC config error: duplicate signal keys: {string.Join(", ", duplicates)}");
+            }
+
+            _signals = list.ToDictionary(s => s.Key);
         }
+
 
         // ✅ FIX FOR YOUR ERROR
         public IReadOnlyCollection<PlcSignalDefinition> GetAll()

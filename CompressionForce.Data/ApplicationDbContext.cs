@@ -59,8 +59,6 @@ namespace CompressionForce.Data
         // ================= PLC STATUS =================
         public DbSet<PlcStatus> PlcStatuses { get; set; }
 
-        public DbSet<AutoTareStatus> AutoTareStatuses { get; set; }
-
 
         // ================= MODEL CONFIGURATION =================
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,8 +1,4 @@
-﻿using CompressionForce.Data;
-using CompressionForce.Services.DTOs;
-using System.Linq;
-using CompressionForce.Domain.Abstractions;
-using CompressionForce.Services.DTOs;
+﻿using CompressionForce.Services.DTOs;
 using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Plc;
 

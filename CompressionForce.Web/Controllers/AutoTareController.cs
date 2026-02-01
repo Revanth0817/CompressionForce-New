@@ -17,7 +17,7 @@ namespace CompressionForce.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult AutoTare()
         {
             var dto = _service.GetSnapshot();
             var vm = dto.ToVm();

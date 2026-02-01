@@ -16,16 +16,13 @@ namespace CompressionForce.WebControllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
-        private readonly AutoTareService _autoTareService;
 
         public HomeController(
             ILogger<HomeController> logger,
-            ApplicationDbContext context,
-            AutoTareService autoTareService)
+            ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
-            _autoTareService = autoTareService;
         }
 
         public IActionResult Index()

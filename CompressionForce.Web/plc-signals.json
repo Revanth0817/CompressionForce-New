@@ -1,0 +1,31 @@
+﻿[
+  {
+    "key": "MOTOR_STATUS",
+    "type": "Coil",
+    "address": 0,
+    "polling": "Fast",
+    "writable": false
+  },
+  {
+    "key": "MOTOR_TRIP",
+    "type": "Coil",
+    "address": 1,
+    "polling": "Fast",
+    "writable": false
+  },
+  {
+    "key": "REVOLUTIONS",
+    "type": "HoldingRegister",
+    "address": 10,
+    "polling": "Normal",
+    "writable": false
+  },
+  {
+    "key": "LC_S1_MAIN",
+    "type": "HoldingRegister",
+    "address": 20,
+    "scale": 0.01,
+    "polling": "Critical",
+    "writable": false
+  }
+]

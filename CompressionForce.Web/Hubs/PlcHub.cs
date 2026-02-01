@@ -2,5 +2,7 @@
 
 namespace CompressionForce.Web.Hubs
 {
-    public class PlcHub : Hub { }
+    public class PlcHub : Hub 
+    { 
+    }
 }

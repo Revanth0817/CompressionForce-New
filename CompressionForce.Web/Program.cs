@@ -5,6 +5,10 @@ using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Abstractions.UnitOfWork;
 using CompressionForce.Domain.Plc;
 using CompressionForce.Domain.Validation;
+using CompressionForce.Integrations.Plc;
+using CompressionForce.Integrations.Plc.Batching;
+using CompressionForce.Integrations.Plc.Config;
+using CompressionForce.Integrations.Plc.Polling;
 using CompressionForce.Services;
 using CompressionForce.Services.Audit;
 using CompressionForce.Services.Batches;
@@ -13,26 +17,13 @@ using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Plc;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
+using CompressionForce.Web.Hubs;
 using CompressionForce.Web.ModelBinding;
-using CompressionForce.Domain.Plc;
-using CompressionForce.Integrations.Plc;
-using CompressionForce.Integrations.Plc.Config;
-using CompressionForce.Integrations.Plc.Polling;
 using CompressionForce.Web.SignalR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -90,15 +81,23 @@ builder.Services.AddScoped<ICurrentBatchRepository, CurrentBatchRepository>();
 builder.Services.AddScoped<IBatchHistoryRepository, BatchHistoryRepository>();
 
 //Plc
-builder.Services.AddSingleton<PlcSignalCache>();
-builder.Services.AddSingleton<IPlcRealtimeNotifier, SignalRPlcNotifier>();
-builder.Services.AddHostedService<PlcPollingService>();
+builder.Services.Configure<PlcConnectionOptions>(
+    builder.Configuration.GetSection("Plc")
+);
 
-builder.Services.AddSingleton<PlcSignalCache>();
-
-builder.Services.AddSingleton<PlcSignalRegistry>(sp =>
+builder.Services.AddSingleton(sp =>
 {
-    var signals = PlcConfigLoader.Load("plc-signals.json");
+    var options = sp.GetRequiredService<IOptions<PlcConnectionOptions>>().Value;
+    return new ModbusPlcClient(options);
+});
+builder.Services.AddSingleton<IPlcClient>(sp =>
+    sp.GetRequiredService<ModbusPlcClient>());
+
+builder.Services.AddSingleton(sp =>
+{
+    var env = sp.GetRequiredService<IWebHostEnvironment>();
+    var path = Path.Combine(env.ContentRootPath, "plc-signals.json");
+    var signals = PlcConfigLoader.Load(path);
     return new PlcSignalRegistry(signals);
 });
 
@@ -108,12 +107,18 @@ builder.Services.AddSingleton(sp =>
     return PlcPollPlan.Create(registry.GetAll());
 });
 
+builder.Services.AddSingleton<PlcSignalCache>();
+
+builder.Services.AddSingleton<IPlcBatchReader, PlcBatchReader>();
+
 builder.Services.AddSingleton<IPlcSignalReader, ModbusPlcSignalReader>();
 builder.Services.AddSingleton<IPlcSignalWriter, ModbusPlcSignalWriter>();
 builder.Services.AddSingleton<IPlcWriteConfirmService, PlcWriteConfirmService>();
+
 builder.Services.AddSingleton<IPlcRealtimeNotifier, SignalRPlcNotifier>();
 
 builder.Services.AddHostedService<PlcPollingService>();
+
 builder.Services.AddSignalR();
 // -------------------- AUDIT --------------------
 builder.Services.AddScoped<AuditLogger>();
@@ -215,6 +220,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Welcome}/{id?}"
 );
 
+// -----------------------------------------------------------------------------
+// PLC
+// -----------------------------------------------------------------------------
+app.MapHub<PlcHub>("/plcHub");
 // -----------------------------------------------------------------------------
 // ROTATIVA (PDF)
 // -----------------------------------------------------------------------------
