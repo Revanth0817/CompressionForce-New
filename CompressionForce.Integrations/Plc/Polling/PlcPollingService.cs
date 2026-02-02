@@ -14,18 +14,6 @@ namespace CompressionForce.Integrations.Plc.Polling
         private readonly PlcPollPlan _plan;
         private readonly IPlcBatchReader _batchReader;
 
-        /*public PlcPollingService(
-            IPlcClient plc,
-            PlcSignalCache cache,
-            IPlcRealtimeNotifier notifier,
-            PlcPollPlan plan)
-        {
-            _plc = plc;
-            _cache = cache;
-            _notifier = notifier;
-            _plan = plan;
-        }
-        */
         public PlcPollingService(
             IPlcBatchReader batchReader,
             PlcSignalCache cache,
@@ -40,31 +28,26 @@ namespace CompressionForce.Integrations.Plc.Polling
 
         protected override async Task ExecuteAsync(CancellationToken ct)
         {
+
             while (!ct.IsCancellationRequested)
             {
                 foreach (var batch in _plan.Batches)
                 {
-                    //ExecuteBatch(batch);
-                    //await Task.Delay(batch.IntervalMs, ct);
                     var values = _batchReader.ReadBatch(batch);
 
                     foreach (var (key, value) in values)
                     {
                         if (_cache.UpdateIfChanged(key, value))
                         {
+                            Console.WriteLine($"POLL {key} = {value}");
                             await _notifier.NotifyAsync(key, value);
                         }
                     }
 
+                    // 🔴 CRITICAL FIX
+                    await Task.Delay(batch.IntervalMs, ct);
                 }
-                await Task.Delay(50, ct);
             }
         }
-
-        /*private void Publish(string key, object value)
-        {
-            if (_cache.UpdateIfChanged(key, value))
-                _notifier.NotifyAsync(key, value);
-        }*/
     }
 }

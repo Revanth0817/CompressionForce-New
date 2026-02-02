@@ -13,7 +13,12 @@ namespace CompressionForce.Web.SignalR
             _hub = hub;
         }
 
-        public Task NotifyAsync(string key, object value)
-            => _hub.Clients.All.SendAsync("plcUpdate", key, value);
+        public async Task NotifyAsync(string key, object value)
+        {
+            //Console.WriteLine($"SIGNALR {key} = {value}");       
+             await _hub.Clients.All.SendAsync("plcSignalUpdated",key,value);
+             
+        }
+
     }
 }

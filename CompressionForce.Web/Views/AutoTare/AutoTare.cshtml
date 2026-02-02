@@ -17,13 +17,13 @@
                     <div class="d-flex flex-wrap align-items-center gap-3">
 
                         <!-- Door Interlock (Display Only) -->
-                        <button class="btn text-white font-size-14 fw-semibold custom-background-col-8434C6 border-radius-4"
+                        <button id="doorInterlockBtn" class="btn text-white font-size-14 fw-semibold custom-background-col-8434C6 border-radius-4"
                                 disabled>
                             Door Interlock
                         </button>
 
                         <!-- Turret Start (Display Only) -->
-                        <button class="btn text-white font-size-14 fw-semibold background-col-8434C6 border-radius-4"
+                        <button id="turretStartBtn" class="btn text-white font-size-14 fw-semibold background-col-8434C6 border-radius-4"
                                 disabled>
                             Turret Start
                         </button>
@@ -91,7 +91,8 @@
         </div>
     </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script> 
+<script src="~/js/plc-signalr.js"></script>
 @functions {
     private IHtmlContent LoadCell(string label, string id, decimal value)
     {

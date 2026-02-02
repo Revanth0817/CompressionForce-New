@@ -80,7 +80,50 @@ builder.Services.AddScoped<ICurrentBatchRepository, CurrentBatchRepository>();
 
 builder.Services.AddScoped<IBatchHistoryRepository, BatchHistoryRepository>();
 
-//Plc
+// -------------------- PLC & SIGNAL-R --------------------
+// PLC connection
+builder.Services.Configure<PlcConnectionOptions>(
+    builder.Configuration.GetSection("Plc")
+);
+
+builder.Services.AddSingleton<ModbusPlcClient>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<PlcConnectionOptions>>().Value;
+    return new ModbusPlcClient(options);
+});
+
+builder.Services.AddSingleton<IPlcClient>(sp =>
+    sp.GetRequiredService<ModbusPlcClient>());
+
+// PLC signal config
+builder.Services.AddSingleton<PlcSignalRegistry>(sp =>
+{
+    var env = sp.GetRequiredService<IWebHostEnvironment>();
+    var path = Path.Combine(env.ContentRootPath, "plc-signals.json");
+    var signals = PlcConfigLoader.Load(path);
+    return new PlcSignalRegistry(signals);
+});
+
+builder.Services.AddSingleton(sp =>
+{
+    var registry = sp.GetRequiredService<PlcSignalRegistry>();
+    return PlcPollPlan.Create(registry.GetAll());
+});
+
+// PLC runtime
+builder.Services.AddSingleton<PlcSignalCache>();
+builder.Services.AddSingleton<IPlcBatchReader, PlcBatchReader>();
+builder.Services.AddSingleton<IPlcSignalReader, ModbusPlcSignalReader>();
+builder.Services.AddSingleton<IPlcSignalWriter, ModbusPlcSignalWriter>();
+builder.Services.AddSingleton<IPlcWriteConfirmService, PlcWriteConfirmService>();
+
+// SignalR
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IPlcRealtimeNotifier, SignalRPlcNotifier>();
+
+// Background polling
+builder.Services.AddHostedService<PlcPollingService>();
+/*
 builder.Services.Configure<PlcConnectionOptions>(
     builder.Configuration.GetSection("Plc")
 );
@@ -115,11 +158,12 @@ builder.Services.AddSingleton<IPlcSignalReader, ModbusPlcSignalReader>();
 builder.Services.AddSingleton<IPlcSignalWriter, ModbusPlcSignalWriter>();
 builder.Services.AddSingleton<IPlcWriteConfirmService, PlcWriteConfirmService>();
 
+builder.Services.AddSignalR();
 builder.Services.AddSingleton<IPlcRealtimeNotifier, SignalRPlcNotifier>();
 
 builder.Services.AddHostedService<PlcPollingService>();
+*/
 
-builder.Services.AddSignalR();
 // -------------------- AUDIT --------------------
 builder.Services.AddScoped<AuditLogger>();
 

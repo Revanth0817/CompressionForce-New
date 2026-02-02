@@ -1,16 +1,22 @@
 ﻿using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Plc;
+using CompressionForce.Integrations.Plc.Config;
 
 namespace CompressionForce.Integrations.Plc.Batching
 {
     public sealed class PlcBatchReader : IPlcBatchReader
     {
         private readonly IPlcClient _plc;
+        private readonly PlcSignalRegistry _registry;
 
-        public PlcBatchReader(IPlcClient plc)
+        public PlcBatchReader(
+            IPlcClient plc,
+            PlcSignalRegistry registry)
         {
             _plc = plc;
+            _registry = registry;
         }
+
 
         public IDictionary<string, object> ReadBatch(PlcPollBatch batch)
         {
@@ -18,41 +24,40 @@ namespace CompressionForce.Integrations.Plc.Batching
 
             foreach (var address in batch.Addresses)
             {
-                switch (batch.RegisterType)
+                object? value = batch.RegisterType switch
                 {
-                    case PlcRegisterType.Coil:
-                        result[$"COIL_{address}"] =
-                            _plc.ReadCoils(address, 1)[0];
-                        break;
+                    PlcRegisterType.Coil =>
+                        _plc.ReadCoils(address, 1)[0],
 
-                    case PlcRegisterType.InputRegister:
-                        result[$"IR_{address}"] =
-                            _plc.ReadInputRegisters(address, 1)[0];
-                        break;
+                    PlcRegisterType.InputRegister =>
+                        _plc.ReadInputRegisters(address, 1)[0],
 
-                    case PlcRegisterType.HoldingRegister:
-                        result[$"HR_{address}"] =
-                            _plc.ReadHoldingRegisters(address, 1)[0];
-                        break;
-                }
+                    PlcRegisterType.HoldingRegister =>
+                        _plc.ReadHoldingRegisters(address, 1)[0],
+
+                    _ => null
+                };
+
+                if (value == null)
+                    continue;
+
+                var signal = _registry.GetAll()
+                    .FirstOrDefault(s =>
+                        s.Type == batch.RegisterType &&
+                        s.Address == address);
+
+                if (signal == null)
+                    continue;
+
+                // Apply scaling if configured
+                if (signal.Scale.HasValue && value is int raw)
+                    result[signal.Key] = raw * signal.Scale.Value;
+                else
+                    result[signal.Key] = value;
             }
-
 
             return result;
         }
-
-        /*private static void Map<T>(
-            PlcRegisterRange range,
-            T[] values,
-            string prefix,
-            IDictionary<string, object> target)
-        {
-            for (int i = 0; i < values.Length; i++)
-            {
-                var key = $"{prefix}_{range.StartAddress + i}";
-                target[key] = values[i]!;
-            }
-        }*/
     }
 }
 
