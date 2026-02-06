@@ -11,7 +11,6 @@ namespace CompressionForce.Domain.Validation
         public ValidationResult Validate(Recipe recipe)
         {
             var result = new ValidationResult();
-
             // Example: MaxTurretRpm must be > 0
             var rpm = recipe.Parameters
                 .FirstOrDefault(p => p.Name == "MaxTurretRpm");

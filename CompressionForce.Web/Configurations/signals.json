@@ -1,0 +1,23 @@
+﻿{
+  "signals": [
+    {
+      "signalId": "S1_Main_Loadcell",
+      "dataType": "Double",
+      "updateClass": "Critical",
+      "address": {
+        "kind": "Numeric",
+        "value": "0",
+        "length": 2
+      }
+    },
+    {
+      "signalId": "Door_Interlock",
+      "dataType": "Bool",
+      "updateClass": "Fast",
+      "address": {
+        "kind": "Numeric",
+        "value": "2"
+      }
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [ "signals" ],
+  "properties": {
+    "signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [ "signalId", "dataType", "updateClass", "address" ],
+        "properties": {
+          "signalId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_]+$"
+          },
+          "dataType": {
+            "type": "string",
+            "enum": [ "Bool", "Int16", "Int32", "Float", "Double" ]
+          },
+          "updateClass": {
+            "type": "string",
+            "enum": [ "Critical", "Fast", "Normal", "Slow" ]
+          },
+          "address": {
+            "type": "object",
+            "required": [ "kind", "value" ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [ "Numeric", "Symbolic", "NodeId", "SlotSubslot" ]
+              },
+              "value": { "type": "string" },
+              "length": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -10,4 +10,7 @@
 		<PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\CompressionForce.Domain\CompressionForce.Domain.csproj" />
+	</ItemGroup>
 </Project>

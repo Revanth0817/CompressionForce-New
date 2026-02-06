@@ -15,9 +15,8 @@ using CompressionForce.Web.ModelBinding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using CompressionForce.Integrations.Cache;
+using CompressionForce.Integrations.Registry;
 using Rotativa.AspNetCore;
 using System;
 using System.IO;
@@ -36,6 +35,10 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
+
+var signalPath = Path.Combine(builder.Environment.ContentRootPath, "Configurations", "signals.json");
+var loader = new SignalJsonLoader();
+var signals = loader.Load(signalPath);
 
 // Recipe validation JSON
 builder.Configuration.AddJsonFile(
@@ -96,6 +99,10 @@ builder.Services
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     })
     .AddSessionStateTempDataProvider();
+
+//----------------------PLC -----------------------
+builder.Services.AddSingleton<IPlcSignalRegistry>(new PlcSignalRegistry(signals));
+builder.Services.AddSingleton<IPlcSignalCache, PlcSignalCache>();
 
 // -------------------- SESSION --------------------
 builder.Services.AddDistributedMemoryCache();

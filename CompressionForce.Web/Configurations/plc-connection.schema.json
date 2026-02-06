@@ -1,0 +1,44 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [ "protocol", "accessMethod", "polling" ],
+  "properties": {
+    "protocol": {
+      "type": "string",
+      "enum": [ "Modbus", "Profinet", "EthernetIP", "ADS", "OPCUA" ]
+    },
+    "accessMethod": {
+      "type": "string",
+      "enum": [ "Polling", "Subscription", "CyclicPush" ]
+    },
+    "polling": {
+      "type": "object",
+      "required": [ "useGlobalFrequency", "frequencies" ],
+      "properties": {
+        "useGlobalFrequency": { "type": "boolean" },
+        "frequencies": {
+          "type": "object",
+          "required": [ "Critical", "Fast", "Normal", "Slow" ],
+          "properties": {
+            "Critical": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "Fast": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "Normal": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "Slow": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}
