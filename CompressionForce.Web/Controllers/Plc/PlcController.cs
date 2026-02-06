@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CompressionForce.Services.Plc;
+using CompressionForce.Services.Interfaces;
 
 namespace CompressionForce.Web.Controllers.Plc
 {
@@ -17,8 +17,12 @@ namespace CompressionForce.Web.Controllers.Plc
         [HttpGet("{signalId}")]
         public IActionResult Get(string signalId)
         {
-            var value = _readService.Read<object>(signalId);
-            return Ok(value);
+            var signal = _readService.Read(signalId);
+
+            if (signal == null)
+                return NotFound();
+
+            return Ok(signal);
         }
     }
 }

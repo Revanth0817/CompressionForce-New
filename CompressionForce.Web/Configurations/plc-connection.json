@@ -1,0 +1,12 @@
+﻿{
+  "protocol": "Modbus",
+  "accessMethod": "Polling",
+
+  "modbus": {
+    "ipAddress": "192.168.0.10",
+    "port": 502,
+    "unitId": 1,
+    "timeoutMs": 2000,
+    "retryCount": 3
+  }
+}

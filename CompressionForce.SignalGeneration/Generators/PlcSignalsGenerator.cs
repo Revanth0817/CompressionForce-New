@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace CompressionForce.SignalGeneration
+namespace CompressionForce.SignalGeneration.Generators
 {
     [Generator]
     public sealed class PlcSignalsGenerator : ISourceGenerator

@@ -1,71 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
+using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Entities;
 using CompressionForce.Domain.Enums;
-using CompressionForce.Domain.Abstractions;
-using CompressionForce.Integrations.Abstractions;
+using CompressionForce.Integrations.Quality;
 
 namespace CompressionForce.Integrations.AccessStrategies.Polling
 {
-    public sealed class PollingAccessStrategy : IPlcAccessStrategy
+    public sealed class PollingAccessStrategy
     {
-        private readonly IPlcClient _client;
+        private readonly IPlcClient _plcClient;
         private readonly IPlcSignalCache _cache;
-        private readonly Dictionary<UpdateClass, int> _intervals;
+        private readonly IPollingIntervalProvider _intervalProvider;
+        private readonly ISignalQualityEvaluator _qualityEvaluator;
+
         private readonly List<CancellationTokenSource> _tokens = new();
 
         public PollingAccessStrategy(
-            IPlcClient client,
+            IPlcClient plcClient,
             IPlcSignalCache cache,
-            Dictionary<UpdateClass, int> intervals)
+            IPollingIntervalProvider intervalProvider,
+            ISignalQualityEvaluator qualityEvaluator)
         {
-            _client = client;
+            _plcClient = plcClient;
             _cache = cache;
-            _intervals = intervals;
+            _intervalProvider = intervalProvider;
+            _qualityEvaluator = qualityEvaluator;
         }
 
-        public void Start(IEnumerable<PlcSignal> signals)
+        public void Start(IEnumerable<PlcSignal> allSignals)
         {
-            foreach (var group in signals.GroupBy(s => s.UpdateClass))
+            var groups = allSignals.GroupBy(s => s.UpdateClass);
+
+            foreach (var group in groups)
             {
+                var intervalMs = _intervalProvider.GetIntervalMilliseconds(group.Key);
+
                 var cts = new CancellationTokenSource();
                 _tokens.Add(cts);
-                _ = RunPollingLoop(group.Key, group.ToList(), cts.Token);
-            }
-        }
 
-        private async Task RunPollingLoop(
-            UpdateClass updateClass,
-            List<PlcSignal> signals,
-            CancellationToken token)
-        {
-            var delay = _intervals[updateClass];
+                var worker = new PollingWorker(
+                    intervalMs,              // ✅ int
+                    group.ToList(),          // ✅ IEnumerable<PlcSignal>
+                    _plcClient,              // ✅ IPlcClient
+                    _cache,                  // ✅ IPlcSignalCache
+                    _qualityEvaluator        // ✅ ISignalQualityEvaluator
+                );
 
-            while (!token.IsCancellationRequested)
-            {
-                var values = await _client.ReadAsync(signals);
-
-                foreach (var kv in values)
-                {
-                    _cache.Set(kv.Key, new SignalValue
-                    {
-                        Value = kv.Value,
-                        Timestamp = DateTime.UtcNow,
-                        IsGood = true
-                    });
-                }
-
-                await Task.Delay(delay, token);
+                _ = worker.RunAsync(cts.Token);
             }
         }
 
         public void Stop()
         {
-            foreach (var t in _tokens)
-                t.Cancel();
+            foreach (var token in _tokens)
+                token.Cancel();
         }
     }
 }

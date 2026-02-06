@@ -9,7 +9,14 @@ namespace CompressionForce.Integrations.Cache
         private readonly ConcurrentDictionary<string, SignalValue> _cache = new();
 
         public SignalValue Get(string signalId)
-            => _cache.TryGetValue(signalId, out var v) ? v : null;
+        {
+            if (!_cache.TryGetValue(signalId, out var value))
+                throw new InvalidOperationException(
+                    $"No cached value available for signal '{signalId}'");
+
+            return value;
+        }
+
 
         public void Set(string signalId, SignalValue value)
             => _cache[signalId] = value;

@@ -1,0 +1,12 @@
+﻿{
+  "useGlobalFrequency": true,
+
+  "globalFrequencyMs": 200,
+
+  "frequencies": {
+    "Critical": 10,
+    "Fast": 100,
+    "Normal": 500,
+    "Slow": 1000
+  }
+}

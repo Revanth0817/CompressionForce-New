@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace CompressionForce.Services.Plc
+namespace CompressionForce.Services.Interfaces
 {
     public interface IPlcWriteService
     {

@@ -2,21 +2,59 @@
   "signals": [
     {
       "signalId": "S1_Main_Loadcell",
+      "description": "Main compression loadcell",
       "dataType": "Double",
       "updateClass": "Critical",
       "address": {
         "kind": "Numeric",
+        "area": "InputRegister",
         "value": "0",
         "length": 2
       }
     },
     {
       "signalId": "Door_Interlock",
+      "description": "Safety door interlock",
       "dataType": "Bool",
       "updateClass": "Fast",
       "address": {
         "kind": "Numeric",
+        "area": "DiscreteInput",
         "value": "2"
+      }
+    },
+    {
+      "signalId": "Turret_RPM_Actual",
+      "description": "Actual turret RPM",
+      "dataType": "Float",
+      "updateClass": "Normal",
+      "address": {
+        "kind": "Numeric",
+        "area": "InputRegister",
+        "value": "10",
+        "length": 2
+      }
+    },
+    {
+      "signalId": "Turret_RPM_Set",
+      "description": "Set RPM value",
+      "dataType": "Int16",
+      "updateClass": "Normal",
+      "address": {
+        "kind": "Numeric",
+        "area": "HoldingRegister",
+        "value": "20"
+      }
+    },
+    {
+      "signalId": "Machine_Start_Command",
+      "description": "Start machine command",
+      "dataType": "Bool",
+      "updateClass": "Slow",
+      "address": {
+        "kind": "Numeric",
+        "area": "Coil",
+        "value": "0"
       }
     }
   ]

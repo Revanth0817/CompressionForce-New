@@ -13,4 +13,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\CompressionForce.Domain\CompressionForce.Domain.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Signals\" />
+	</ItemGroup>
 </Project>

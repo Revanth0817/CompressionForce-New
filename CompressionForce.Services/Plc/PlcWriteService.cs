@@ -1,20 +1,21 @@
 ﻿using System.Threading.Tasks;
 using CompressionForce.Domain.Abstractions;
+using CompressionForce.Services.Interfaces;
 
 namespace CompressionForce.Services.Plc
 {
-    public sealed class PlcWriteService : IPlcWriteService
+    public sealed class PlcReadService : IPlcReadService
     {
-        private readonly IPlcClient _client;
+        private readonly IPlcSignalRegistry _registry;
+        private readonly IPlcSignalCache _cache;
 
-        public PlcWriteService(IPlcClient client)
-        {
-            _client = client;
-        }
 
-        public Task WriteAsync(string signalId, object value)
+        public object Read(string referenceName)
         {
-            return _client.WriteAsync(signalId, value);
+            var reference = _registry.ResolveReference(referenceName);
+
+            // Always read from primary cache
+            return _cache.Get(reference.Primary.SignalId);
         }
     }
 }

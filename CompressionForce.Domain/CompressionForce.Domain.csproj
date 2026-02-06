@@ -14,13 +14,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\CompressionForce.SignalRules\CompressionForce.SignalRules.csproj" />
 		<ProjectReference Include="..\CompressionForce.SignalGeneration\CompressionForce.SignalGeneration.csproj"
-						  OutputItemType="Analyzer"
-						  ReferenceOutputAssembly="false" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<AdditionalFiles Include="..\CompressionForce.Web\Configurations\signals.json" />
+				  OutputItemType="Analyzer"
+				  ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 </Project>

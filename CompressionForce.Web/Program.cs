@@ -36,6 +36,7 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
     .AddEnvironmentVariables();
 
+// PLC-Signals
 var signalPath = Path.Combine(builder.Environment.ContentRootPath, "Configurations", "signals.json");
 var loader = new SignalJsonLoader();
 var signals = loader.Load(signalPath);

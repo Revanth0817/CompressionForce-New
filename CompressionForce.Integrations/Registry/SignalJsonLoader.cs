@@ -1,44 +1,126 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using CompressionForce.Domain.Entities;
+﻿using CompressionForce.Domain.Entities;
 using CompressionForce.Domain.Enums;
 using CompressionForce.Domain.ValueObjects;
+using System.Text.Json;
+using CompressionForce.SignalRules.Enums;
 
 namespace CompressionForce.Integrations.Registry
 {
     public sealed class SignalJsonLoader
     {
-        public IReadOnlyDictionary<string, PlcSignal> Load(string filePath)
+        public IReadOnlyList<PlcSignal> Load(string filePath)
         {
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException(
+                    $"signals.json not found at {filePath}");
+
             var json = File.ReadAllText(filePath);
-            var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json);
 
-            var signals = new Dictionary<string, PlcSignal>();
+            if (!doc.RootElement.TryGetProperty("signals", out var signalsArray))
+                throw new InvalidOperationException(
+                    "signals.json must contain a top-level 'signals' array");
 
-            foreach (var el in doc.RootElement.GetProperty("signals").EnumerateArray())
+            var result = new List<PlcSignal>();
+
+            foreach (var element in signalsArray.EnumerateArray())
             {
-                var signal = new PlcSignal
+                // ---------------- Mandatory ----------------
+                var signalId = element.GetProperty("signalId").GetString()
+                    ?? throw new InvalidOperationException("signalId is required");
+
+                var dataType = Enum.Parse<SignalDataType>(
+                    element.GetProperty("dataType").GetString()!, true);
+
+                var updateClass = Enum.Parse<UpdateClass>(
+                    element.GetProperty("updateClass").GetString()!, true);
+
+                // ---------------- Optional ----------------
+                bool isPrimary;
+                if (element.TryGetProperty("isPrimary", out var isPrimaryEl))
                 {
-                    SignalId = el.GetProperty("signalId").GetString(),
-                    DataType = Enum.Parse<SignalDataType>(el.GetProperty("dataType").GetString()),
-                    UpdateClass = Enum.Parse<UpdateClass>(el.GetProperty("updateClass").GetString()),
-                    Address = new PlcAddress
-                    {
-                        Kind = Enum.Parse<AddressKind>(el.GetProperty("address").GetProperty("kind").GetString()),
-                        Value = el.GetProperty("address").GetProperty("value").GetString(),
-                        Length = el.GetProperty("address").TryGetProperty("length", out var l) ? l.GetInt32() : null
-                    }
-                };
+                    isPrimary = isPrimaryEl.GetBoolean();
+                }
+                else
+                {
+                    isPrimary = element.TryGetProperty("address", out _);
+                }
 
-                if (signals.ContainsKey(signal.SignalId))
-                    throw new InvalidDataException($"Duplicate SignalId: {signal.SignalId}");
+                PlcAddress? address = null;
+                if (element.TryGetProperty("address", out var addr))
+                {
+                    address = PlcAddress.FromJson(addr);
+                }
 
-                signals.Add(signal.SignalId, signal);
+                var aliases = element.TryGetProperty("aliases", out var aliasesEl)
+                    ? aliasesEl.EnumerateArray()
+                        .Select(a => a.GetString()!)
+                        .ToList()
+                    : new List<string>();
+
+                var groups = element.TryGetProperty("groups", out var groupsEl)
+                    ? groupsEl.EnumerateArray()
+                        .Select(g => g.GetString()!)
+                        .ToList()
+                    : new List<string>();
+
+                var description = element.TryGetProperty("description", out var descEl)
+                    ? descEl.GetString()
+                    : null;
+
+                var roles = element.TryGetProperty("roles", out var rolesEl)
+                    ? LoadRoles(rolesEl)
+                    : new Dictionary<string, PlcSignalRole>();
+
+                result.Add(new PlcSignal
+                {
+                    SignalId = signalId,
+                    IsPrimary = isPrimary,
+                    DataType = dataType,
+                    UpdateClass = updateClass,
+                    Address = address,
+                    Aliases = aliases,
+                    Groups = groups,
+                    Description = description,
+                    Roles = roles
+                });
             }
 
-            return signals;
+            return result;
+        }
+
+        // ------------------------------------------------------------
+        // Roles loader
+        // ------------------------------------------------------------
+        private static Dictionary<string, PlcSignalRole> LoadRoles(
+            JsonElement rolesElement)
+        {
+            var roles = new Dictionary<string, PlcSignalRole>();
+
+            foreach (var roleProp in rolesElement.EnumerateObject())
+            {
+                var roleName = roleProp.Name;
+                var roleEl = roleProp.Value;
+
+                var groups = roleEl.TryGetProperty("groups", out var gEl)
+                    ? gEl.EnumerateArray()
+                        .Select(g => g.GetString()!)
+                        .ToList()
+                    : new List<string>();
+
+                var description = roleEl.TryGetProperty("description", out var dEl)
+                    ? dEl.GetString()
+                    : null;
+
+                roles[roleName] = new PlcSignalRole
+                {
+                    RoleName = roleName,
+                    Groups = groups,
+                    Description = description
+                };
+            }
+
+            return roles;
         }
     }
 }

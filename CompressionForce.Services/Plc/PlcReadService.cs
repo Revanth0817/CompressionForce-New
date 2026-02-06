@@ -1,20 +1,30 @@
 ﻿using CompressionForce.Domain.Abstractions;
+using CompressionForce.Services.Interfaces;
 
-namespace CompressionForce.Services.Plc
+namespace CompressionForce.Services
 {
     public sealed class PlcReadService : IPlcReadService
     {
+        private readonly IPlcSignalRegistry _registry;
         private readonly IPlcSignalCache _cache;
 
-        public PlcReadService(IPlcSignalCache cache)
+        public PlcReadService(
+            IPlcSignalRegistry registry,
+            IPlcSignalCache cache)
         {
+            _registry = registry;
             _cache = cache;
         }
 
-        public T Read<T>(string signalId)
+        public object Read(string referenceName)
         {
-            var value = _cache.Get(signalId);
-            return value == null ? default : (T)value.Value;
+            var reference = _registry.ResolveReference(referenceName);
+
+            // Always read from primary signal cache
+            var signalValue = _cache.Get(reference.Primary.SignalId);
+
+            return signalValue.Value;
         }
+
     }
 }
