@@ -15,9 +15,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CompressionForce.SignalRules\CompressionForce.SignalRules.csproj" />
-		<ProjectReference Include="..\CompressionForce.SignalGeneration\CompressionForce.SignalGeneration.csproj"
-				  OutputItemType="Analyzer"
-				  ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\CompressionForce.SignalGeneration\CompressionForce.SignalGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 </Project>

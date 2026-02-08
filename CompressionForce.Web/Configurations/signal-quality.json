@@ -1,0 +1,8 @@
+﻿{
+  "stalenessPolicy": {
+    "Critical": "00:00:02",
+    "Fast": "00:00:05",
+    "Normal": "00:00:10",
+    "Slow": "00:00:30"
+  }
+}

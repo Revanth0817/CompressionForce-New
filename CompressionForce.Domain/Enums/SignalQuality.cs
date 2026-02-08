@@ -2,9 +2,9 @@
 {
     public enum SignalQuality
     {
-        Good,
-        Stale,
-        Bad,
-        CommunicationLost
+        Unknown,   // Never received
+        Good,      // Fresh & valid
+        Stale,     // Too old
+        Bad        // Read failed / invalid
     }
 }

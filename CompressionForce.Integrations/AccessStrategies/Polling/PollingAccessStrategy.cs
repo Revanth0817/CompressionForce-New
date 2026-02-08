@@ -13,20 +13,18 @@ namespace CompressionForce.Integrations.AccessStrategies.Polling
         private readonly IPlcClient _plcClient;
         private readonly IPlcSignalCache _cache;
         private readonly IPollingIntervalProvider _intervalProvider;
-        private readonly ISignalQualityEvaluator _qualityEvaluator;
+
 
         private readonly List<CancellationTokenSource> _tokens = new();
 
         public PollingAccessStrategy(
             IPlcClient plcClient,
             IPlcSignalCache cache,
-            IPollingIntervalProvider intervalProvider,
-            ISignalQualityEvaluator qualityEvaluator)
+            IPollingIntervalProvider intervalProvider)
         {
             _plcClient = plcClient;
             _cache = cache;
             _intervalProvider = intervalProvider;
-            _qualityEvaluator = qualityEvaluator;
         }
 
         public void Start(IEnumerable<PlcSignal> allSignals)
@@ -41,12 +39,12 @@ namespace CompressionForce.Integrations.AccessStrategies.Polling
                 _tokens.Add(cts);
 
                 var worker = new PollingWorker(
-                    intervalMs,              // ✅ int
-                    group.ToList(),          // ✅ IEnumerable<PlcSignal>
-                    _plcClient,              // ✅ IPlcClient
-                    _cache,                  // ✅ IPlcSignalCache
-                    _qualityEvaluator        // ✅ ISignalQualityEvaluator
+                    intervalMs,
+                    group.ToList(),
+                    _plcClient,
+                    _cache
                 );
+
 
                 _ = worker.RunAsync(cts.Token);
             }

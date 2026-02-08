@@ -8,5 +8,13 @@
     "Fast": 100,
     "Normal": 500,
     "Slow": 1000
+  },
+  "eventPump": {
+    "usePollingFrequency": true,
+
+    "overrides": {
+      "Critical": 20,
+      "Slow": 2000
+    }
   }
 }

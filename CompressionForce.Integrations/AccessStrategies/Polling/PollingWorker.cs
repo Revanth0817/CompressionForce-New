@@ -4,31 +4,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Entities;
-using CompressionForce.Domain.Enums;
-
 
 namespace CompressionForce.Integrations.AccessStrategies.Polling
 {
     internal sealed class PollingWorker
     {
         private readonly int _intervalMs;
-        private readonly IEnumerable<PlcSignal> _signals;
+        private readonly IReadOnlyList<PlcSignal> _signals;
         private readonly IPlcClient _plcClient;
         private readonly IPlcSignalCache _cache;
-        private readonly ISignalQualityEvaluator _qualityEvaluator;
 
         public PollingWorker(
             int intervalMs,
-            IEnumerable<PlcSignal> signals,
+            IReadOnlyList<PlcSignal> signals,
             IPlcClient plcClient,
-            IPlcSignalCache cache,
-            ISignalQualityEvaluator qualityEvaluator)
+            IPlcSignalCache cache)
         {
             _intervalMs = intervalMs;
             _signals = signals;
             _plcClient = plcClient;
             _cache = cache;
-            _qualityEvaluator = qualityEvaluator;
         }
 
         public async Task RunAsync(CancellationToken token)
@@ -38,7 +33,7 @@ namespace CompressionForce.Integrations.AccessStrategies.Polling
 
             while (await timer.WaitForNextTickAsync(token))
             {
-                IDictionary<string, object> values = null;
+                IDictionary<string, object>? values = null;
 
                 try
                 {
@@ -46,29 +41,31 @@ namespace CompressionForce.Integrations.AccessStrategies.Polling
                 }
                 catch
                 {
-                    values = null;
+                    // PLC read failure → skip this cycle
+                    continue;
                 }
+
+                var now = DateTime.UtcNow;
 
                 foreach (var signal in _signals)
                 {
-                    var previous = _cache.Get(signal.SignalId);
-                    var now = DateTime.UtcNow;
-
-                    SignalValue current = values != null && values.TryGetValue(signal.SignalId, out var val)
-                        ? new SignalValue
-                        {
-                            Value = val,
-                            TimestampUtc = now,
-                            Quality = SignalQuality.Good
-                        }
-                        : null;
-
-                    var evaluated = _qualityEvaluator.Evaluate(
-                        previous,
-                        current,
-                        _intervalMs);
-
-                    _cache.Set(signal.SignalId, evaluated);
+                    if (values != null &&
+                        values.TryGetValue(signal.SignalId, out var val))
+                    {
+                        _cache.Set(
+                            signal.SignalId,
+                            new SignalValue(
+                                val,
+                                now,
+                                Domain.Enums.SignalQuality.Good
+                            ));
+                    }
+                    else
+                    {
+                        _cache.Set(
+                            signal.SignalId,
+                            SignalValue.Unknown());
+                    }
                 }
             }
         }

@@ -4,10 +4,16 @@ using CompressionForce.Data.UnitOfWork;
 using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Abstractions.UnitOfWork;
 using CompressionForce.Domain.Validation;
-using CompressionForce.Services.Interfaces;
+using CompressionForce.Integrations.AccessStrategies.Polling;
+using CompressionForce.Integrations.Cache;
+using CompressionForce.Integrations.Configuration;
+using CompressionForce.Integrations.Events;
+using CompressionForce.Integrations.Quality;
+using CompressionForce.Integrations.Registry;
 using CompressionForce.Services;
-using CompressionForce.Services.Batches;
 using CompressionForce.Services.Audit;
+using CompressionForce.Services.Batches;
+using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
@@ -15,85 +21,122 @@ using CompressionForce.Web.ModelBinding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using CompressionForce.Integrations.Cache;
-using CompressionForce.Integrations.Registry;
 using Rotativa.AspNetCore;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region ------------------------------------------------------------------------
+// CONFIGURATION FILES
 // -----------------------------------------------------------------------------
-// CONFIGURATION
-// -----------------------------------------------------------------------------
+
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    // 🔹 Infrastructure configs
+    .AddJsonFile("plc-connection.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("polling.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("signal-quality.json", optional: false, reloadOnChange: true)
+    // 🔹 Overrides
     .AddEnvironmentVariables();
 
-// PLC-Signals
-var signalPath = Path.Combine(builder.Environment.ContentRootPath, "Configurations", "signals.json");
+// PLC Signals
+var signalPath = Path.Combine(
+    builder.Environment.ContentRootPath,
+    "Configurations",
+    "signals.json");
+
 var loader = new SignalJsonLoader();
 var signals = loader.Load(signalPath);
 
-// Recipe validation JSON
+// Recipe validation rules
 builder.Configuration.AddJsonFile(
     Path.Combine(AppContext.BaseDirectory, "recipe-validation.json"),
     optional: false,
-    reloadOnChange: true
-);
+    reloadOnChange: true);
 
-// -----------------------------------------------------------------------------
-// SERVICES
+#endregion
+
+#region ------------------------------------------------------------------------
+// CORE INFRASTRUCTURE SERVICES
 // -----------------------------------------------------------------------------
 
-// Http Context
 builder.Services.AddHttpContextAccessor();
 
 // PostgreSQL DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// -------------------- TRANSACTION - UNIT OF WORK --------------------
+#endregion
+
+#region ------------------------------------------------------------------------
+// UNIT OF WORK / DATA ACCESS
+// -----------------------------------------------------------------------------
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// -------------------- VALIDATION --------------------
+#endregion
+
+#region ------------------------------------------------------------------------
+// VALIDATION
+// -----------------------------------------------------------------------------
+
 builder.Services.Configure<RecipeValidationConfig>(builder.Configuration);
 builder.Services.AddSingleton<IRecipeValidationConfigProvider, JsonRecipeValidationConfigProvider>();
+
 builder.Services.AddScoped<ConfigRecipeValidator>();
 builder.Services.AddScoped<IRecipeValidator, RecipeRulesValidator>();
 builder.Services.AddScoped<LookupRecipeValidator>();
 
-// -------------------- APPLICATION SERVICES --------------------
+#endregion
+
+#region ------------------------------------------------------------------------
+// APPLICATION SERVICES
+// -----------------------------------------------------------------------------
+
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<ILookupService, LookupService>();
 builder.Services.AddScoped<IPlcStatusService, PlcStatusService>();
 builder.Services.AddScoped<AutoTareService>();
 
-// Recipe
+#endregion
+
+#region ------------------------------------------------------------------------
+// REPOSITORIES
+// -----------------------------------------------------------------------------
+
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
-// Batch
+
 builder.Services.AddScoped<IBatchQueryService, BatchQueryService>();
 builder.Services.AddScoped<IBatchApplicationService, BatchApplicationService>();
 
 builder.Services.AddScoped<IBatchRepository, BatchRepository>();
 builder.Services.AddScoped<ICurrentBatchRepository, CurrentBatchRepository>();
-
 builder.Services.AddScoped<IBatchHistoryRepository, BatchHistoryRepository>();
-// -------------------- AUDIT --------------------
+
+#endregion
+
+#region ------------------------------------------------------------------------
+// AUDIT
+// -----------------------------------------------------------------------------
+
 builder.Services.AddScoped<AuditLogger>();
 
-// -------------------- MVC --------------------
+#endregion
+
+#region ------------------------------------------------------------------------
+// MVC + MODEL BINDING
+// -----------------------------------------------------------------------------
+
 builder.Services
     .AddControllersWithViews(options =>
     {
-        options.ModelBinderProviders.Insert(0, new RecipeParameterModelBinderProvider());
+        options.ModelBinderProviders.Insert(
+            0,
+            new RecipeParameterModelBinderProvider());
     })
     .AddJsonOptions(options =>
     {
@@ -101,11 +144,57 @@ builder.Services
     })
     .AddSessionStateTempDataProvider();
 
-//----------------------PLC -----------------------
-builder.Services.AddSingleton<IPlcSignalRegistry>(new PlcSignalRegistry(signals));
+#endregion
+
+#region ------------------------------------------------------------------------
+// PLC SIGNAL REGISTRY + CACHE
+// -----------------------------------------------------------------------------
+
+builder.Services.AddSingleton<IPlcSignalRegistry>(
+    new PlcSignalRegistry(signals));
+
 builder.Services.AddSingleton<IPlcSignalCache, PlcSignalCache>();
 
-// -------------------- SESSION --------------------
+#endregion
+
+#region ------------------------------------------------------------------------
+// POLLING + QUALITY + EVENT PIPELINE
+// -----------------------------------------------------------------------------
+
+builder.Services.Configure<PollingConfig>(
+    builder.Configuration.GetSection("polling"));
+
+builder.Services.Configure<SignalQualityConfig>(
+    builder.Configuration.GetSection("signal-quality"));
+
+
+// Polling access strategy
+builder.Services.AddSingleton<PollingAccessStrategy>();
+
+// Quality evaluation (used by event pump)
+builder.Services.AddSingleton<SignalQualityEvaluator>();
+
+// Signal event pump (publishes from cache)
+builder.Services.AddSingleton<ISignalEventPump, SignalEventPump>();
+
+// Polling intervals (from polling.json)
+builder.Services.AddSingleton<IPollingIntervalProvider,
+    JsonPollingIntervalProvider>();
+
+// Staleness policy (from signal-quality.json)
+builder.Services.AddSingleton<ISignalStalenessPolicy,
+    JsonSignalStalenessPolicy>();
+
+// Event pump intervals (UpdateClass-based)
+builder.Services.AddSingleton<IEventPumpIntervalProvider,
+    JsonEventPumpIntervalProvider>();
+#endregion
+
+
+#region ------------------------------------------------------------------------
+// SESSION
+// -----------------------------------------------------------------------------
+
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
@@ -116,11 +205,14 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = ".CompressionForce.Session";
 });
 
+#endregion
+
 var app = builder.Build();
 
-// -----------------------------------------------------------------------------
+#region ------------------------------------------------------------------------
 // MIDDLEWARE PIPELINE
 // -----------------------------------------------------------------------------
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -140,62 +232,102 @@ app.UseRouting();
 app.UseSession();
 
 // -----------------------------------------------------------------------------
-// APPLICATION TIMEOUT MIDDLEWARE
+// APPLICATION TIMEOUT MIDDLEWARE (UNCHANGED)
 // -----------------------------------------------------------------------------
+
 app.Use(async (context, next) =>
 {
     var username = context.Session.GetString("UserName");
 
     if (!string.IsNullOrEmpty(username))
     {
-        var db = context.RequestServices.GetRequiredService<ApplicationDbContext>();
-        var settings = await db.SecuritySettings.FirstOrDefaultAsync();
+        var db =
+            context.RequestServices.GetRequiredService<ApplicationDbContext>();
 
-        if (settings != null && settings.ApplicationTimeoutMinutes > 0)
+        var settings =
+            await db.SecuritySettings.FirstOrDefaultAsync();
+
+        if (settings != null &&
+            settings.ApplicationTimeoutMinutes > 0)
         {
-            var lastActivityStr = context.Session.GetString("LastActivity");
+            var lastActivityStr =
+                context.Session.GetString("LastActivity");
 
             if (!string.IsNullOrEmpty(lastActivityStr) &&
                 DateTime.TryParse(lastActivityStr, out var lastActivity))
             {
-                var idleMinutes = (DateTime.UtcNow - lastActivity).TotalMinutes;
+                var idleMinutes =
+                    (DateTime.UtcNow - lastActivity).TotalMinutes;
 
-                if (idleMinutes > settings.ApplicationTimeoutMinutes)
+                if (idleMinutes >
+                    settings.ApplicationTimeoutMinutes)
                 {
                     context.Session.Clear();
-            context.Session.SetString(
-                "LastActivity",
-                DateTime.UtcNow.ToString("O")
-            );
                     return;
                 }
             }
 
-            context.Session.SetString("LastActivity", DateTime.UtcNow.ToString("O"));
+            context.Session.SetString(
+                "LastActivity",
+                DateTime.UtcNow.ToString("O"));
         }
     }
 
     await next();
 });
 
-// Authentication (if enabled later)
 // app.UseAuthentication();
 app.UseAuthorization();
 
-// -----------------------------------------------------------------------------
+#endregion
+
+#region ------------------------------------------------------------------------
 // ROUTES
 // -----------------------------------------------------------------------------
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Welcome}/{id?}"
-);
+    pattern: "{controller=Home}/{action=Welcome}/{id?}");
 
+#endregion
+
+#region ------------------------------------------------------------------------
+// SIGNAL PIPELINE STARTUP (POLLING + EVENT PUMP)
 // -----------------------------------------------------------------------------
+
+var registry =
+    app.Services.GetRequiredService<IPlcSignalRegistry>();
+
+var allSignals = registry.GetAllPrimaries();
+
+
+// Start PLC polling
+var polling =
+    app.Services.GetRequiredService<PollingAccessStrategy>();
+
+polling.Start(allSignals);
+
+// Start signal event pump
+var eventPump =
+    app.Services.GetRequiredService<ISignalEventPump>();
+
+var lifetime =
+    app.Services.GetRequiredService<IHostApplicationLifetime>();
+
+_ = eventPump.StartAsync(
+    allSignals,
+    lifetime.ApplicationStopping);
+
+#endregion
+
+#region ------------------------------------------------------------------------
 // ROTATIVA (PDF)
 // -----------------------------------------------------------------------------
+
 RotativaConfiguration.Setup(
     app.Environment.WebRootPath,
-    "Rotativa"
-);
+    "Rotativa");
+
+#endregion
 
 app.Run();

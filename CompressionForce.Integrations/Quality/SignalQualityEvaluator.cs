@@ -5,57 +5,31 @@ using CompressionForce.Domain.Enums;
 
 namespace CompressionForce.Integrations.Quality
 {
-    public sealed class SignalQualityEvaluator : ISignalQualityEvaluator
+    public sealed class SignalQualityEvaluator
     {
-        private const double StaleMultiplier = 2.0;
-        private const double CommLostMultiplier = 5.0;
+        private readonly ISignalStalenessPolicy _policy;
 
-        public SignalValue Evaluate(
-            SignalValue previous,
-            SignalValue current,
-            int expectedUpdateMs)
+        public SignalQualityEvaluator(ISignalStalenessPolicy policy)
         {
-            var now = DateTime.UtcNow;
+            _policy = policy;
+        }
 
-            // No new value received
-            if (current == null)
-            {
-                return new SignalValue
-                {
-                    Value = previous?.Value,
-                    TimestampUtc = previous?.TimestampUtc ?? now,
-                    Quality = SignalQuality.CommunicationLost
-                };
-            }
+        public SignalQuality Evaluate(
+            PlcSignal signal,
+            SignalValue value)
+        {
+            if (value == null)
+                return SignalQuality.Unknown;
 
-            var ageMs = (now - current.TimestampUtc).TotalMilliseconds;
+            if (value.Quality == SignalQuality.Bad)
+                return SignalQuality.Bad;
 
-            if (ageMs <= expectedUpdateMs * StaleMultiplier)
-            {
-                return new SignalValue
-                {
-                    Value = current.Value,
-                    TimestampUtc = current.TimestampUtc,
-                    Quality = SignalQuality.Good
-                };
-            }
+            var age = DateTime.UtcNow - value.TimestampUtc;
+            var maxAge = _policy.GetMaxAge(signal.UpdateClass);
 
-            if (ageMs <= expectedUpdateMs * CommLostMultiplier)
-            {
-                return new SignalValue
-                {
-                    Value = current.Value,
-                    TimestampUtc = current.TimestampUtc,
-                    Quality = SignalQuality.Stale
-                };
-            }
-
-            return new SignalValue
-            {
-                Value = current.Value,
-                TimestampUtc = current.TimestampUtc,
-                Quality = SignalQuality.CommunicationLost
-            };
+            return age <= maxAge
+                ? SignalQuality.Good
+                : SignalQuality.Stale;
         }
     }
 }
