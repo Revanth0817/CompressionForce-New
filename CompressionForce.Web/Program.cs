@@ -8,6 +8,7 @@ using CompressionForce.Integrations.AccessStrategies.Polling;
 using CompressionForce.Integrations.Cache;
 using CompressionForce.Integrations.Configuration;
 using CompressionForce.Integrations.Events;
+using CompressionForce.Integrations.Protocols.Modbus;
 using CompressionForce.Integrations.Quality;
 using CompressionForce.Integrations.Registry;
 using CompressionForce.Services;
@@ -17,7 +18,9 @@ using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
+using CompressionForce.Web.Hubs;
 using CompressionForce.Web.ModelBinding;
+using CompressionForce.Web.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -35,10 +38,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
-    // 🔹 Infrastructure configs
-    .AddJsonFile("plc-connection.json", optional: false, reloadOnChange: true)
-    .AddJsonFile("polling.json", optional: false, reloadOnChange: true)
-    .AddJsonFile("signal-quality.json", optional: false, reloadOnChange: true)
+    // 🔹 Infrastructure configs (from Configurations folder)
+    .AddJsonFile(
+        Path.Combine(builder.Environment.ContentRootPath, "Configurations", "plc-connection.json"),
+        optional: false,
+        reloadOnChange: true)
+
+    .AddJsonFile(
+        Path.Combine(builder.Environment.ContentRootPath, "Configurations", "polling.json"),
+        optional: false,
+        reloadOnChange: true)
+
+    .AddJsonFile(
+        Path.Combine(builder.Environment.ContentRootPath, "Configurations", "signal-quality.json"),
+        optional: false,
+        reloadOnChange: true)
     // 🔹 Overrides
     .AddEnvironmentVariables();
 
@@ -128,6 +142,14 @@ builder.Services.AddScoped<AuditLogger>();
 #endregion
 
 #region ------------------------------------------------------------------------
+// SIGNALR
+// -----------------------------------------------------------------------------
+// Live signal streaming to UI
+builder.Services.AddSignalR();
+#endregion
+
+
+#region ------------------------------------------------------------------------
 // MVC + MODEL BINDING
 // -----------------------------------------------------------------------------
 
@@ -161,6 +183,9 @@ builder.Services.AddSingleton<IPlcSignalCache, PlcSignalCache>();
 // POLLING + QUALITY + EVENT PIPELINE
 // -----------------------------------------------------------------------------
 
+builder.Services.AddSingleton<IPlcClient, ModbusPlcClient>();
+
+
 builder.Services.Configure<PollingConfig>(
     builder.Configuration.GetSection("polling"));
 
@@ -188,6 +213,9 @@ builder.Services.AddSingleton<ISignalStalenessPolicy,
 // Event pump intervals (UpdateClass-based)
 builder.Services.AddSingleton<IEventPumpIntervalProvider,
     JsonEventPumpIntervalProvider>();
+
+// Web owns SignalR, implements Domain abstraction
+builder.Services.AddSingleton<ISignalEventSink, SignalRSignalEventSink>();
 #endregion
 
 
@@ -227,6 +255,17 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+#region ------------------------------------------------------------------------
+// SIGNALR HUBS
+// -----------------------------------------------------------------------------
+
+app.MapHub<SignalHub>("/hubs/signals");
+// (Later)
+// app.MapHub<AlarmHub>("/hubs/alarms");
+
+#endregion
+
 
 // ⚠️ Session MUST be before custom middleware
 app.UseSession();

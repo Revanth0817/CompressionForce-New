@@ -107,3 +107,19 @@
         </div>");
     }
 }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/hubs/signals")
+        .build();
+
+    connection.on("signalUpdated", data => {
+        console.log("Signal update:", data);
+    });
+
+    connection.start()
+        .then(() => console.log("SignalR connected"))
+        .catch(err => console.error(err));
+</script>

@@ -3,7 +3,7 @@
     {
       "signalId": "S1_Main_Loadcell",
       "description": "Main compression loadcell",
-      "dataType": "Double",
+      "dataType": "Float",
       "updateClass": "Critical",
       "address": {
         "kind": "Numeric",
@@ -43,7 +43,8 @@
       "address": {
         "kind": "Numeric",
         "area": "HoldingRegister",
-        "value": "20"
+        "value": "20",
+        "length": 1
       }
     },
     {

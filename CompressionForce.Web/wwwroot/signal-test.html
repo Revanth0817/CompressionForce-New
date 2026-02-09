@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Signal Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+</head>
+<body>
+    <h2>Live Signals</h2>
+    <pre id="log"></pre>
+
+    <script>
+        const log = document.getElementById("log");
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/hubs/signals")
+            .build();
+
+        connection.on("signalUpdated", data => {
+            log.textContent +=
+                `${data.id} = ${data.value} (${data.quality}) @ ${data.timestampUtc}\n`;
+        });
+
+        connection.start()
+            .then(() => log.textContent += "Connected\n")
+            .catch(err => log.textContent += err.toString());
+    </script>
+</body>
+</html>

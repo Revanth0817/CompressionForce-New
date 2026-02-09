@@ -34,13 +34,16 @@ namespace CompressionForce.Integrations.Events
 
         public Task StartAsync(IEnumerable<PlcSignal> signals, CancellationToken token)
         {
+            //Console.WriteLine("📡 SignalEventPump.StartAsync() called");
+
             var groups = signals.GroupBy(s => s.UpdateClass);
 
             foreach (var group in groups)
             {
+
                 var interval =
                     _intervalProvider.GetIntervalMilliseconds(group.Key);
-
+                //Console.WriteLine($"📡 EventPump group {group.Key} every {interval} ms, signals: {group.Count()}");
                 _ = RunGroupAsync(group.ToList(), interval, token);
             }
 
@@ -54,12 +57,17 @@ namespace CompressionForce.Integrations.Events
         {
             using var timer =
                 new PeriodicTimer(TimeSpan.FromMilliseconds(intervalMs));
-
+            //Console.WriteLine("Custom PRINT");
             while (await timer.WaitForNextTickAsync(token))
             {
+                //
+                //Console.WriteLine($"⏰ Event tick {group.Key} @ {DateTime.UtcNow:HH:mm:ss.fff}");
+
                 foreach (var signal in signals)
                 {
                     var value = _cache.Get(signal.SignalId);
+                    //Console.WriteLine($"📦 Cache read {signal.SignalId} => {(value == null ? "NULL" : value.Value)}");
+
 
                     var quality =
                         _qualityEvaluator.Evaluate(signal, value);
@@ -70,7 +78,9 @@ namespace CompressionForce.Integrations.Events
                         quality,
                         value?.TimestampUtc ?? DateTime.UtcNow);
 
+                    //Console.WriteLine($"[SignalEventPump] {signal.SignalId} = {value?.Value} ({quality}) : 2");
                     await _sink.PublishAsync(evt);
+                    //Console.WriteLine( $"[EVENT] {evt.SignalId} = {evt.Value}, {evt.Quality}");
                 }
             }
         }

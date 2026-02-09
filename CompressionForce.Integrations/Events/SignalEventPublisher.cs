@@ -38,6 +38,8 @@ namespace CompressionForce.Integrations.Events
                 quality,
                 value?.TimestampUtc ?? DateTime.UtcNow);
 
+            Console.WriteLine( $"[SignalEventPump] {signal.SignalId} = {value?.Value} ({quality}) : 1");
+
             await _sink.PublishAsync(evt);
         }
     }

@@ -15,13 +15,26 @@ namespace CompressionForce.Integrations.Configuration
 
         public int GetIntervalMilliseconds(UpdateClass updateClass)
         {
-            if (_config.UseGlobalFrequency)
-                return _config.GlobalFrequencyMs;
+            //Console.WriteLine($"[INTERVAL] {updateClass} => {_config.GlobalFrequencyMs} ms");
+            var key = updateClass.ToString();
 
-            return _config.Frequencies.TryGetValue(updateClass.ToString(), out var ms)
-                ? ms
-                : _config.GlobalFrequencyMs;
+            if (_config.UseGlobalFrequency &&
+                _config.GlobalFrequencyMs > 0)
+            {
+                return _config.GlobalFrequencyMs;
+            }
+
+            if (_config.Frequencies != null &&
+                _config.Frequencies.TryGetValue(key, out var ms) &&
+                ms > 0)
+            {
+                return ms;
+            }
+
+            // 🔒 Absolute safety fallback
+            return 1000;
         }
+
     }
 
 }

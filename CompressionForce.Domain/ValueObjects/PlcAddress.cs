@@ -15,7 +15,7 @@ namespace CompressionForce.Domain.ValueObjects
         public string Value { get; init; } = default!;
 
         // Length in registers / bits (optional)
-        public int Length { get; init; } = 1;
+        public int? Length { get; init; }
 
         // ------------------------------------------------------------
         // Static factory used by JSON loader
@@ -38,7 +38,7 @@ namespace CompressionForce.Domain.ValueObjects
                 Value = valueProp.GetString()!,
                 Length = element.TryGetProperty("length", out var lengthProp)
                     ? lengthProp.GetInt32()
-                    : 1
+                    : (int?)null
             };
         }
     }

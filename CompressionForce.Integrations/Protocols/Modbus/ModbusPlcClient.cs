@@ -7,6 +7,7 @@ namespace CompressionForce.Integrations.Protocols.Modbus
 {
     public sealed class ModbusPlcClient : IPlcClient
     {
+
         public Task ConnectAsync() => Task.CompletedTask;
         public Task DisconnectAsync() => Task.CompletedTask;
 

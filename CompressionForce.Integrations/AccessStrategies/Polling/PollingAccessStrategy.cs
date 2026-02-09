@@ -29,12 +29,14 @@ namespace CompressionForce.Integrations.AccessStrategies.Polling
 
         public void Start(IEnumerable<PlcSignal> allSignals)
         {
+            //Console.WriteLine("🚀 PollingAccessStrategy.Start() called");
             var groups = allSignals.GroupBy(s => s.UpdateClass);
 
             foreach (var group in groups)
             {
+  
                 var intervalMs = _intervalProvider.GetIntervalMilliseconds(group.Key);
-
+                //Console.WriteLine($"⏱ Polling group {group.Key} every {intervalMs} ms, signals: {group.Count()}");
                 var cts = new CancellationTokenSource();
                 _tokens.Add(cts);
 
