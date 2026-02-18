@@ -69,7 +69,7 @@ namespace CompressionForce.Web.Controllers
         }
 
         /* ============================================================
-           PLC TAG RESOLVER (STRICT)
+           PLC TAG RESOLVER
         ============================================================ */
         private PlcTag GetTagOrThrow(string key)
         {
@@ -81,15 +81,14 @@ namespace CompressionForce.Web.Controllers
         }
 
         /* ============================================================
-           PLC COIL PULSE (SIMULATOR SAFE)
+           COIL PULSE (SAFE)
         ============================================================ */
         private async Task PulseCoil(string tagKey)
         {
             var tag = GetTagOrThrow(tagKey);
 
-            Console.WriteLine($"PLC WRITE → {tagKey} @ {tag.Address}");
-
             await _plc.WriteCoilAsync(tag.Address, true);
+            await Task.Delay(150);
             
         }
 
@@ -132,7 +131,7 @@ namespace CompressionForce.Web.Controllers
         }
 
         /* ============================================================
-           APPLY SET VALUES (HOLDING REGISTERS)
+           APPLY SET VALUES (SET_POS, SET_SPEED, JOG_SPEED, SET_VALUE)
         ============================================================ */
         [HttpPost]
         public async Task<IActionResult> ApplySet([FromBody] ServoSetDto dto)
@@ -140,31 +139,78 @@ namespace CompressionForce.Web.Controllers
             if (dto == null || string.IsNullOrWhiteSpace(dto.ServoCode))
                 return BadRequest("Invalid payload");
 
-            // WRITE: Set Position
-            var posTag = GetTagOrThrow($"{dto.ServoCode}_SET_POS");
-            await _plc.WriteHoldingRegisterAsync(
-                posTag.Address,
-                (int)(dto.SetPosition * 100)
-            );
+            try
+            {
+                // 🔹 SET POSITION (scaled x100)
+                var posTag = GetTagOrThrow($"{dto.ServoCode}_SET_POS");
+                await _plc.WriteHoldingRegisterAsync(
+                    posTag.Address,
+                    dto.SetPosition
+                );
 
-            // WRITE: Set Speed
-            var speedTag = GetTagOrThrow($"{dto.ServoCode}_SET_SPEED");
-            await _plc.WriteHoldingRegisterAsync(
-                speedTag.Address,
-                (int)dto.SetSpeed
-            );
+                // 🔹 SET SPEED
+                var speedTag = GetTagOrThrow($"{dto.ServoCode}_SET_SPEED");
+                await _plc.WriteHoldingRegisterAsync(
+                    speedTag.Address,
+                    dto.SetSpeed
+                );
 
-            // WRITE: Jog Speed  ✅ (NEW)
-            var jogSpeedTag = GetTagOrThrow($"{dto.ServoCode}_JOG_SPEED");
-            await _plc.WriteHoldingRegisterAsync(
-                jogSpeedTag.Address,
-                (int)dto.JogSpeed
-            );
+                // 🔹 JOG SPEED
+                var jogTag = GetTagOrThrow($"{dto.ServoCode}_JOG_SPEED");
+                await _plc.WriteHoldingRegisterAsync(
+                    jogTag.Address,
+                    dto.JogSpeed
+                );
 
-            return Ok();
+                // 🔹 SET VALUE
+                var setTag = GetTagOrThrow($"{dto.ServoCode}_SET");
+                await _plc.WriteHoldingRegisterAsync(
+                    setTag.Address,
+                    dto.SetValue
+                );
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"PLC write failed: {ex.Message}");
+            }
         }
 
+        /* ============================================================
+           READ CURRENT SET VALUES FROM PLC
+        ============================================================ */
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentSetValues(string servoCode)
+        {
+            if (string.IsNullOrWhiteSpace(servoCode))
+                return BadRequest("ServoCode missing");
 
+            try
+            {
+                var posTag = GetTagOrThrow($"{servoCode}_SET_POS");
+                var speedTag = GetTagOrThrow($"{servoCode}_SET_SPEED");
+                var jogTag = GetTagOrThrow($"{servoCode}_JOG_SPEED");
+                var setTag = GetTagOrThrow($"{servoCode}_SET");
+
+                int rawPos = await _plc.ReadHoldingRegisterAsync(posTag.Address);
+                int rawSpeed = await _plc.ReadHoldingRegisterAsync(speedTag.Address);
+                int rawJog = await _plc.ReadHoldingRegisterAsync(jogTag.Address);
+                int rawSet = await _plc.ReadHoldingRegisterAsync(setTag.Address);
+
+                return Ok(new
+                {
+                    setPosition = rawPos ,
+                    setSpeed = rawSpeed,
+                    jogSpeed = rawJog,
+                    setValue = rawSet
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"PLC read failed: {ex.Message}");
+            }
+        }
 
         /* ============================================================
            LIVE SERVO STATUS (CACHE)
@@ -175,25 +221,28 @@ namespace CompressionForce.Web.Controllers
             bool ready = (_cache.Get($"{servoCode}_READY") as bool?) ?? false;
             bool alarm = (_cache.Get($"{servoCode}_ALARM") as bool?) ?? false;
             int torque = (_cache.Get($"{servoCode}_ACT_TORQUE") as int?) ?? 0;
+            int actPos = (_cache.Get($"{servoCode}_ACT_POS") as int?) ?? 0;
 
-            return Ok(new { ready, alarm, torque });
+            return Ok(new { ready, alarm, torque, actPos });
         }
 
         /* ============================================================
-           SIGNALR PUSH (CALLED AFTER PLC ACTION)
+           SIGNALR PUSH
         ============================================================ */
         private async Task PublishServoStatus(string servoCode)
         {
             bool ready = (_cache.Get($"{servoCode}_READY") as bool?) ?? false;
             bool alarm = (_cache.Get($"{servoCode}_ALARM") as bool?) ?? false;
             int torque = (_cache.Get($"{servoCode}_ACT_TORQUE") as int?) ?? 0;
+            int actPos = (_cache.Get($"{servoCode}_ACT_POS") as int?) ?? 0;
 
             await _hub.Clients.All.SendAsync(
                 "ServoStatusUpdated",
                 servoCode,
                 ready,
                 alarm,
-                torque
+                torque,
+                actPos
             );
         }
     }

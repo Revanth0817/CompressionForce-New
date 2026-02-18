@@ -1,24 +1,35 @@
-﻿namespace CompressionForce.Services;
+﻿using System.Threading.Tasks;
 
-public interface IServoStatusPublisher
+namespace CompressionForce.Services
 {
-    /* ================= SERVO ================= */
-    Task PublishServoAsync(
-        string servoCode,
-        bool ready,
-        bool alarm,
-        int torque
-    );
+    public interface IServoStatusPublisher
+    {
+        /* ================= SERVO ================= */
+        Task PublishServoAsync(
+            string servoCode,
+            bool ready,
+            bool alarm,
+            int torque,
+            int actPos
+        );
 
-    /* ================= DIGITAL INPUT ================= */
-    Task PublishDigitalInputAsync(
-        string tagKey,
-        bool value
-    );
+        /* ================= DIGITAL INPUT ================= */
+        Task PublishDigitalInputAsync(
+            string tagKey,
+            bool value
+        );
 
-    /* ================= DIGITAL OUTPUT ================= */
-    Task PublishDigitalOutputAsync(
-        string tagKey,
-        bool value
-    );
+        /* ================= DIGITAL OUTPUT ================= */
+        Task PublishDigitalOutputAsync(
+            string tagKey,
+            bool value
+        );
+
+        /* ================= ANALOG INPUT ================= */
+        Task PublishAnalogInputAsync(
+            string tagKey,
+            double voltage,
+            double force
+        );
+    }
 }

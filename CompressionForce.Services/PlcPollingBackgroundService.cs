@@ -1,6 +1,6 @@
 ﻿using CompressionForce.Domain.Calibration;
 using CompressionForce.Domain.PLC;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CompressionForce.Services;
-
+namespace CompressionForce.Services
+{
     public class PlcPollingBackgroundService : BackgroundService
     {
         private readonly IPlcProtocol _plc;
@@ -21,14 +21,15 @@ namespace CompressionForce.Services;
         public PlcPollingBackgroundService(
             IPlcProtocol plc,
             PlcMemoryCache cache,
-        IConfiguration cfg,
-        IServoStatusPublisher publisher)
+            PlcTagConfig config,
+            IServoStatusPublisher publisher,
+            IServiceScopeFactory scopeFactory)
         {
             _plc = plc;
             _cache = cache;
             _config = config;
             _publisher = publisher;
-        _config = PlcConfigLoader.Load(cfg["Plc:TagsFile"]!);
+            _scopeFactory = scopeFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stop)
@@ -42,114 +43,122 @@ namespace CompressionForce.Services;
             foreach (var group in groups)
             {
                 _ = Task.Run(
-                () => PollGroup(group.Key, group.ToList(), stop),
+                    () => PollGroup(group.ToList(), stop),
                     stop
                 );
             }
         }
 
         private async Task PollGroup(
-        string pollingKey,
-    List<PlcTag> tags,
-    CancellationToken stop)
+            List<PlcTag> tags,
+            CancellationToken stop)
         {
-        var delay = _config.PollingIntervals[pollingKey];
-
-        Console.WriteLine($"🔄 Polling '{pollingKey}' every {delay} ms");
-
             while (!stop.IsCancellationRequested)
             {
                 foreach (var tag in tags)
                 {
                     try
                     {
-                    object value = tag.Type switch
+                        object rawValue = tag.Type switch
                         {
-                        /* ================= DIGITAL INPUT ================= */
                             PlcDataType.DiscreteInput =>
                                 await _plc.ReadDiscreteInputAsync(tag.Address),
 
-                        /* ================= DIGITAL OUTPUT ================= */
                             PlcDataType.Coil =>
                                 await _plc.ReadCoilAsync(tag.Address),
 
-                        /* ================= ANALOG INPUT ================= */
                             PlcDataType.InputRegister =>
-                            tag.Key.StartsWith("LC_")
-                                ? ConvertInputRegisterToVoltage(
-                                      await _plc.ReadInputRegisterAsync(tag.Address))
-                                : await _plc.ReadInputRegisterAsync(tag.Address),
+                                await _plc.ReadInputRegisterAsync(tag.Address),
 
-                        /* ================= HOLDING REGISTER ================= */
                             PlcDataType.HoldingRegister =>
                                 await _plc.ReadHoldingRegisterAsync(tag.Address),
 
                             _ => null!
                         };
 
-                    if (string.IsNullOrWhiteSpace(tag.Key))
+                        /* ================= ANALOG INPUT ================= */
+                        if (tag.Type == PlcDataType.InputRegister &&
+                            tag.Key.StartsWith("LC_") &&
+                            !string.IsNullOrWhiteSpace(tag.LoadCellCode))
+                        {
+                            int raw = (int)rawValue;
+                            double voltage = ConvertInputRegisterToVoltage(raw);
+
+                            // ✅ CREATE SCOPE FOR DB ACCESS
+                            using var scope = _scopeFactory.CreateScope();
+                            var repo = scope.ServiceProvider
+                                .GetRequiredService<ICalibrationRepository>();
+
+                            var cal = repo.GetLatest(tag.LoadCellCode);
+
+                            double factor = cal != null ? (double)cal.Factor : 1.0;
+                            double offset = cal != null ? (double)cal.Offset : 0.0;
+
+                            double force = Math.Round(
+                                (voltage * factor) + offset, 3
+                            );
+
+                            _cache.Set($"{tag.LoadCellCode}_RAW", raw);
+                            _cache.Set($"{tag.LoadCellCode}_VOLT", voltage);
+                            _cache.Set($"{tag.LoadCellCode}_KN", force);
+
+                            await _publisher.PublishAnalogInputAsync(
+                                tag.LoadCellCode,
+                                voltage,
+                                force
+                            );
+
                             continue;
+                        }
 
-                    /* CACHE ALWAYS UPDATED */
-                    _cache.Set(tag.Key, value);
-
-                    /* =====================================================
-                       DIGITAL INPUT → UI
-                    ===================================================== */
+                        /* ================= DIGITAL INPUT ================= */
                         if (tag.Type == PlcDataType.DiscreteInput)
                         {
                             _cache.Set(tag.Key, rawValue);
-
                             await _publisher.PublishDigitalInputAsync(
                                 tag.Key,
-                            (bool)value
+                                (bool)rawValue
                             );
-
-                            // ✅ ADD THIS
-                            await _publisher.PublishTagAsync(tag.Key, rawValue);
                         }
 
-                    /* =====================================================
-                       DIGITAL OUTPUT (COIL) → UI
-                    ===================================================== */
+                        /* ================= DIGITAL OUTPUT ================= */
                         if (tag.Type == PlcDataType.Coil)
                         {
                             _cache.Set(tag.Key, rawValue);
-
                             await _publisher.PublishDigitalOutputAsync(
                                 tag.Key,
-                            (bool)value
+                                (bool)rawValue
                             );
-
-                            // ✅ ADD THIS
-                            await _publisher.PublishTagAsync(tag.Key, value);
-
-                            continue;
                         }
-
-                        /* ================= HOLDING REGISTER ================= */
-                        if (tag.Type == PlcDataType.HoldingRegister)
+                        /* ================= COUNTERS (INPUT REGISTERS) ================= */
+                        if (tag.Type == PlcDataType.InputRegister &&
+                            (tag.Key == "REVOLUTION_COUNT" ||
+                             tag.Key == "ENCODER_ACT_COUNT"))
                         {
                             int value = Convert.ToInt32(rawValue);
 
                             _cache.Set(tag.Key, value);
 
-                            // ✅ ADD THIS
-                            await _publisher.PublishTagAsync(tag.Key, value);
+                            await _publisher.PublishAnalogInputAsync(
+                                tag.Key,     // reuse channel
+                                value,       // voltage parameter reused
+                                value        // force parameter reused
+                            );
+
+                            continue;
                         }
 
-                    /* =====================================================
-                       SERVO STATUS (AGGREGATED)
-                    ===================================================== */
+
+                        /* ================= SERVO STATUS ================= */
                         if (IsServoStatusTag(tag.Key))
                         {
                             _cache.Set(tag.Key, rawValue);
                             await PublishServoStatusFromCache(tag.Key);
-
-                            // ✅ ADD THIS
-                            await _publisher.PublishTagAsync(tag.Key, rawValue);
                         }
+
+
                     }
+
                     catch (Exception ex)
                     {
                         Console.WriteLine(
@@ -158,13 +167,9 @@ namespace CompressionForce.Services;
                     }
                 }
 
-            await Task.Delay(delay, stop);
+                await Task.Delay(200, stop);
             }
         }
-
-    /* ============================================================
-       SERVO STATUS AGGREGATION
-    ============================================================ */
 
         /* ================= SERVO ================= */
         private static bool IsServoStatusTag(string key)
@@ -198,18 +203,15 @@ namespace CompressionForce.Services;
                 servoCode,
                 ready,
                 alarm,
-            torque
+                torque,
+                actPos
             );
         }
 
-    /* ============================================================
-       RAW ADC → VOLTAGE (LOADCELL)
-    ============================================================ */
+
         private static double ConvertInputRegisterToVoltage(int raw)
         {
-        const double MaxVoltage = 10.0;
-        const double MaxAdc = 32767.0;
-
-        return Math.Round(raw * MaxVoltage / MaxAdc, 3);
+            return Math.Round(raw * 10.0 / 32767.0, 3);
+        }
     }
 }

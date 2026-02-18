@@ -9,9 +9,7 @@ namespace CompressionForce.Integrations.PLC.Modbus
     public class ModbusTcpProtocol : IPlcProtocol
     {
         private readonly ModbusClient _client;
-    private readonly object _lock = new();
-
-        // GLOBAL async lock (protects all PLC access)
+        private readonly object _lock = new();
         private static readonly SemaphoreSlim _plcLock = new SemaphoreSlim(1, 1);
 
         private readonly string _ip;
@@ -34,25 +32,22 @@ namespace CompressionForce.Integrations.PLC.Modbus
         // =====================================
         private void EnsureConnected()
         {
-        Console.WriteLine("PLC CONNECT ATTEMPT");
-
-        lock (_lock)
-        {
-            if (!_client.Connected)
+            lock (_lock)
             {
-                try
+                if (!_client.Connected)
                 {
-                    Console.WriteLine("PLC reconnecting...");
-                    _client.Connect();
-                    Console.WriteLine("PLC reconnected.");
+                    try
+                    {
+                        Console.WriteLine("PLC reconnecting...");
+                        _client.Connect();
+                        Console.WriteLine("PLC connected.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"PLC reconnect failed: {ex.Message}");
+                        throw;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Reconnect failed: {ex.Message}");
-                    throw;
-                }
-
-        return Task.CompletedTask;
             }
         }
 
@@ -67,7 +62,16 @@ namespace CompressionForce.Integrations.PLC.Modbus
 
             Thread.Sleep(200);
 
-            _client.Connect();
+            try
+            {
+                _client.Connect();
+                Console.WriteLine("PLC reconnected.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"PLC reconnection failed: {ex.Message}");
+                throw;
+            }
         }
 
         // =====================================
@@ -134,7 +138,6 @@ namespace CompressionForce.Integrations.PLC.Modbus
         {
             await ExecuteAsync(() =>
             {
-        lock (_lock)
                 _client.WriteSingleCoil(address, value);
                 return true;
             });
@@ -144,14 +147,13 @@ namespace CompressionForce.Integrations.PLC.Modbus
         {
             await ExecuteAsync(() =>
             {
-        lock (_lock)
                 _client.WriteSingleRegister(address, value);
                 return true;
             });
         }
 
         // =====================================
-        // CORE SAFE EXECUTOR
+        // SAFE EXECUTOR
         // =====================================
         private async Task<T> ExecuteAsync<T>(Func<T> action)
         {
@@ -166,7 +168,6 @@ namespace CompressionForce.Integrations.PLC.Modbus
             {
                 Console.WriteLine($"PLC Error: {ex.Message}");
 
-                // Attempt auto recovery
                 try
                 {
                     SafeReconnect();

@@ -380,7 +380,7 @@
                                     <div class="form-check col-4 form-check-reverse">
                                         <input class="form-check-input servo-radio ready-radio"
                                                type="radio"
-                                               name="radio_@servo.Value">
+                                               name="mgmt_radio_@servo.Value">
                                         <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
                                             Ready
                                         </label>
@@ -398,7 +398,7 @@
                                     <div class="form-check col-4 form-check-reverse">
                                         <input class="form-check-input servo-radio alarm-radio"
                                                type="radio"
-                                               name="radio_@servo.Value">
+                                               name="mgmt_radio_@servo.Value">
                                         <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
                                             Alarm
                                         </label>
@@ -685,16 +685,14 @@
                                         <div class="w-85px text-center">
                                             <input class="form-check-input servo-radio ready-radio"
                                                    type="radio"
-                                                  
-                                                   name="radio_@servo.Value">
+                                                                        name="retrieve_radio_@servo.Value">
                                         </div>
 
                                         <!-- Alarm Radio -->
                                         <div class="w-85px text-center">
                                             <input class="form-check-input servo-radio alarm-radio"
                                                    type="radio"
-                                                   
-                                                   name="radio_@servo.Value">
+                                                          name="retrieve_radio_@servo.Value">
                                         </div>
 
                                         <!-- Act Pos -->
@@ -713,26 +711,11 @@
                                         <div class="w-85px d-flex justify-content-center">
                                             <div class="d-flex align-items-center bord-col-8434C6 rounded px-2 w-70px py-1 h-29px min-width-70">
                                                 <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                        <svg width="6" height="5"
-                                                             viewBox="0 0 6 5"
-                                                             fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             onclick="changeValue(this, 1)">
-                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
-                                                        </svg>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
                                                     </button>
-
-
-
-                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                        <svg width="6" height="5"
-                                                             viewBox="0 0 6 5"
-                                                             fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             onclick="changeValue(this, -1)">
-                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
-                                                        </svg>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
                                                     </button>
                                                 </div>
                                                 <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0" />
@@ -743,26 +726,11 @@
                                         <div class="w-85px d-flex justify-content-center">
                                             <div class="d-flex align-items-center bord-col-8434C6 opacity-50 rounded px-2 w-70px py-1 h-29px min-width-70">
                                                 <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                        <svg width="6" height="5"
-                                                             viewBox="0 0 6 5"
-                                                             fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             onclick="changeValue(this, 1)">
-                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
-                                                        </svg>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
                                                     </button>
-
-
-
-                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                        <svg width="6" height="5"
-                                                             viewBox="0 0 6 5"
-                                                             fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             onclick="changeValue(this, -1)">
-                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
-                                                        </svg>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
                                                     </button>
                                                 </div>
                                                 <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold set-pos" value="0" />
@@ -814,8 +782,7 @@
                                             
                                         <input class="form-check-input servo-radio ready-radio"
                                                type="radio"
-                                                  
-                                               name="radio_@servo.Value">
+                                                    name="retrieve_radio_@servo.Value">
                                         
                                         </div>
 
@@ -823,8 +790,7 @@
                                         <div class="w-85px text-center">
                                             <input class="form-check-input servo-radio alarm-radio"
                                                    type="radio"
-                                                  
-                                                   name="radio_@servo.Value">
+                                                   name="retrieve_radio_@servo.Value">
                                         </div>
 
                                         <!-- Act Pos -->
@@ -843,26 +809,11 @@
                                         <div class="w-85px d-flex justify-content-center">
                                             <div class="d-flex align-items-center bord-col-8434C6 rounded px-2 w-70px py-1 h-29px min-width-70">
                                                 <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                        <svg width="6" height="5"
-                                                             viewBox="0 0 6 5"
-                                                             fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             onclick="changeValue(this, 1)">
-                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
-                                                        </svg>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
                                                     </button>
-
-
-
-                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                        <svg width="6" height="5"
-                                                             viewBox="0 0 6 5"
-                                                             fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             onclick="changeValue(this, -1)">
-                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
-                                                        </svg>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
                                                     </button>
                                                 </div>
                                                 <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0" />
@@ -873,26 +824,11 @@
                                         <div class="w-85px d-flex justify-content-center">
                                             <div class="d-flex align-items-center bord-col-8434C6 opacity-50 rounded px-2 w-70px py-1 h-29px min-width-70">
                                                 <div class="d-flex flex-column me-2 row-gap-1">
-                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                        <svg width="6" height="5"
-                                                             viewBox="0 0 6 5"
-                                                             fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             onclick="changeValue(this, 1)">
-                                                            <path d="M0.706446 3.13825L2.50994 0.318397C2.57436 0.217467 2.65088 0.137392 2.73512 0.0827573C2.81936 0.0281225 2.90966 0 3.00086 0C3.09206 0 3.18236 0.0281225 3.2666 0.0827573C3.35083 0.137392 3.42735 0.217467 3.49177 0.318397L5.29527 3.13825C5.73396 3.82416 5.42061 5 4.80088 5H1.19388C0.574143 5 0.267758 3.82416 0.706446 3.13825Z" fill="#242424" />
-                                                        </svg>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/up arrow.svg" />
                                                     </button>
-
-
-
-                                                    <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
-                                                        <svg width="6" height="5"
-                                                             viewBox="0 0 6 5"
-                                                             fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg"
-                                                             onclick="changeValue(this, -1)">
-                                                            <path d="M5.29355 1.86175L3.49006 4.6816C3.42564 4.78253 3.34912 4.86261 3.26488 4.91724C3.18064 4.97188 3.09034 5 2.99914 5C2.90794 5 2.81764 4.97188 2.7334 4.91724C2.64917 4.86261 2.57265 4.78253 2.50823 4.6816L0.70473 1.86175C0.266041 1.17584 0.57939 0 1.19912 0H4.80612C5.42586 0 5.73224 1.17584 5.29355 1.86175Z" fill="#242424" />
-                                                        </svg>
+                                                    <button class="btn btn-sm arrow-btns p-0">
+                                                        <img src="~/images/down arrow.svg" />
                                                     </button>
                                                 </div>
                                                 <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0" />
@@ -1040,10 +976,6 @@
                 if (alarmRadio) alarmRadio.checked = alarm ?? false;
             });
 
-
-            /* ===============================
-               2️⃣ SERVO HOME & RETRIEVE PAGE
-            =============================== */
 
                 /* ===============================
        2️⃣ SERVO HOME & RETRIEVE PAGE
@@ -1542,3 +1474,5 @@
     }
 
 </script>
+
+

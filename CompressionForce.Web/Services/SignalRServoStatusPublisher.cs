@@ -13,43 +13,19 @@ public class SignalRServoStatusPublisher : IServoStatusPublisher
         _hub = hub;
     }
 
-    /* ================= SERVO ================= */
-    public async Task PublishServoAsync(
-        string servoCode,
-        bool ready,
-        bool alarm,
-        int torque)
-    {
-        await _hub.Clients.All.SendAsync(
-            "ServoStatusUpdated",
-            servoCode,
-            ready,
-            alarm,
-            torque
-        );
-    }
+    public Task PublishDigitalInputAsync(string key, bool value)
+        => _hub.Clients.All.SendAsync("DigitalInputUpdated", key, value);
 
-    /* ================= DIGITAL INPUT ================= */
-    public async Task PublishDigitalInputAsync(
-        string tagKey,
-        bool value)
-    {
-        await _hub.Clients.All.SendAsync(
-            "DigitalInputUpdated",
-            tagKey,
-            value
-        );
-    }
+    public Task PublishDigitalOutputAsync(string key, bool value)
+        => _hub.Clients.All.SendAsync("DigitalOutputUpdated", key, value);
 
-    /* ================= DIGITAL OUTPUT ================= */
-    public async Task PublishDigitalOutputAsync(
-        string tagKey,
-        bool value)
-    {
-        await _hub.Clients.All.SendAsync(
-            "DigitalOutputUpdated",
-            tagKey,
-            value
-        );
-    }
+    public Task PublishAnalogInputAsync(string key, double v1, double v2)
+        => _hub.Clients.All.SendAsync("AnalogInputUpdated", key, v1, v2);
+
+    public Task PublishServoAsync(string servoCode, bool ready, bool alarm, int torque, int actPos)
+        => _hub.Clients.All.SendAsync("ServoStatusUpdated",
+            servoCode, ready, alarm, torque, actPos);
+
+    public Task PublishTagAsync(string key, object value)
+        => _hub.Clients.All.SendAsync("TagUpdated", key, value);
 }

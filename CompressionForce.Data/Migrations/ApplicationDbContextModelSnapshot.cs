@@ -2171,9 +2171,6 @@ namespace CompressionForce.Data.Migrations
                     b.Property<decimal>("SetSpeed")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("SetValue")
-                        .HasColumnType("numeric");
-
                     b.Property<decimal>("TorqueLimit")
                         .HasColumnType("numeric");
 
