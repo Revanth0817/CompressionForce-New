@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CompressionForce.Data;
+﻿using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
 using CompressionForce.Domain.PLC;
+using Microsoft.AspNetCore.Mvc;
+
 using CompressionForce.Services;
 using System;
 using System.Linq;

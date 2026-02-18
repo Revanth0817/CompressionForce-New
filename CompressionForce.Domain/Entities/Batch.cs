@@ -1,25 +1,29 @@
-﻿using System;
+﻿namespace CompressionForce.Domain.Entities;
 
-namespace CompressionForce.Domain.Entities;
-
-public partial class Batch
+public class Batch
 {
     public int Id { get; set; }   // ✅ PRIMARY KEY
 
-    public DateTime? DateTime { get; set; }
-    public string? RecipeCode { get; set; }
-    public string? BatchCode { get; set; }
-    public string? BatchSize { get; set; }
-    public string? BatchNumber { get; set; }
-    public string? ProdusedQty { get; set; }
-    public string? LeftQty { get; set; }
-    public string? UserName { get; set; }
-    public string? BatchStatus { get; set; }
-    public string? GoodQty { get; set; }
-    public string? RejectionQty { get; set; }
-    public string? S2GoodQty { get; set; }
-    public string? S2RejectionQty { get; set; }
-    public string? TabletQty { get; set; }
-    public string? BatchQty { get; set; }
-    public string? BatchCondition { get; set; }
+    public DateTime? DateTime { get; set; } = null;
+    public string? UserName { get; set; } = null;
+
+    public string? RecipeCode { get; set; } = null;
+    public string? BatchCode { get; set; } = null;
+    public int? BatchQty { get; set; } = null;
+    public int? TabletQty { get; set; } = null;
+
+    public string? BatchStatus { get; set; } = null;
+    public int? GoodQty { get; set; } = 0;
+    public int? RejectionQty { get; set; } = 0;
+
+
+
+    //Extra properties
+    public int? BatchSize { get; set; } = 0;
+    public string? BatchNumber { get; set; } = null;
+    public int? ProdusedQty { get; set; } = 0;
+    public int? LeftQty { get; set; } = 0;
+    public int? S2GoodQty { get; set; } = 0;
+    public int? S2RejectionQty { get; set; } = 0;
+    public string? BatchCondition { get; set; } = null;
 }

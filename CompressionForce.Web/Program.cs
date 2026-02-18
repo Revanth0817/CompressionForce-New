@@ -1,15 +1,20 @@
 ﻿using CompressionForce.Data;
+using CompressionForce.Data.Repositories;
+using CompressionForce.Data.UnitOfWork;
+using CompressionForce.Domain.Abstractions;
+using CompressionForce.Domain.Abstractions.UnitOfWork;
 using CompressionForce.Domain.Calibration;
 using CompressionForce.Domain.PLC;
 using CompressionForce.Domain.PLC;
 using CompressionForce.Domain.Validation;
+using CompressionForce.Services.Interfaces;
 using CompressionForce.Integrations.PLC.Modbus;
 using CompressionForce.Services;
+using CompressionForce.Services.Batches;
 
 
 using CompressionForce.Services;
 using CompressionForce.Services.Audit;
-using CompressionForce.Services.Interfaces;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
@@ -26,6 +31,11 @@ using Microsoft.Extensions.Hosting;
 using Rotativa.AspNetCore;
 using System;
 using System.IO;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -60,6 +70,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+// -------------------- TRANSACTION - UNIT OF WORK --------------------
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 // -------------------- VALIDATION --------------------
 builder.Services.Configure<RecipeValidationConfig>(builder.Configuration);
 builder.Services.AddSingleton<IRecipeValidationConfigProvider, JsonRecipeValidationConfigProvider>();
@@ -73,6 +86,16 @@ builder.Services.AddScoped<ILookupService, LookupService>();
 builder.Services.AddScoped<IPlcStatusService, PlcStatusService>();
 builder.Services.AddScoped<AutoTareService>();
 
+// Recipe
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+// Batch
+builder.Services.AddScoped<IBatchQueryService, BatchQueryService>();
+builder.Services.AddScoped<IBatchApplicationService, BatchApplicationService>();
+
+builder.Services.AddScoped<IBatchRepository, BatchRepository>();
+builder.Services.AddScoped<ICurrentBatchRepository, CurrentBatchRepository>();
+
+builder.Services.AddScoped<IBatchHistoryRepository, BatchHistoryRepository>();
 // -------------------- AUDIT --------------------
 builder.Services.AddScoped<AuditLogger>();
 builder.Services.AddMemoryCache();
@@ -223,7 +246,10 @@ app.Use(async (context, next) =>
                 if (idleMinutes > settings.ApplicationTimeoutMinutes)
                 {
                     context.Session.Clear();
-                    context.Response.Redirect("/Account/Login");
+            context.Session.SetString(
+                "LastActivity",
+                DateTime.UtcNow.ToString("O")
+            );
                     return;
                 }
             }

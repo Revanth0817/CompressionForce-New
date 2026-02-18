@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="DTOs\Requests\**" />
+    <EmbeddedResource Remove="DTOs\Requests\**" />
+    <None Remove="DTOs\Requests\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="MathNet.Numerics" Version="5.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />

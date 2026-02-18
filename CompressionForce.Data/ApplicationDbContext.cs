@@ -1,5 +1,4 @@
-﻿using CompressionForce.Data.Configurations;
-using CompressionForce.Data.Entities;
+﻿using CompressionForce.Data.Entities;
 using CompressionForce.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,9 +14,9 @@ namespace CompressionForce.Data
         // ================= CORE TABLES =================
         public virtual DbSet<AlarmLog> AlarmLogs { get; set; }
         public virtual DbSet<AuditTrail> AuditTrails { get; set; }
-        public virtual DbSet<Batch> Batches { get; set; }
-        public virtual DbSet<BatchHistory> BatchHistories { get; set; }
-        public virtual DbSet<CurrentBatch> CurrentBatches { get; set; }
+        public virtual DbSet<BatchEntity> Batches { get; set; }
+        public virtual DbSet<BatchHistoryEntity> BatchHistories { get; set; }
+        public virtual DbSet<CurrentBatchEntity> CurrentBatches { get; set; }
 
         // ================= PRIVILEGES =================
         public virtual DbSet<Privilage> Privilages { get; set; }
@@ -25,31 +24,34 @@ namespace CompressionForce.Data
 
         // ================= RECIPES =================
         public DbSet<RecipeEntity> Recipes => Set<RecipeEntity>();
-        public DbSet<RecipeHistoryEntity> RecipeHistories => Set<RecipeHistoryEntity>();
-        public DbSet<LookupValueEntity> LookupValues => Set<LookupValueEntity>();
+    public DbSet<RecipeHistoryEntity> RecipeHistories => Set<RecipeHistoryEntity>();
+    public DbSet<LookupValueEntity> LookupValues => Set<LookupValueEntity>();
+        public DbSet<RecipeEntity> RecipesforBatches { get; set; }
 
         // ================= RESULTS =================
         public virtual DbSet<ResultEjectLoadS1B> ResultEjectLoadS1Bs { get; set; }
-        public virtual DbSet<ResultEjectLoadS2B> ResultEjectLoadS2Bs { get; set; }
-        public virtual DbSet<ResultMainLoadS1B> ResultMainLoadS1Bs { get; set; }
-        public virtual DbSet<ResultMainLoadS2B> ResultMainLoadS2Bs { get; set; }
-        public virtual DbSet<ResultMainSrelS1B> ResultMainSrelS1Bs { get; set; }
-        public virtual DbSet<ResultMainSrelS2B> ResultMainSrelS2Bs { get; set; }
-        public virtual DbSet<ResultPreLoadS1B> ResultPreLoadS1Bs { get; set; }
-        public virtual DbSet<ResultPreLoadS2B> ResultPreLoadS2Bs { get; set; }
+    public virtual DbSet<ResultEjectLoadS2B> ResultEjectLoadS2Bs { get; set; }
+    public virtual DbSet<ResultMainLoadS1B> ResultMainLoadS1Bs { get; set; }
+    public virtual DbSet<ResultMainLoadS2B> ResultMainLoadS2Bs { get; set; }
+    public virtual DbSet<ResultMainSrelS1B> ResultMainSrelS1Bs { get; set; }
+    public virtual DbSet<ResultMainSrelS2B> ResultMainSrelS2Bs { get; set; }
+    public virtual DbSet<ResultPreLoadS1B> ResultPreLoadS1Bs { get; set; }
+    public virtual DbSet<ResultPreLoadS2B> ResultPreLoadS2Bs { get; set; }
 
         // ================= CALIBRATION =================
+
         public virtual DbSet<ServoCalibration> ServoCalibrations { get; set; }
         public DbSet<LoadCell> LoadCells { get; set; }
         public DbSet<LoadCellCalibration> LoadCellCalibrations { get; set; }
 
         // ================= USERS & SECURITY =================
+
         public virtual DbSet<UserLogin> UserLogins { get; set; }
-        public virtual DbSet<UserLoginHistroy> UserLoginHistroys { get; set; }
-        public virtual DbSet<UserManagement> UserManagements { get; set; }
-        public virtual DbSet<UserManagementHistroy> UserManagementHistroys { get; set; }
-        public virtual DbSet<UserSetting> UserSettings { get; set; }
-        public DbSet<SecuritySettings> SecuritySettings { get; set; }
+    public virtual DbSet<UserLoginHistroy> UserLoginHistroys { get; set; }
+    public virtual DbSet<UserManagement> UserManagements { get; set; }
+    public virtual DbSet<UserManagementHistroy> UserManagementHistroys { get; set; }
+    public virtual DbSet<UserSetting> UserSettings { get; set; }
+    public DbSet<SecuritySettings> SecuritySettings { get; set; }
 
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<GroupPrivilege> GroupPrivileges { get; set; }
@@ -72,11 +74,20 @@ namespace CompressionForce.Data
 
             modelBuilder.Entity<RecipeHistoryEntity>()
                 .Property(r => r.OldParameters)
-                .HasColumnType("jsonb");
+                .HasColumnType("jsonb")
+                .IsRequired(false);
 
             modelBuilder.Entity<RecipeHistoryEntity>()
                 .Property(r => r.NewParameters)
+                .HasColumnType("jsonb")
+                .IsRequired(false);
+
+            modelBuilder.Entity<CurrentBatchEntity>()
+                .Property(e => e.Parameters)
                 .HasColumnType("jsonb");
+
+            // Call partial method for any additional configurations
+            OnModelCreatingPartial(modelBuilder);
 
             // ---------- PLC STATUS MAPPING (CRITICAL FIX) ----------
             modelBuilder.Entity<PlcStatus>(entity =>
@@ -106,7 +117,7 @@ namespace CompressionForce.Data
 
             // ---------- PARTIAL CONFIGS ----------
             OnModelCreatingPartial(modelBuilder);
-        }
+    }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }

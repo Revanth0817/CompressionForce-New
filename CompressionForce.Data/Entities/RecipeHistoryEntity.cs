@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CompressionForce.Data.Entities
 {
@@ -32,7 +27,7 @@ namespace CompressionForce.Data.Entities
         [Required]
         public DateTime ChangedAt { get; set; }
 
-        public string OldParameters { get; set; } 
-        public string NewParameters { get; set; } 
+        public string? OldParameters { get; set; } 
+        public string? NewParameters { get; set; } 
     }
 }

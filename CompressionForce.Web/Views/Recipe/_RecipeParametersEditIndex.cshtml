@@ -1,7 +1,16 @@
 ﻿@using CompressionForce.Domain.Validation
 @using CompressionForce.Domain.Entities
-@model dynamic
+@model CompressionForce.Web.Models.Recipes.AddEditRecipeVm
 
+@functions
+{
+    string GetParamValue(Dictionary<string, RecipeParameter> dict, string key)
+    {
+        return dict != null && dict.TryGetValue(key, out var param)
+            ? param?.Value?.ToString() ?? string.Empty
+            : string.Empty;
+    }
+}
 @{
     var parameters = Model?.Parameters as List<RecipeParameter> ?? new();
     var toolTypes = Model?.ToolTypes as List<string> ?? new();
@@ -11,8 +20,7 @@
     var forceFeederRatioS2Types = Model?.ForceFeederRatioS1Types as List<string> ?? new();
     var recipeTypes = Model?.RecipeTypes as List<string> ?? new();
 
-    var parametersDict = parameters?.ToDictionary(p => p.Name, p => p)
-        ?? new Dictionary<string, RecipeParameter>();
+    var parametersDict = parameters?.ToDictionary(p => p.Name, p => p)?? new Dictionary<string, RecipeParameter>();
 
     var enumOptions = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
     {
@@ -27,14 +35,6 @@
 
     ParameterRule? GetRule(string name) =>
         rules.FirstOrDefault(r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-    Console.WriteLine(Model.Code);
-    Console.WriteLine("----------------------------------vm.code----------------------------------");
-    Console.WriteLine(Model.Parameters.Count);
-    Console.WriteLine("----------------------------------Parameters.Count in AddRecipe View----------------------------------");
-    Console.WriteLine(rules.Count());
-    Console.WriteLine("----------------------------------rules.Count in AddRecipe View----------------------------------");
-
 }
 
 <div class="p-4 bord-rad-4px boxshadow mt-4">
@@ -122,7 +122,7 @@
                     </div>
                     <div class="d-flex gap-3 align-items-center pb-2">
                         <label class="font-size-16px min-width-30 fw-semibold clr-242424">Product Name</label>
-                        <input recipe-param param-name="ProductName" type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px batchLabelw-60 boxshadow" placeholder="Enter Product Name" />
+                        <input recipe-param param-name="ProductName" type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px batchLabelw-60 boxshadow" value="@GetParamValue(parametersDict, "ProductName")" placeholder="Enter Product Name" />
                     </div>
                     <div class="d-flex gap-3 align-items-center pb-2">
                         <label class="font-size-16px min-width-30 fw-semibold clr-242424">Shape</label>
@@ -273,11 +273,7 @@
                     </div>
                 </div>
             </div>
-            @* <div class="emptyParamerDiv col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
-                        <div class="productParamerHeader bgcol-215ED6 clr-215ED6 text-center  font-size-18px p-10px">
-                            Empty
-                        </div>
-                    </div> *@
+
             <div class="col-sm-12 productParameterContainer order-lg-3 col-md-6  col-lg-6 px-0">
                 <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-4 px-md-4 px-sm-3">
                     S2-Product Parameter
@@ -424,11 +420,7 @@
                     </div>
                 </div>
             </div>
-            @* <div class="emptyParamerDiv  col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
-                        <div class="productParameterHeader bgcol-215ED6 clr-215ED6 text-center  font-size-18px p-10px">
-                            Empty
-                        </div>
-                    </div> *@
+
             <div class="col-sm-12 order-md-2 productParameterContainer col-md-6 col-lg-6 px-0">
                 <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-4 px-md-4 px-sm-3">
                     S2 AWC & AR Set Parameter

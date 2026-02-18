@@ -1,7 +1,4 @@
 ﻿@model CompressionForce.Web.Models.Recipes.AddEditRecipeVm
-@{
-}
-
 
 <!--Add Recipe-->
 <form asp-action="AddRecipe" method="post">
@@ -20,7 +17,7 @@
             </div>
         </div>
     </div>
-    @Html.Partial("_RecipeParametersEditIndex", Model)
+    @await Html.PartialAsync("_RecipeParametersEditIndex", Model)
     <div class="table-responsive">
         <table class="table addRecipeTable table-bordered bord-D2D2D2 boxshadow bord-rad-4px mt-4">
             <thead>
@@ -165,5 +162,5 @@
 </form>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/recipeJS.js"></script>
+    <script src="~/js/recipe.js"></script>
 }

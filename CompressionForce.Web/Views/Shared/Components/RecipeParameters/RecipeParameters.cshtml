@@ -1,0 +1,436 @@
+﻿@model CompressionForce.Web.Models.Batches.BatchRecipeParametersVM
+
+@if (Model == null)
+{
+    <div>No parameters available</div>
+}
+else
+{
+    <!--Common Product Parameter-->
+    <div class="commonProductParameter boxshadow bord-rad-4px mt-0">
+        <div class="commonProductHeader fw-semibold bgcol-215ED6 text-white text-center font-size-18px p-10px">
+            Common Product Parameter
+        </div>
+        <div class="py-4">
+            <div class="px-lg-4 px-md-4 px-sm-3 px-3">
+                <div class="commonProductHeaderSelectors d-flex flex-wrap gap-3 justify-content-between pb-4">
+
+                    <div class="d-flex gap-3 align-items-center">
+                        <label class="font-size-16px fw-semibold clr-242424">Tool Type</label>
+                        <div class="d-flex toolTypeDropdown batchDropdown position-relative">
+                            <input type="text" id="toolTypeInput" class="form-control flex-grow-1 dropdownInput bord-D2D2D2"
+                                   value="@Model.ToolType" readonly>
+                            <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul id="toolTypeDropdown" class="dropdown-menu dropdown-menu-end">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 align-items-center">
+                        <label class="font-size-16px fw-semibold clr-242424">AWC & AR</label>
+                        <div class="d-flex commonProductDropdown batchDropdown position-relative">
+                            <input type="text" id="awcInput" class="form-control flex-grow-1 dropdownInput bord-D2D2D2"
+                                   value="@Model.AwcArType" readonly>
+                            <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul id="awcListDropdown" class="dropdown-menu dropdown-menu-end">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 align-items-center">
+                        <label class="font-size-16px fw-semibold clr-242424">Recipe</label>
+                        <div class="d-flex commonProductDropdown batchDropdown position-relative">
+                            <input type="text" id="recipeInput" class="form-control flex-grow-1 dropdownInput bord-D2D2D2"
+                                   value="@Model.RecipeType" readonly>
+                            <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul id="recipeListDropdown" class="dropdown-menu dropdown-menu-end">
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>                        <div class="row px-lg-4 px-md-4 px-sm-3 px-3 commonProductContainer">
+                <div class="col-sm-12 order-md-1 order-lg-1 col-md-6 col-lg-5">
+                    <div class="d-flex gap-3 align-items-center pb-2">
+                        <label class="font-size-16px min-width-30 fw-semibold clr-242424">Recipe Code</label>
+                        <input type="text" id="recipeCode"
+                               class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px w-60 font-size-14px col-242424 boxshadow"
+                               placeholder="4444" value="@Model.RecipeCode" readonly>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center pb-2">
+                        <label class="font-size-16px min-width-30 fw-semibold clr-242424">Product Name</label>
+                        <input type="text" id="productName"
+                               class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px w-60 font-size-14px col-242424 boxshadow"
+                               placeholder="rrt" value="@Model.ProductName" readonly>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center pb-2">
+                        <label class="font-size-16px min-width-30 fw-semibold clr-242424">Shape</label>
+                        <input type="text" id="shape"
+                               class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px w-60 font-size-14px col-242424 boxshadow"
+                               placeholder="5" value="@Model.Shape" readonly>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center pb-2">
+                        <label class="font-size-16px min-width-30 fw-semibold clr-242424">Size</label>
+                        <input type="text" id="size"
+                               class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px w-60 font-size-14px col-242424 boxshadow"
+                               value="@Model.Size" placeholder="8" readonly />
+                    </div>
+                </div>
+
+                <div class="col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2"></div>
+
+                <div class="col-sm-12 order-md-2 order-lg-3 col-md-6 col-lg-5">
+                    <div class="d-flex justify-content-lg-end flex-column">
+                        <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                            <label class="font-size-16 min-width-30 fw-semibold clr-242424">Table Thickness</label>
+                            <div class="d-flex align-items-center gap-10px max-width-115px">
+                                <input type="text" id="tabletThickness"
+                                       class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                       placeholder="0.00" value="@Model.TableThickness" readonly>
+                                <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                            <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Hardness</label>
+                            <div class="d-flex align-items-center gap-10px max-width-115px">
+                                <input type="text" id="tabletHardness"
+                                       class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                       placeholder="0.00" value="@Model.TableHardness" readonly>
+                                <span class="font-size-16px fw-semibold clr-242424">kpa</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                            <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Weight</label>
+                            <div class="d-flex align-items-center gap-10px max-width-115px">
+                                <input type="text" id="tabletWeight"
+                                       class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                       placeholder="0.00" value=@Model.TableWeight readonly>@*@Model.TableWeight*@
+                                <span class="font-size-16px fw-semibold clr-242424">mg</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                            <label class="font-size-16px min-width-30 fw-semibold clr-242424">Max Turret RPM</label>
+                            <div class="d-flex align-items-center gap-10px max-width-115px">
+                                <input type="text" id="maxTurretRpm"
+                                       class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                       placeholder="0.00" value="@Model.MaxTurretRpm" readonly>
+                                <span class="font-size-16px fw-semibold clr-242424">rpm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--S1 & S2 Product Parameters-->
+    <div class="container-fluid mt-4">
+        <div class="row productParameterMainContainer boxshadow bord-rad-4px">
+            <div class="col-sm-12 productParameterContainer order-md-1 order-lg-1 col-md-6 col-lg-5 px-0">
+                <div class="productParameterHeader1 fw-semibold bgcol-215ED6 text-white px-lg-4 px-md-4 px-sm-3 font-size-18px p-10px">
+                    S1-Product Parameter
+                </div>
+                <div class="p-lg-4 p-sm-3 p-md-3 p-3">
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Force Feeder Ratio S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <select id="forceFeederRatioS1" class="form-select bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center">
+                                <option value="@Model.ForceFeederRatioS1" selected>@Model.ForceFeederRatioS1</option>
+                            </select>
+                            <span class="font-size-16px fw-semibold clr-242424 vis-hidden">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Fill Depth S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="fillDepthS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.FillDepthS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Main Penetration Position S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="mainPenetrationPositionS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.MainPenetrationPositionS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Main Thickness Position S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="mainThicknessPositionS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.MainThicknessPositionS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Pre Penetration Position S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="prePenetrationPositionS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.PrePenetrationPositionS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Pre Thickness Position S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="preThicknessPositionS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.PreThicknessPositionS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Sample Interval S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="sampleIntervalS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="10" value="@Model.SampleIntervalS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">rev</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Sample revolution Qty. S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="sampleRevolutionQtyS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="1" value="@Model.SampleRevolutionQtyS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">rev</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Max Main Comp. Force S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="maxMainCompForceS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="50.00" value="@Model.MaxMainCompressionForceS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Max Pre Comp. Force S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="maxPreCompForceS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="50.00" value="@Model.MaxPreCompressionForceS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Max Ejection Comp. Force S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="maxEjectionForceS1" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="1.00" value="@Model.MaxEjectionCompressionForceS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="emptyParamerDiv col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
+                <div class="productParamerHeader bgcol-215ED6 clr-215ED6 text-center font-size-18px p-10px">
+                    Empty
+                </div>
+            </div>
+
+            <div class="col-sm-12 order-md-2 productParameterContainer order-lg-3 col-md-6 col-lg-5 px-0">
+                <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-0 px-md-0 px-sm-3">
+                    S2-Product Parameter
+                </div>
+                <div class="pe-lg-4 py-lg-4 ps-lg-0 pe-md-4 py-md-4 ps-md-0 p-sm-3 p-3">
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Force Feeder Ratio S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <select id="forceFeederRatioS2" class="form-select bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center">
+                                <option value="@Model.ForceFeederRatioS2" selected>@Model.ForceFeederRatioS2</option>
+                            </select>
+                            <span class="font-size-16px fw-semibold clr-242424 vis-hidden">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Fill Depth S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="fillDepthS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.FillDepthS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Main Penetration Position S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="mainPenetrationPositionS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.MainPenetrationPositionS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Main Thickness Position S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="mainThicknessPositionS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.MainThicknessPositionS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Pre Penetration Position S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="prePenetrationPositionS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.PrePenetrationPositionS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Pre Thickness Position S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="preThicknessPositionS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="5.00" value="@Model.PreThicknessPositionS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Sample Interval S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="sampleIntervalS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="10" value="@Model.SampleIntervalS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">rev</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Sample revolution Qty. S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="sampleRevolutionQtyS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="1" value="@Model.SampleRevolutionQtyS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">rev</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Max Main Comp. Force S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="maxMainCompForceS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="50.00" value="@Model.MaxMainCompressionForceS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Max Pre Comp. Force S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="maxPreCompForceS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="50.00" value="@Model.MaxPreCompressionForceS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Max Ejection Comp. Force S2</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="maxEjectionForceS2" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center" placeholder="1.00" value="@Model.MaxEjectionCompressionForceS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--S1 AWC & AR Set Parameter & S2 AWC & AR Set Parameter-->
+    <div class="container-fluid mt-4">
+        <div class="row productParameterMainContainer boxshadow bord-rad-4px">
+            <div class="col-sm-12 productParameterContainer order-md-1 order-lg-1 col-md-6 col-lg-5 px-0">
+                <div class="productParameterHeader1 fw-semibold bgcol-215ED6 text-white px-lg-4 px-md-4 px-sm-3 font-size-18px p-10px">
+                    S1 AWC & AR Set Parameter
+                </div>
+                <div class="p-lg-4 p-sm-3 p-md-3 p-3">
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Rejection Limit Max S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="rejectionForceLimitMaxS1"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="5.00" value="@Model.RejectionLimitMaxS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Limit Max S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="awcForceLimitMaxS1"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="4.00" value="@Model.AwcLimitMaxS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Set Point S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="awcForceSetPointS1"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="3.00" value="@Model.AwcSetPointS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Limit Min S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="awcForceLimitMinS1"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="2.00" value="@Model.AwcLimitMinS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Rejection Limit Min S1</label>
+                        <div class="d-flex align-items-center gap-10px max-width-115px">
+                            <input type="text" id="rejectionForceLimitMinS1"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="1.00" value="@Model.RejectionLimitMinS1" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="emptyParamerDiv col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
+                <div class="productParameterHeader bgcol-215ED6 clr-215ED6 text-center font-size-18px p-10px">
+                    Empty
+                </div>
+            </div>
+
+            <div class="col-sm-12 order-md-2 productParameterContainer order-lg-3 col-md-6 col-lg-5 px-0">
+                <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-0 px-md-0 px-sm-3">
+                    S2 AWC & AR Set Parameter
+                </div>
+                <div class="pe-lg-4 py-lg-4 ps-lg-0 pe-md-4 py-md-4 ps-md-0 p-sm-3 p-3">
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Rejection Limit Max S2</label>
+                        <div class="d-flex align-items-center gap-3 max-width-115px">
+                            <input type="text" id="rejectionForceLimitMaxS2"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="5.00" value="@Model.RejectionLimitMaxS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Limit Max S2</label>
+                        <div class="d-flex align-items-center gap-3 max-width-115px">
+                            <input type="text" id="awcForceLimitMaxS2"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="4.00" value="@Model.AwcLimitMaxS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Set Point S2</label>
+                        <div class="d-flex align-items-center gap-3 max-width-115px">
+                            <input type="text" id="awcForceSetPointS2"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="3.00" value="@Model.AwcSetPointS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">AWC Limit Min S2</label>
+                        <div class="d-flex align-items-center gap-3 max-width-115px">
+                            <input type="text" id="awcForceLimitMinS2"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="2.00" value="@Model.AwcLimitMinS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
+                        <label class="font-size-16px w-60 fw-semibold clr-242424">Rejection Limit Min S2</label>
+                        <div class="d-flex align-items-center gap-3 max-width-115px">
+                            <input type="text" id="rejectionForceLimitMinS2"
+                                   class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px font-size-12px col-242424 fw-semibold text-center"
+                                   placeholder="1.00" value="@Model.RejectionLimitMinS2" readonly>
+                            <span class="font-size-16px fw-semibold clr-242424">kN</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+}

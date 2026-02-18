@@ -1,6 +1,6 @@
 ﻿// File: Web/ModelBinding/RecipeParameterModelBinder.cs
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CompressionForce.Domain.Entities;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Globalization;
 
 namespace CompressionForce.Web.ModelBinding

@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CompressionForce.Data.Configurations
 {
-
-    // CompressionForce.Data/Configurations/RecipeValidationRuleEntityConfiguration.cs
     public class RecipeValidationRuleEntityConfiguration : IEntityTypeConfiguration<RecipeValidationRuleEntity>
     {
         public void Configure(EntityTypeBuilder<RecipeValidationRuleEntity> builder)

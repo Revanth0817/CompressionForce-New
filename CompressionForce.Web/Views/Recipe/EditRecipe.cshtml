@@ -36,7 +36,8 @@
         </div>
 
         <!-- Editable Parameters -->
-        @Html.Partial("_RecipeParametersEditIndex", Model)
+        @await Html.PartialAsync("_RecipeParametersEditIndex", Model)
+
 
         <!-- Static Reference Table -->
         <div class="table-responsive">
@@ -78,5 +79,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/recipeJS.js"></script>
+    <script src="~/js/recipe.js"></script>
 }

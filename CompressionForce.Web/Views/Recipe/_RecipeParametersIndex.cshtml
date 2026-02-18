@@ -4,7 +4,8 @@
 @using CompressionForce.Domain.Entities;
 @model CompressionForce.Services.DTOs.RecipeDto
 
-@functions {
+@functions
+{
     string GetParamValue(Dictionary<string, RecipeParameter> dict, string key)
     {
         return dict != null && dict.TryGetValue(key, out var param)
@@ -14,17 +15,13 @@
 }
 
 @{
-    //var parameters = Model.Parameters as IEnumerable<RecipeParameter>;
-
     var parameters = Model?.Parameters as List<RecipeParameter> ?? new();
 
-    var parametersDict = parameters?.ToDictionary(p => p.Name, p => p)  ?? new Dictionary<string, RecipeParameter>();
-
-
+    var parametersDict = parameters?.ToDictionary(p => p.Name, p => p) ?? new Dictionary<string, RecipeParameter>();
 }
 
 
-                <!--Common Product Parameter-->
+<!--Common Product Parameter-->
 <div class="commonProductParameter boxshadow bord-rad-4px mt-0">
     <div class="commonProductHeader fw-semibold bgcol-215ED6 text-white text-center font-size-18px p-10px">
         Common Product Parameter
@@ -42,7 +39,6 @@
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul id="toolTypeDropdown" class="dropdown-menu dropdown-menu-end">
-
                         </ul>
                     </div>
                 </div>
@@ -56,7 +52,6 @@
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul id="awcListDropdown" class="dropdown-menu dropdown-menu-end">
-
                         </ul>
                     </div>
                 </div>
@@ -70,13 +65,13 @@
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul id="recipeListDropdown" class="dropdown-menu dropdown-menu-end">
-
                         </ul>
                     </div>
                 </div>
 
             </div>
-        </div>                        <div class="row px-lg-4 px-md-4 px-sm-3 px-3 commonProductContainer">
+        </div>
+        <div class="row px-lg-4 px-md-4 px-sm-3 px-3 commonProductContainer">
             <div class="col-sm-12 order-md-1 order-lg-1 col-md-6 col-lg-5">
                 <div class="d-flex gap-3 align-items-center pb-2">
                     <label class="font-size-16px min-width-30 fw-semibold clr-242424">Recipe Code</label>
@@ -453,4 +448,3 @@
     </div>
 </div>
 
-                        

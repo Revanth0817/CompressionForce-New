@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using CompressionForce.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CompressionForce.Data;
-using CompressionForce.Domain.Entities;
 using Rotativa.AspNetCore;
 
 namespace CompressionForce.Controllers

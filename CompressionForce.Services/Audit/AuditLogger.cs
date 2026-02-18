@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
-using CompressionForce.Data;
+﻿using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace CompressionForce.Services.Audit
 {

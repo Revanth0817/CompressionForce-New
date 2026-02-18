@@ -1,0 +1,115 @@
+﻿@model CompressionForce.Web.Models.Batches.BatchPageVM
+
+@using System.Collections
+@using System.Linq
+@using System.Diagnostics
+@using CompressionForce.Web.Models.Batches
+@{
+    bool hasRecipes = Model.Recipes != null && Model.Recipes.Any();
+    bool hasBatches = Model.Batches != null && Model.Batches.Any();
+}
+
+<div class="BatchContainer p-lg-4 p-md-4 p-sm-3 p-3 pt-4">
+    @if (TempData.TryGetValue("Error", out var msg))
+    {
+        <div id="flashError" class="alert alert-danger">
+            @msg
+        </div>
+
+        <script>
+            setTimeout(() => {
+                const el = document.getElementById('flashError');
+                if (el) {
+                    el.classList.add('fade');
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 400);
+                }
+            }, 1000);
+        </script>
+    }
+    <div class="w-100 BatchHeader">
+        <div class="d-flex flex-wrap batchPageTabHeader gap-4">
+            <nav class="flex-grow-1">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link font-size-16px clr-242424 fw-semibold active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Parameter</button>
+                    <button class="nav-link font-size-16px clr-242424 fw-semibold" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Records</button>
+                </div>
+            </nav>
+            <div class="d-flex gap-3 align-items-center">
+                <label class="font-size-16px fw-semibold clr-242424">Recipe Code</label>
+                <div class="d-flex RecipeCodeDropdown flex-grow-1 batchDropdown position-relative">
+                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="selectedItem" value="@Model.SelectedRecipeCode" readonly>
+                    <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        @foreach (var recipe in Model.Recipes ?? Enumerable.Empty<RecipeVM>())
+                        {
+                            <li>
+                                <a class="dropdown-item" href="#" data-recipecode="@recipe.RecipeCode"> @recipe.RecipeCode </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                <div id="batchHeaderContainer" class="d-flex flex-wrap gap-3 py-4">
+                    @await Component.InvokeAsync("BatchHeader", new BatchHeaderVM() { hasRecipes = hasRecipes, hasBatches = hasBatches })
+                </div>
+
+
+                @if (!hasRecipes)
+                {
+                    <!-- NO RECIPES -->
+                    <div class="p-lg-4 p-md-4 p-sm-3 p-3 bord-D2D2D2 bord-rad-4px boxshadow">
+                        <div class="text-muted text-center">
+                            No recipes available
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- RECIPES EXIST -->
+                    @* Batch Summary *@
+                    @if (hasBatches)
+                    {
+                        <div id="batchSummaryContainer">
+                            @await Component.InvokeAsync("BatchSummary", Model.Summary)
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- anchor for JS + initial message -->
+                        <div id="batchSummaryContainer" class="p-lg-4 p-md-4 p-sm-3 p-3 bord-D2D2D2 bord-rad-4px boxshadow">
+                            <div class="text-muted text-center">
+                                No batches
+                            </div>
+                        </div>
+                    }
+
+                    @* Recipe / Batch Parameters *@
+                    <div id="recipeParametersContainer">
+                        @await Component.InvokeAsync("RecipeParameters", Model.Parameters)
+                    </div>
+                }
+
+
+
+                @await Html.PartialAsync("_AddBatchModal")
+                @await Html.PartialAsync("_EditBatchModal")
+                @await Html.PartialAsync("_DeactivateBatchModal")
+
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+        </div>
+    </div>
+
+
+</div>
+@section Scripts {
+    <script src="~/js/batch.js"></script>
+}

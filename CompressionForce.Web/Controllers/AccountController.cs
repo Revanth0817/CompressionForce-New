@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using BCrypt.Net;
-
-using CompressionForce.Data;
-using CompressionForce.Models;
-using CompressionForce.Web.Models;
+﻿using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
+using CompressionForce.Models;
 using CompressionForce.Services.Audit;
+using CompressionForce.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CompressionForce.WebControllers
 {

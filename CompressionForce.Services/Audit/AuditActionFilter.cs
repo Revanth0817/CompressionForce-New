@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Filters;   // ✅ REQUIRED
-using Microsoft.AspNetCore.Http;
-using CompressionForce.Data;
+﻿using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;   // ✅ REQUIRED
 
 namespace CompressionForce.Services.Audit
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CompressionForce.Domain.Entities;
+﻿namespace CompressionForce.Domain.Entities;
 
 public class AlarmLog
 {

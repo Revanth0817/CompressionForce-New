@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-using CompressionForce.Domain.Entities;
+﻿using CompressionForce.Domain.Entities;
 using CompressionForce.Domain.Validation;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CompressionForce.Services.Validation

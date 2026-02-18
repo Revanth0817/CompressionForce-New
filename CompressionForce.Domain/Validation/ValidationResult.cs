@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CompressionForce.Domain.Validation
+﻿namespace CompressionForce.Domain.Validation
 {
     /// <summary>
     /// Represents validation outcome without throwing immediately.
