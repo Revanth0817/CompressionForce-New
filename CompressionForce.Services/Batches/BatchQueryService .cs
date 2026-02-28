@@ -122,6 +122,61 @@ namespace CompressionForce.Services.Batches
                 })
                 .ToList();
         }
+        public async Task<(string ProductName, string BatchNumber, int BatchQty)?>
+    GetActiveBatchHeaderAsync()
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"🔍 GetActiveBatchHeaderAsync called");
+
+                // ✅ Get all batches
+                var allBatches = await _batchRepo.GetByRecipeAsync("");
+
+                if (allBatches == null || !allBatches.Any())
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ No batches found in database");
+                    return null;
+                }
+
+                // ✅ Find most recent batch with "Active" OR "New-Active" status
+                var activeBatch = allBatches
+                    .Where(b => b.BatchStatus == "Active" || b.BatchStatus == "New-Active")
+                    .OrderByDescending(b => b.DateTime)
+                    .FirstOrDefault();
+
+                if (activeBatch == null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ No Active or New-Active batches found");
+                    return null;
+                }
+
+                System.Diagnostics.Debug.WriteLine($"✅ Found Batch: {activeBatch.BatchCode}, Status: {activeBatch.BatchStatus}, DateTime: {activeBatch.DateTime}");
+
+                // ✅ Get recipe
+                var recipe = await _recipeRepo.GetByCodeAsync(activeBatch.RecipeCode);
+
+                if (recipe == null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ Recipe not found: {activeBatch.RecipeCode}");
+                    return null;
+                }
+
+                System.Diagnostics.Debug.WriteLine($"✅ Recipe found: {recipe.Name}");
+                System.Diagnostics.Debug.WriteLine($"✅ Returning: ProductName={recipe.Name}, BatchNumber={activeBatch.BatchCode}, BatchQty={activeBatch.BatchQty}");
+
+                return (
+                    recipe.Name,                // ProductName
+                    activeBatch.BatchCode,      // BatchNumber
+                    activeBatch.BatchQty ?? 0   // BatchQty
+                );
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ ERROR in GetActiveBatchHeaderAsync: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ StackTrace: {ex.StackTrace}");
+                return null;
+            }
+        }
 
     }
 }

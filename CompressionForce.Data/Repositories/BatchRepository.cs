@@ -66,6 +66,17 @@ namespace CompressionForce.Data.Repositories
             return await _ctx.Batches
     .AnyAsync(b => b.RecipeCode == recipeCode && b.BatchStatus != "Deactivated");
         }
+        // ✅ NEW: Get all batches
+        public async Task<List<Batch>> GetAllAsync()
+        {
+            var entities = await _ctx.Batches  // ✅ Changed from _context to _ctx
+                .AsNoTracking()
+                .ToListAsync();
+
+            return entities
+                .Select(BatchMapper.ToDomain)
+                .ToList();
+        }
 
     }
 }
