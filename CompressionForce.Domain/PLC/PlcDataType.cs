@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CompressionForce.Domain.PLC;
 
-
-namespace CompressionForce.Domain.PLC
+public enum PlcDataType
 {
-    public enum PlcDataType
-    {
-        Coil,
-        DiscreteInput,
-        InputRegister,
-        HoldingRegister
-    }
+    Coil,
+    DiscreteInput,
+    InputRegister,
+    HoldingRegister,
+    RealInput          // ✅ NEW — 4-byte REAL from TwinCAT
 }

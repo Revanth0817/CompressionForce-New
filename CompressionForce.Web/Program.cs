@@ -5,12 +5,12 @@ using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Abstractions.UnitOfWork;
 using CompressionForce.Domain.Calibration;
 using CompressionForce.Domain.PLC;
-using CompressionForce.Domain.PLC;
 using CompressionForce.Domain.Validation;
 using CompressionForce.Services.Interfaces;
 using CompressionForce.Integrations.PLC.Modbus;
 using CompressionForce.Services;
 using CompressionForce.Services.Batches;
+using CompressionForce.Integrations.PLC.Ads;
 
 
 using CompressionForce.Services;
@@ -131,10 +131,20 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IPlcProtocol>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
-    var ip = config["Plc:Ip"];
-    var port = int.Parse(config["Plc:Port"]);
+    var protocol = config["Plc:Protocol"] ?? "Ads";
 
-    return new ModbusTcpProtocol(ip, port);
+    if (protocol.Equals("Modbus", StringComparison.OrdinalIgnoreCase))
+    {
+        var ip = config["Plc:Ip"] ?? "127.0.0.1";
+        var port = int.Parse(config["Plc:Port"] ?? "502");
+        return new ModbusTcpProtocol(ip, port);
+    }
+    else
+    {
+        var amsNetId = config["Plc:AmsNetId"] ?? "127.0.0.1.1.1";
+        var port = int.Parse(config["Plc:Port"] ?? "851");
+        return new AdsTcpProtocol(amsNetId, port);
+    }
 });
 
 
@@ -273,7 +283,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Welcome}/{id?}"
 );
 app.MapHub<ServoHub>("/servoHub");
-
 
 // -----------------------------------------------------------------------------
 // ROTATIVA (PDF)

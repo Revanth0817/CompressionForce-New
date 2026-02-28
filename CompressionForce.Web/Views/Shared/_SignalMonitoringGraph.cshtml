@@ -1,9 +1,17 @@
-﻿@* Signal Monitoring Graph (FINAL FIXED) *@
+﻿@* Signal Monitoring Graph — Live PLC Data from TwinCAT Ladder *@
 <ul class="nav nav-tabs mb-3 signal-header-tabs" role="tablist">
 
     <button class="nav-link active"
             data-bs-toggle="tab"
-            data-key="S1_MAIN_FORCE"
+            data-key="GRAPH_VALUE"
+            data-bs-target="#graph-live"
+            type="button">
+        PLC Graph
+    </button>
+
+    <button class="nav-link"
+            data-bs-toggle="tab"
+            data-key="S1_MAIN"
             data-bs-target="#s1-main"
             type="button">
         S1 Main Comp.
@@ -11,7 +19,7 @@
 
     <button class="nav-link"
             data-bs-toggle="tab"
-            data-key="S1_PRE_FORCE"
+            data-key="S1_PRE"
             data-bs-target="#s1-pre"
             type="button">
         S1 Pre Comp.
@@ -19,7 +27,7 @@
 
     <button class="nav-link"
             data-bs-toggle="tab"
-            data-key="S1_EJECT_FORCE"
+            data-key="S1_EJECT"
             data-bs-target="#s1-eject"
             type="button">
         S1 Ejection
@@ -27,7 +35,7 @@
 
     <button class="nav-link"
             data-bs-toggle="tab"
-            data-key="S2_MAIN_FORCE"
+            data-key="S2_MAIN"
             data-bs-target="#s2-main"
             type="button">
         S2 Main Comp.
@@ -35,7 +43,7 @@
 
     <button class="nav-link"
             data-bs-toggle="tab"
-            data-key="S2_PRE_FORCE"
+            data-key="S2_PRE"
             data-bs-target="#s2-pre"
             type="button">
         S2 Pre Comp.
@@ -43,12 +51,11 @@
 
     <button class="nav-link"
             data-bs-toggle="tab"
-            data-key="S2_EJECT_FORCE"
+            data-key="S2_EJECT"
             data-bs-target="#s2-eject"
             type="button">
         S2 Ejection
     </button>
-
 
 </ul>
 
@@ -57,15 +64,35 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.0/dist/browser/signalr.min.js"></script>
 
 <script>
+    /* ============================================================
+       CONFIG
+    ============================================================ */
+    const MAX_POINTS = 52;
+
+    // Ladder mapping:
+    // GVL.GraphValue (REAL)  → tag key: GRAPH_VALUE → type: RealInput
+    // GVL.index      (INT)   → tag key: GRAPH_INDEX → type: InputRegister
+
+    const forceHistory = {
+        GRAPH_VALUE: [],    // ✅ PLC ladder graph data
+        S1_MAIN:     [],
+        S1_PRE:      [],
+        S1_EJECT:    [],
+        S2_MAIN:     [],
+        S2_PRE:      [],
+        S2_EJECT:    []
+    };
+
+    let activeKey = "GRAPH_VALUE";
+
+    /* ============================================================
+       CHART
+    ============================================================ */
     const ctx = document.getElementById('forceChart').getContext('2d');
-
-    // Labels: Punch numbers 1 to 50
-    const punchLabels = Array.from({ length: 50 }, (_, i) => "" + (i + 1));
-
-    // Initialize forces with a random starting value
-    let currentForces = Array.from({ length: 52 }, () => Math.floor(Math.random() * 101));
+    const punchLabels = Array.from({ length: MAX_POINTS }, (_, i) => "" + (i + 1));
 
     const chart = new Chart(ctx, {
         type: 'line',
@@ -73,53 +100,72 @@
             labels: punchLabels,
             datasets: [{
                 label: 'Force (kN)',
-                data: currentForces,
-                borderColor: 'blue',
+                data: [],
+                borderColor: '#215ED6',
                 borderWidth: 2,
                 fill: true,
-                tension: 0.3
+                backgroundColor: 'rgba(33, 94, 214, 0.1)',
+                tension: 0.3,
+                pointRadius: 1
             }]
         },
         options: {
             animation: false,
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 x: { title: { display: true, text: 'Punches' } },
                 y: {
                     title: { display: true, text: 'Force (kN)' },
-                    min: 0,
-                    max: 50
+                    beginAtZero: true
                 }
             }
         }
     });
 
-    function updateForces() {
-        let newForces = [];
+    /* ============================================================
+       TAB SWITCHING
+    ============================================================ */
+    document.querySelectorAll('.signal-header-tabs .nav-link').forEach(tab => {
+        tab.addEventListener('click', () => {
+            activeKey = tab.dataset.key;
+            refreshChart();
+        });
+    });
 
-        // Start from the previous first punch value
-        let prevForce = currentForces[0];
-
-        for (let i = 0; i < 50; i++) {
-            let newForce = prevForce;
-
-            // Occasionally allow a +1 or -1 change
-            if (Math.random() < 0.1) { // 10% chance of deviation
-                const change = Math.random() < 0.5 ? -1 : 1;
-                newForce = prevForce + change;
-                if (newForce < 0) newForce = 0;
-                if (newForce > 100) newForce = 100;
-            }
-
-            newForces.push(newForce);
-            prevForce = newForce; // next punch depends on this one
-        }
-
-        currentForces = newForces;
-        chart.data.datasets[0].data = currentForces;
+    function refreshChart() {
+        const data = forceHistory[activeKey] || [];
+        chart.data.datasets[0].data = [...data];
         chart.update();
     }
 
-    // Update every second
-    setInterval(updateForces, 1000);
+    /* ============================================================
+       SIGNALR — PLC live values
+    ============================================================ */
+    const graphHub = new signalR.HubConnectionBuilder()
+        .withUrl("/servoHub")
+        .withAutomaticReconnect()
+        .build();
+
+    // AnalogInputUpdated(key, raw, force)
+    // key = "GRAPH_VALUE" for ladder graph, or load cell codes
+    graphHub.on("AnalogInputUpdated", (key, raw, force) => {
+
+        if (!(key in forceHistory)) return;
+
+        const history = forceHistory[key];
+
+        history.push(Number(force));
+        if (history.length > MAX_POINTS) {
+            history.shift();
+        }
+
+        if (key === activeKey) {
+            refreshChart();
+        }
+    });
+
+    graphHub.start()
+        .then(() => console.log("✅ Graph SignalR connected"))
+        .catch(err => console.error("❌ Graph SignalR failed:", err));
 </script>

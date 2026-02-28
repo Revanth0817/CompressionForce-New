@@ -184,5 +184,34 @@ namespace CompressionForce.Integrations.PLC.Modbus
                 _plcLock.Release();
             }
         }
+
+        // =====================================
+        // INTERFACE PROPERTIES
+        // =====================================
+        public bool IsConnected => _client.Connected;
+        public string Host => _ip;
+
+        // =====================================
+        // SYMBOL-BASED (NOT SUPPORTED IN MODBUS)
+        // =====================================
+        public bool SupportsSymbolPath => false;
+
+        public Task<bool> ReadBoolAsync(string symbolPath)
+            => throw new NotSupportedException("Modbus does not support symbol paths");
+
+        public Task<short> ReadIntAsync(string symbolPath)
+            => throw new NotSupportedException("Modbus does not support symbol paths");
+
+        public Task WriteBoolAsync(string symbolPath, bool value)
+            => throw new NotSupportedException("Modbus does not support symbol paths");
+
+        public Task WriteIntAsync(string symbolPath, short value)
+            => throw new NotSupportedException("Modbus does not support symbol paths");
+
+        public Task<float> ReadFloatAsync(string symbolPath)
+            => throw new NotSupportedException("Modbus does not support symbol paths");
+
+        public Task WriteFloatAsync(string symbolPath, float value)
+            => throw new NotSupportedException("Modbus does not support symbol paths");
     }
 }

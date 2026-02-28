@@ -81,15 +81,22 @@ namespace CompressionForce.Web.Controllers
         }
 
         /* ============================================================
-           COIL PULSE (SAFE)
+           COIL PULSE (SAFE) — ✅ FIXED for ADS
         ============================================================ */
         private async Task PulseCoil(string tagKey)
         {
             var tag = GetTagOrThrow(tagKey);
 
-            await _plc.WriteCoilAsync(tag.Address, true);
-            await Task.Delay(150);
-            
+            if (_plc.SupportsSymbolPath && !string.IsNullOrWhiteSpace(tag.SymbolPath))
+            {
+                await _plc.WriteBoolAsync(tag.SymbolPath, true);
+                await Task.Delay(150);
+            }
+            else
+            {
+                await _plc.WriteCoilAsync(tag.Address, true);
+                await Task.Delay(150);
+            }
         }
 
         /* ============================================================
@@ -131,7 +138,7 @@ namespace CompressionForce.Web.Controllers
         }
 
         /* ============================================================
-           APPLY SET VALUES (SET_POS, SET_SPEED, JOG_SPEED, SET_VALUE)
+           APPLY SET VALUES — ✅ FIXED for ADS
         ============================================================ */
         [HttpPost]
         public async Task<IActionResult> ApplySet([FromBody] ServoSetDto dto)
@@ -141,33 +148,10 @@ namespace CompressionForce.Web.Controllers
 
             try
             {
-                // 🔹 SET POSITION (scaled x100)
-                var posTag = GetTagOrThrow($"{dto.ServoCode}_SET_POS");
-                await _plc.WriteHoldingRegisterAsync(
-                    posTag.Address,
-                    dto.SetPosition
-                );
-
-                // 🔹 SET SPEED
-                var speedTag = GetTagOrThrow($"{dto.ServoCode}_SET_SPEED");
-                await _plc.WriteHoldingRegisterAsync(
-                    speedTag.Address,
-                    dto.SetSpeed
-                );
-
-                // 🔹 JOG SPEED
-                var jogTag = GetTagOrThrow($"{dto.ServoCode}_JOG_SPEED");
-                await _plc.WriteHoldingRegisterAsync(
-                    jogTag.Address,
-                    dto.JogSpeed
-                );
-
-                // 🔹 SET VALUE
-                var setTag = GetTagOrThrow($"{dto.ServoCode}_SET");
-                await _plc.WriteHoldingRegisterAsync(
-                    setTag.Address,
-                    dto.SetValue
-                );
+                await WriteRegisterTag($"{dto.ServoCode}_SET_POS", dto.SetPosition);
+                await WriteRegisterTag($"{dto.ServoCode}_SET_SPEED", dto.SetSpeed);
+                await WriteRegisterTag($"{dto.ServoCode}_JOG_SPEED", dto.JogSpeed);
+                await WriteRegisterTag($"{dto.ServoCode}_SET", dto.SetValue);
 
                 return Ok();
             }
@@ -178,7 +162,7 @@ namespace CompressionForce.Web.Controllers
         }
 
         /* ============================================================
-           READ CURRENT SET VALUES FROM PLC
+           READ CURRENT SET VALUES — ✅ FIXED for ADS
         ============================================================ */
         [HttpGet]
         public async Task<IActionResult> GetCurrentSetValues(string servoCode)
@@ -188,19 +172,14 @@ namespace CompressionForce.Web.Controllers
 
             try
             {
-                var posTag = GetTagOrThrow($"{servoCode}_SET_POS");
-                var speedTag = GetTagOrThrow($"{servoCode}_SET_SPEED");
-                var jogTag = GetTagOrThrow($"{servoCode}_JOG_SPEED");
-                var setTag = GetTagOrThrow($"{servoCode}_SET");
-
-                int rawPos = await _plc.ReadHoldingRegisterAsync(posTag.Address);
-                int rawSpeed = await _plc.ReadHoldingRegisterAsync(speedTag.Address);
-                int rawJog = await _plc.ReadHoldingRegisterAsync(jogTag.Address);
-                int rawSet = await _plc.ReadHoldingRegisterAsync(setTag.Address);
+                int rawPos = await ReadRegisterTag($"{servoCode}_SET_POS");
+                int rawSpeed = await ReadRegisterTag($"{servoCode}_SET_SPEED");
+                int rawJog = await ReadRegisterTag($"{servoCode}_JOG_SPEED");
+                int rawSet = await ReadRegisterTag($"{servoCode}_SET");
 
                 return Ok(new
                 {
-                    setPosition = rawPos ,
+                    setPosition = rawPos,
                     setSpeed = rawSpeed,
                     jogSpeed = rawJog,
                     setValue = rawSet
@@ -209,6 +188,37 @@ namespace CompressionForce.Web.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"PLC read failed: {ex.Message}");
+            }
+        }
+
+        /* ============================================================
+           HELPER: Write/Read register using symbolPath or address
+        ============================================================ */
+        private async Task WriteRegisterTag(string tagKey, int value)
+        {
+            var tag = GetTagOrThrow(tagKey);
+
+            if (_plc.SupportsSymbolPath && !string.IsNullOrWhiteSpace(tag.SymbolPath))
+            {
+                await _plc.WriteIntAsync(tag.SymbolPath, (short)value);
+            }
+            else
+            {
+                await _plc.WriteHoldingRegisterAsync(tag.Address, value);
+            }
+        }
+
+        private async Task<int> ReadRegisterTag(string tagKey)
+        {
+            var tag = GetTagOrThrow(tagKey);
+
+            if (_plc.SupportsSymbolPath && !string.IsNullOrWhiteSpace(tag.SymbolPath))
+            {
+                return await _plc.ReadIntAsync(tag.SymbolPath);
+            }
+            else
+            {
+                return await _plc.ReadHoldingRegisterAsync(tag.Address);
             }
         }
 

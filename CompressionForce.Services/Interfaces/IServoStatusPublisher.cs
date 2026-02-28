@@ -31,5 +31,11 @@ namespace CompressionForce.Services
             double voltage,
             double force
         );
+
+        /* ================= GENERIC TAG ================= */
+        Task PublishTagAsync(
+            string tagKey,
+            object value
+        );
     }
 }

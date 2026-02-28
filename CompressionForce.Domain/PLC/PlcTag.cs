@@ -17,6 +17,9 @@ namespace CompressionForce.Domain.PLC
 
         public int Address { get; set; }
 
+        /// <summary>TwinCAT symbol path, e.g. "MAIN.bEmergency"</summary>
+        public string? SymbolPath { get; set; }
+
         public string Polling { get; set; } = "Medium";
 
         public bool Writable { get; set; }

@@ -1,8 +1,12 @@
-﻿using CompressionForce.Domain.Calibration;
+﻿using CompressionForce.Data;
+using CompressionForce.Data.Entities;
+using CompressionForce.Domain.Calibration;
 using CompressionForce.Domain.PLC;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -17,6 +21,9 @@ namespace CompressionForce.Services
         private readonly PlcTagConfig _config;
         private readonly IServoStatusPublisher _publisher;
         private readonly IServiceScopeFactory _scopeFactory;
+
+        // ✅ Cache calibration to avoid DB query every poll cycle
+        private readonly ConcurrentDictionary<string, (double Factor, double Offset)> _calCache = new();
 
         public PlcPollingBackgroundService(
             IPlcProtocol plc,
@@ -36,75 +43,197 @@ namespace CompressionForce.Services
         {
             Console.WriteLine("✅ PLC POLLING SERVICE STARTED");
 
-            await _plc.ConnectAsync();
+            // ✅ Retry until connected
+            while (!stop.IsCancellationRequested)
+            {
+                try
+                {
+                    await _plc.ConnectAsync();
+                    Console.WriteLine("✅ PLC connected!");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"❌ PLC connect failed: {ex.Message} — retrying in 5s...");
+                    await Task.Delay(5000, stop);
+                }
+            }
+
+            // ✅ Pre-load calibration data once
+            LoadCalibrationCache();
 
             var groups = _config.Tags.GroupBy(t => t.Polling);
 
             foreach (var group in groups)
             {
+                var pollingKey = group.Key;
+
+                // ✅ Use configured interval, fallback to 200ms
+                int intervalMs = _config.PollingIntervals.TryGetValue(pollingKey, out var ms)
+                    ? ms
+                    : 200;
+
                 _ = Task.Run(
-                    () => PollGroup(group.ToList(), stop),
+                    () => PollGroup(group.ToList(), intervalMs, stop),
                     stop
                 );
+            }
+
+            // ✅ Refresh calibration cache every 30s (not every read)
+            _ = Task.Run(async () =>
+            {
+                while (!stop.IsCancellationRequested)
+                {
+                    await Task.Delay(30_000, stop);
+                    LoadCalibrationCache();
+                }
+            }, stop);
+
+            // ✅ Heartbeat loop
+            _ = Task.Run(async () =>
+            {
+                while (!stop.IsCancellationRequested)
+                {
+                    try
+                    {
+                        using var scope = _scopeFactory.CreateScope();
+                        var db = scope.ServiceProvider
+                            .GetRequiredService<ApplicationDbContext>();
+
+                        var status = await db.PlcStatuses.FirstOrDefaultAsync(stop);
+
+                        if (status == null)
+                        {
+                            status = new PlcStatus();
+                            db.PlcStatuses.Add(status);
+                        }
+
+                        status.IsPlcConnected = _plc.IsConnected;
+                        status.IsLocalDbConnected = true;
+                        status.PlcHeartbeat = DateTime.Now;
+                        status.LastUpdated = DateTime.Now;
+                        status.PlcIp = _plc.Host ?? "";
+
+                        await db.SaveChangesAsync(stop);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"❌ Heartbeat error: {ex.Message}");
+                    }
+
+                    await Task.Delay(3000, stop);
+                }
+            }, stop);
+        }
+
+        private void LoadCalibrationCache()
+        {
+            try
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var repo = scope.ServiceProvider
+                    .GetRequiredService<ICalibrationRepository>();
+
+                var loadCellTags = _config.Tags
+                    .Where(t => !string.IsNullOrWhiteSpace(t.LoadCellCode))
+                    .Select(t => t.LoadCellCode!)
+                    .Distinct();
+
+                foreach (var code in loadCellTags)
+                {
+                    var cal = repo.GetLatest(code);
+                    double factor = cal != null ? (double)cal.Factor : 1.0;
+                    double offset = cal != null ? (double)cal.Offset : 0.0;
+                    _calCache[code] = (factor, offset);
+                }
+
+                Console.WriteLine($"✅ Calibration cache loaded ({_calCache.Count} sensors)");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Calibration cache error: {ex.Message}");
             }
         }
 
         private async Task PollGroup(
             List<PlcTag> tags,
+            int intervalMs,
             CancellationToken stop)
         {
+            var useSymbol = _plc.SupportsSymbolPath;
+
             while (!stop.IsCancellationRequested)
             {
                 foreach (var tag in tags)
                 {
                     try
                     {
-                        object rawValue = tag.Type switch
+                        object rawValue;
+
+                        // ✅ Prefer symbolPath for ADS, fallback to address for Modbus
+                        if (useSymbol && !string.IsNullOrWhiteSpace(tag.SymbolPath))
                         {
-                            PlcDataType.DiscreteInput =>
-                                await _plc.ReadDiscreteInputAsync(tag.Address),
+                            rawValue = tag.Type switch
+                            {
+                                PlcDataType.DiscreteInput =>
+                                    await _plc.ReadBoolAsync(tag.SymbolPath),
 
-                            PlcDataType.Coil =>
-                                await _plc.ReadCoilAsync(tag.Address),
+                                PlcDataType.Coil =>
+                                    await _plc.ReadBoolAsync(tag.SymbolPath),
 
-                            PlcDataType.InputRegister =>
-                                await _plc.ReadInputRegisterAsync(tag.Address),
+                                PlcDataType.InputRegister =>
+                                    (int)await _plc.ReadIntAsync(tag.SymbolPath),
 
-                            PlcDataType.HoldingRegister =>
-                                await _plc.ReadHoldingRegisterAsync(tag.Address),
+                                PlcDataType.HoldingRegister =>
+                                    (int)await _plc.ReadIntAsync(tag.SymbolPath),
 
-                            _ => null!
-                        };
+                                PlcDataType.RealInput =>
+                                    await _plc.ReadFloatAsync(tag.SymbolPath),
+
+                                _ => null!
+                            };
+                        }
+                        else
+                        {
+                            rawValue = tag.Type switch
+                            {
+                                PlcDataType.DiscreteInput =>
+                                    await _plc.ReadDiscreteInputAsync(tag.Address),
+
+                                PlcDataType.Coil =>
+                                    await _plc.ReadCoilAsync(tag.Address),
+
+                                PlcDataType.InputRegister =>
+                                    await _plc.ReadInputRegisterAsync(tag.Address),
+
+                                PlcDataType.HoldingRegister =>
+                                    await _plc.ReadHoldingRegisterAsync(tag.Address),
+
+                                _ => null!
+                            };
+                        }
 
                         /* ================= ANALOG INPUT ================= */
                         if (tag.Type == PlcDataType.InputRegister &&
                             tag.Key.StartsWith("LC_") &&
                             !string.IsNullOrWhiteSpace(tag.LoadCellCode))
                         {
-                            int raw = (int)rawValue;
-                            double voltage = ConvertInputRegisterToVoltage(raw);
+                            double raw = Convert.ToDouble(rawValue);
 
-                            // ✅ CREATE SCOPE FOR DB ACCESS
-                            using var scope = _scopeFactory.CreateScope();
-                            var repo = scope.ServiceProvider
-                                .GetRequiredService<ICalibrationRepository>();
-
-                            var cal = repo.GetLatest(tag.LoadCellCode);
-
-                            double factor = cal != null ? (double)cal.Factor : 1.0;
-                            double offset = cal != null ? (double)cal.Offset : 0.0;
+                            var (factor, offset) = _calCache.TryGetValue(tag.LoadCellCode, out var cal)
+                                ? cal
+                                : (1.0, 0.0);
 
                             double force = Math.Round(
-                                (voltage * factor) + offset, 3
+                                (raw * factor) + offset, 3
                             );
 
                             _cache.Set($"{tag.LoadCellCode}_RAW", raw);
-                            _cache.Set($"{tag.LoadCellCode}_VOLT", voltage);
                             _cache.Set($"{tag.LoadCellCode}_KN", force);
 
                             await _publisher.PublishAnalogInputAsync(
                                 tag.LoadCellCode,
-                                voltage,
+                                raw,
                                 force
                             );
 
@@ -115,10 +244,13 @@ namespace CompressionForce.Services
                         if (tag.Type == PlcDataType.DiscreteInput)
                         {
                             _cache.Set(tag.Key, rawValue);
+
                             await _publisher.PublishDigitalInputAsync(
                                 tag.Key,
                                 (bool)rawValue
                             );
+
+                            continue;
                         }
 
                         /* ================= DIGITAL OUTPUT ================= */
@@ -129,7 +261,10 @@ namespace CompressionForce.Services
                                 tag.Key,
                                 (bool)rawValue
                             );
+
+                            continue;
                         }
+
                         /* ================= COUNTERS (INPUT REGISTERS) ================= */
                         if (tag.Type == PlcDataType.InputRegister &&
                             (tag.Key == "REVOLUTION_COUNT" ||
@@ -140,25 +275,46 @@ namespace CompressionForce.Services
                             _cache.Set(tag.Key, value);
 
                             await _publisher.PublishAnalogInputAsync(
-                                tag.Key,     // reuse channel
-                                value,       // voltage parameter reused
-                                value        // force parameter reused
+                                tag.Key,
+                                value,
+                                value
                             );
 
                             continue;
                         }
-
 
                         /* ================= SERVO STATUS ================= */
                         if (IsServoStatusTag(tag.Key))
                         {
                             _cache.Set(tag.Key, rawValue);
                             await PublishServoStatusFromCache(tag.Key);
+                            continue;
                         }
 
+                        /* ================= DEFAULT: cache & publish tag ================= */
+                        if (tag.Type == PlcDataType.InputRegister ||
+                            tag.Type == PlcDataType.HoldingRegister)
+                        {
+                            _cache.Set(tag.Key, rawValue);
+                            await _publisher.PublishTagAsync(tag.Key, rawValue);
+                        }
 
+                        /* ================= REAL INPUT (GRAPH) ================= */
+                        if (tag.Type == PlcDataType.RealInput)
+                        {
+                            float value = Convert.ToSingle(rawValue);
+
+                            _cache.Set(tag.Key, value);
+
+                            await _publisher.PublishAnalogInputAsync(
+                                tag.Key,
+                                value,
+                                value
+                            );
+
+                            continue;
+                        }
                     }
-
                     catch (Exception ex)
                     {
                         Console.WriteLine(
@@ -167,7 +323,9 @@ namespace CompressionForce.Services
                     }
                 }
 
-                await Task.Delay(200, stop);
+                // ✅ Use the configured polling interval
+                if (intervalMs > 0)
+                    await Task.Delay(intervalMs, stop);
             }
         }
 
@@ -206,12 +364,6 @@ namespace CompressionForce.Services
                 torque,
                 actPos
             );
-        }
-
-
-        private static double ConvertInputRegisterToVoltage(int raw)
-        {
-            return Math.Round(raw * 10.0 / 32767.0, 3);
         }
     }
 }

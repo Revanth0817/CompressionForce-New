@@ -36,7 +36,6 @@ namespace CompressionForce.Web.Controllers
             if (dto == null || string.IsNullOrWhiteSpace(dto.TagKey))
                 return BadRequest("Invalid payload");
 
-            // 🔹 Resolve tag → address
             var tag = _tagConfig.Tags.FirstOrDefault(t =>
                 t.Key == dto.TagKey &&
                 t.Type == PlcDataType.Coil
@@ -45,19 +44,23 @@ namespace CompressionForce.Web.Controllers
             if (tag == null)
                 return NotFound($"Unknown DO tag: {dto.TagKey}");
 
-            // 🔹 Write to PLC
-            await _plc.WriteCoilAsync(tag.Address, dto.Value);
+            // ✅ Use symbolPath for ADS, fallback to address for Modbus
+            if (_plc.SupportsSymbolPath && !string.IsNullOrWhiteSpace(tag.SymbolPath))
+            {
+                await _plc.WriteBoolAsync(tag.SymbolPath, dto.Value);
+            }
+            else
+            {
+                await _plc.WriteCoilAsync(tag.Address, dto.Value);
+            }
 
             return Ok();
         }
     }
 
-    // -------------------------------
-    // DTO
-    // -------------------------------
     public class DigitalOutputWriteDto
     {
-        public string TagKey { get; set; } = string.Empty;
+        public string TagKey { get; set; }
         public bool Value { get; set; }
     }
 }
