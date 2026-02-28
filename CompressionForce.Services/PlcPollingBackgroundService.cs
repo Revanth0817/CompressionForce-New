@@ -1,5 +1,8 @@
-﻿using CompressionForce.Domain.Calibration;
+﻿using CompressionForce.Data;
+using CompressionForce.Data.Entities;
+using CompressionForce.Domain.Calibration;
 using CompressionForce.Domain.PLC;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -47,6 +50,42 @@ namespace CompressionForce.Services
                     stop
                 );
             }
+
+            // ✅ Heartbeat loop — keeps PlcStatus row up to date
+            _ = Task.Run(async () =>
+            {
+                while (!stop.IsCancellationRequested)
+                {
+                    try
+                    {
+                        using var scope = _scopeFactory.CreateScope();
+                        var db = scope.ServiceProvider
+                            .GetRequiredService<ApplicationDbContext>();
+
+                        var status = await db.PlcStatuses.FirstOrDefaultAsync(stop);
+
+                        if (status == null)
+                        {
+                            status = new PlcStatus();
+                            db.PlcStatuses.Add(status);
+                        }
+
+                        status.IsPlcConnected = _plc.IsConnected;
+                        status.IsLocalDbConnected = true;
+                        status.PlcHeartbeat = DateTime.Now;
+                        status.LastUpdated = DateTime.Now;
+                        status.PlcIp = _plc.Host ?? "";
+
+                        await db.SaveChangesAsync(stop);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"❌ Heartbeat error: {ex.Message}");
+                    }
+
+                    await Task.Delay(3000, stop); // every 3 seconds
+                }
+            }, stop);
         }
 
         private async Task PollGroup(
@@ -84,7 +123,6 @@ namespace CompressionForce.Services
                             int raw = (int)rawValue;
                             double voltage = ConvertInputRegisterToVoltage(raw);
 
-                            // ✅ CREATE SCOPE FOR DB ACCESS
                             using var scope = _scopeFactory.CreateScope();
                             var repo = scope.ServiceProvider
                                 .GetRequiredService<ICalibrationRepository>();
@@ -115,10 +153,14 @@ namespace CompressionForce.Services
                         if (tag.Type == PlcDataType.DiscreteInput)
                         {
                             _cache.Set(tag.Key, rawValue);
+                            
+                            // ✅ PUBLISH ALL DISCRETE INPUTS
                             await _publisher.PublishDigitalInputAsync(
                                 tag.Key,
                                 (bool)rawValue
                             );
+
+                            continue;
                         }
 
                         /* ================= DIGITAL OUTPUT ================= */
@@ -129,7 +171,10 @@ namespace CompressionForce.Services
                                 tag.Key,
                                 (bool)rawValue
                             );
+
+                            continue;
                         }
+
                         /* ================= COUNTERS (INPUT REGISTERS) ================= */
                         if (tag.Type == PlcDataType.InputRegister &&
                             (tag.Key == "REVOLUTION_COUNT" ||
@@ -140,25 +185,31 @@ namespace CompressionForce.Services
                             _cache.Set(tag.Key, value);
 
                             await _publisher.PublishAnalogInputAsync(
-                                tag.Key,     // reuse channel
-                                value,       // voltage parameter reused
-                                value        // force parameter reused
+                                tag.Key,
+                                value,
+                                value
                             );
 
                             continue;
                         }
-
 
                         /* ================= SERVO STATUS ================= */
                         if (IsServoStatusTag(tag.Key))
                         {
                             _cache.Set(tag.Key, rawValue);
                             await PublishServoStatusFromCache(tag.Key);
+                            continue;
                         }
 
+                        /* ================= DEFAULT: cache & publish tag ================= */
+                        if (tag.Type == PlcDataType.InputRegister ||
+                            tag.Type == PlcDataType.HoldingRegister)
+                        {
+                            _cache.Set(tag.Key, rawValue);
+                            await _publisher.PublishTagAsync(tag.Key, rawValue);
+                        }
 
                     }
-
                     catch (Exception ex)
                     {
                         Console.WriteLine(
@@ -213,5 +264,6 @@ namespace CompressionForce.Services
         {
             return Math.Round(raw * 10.0 / 32767.0, 3);
         }
+
     }
 }

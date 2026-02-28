@@ -1,6 +1,7 @@
 ﻿using CompressionForce.Data;
 using CompressionForce.Services;
 using CompressionForce.Models;
+using CompressionForce.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -93,14 +94,74 @@ namespace CompressionForce.WebControllers
         }
 
         /* Auto Mode pages */
-        public IActionResult AutoMode()
+        public async Task<IActionResult> AutoMode()
         {
-            return View();
-        }
+            var vm = new AutoModeVM
+            {
+                ProductName = "No Active Batch",
+                BatchNumber = "-",
+                BatchQty = 0
+            };
 
-        public IActionResult OperationMode()
-        {
-            return View();
+            try
+            {
+                // Read most recent CurrentBatch
+                var current = await _context.CurrentBatches
+                    .AsNoTracking()
+                    .OrderByDescending(cb => cb.DateTime)
+                    .FirstOrDefaultAsync();
+
+                if (current != null && !string.IsNullOrWhiteSpace(current.BatchNumber))
+                {
+                    var batchNumber = current.BatchNumber.Trim();
+                    vm.BatchNumber = batchNumber;
+
+                    // Try both BatchCode and BatchNumber to handle schema mismatches
+                    var batch = await _context.Batches
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(b =>
+                            (b.BatchCode != null && b.BatchCode == batchNumber) ||
+                            (EF.Property<string>(b, "BatchNumber") != null && EF.Property<string>(b, "BatchNumber") == batchNumber)
+                        );
+
+                    if (batch != null)
+                    {
+                        vm.BatchQty = batch.BatchQty ?? 0;
+
+                        // Resolve recipe/product name if available
+                        var recipeCode = batch.RecipeCode;
+                        if (!string.IsNullOrWhiteSpace(recipeCode))
+                        {
+                            var recipe = await _context.Recipes
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync(r => r.RecipeCode == recipeCode);
+
+                            if (recipe != null)
+                                vm.ProductName = recipe.RecipeName;
+                            else
+                                vm.ProductName = "Active (recipe missing)";
+                        }
+                        else
+                        {
+                            vm.ProductName = "Active (no recipe code)";
+                        }
+                    }
+                    else
+                    {
+                        // No matching batch row found — still show batch number
+                        vm.ProductName = "Active (no batch record)";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading Active Batch for AutoMode");
+                vm.ProductName = "Error Loading Batch";
+                vm.BatchNumber = "-";
+                vm.BatchQty = 0;
+            }
+
+            return View(vm);
         }
 
         /* Batch pages */

@@ -1,14 +1,20 @@
 ﻿<!-- COMMON RIGHT SIDE SECTION FOR AUTO MODE MODULE -->
 <section class="d-flex d-xxl-block mt-3 order-xxl-last order-first ms-lg-0 ms-3 justify-content-center flex-wrap gap-3 auto-right-controls">
 
-    <!-- Card 1 -->
+    <!-- Card 1: Turret Control -->
     <section class="card text-bg-light mb-3 box-shadow-1 w-288px">
         <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">Turret Control</h5>
 
         <div class="card-body p-3">
             <div class="d-flex gap-2 mb-2 w-100">
-                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold">Turret Start</button>
-                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold">Turret Jog</button>
+                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold" 
+                        onclick="writeCoil('TURRET_START_CMD', true); setTimeout(() => writeCoil('TURRET_START_CMD', false), 500)">
+                    Turret Start
+                </button>
+                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold" 
+                        onclick="writeCoil('TURRET_JOG_CMD', true); setTimeout(() => writeCoil('TURRET_JOG_CMD', false), 500)">
+                    Turret Jog
+                </button>
             </div>
 
             <div class="row justify-content-start w-100 position-relative counter-comp">
@@ -18,10 +24,13 @@
                         <label class="col-form-label me-auto fw-semibold">Set</label>
                         <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px h-29px">
                             <div class="d-flex flex-column me-2">
-                                <button class="btn btn-sm arrow-btns p-0"><img src="/images/up arrow.svg"></button>
-                                <button class="btn btn-sm arrow-btns p-0"><img src="/images/down arrow.svg"></button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="incrementTurretRpm(1)"><img src="/images/up arrow.svg"></button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="incrementTurretRpm(-1)"><img src="/images/down arrow.svg"></button>
                             </div>
-                            <input class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 fw-semibold" value="10">
+                            <input class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 fw-semibold" 
+                                   id="turret-set-rpm" 
+                                   value="0"
+                                   onchange="writeTurretRpm(this.value)">
                         </div>
                         <span class="ms-2 fw-semibold">rpm</span>
                     </div>
@@ -29,11 +38,10 @@
                     <div class="d-flex align-items-center mb-2">
                         <label class="col-form-label me-auto fw-semibold">Actual</label>
                         <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px h-29px">
-                            <div class="d-flex flex-column me-2">
-                                <button class="btn btn-sm arrow-btns p-0"><img src="/images/up arrow.svg"></button>
-                                <button class="btn btn-sm arrow-btns p-0"><img src="/images/down arrow.svg"></button>
-                            </div>
-                            <input class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 fw-semibold" value="0">
+                            <input class="form-control arrows-text bgcol-transparent h-16px border-0 p-0 fw-semibold" 
+                                   id="turret-actual-rpm" 
+                                   value="0"
+                                   readonly>
                         </div>
                         <span class="ms-2 fw-semibold">rpm</span>
                     </div>
@@ -43,66 +51,151 @@
         </div>
     </section>
 
-    <!-- Card 2 -->
+    <!-- Card 2: S1 Feeder Control -->
     <section class="card w-288px text-bg-light mb-3 box-shadow-1">
         <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S1 Feeder Control</h5>
 
         <div class="card-body p-3">
             <div class="d-flex gap-2 mb-2 w-100">
-                <button class="btn btn-primary bgcol-126F15 w-50 fw-semibold">Auto</button>
-                <button class="btn btn-primary bgcol-8434C6 opacity-50 w-50 fw-semibold">Stop</button>
-                <button class="btn btn-primary bgcol-8434C6 opacity-50 w-50 fw-semibold">Jog</button>
+                <button class="btn btn-primary bgcol-126F15 w-50 fw-semibold" 
+                        onclick="writeCoil('S1_AUTO_CMD', true); setTimeout(() => writeCoil('S1_AUTO_CMD', false), 500)">
+                    Auto
+                </button>
+                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold" 
+                        onclick="writeCoil('S1_STOP_CMD', true); setTimeout(() => writeCoil('S1_STOP_CMD', false), 500)">
+                    Stop
+                </button>
+                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold" 
+                        onclick="writeCoil('S1_JOG_CMD', true); setTimeout(() => writeCoil('S1_JOG_CMD', false), 500)">
+                    Jog
+                </button>
             </div>
 
             <div class="d-flex flex-column">
                 <div class="d-flex align-items-center mb-2">
                     <label class="me-auto fw-semibold">Set</label>
-                    <input class="form-control w-70px text-center" value="10">
+                    <input class="form-control w-70px text-center" 
+                           id="s1-set-rpm"
+                           type="number"
+                           value="0"
+                           onchange="writeS1Rpm(this.value)">
                     <span class="ms-2 fw-semibold">rpm</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
-                    <label class="me-auto fw-semibold">Set Ratio</label>
-                    <input class="form-control w-70px text-center" value="10">
+                    <label class="me-auto fw-semibold">Actual</label>
+                    <input class="form-control w-70px text-center" 
+                           id="s1-actual-rpm"
+                           type="number"
+                           value="0"
+                           readonly>
                     <span class="ms-2 fw-semibold">rpm</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
-                    <label class="me-auto fw-semibold">Set Ratio</label>
-                    <input class="form-control w-70px text-center" value="10">
-                    <span class="ms-2 fw-semibold">rpm</span>
+                    <label class="me-auto fw-semibold">Ratio</label>
+                    <input class="form-control w-70px text-center" 
+                           id="s1-ratio"
+                           type="number"
+                           value="1.0"
+                           step="0.1">
+                    <span class="ms-2 fw-semibold">-</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Card 3 -->
+    <!-- Card 3: S2 Feeder Control -->
     <section class="card w-288px text-bg-light mb-3 box-shadow-1">
         <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S2 Feeder Control</h5>
 
         <div class="card-body p-3">
             <div class="d-flex gap-2 mb-2 w-100">
-                <button class="btn btn-primary bgcol-126F15 w-50 fw-semibold">Auto</button>
-                <button class="btn btn-primary bgcol-8434C6 opacity-50 w-50 fw-semibold">Stop</button>
-                <button class="btn btn-primary bgcol-8434C6 opacity-50 w-50 fw-semibold">Jog</button>
+                <button class="btn btn-primary bgcol-126F15 w-50 fw-semibold" 
+                        onclick="writeCoil('S2_AUTO_CMD', true); setTimeout(() => writeCoil('S2_AUTO_CMD', false), 500)">
+                    Auto
+                </button>
+                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold" 
+                        onclick="writeCoil('S2_STOP_CMD', true); setTimeout(() => writeCoil('S2_STOP_CMD', false), 500)">
+                    Stop
+                </button>
+                <button class="btn btn-primary bgcol-8434C6 w-50 fw-semibold" 
+                        onclick="writeCoil('S2_JOG_CMD', true); setTimeout(() => writeCoil('S2_JOG_CMD', false), 500)">
+                    Jog
+                </button>
             </div>
 
             <div class="d-flex flex-column">
                 <div class="d-flex align-items-center mb-2">
                     <label class="me-auto fw-semibold">Set</label>
-                    <input class="form-control w-70px text-center" value="10">
+                    <input class="form-control w-70px text-center" 
+                           id="s2-set-rpm"
+                           type="number"
+                           value="0"
+                           onchange="writeS2Rpm(this.value)">
                     <span class="ms-2 fw-semibold">rpm</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
-                    <label class="me-auto fw-semibold">Set Ratio</label>
-                    <input class="form-control w-70px text-center" value="10">
+                    <label class="me-auto fw-semibold">Actual</label>
+                    <input class="form-control w-70px text-center" 
+                           id="s2-actual-rpm"
+                           type="number"
+                           value="0"
+                           readonly>
                     <span class="ms-2 fw-semibold">rpm</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
-                    <label class="me-auto fw-semibold">Set Ratio</label>
-                    <input class="form-control w-70px text-center" value="10">
-                    <span class="ms-2 fw-semibold">rpm</span>
+                    <label class="me-auto fw-semibold">Ratio</label>
+                    <input class="form-control w-70px text-center" 
+                           id="s2-ratio"
+                           type="number"
+                           value="1.0"
+                           step="0.1">
+                    <span class="ms-2 fw-semibold">-</span>
                 </div>
             </div>
         </div>
     </section>
 
 </section>
+
+<script>
+    // ============== TURRET RPM CONTROL ==============
+    function incrementTurretRpm(delta) {
+        const el = document.getElementById('turret-set-rpm');
+        let val = parseInt(el.value) || 0;
+        val += delta * 10;
+        el.value = Math.max(0, val);
+        writeTurretRpm(el.value);
+    }
+
+    async function writeTurretRpm(value) {
+        await writeRegister('TURRET_SET_RPM', parseInt(value) || 0);
+    }
+
+    // ============== S1 RPM CONTROL ==============
+    async function writeS1Rpm(value) {
+        await writeRegister('S1_SET_RPM', parseInt(value) || 0);
+    }
+
+    // ============== S2 RPM CONTROL ==============
+    async function writeS2Rpm(value) {
+        await writeRegister('S2_SET_RPM', parseInt(value) || 0);
+    }
+
+    // ============== UPDATE ACTUAL VALUES FROM PLC ==============
+    // Hook into existing TagUpdated event to update "Actual" fields
+    const originalConnection = connection;
+    if (originalConnection) {
+        originalConnection.on("TagUpdated", function (key, value) {
+            // Update actual RPM values (these would come from your PLC)
+            if (key === "TURRET_SET_RPM") {
+                document.getElementById("turret-actual-rpm").value = value;
+            }
+            if (key === "S1_SET_RPM") {
+                document.getElementById("s1-actual-rpm").value = value;
+            }
+            if (key === "S2_SET_RPM") {
+                document.getElementById("s2-actual-rpm").value = value;
+            }
+        });
+    }
+</script>

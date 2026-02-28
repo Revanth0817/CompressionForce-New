@@ -18,4 +18,10 @@ public interface IPlcProtocol
 
     Task WriteCoilAsync(int address, bool value);
     Task WriteHoldingRegisterAsync(int address, int value);
+
+    /// <summary>True when the Modbus TCP connection is alive.</summary>
+    bool IsConnected { get; }
+
+    /// <summary>The PLC IP address.</summary>
+    string Host { get; }
 }

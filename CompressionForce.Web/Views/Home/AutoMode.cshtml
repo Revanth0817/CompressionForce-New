@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CompressionForce.Web.Models.AutoModeVM
+@{
     ViewData["Title"] = "Auto Mode";
 }
 
@@ -14,46 +15,54 @@
             <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#fillCamGuide" type="button" role="tab" aria-controls="fillCamGuide" aria-selected="false">Fill Cam Guide</button>
         </li>
     </ul>
-
     <div class="tab-content" id="">
 
         <!--Force Parameters-->
         <div class="tab-pane pt-3 fade show active" id="forceGraphData" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
 
-            <!--table 1-->
+            <!-- Table 1 -->
             <div class="table-responsive bord-top-rad-4px mb-3">
                 <table class="table table-bordered mb-1">
-                    <thead class="table-primary ">
+                    <thead class="table-primary">
                         <tr>
-                            <th scope="col" class="text-center text-nowrap table-width fw-semibold">Product Name</th>
-                            <th scope="col" class="text-center text-nowrap table-width  fw-semibold">Batch Number</th>
-                            <th scope="col" class="text-center text-nowrap table-width fw-semibold ">Batch Qty</th>
-                            <th scope="col" class="text-center text-nowrap table-width fw-semibold">Good-S1</th>
-                            <th scope="col" class="text-center text-nowrap table-width fw-semibold ">Rejected-S1</th>
-                            <th scope="col" class="text-center text-nowrap table-width fw-semibold">Total-S1</th>
-                            <th scope="col" class="text-center text-nowrap table-width fw-semibold">Good-S2</th>
-                            <th scope="col" class="text-center text-nowrap table-width fw-semibold ">Rejected-S2</th>
-                            <th scope="col" class="text-center text-nowrap table-width fw-semibold">Total-S2</th>
+                            <th class="text-center text-nowrap fw-semibold">Product Name</th>
+                            <th class="text-center text-nowrap fw-semibold">Batch Number</th>
+                            <th class="text-center text-nowrap fw-semibold">Batch Qty</th>
+                            <th class="text-center text-nowrap fw-semibold">Good-S1</th>
+                            <th class="text-center text-nowrap fw-semibold">Rejected-S1</th>
+                            <th class="text-center text-nowrap fw-semibold">Total-S1</th>
+                            <th class="text-center text-nowrap fw-semibold">Good-S2</th>
+                            <th class="text-center text-nowrap fw-semibold">Rejected-S2</th>
+                            <th class="text-center text-nowrap fw-semibold">Total-S2</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr>
-                            <th scope="row" class="invisible">Product</th>
-                            <td class="text-center fw-normal"></td>
-                            <td class="text-center fw-normal"></td>
-                            <td class="bgcol-34C639 text-center fw-normal"></td>
-                            <td class="bgcol-FF441F text-center fw-normal"></td>
-                            <td class="bgcol-81D4FA text-center fw-normal"></td>
-                            <td class="bgcol-34C639 text-center fw-normal"></td>
-                            <td class="bgcol-FF441F text-center fw-normal"></td>
-                            <td class="bgcol-81D4FA text-center fw-normal"></td>
+                            <!-- Product Name -->
+                            <td class="text-center fw-normal" id="am-product">@Model?.ProductName</td>
 
+                            <!-- Batch Number -->
+                            <td class="text-center fw-normal" id="am-batch">@Model?.BatchNumber</td>
+
+                            <!-- Batch Quantity -->
+                            <td class="text-center fw-normal" id="am-batchqty">@Model?.BatchQty</td>
+
+                            <!-- Station 1 -->
+                            <td class="bgcol-34C639 text-center fw-normal" id="am-good-s1">@Model?.GoodS1</td>
+                            <td class="bgcol-FF441F text-center fw-normal" id="am-rej-s1">@Model?.RejectedS1</td>
+                            <td class="bgcol-81D4FA text-center fw-normal" id="am-total-s1">@Model?.TotalS1</td>
+
+                            <!-- Station 2 -->
+                            <td class="bgcol-34C639 text-center fw-normal" id="am-good-s2">@Model?.GoodS2</td>
+                            <td class="bgcol-FF441F text-center fw-normal" id="am-rej-s2">@Model?.RejectedS2</td>
+                            <td class="bgcol-81D4FA text-center fw-normal" id="am-total-s2">@Model?.TotalS2</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!--Table 2-->
+            <!-- Table 2 (add ids to cells we will update from PLC) -->
             <section class="d-flex flex-lg-nowrap flex-wrap">
                 <div class="table-responsive w-100 bord-top-rad-4px">
                     <table class="table table-bordered">
@@ -73,14 +82,14 @@
                         <tbody>
                             <tr>
                                 <th scope="row" class="invisible">Product</th>
-                                <td class="text-center fw-normal"></td>
-                                <td class="text-center fw-normal"></td>
-                                <td class="bgcol-34C639 text-center fw-normal"></td>
-                                <td class="bgcol-FF441F text-center fw-normal"></td>
-                                <td class="bgcol-81D4FA text-center fw-normal"></td>
-                                <td class="bgcol-34C639 text-center fw-normal"></td>
+                                <td class="text-center fw-normal" id="am-avg-main1">@Model?.AvgMain1</td>
+                                <td class="text-center fw-normal" id="am-avg-pre1">@Model?.AvgPre1</td>
+                                <td class="bgcol-34C639 text-center fw-normal" id="am-avg-eject1">@Model?.AvgEject1</td>
+                                <td class="bgcol-FF441F text-center fw-normal" id="am-avg-main2">@Model?.AvgMain2</td>
+                                <td class="bgcol-81D4FA text-center fw-normal" id="am-avg-pre2">@Model?.AvgPre2</td>
+                                <td class="bgcol-34C639 text-center fw-normal" id="am-dwell">@Model?.DwellTime</td>
 
-                                <td class="bgcol-81D4FA text-center fw-normal"></td>
+                                <td class="bgcol-81D4FA text-center fw-normal" id="am-totalqty">@Model?.TotalQty</td>
 
                             </tr>
                         </tbody>
@@ -88,18 +97,19 @@
                 </div>
 
 
+
                 <!--Buttons-->
                 <div class="d-block ms-lg-4 ms-0 mt-lg-0 mt-3">
                     <div class="d-flex gap-2 mb-3">
-                        <button class="btn btn-primary bgcol-81D4FA me-auto fw-semibold col-242424 w-132px h-30px " type="button"><p class="mb-0 position-relative bottom-4px">AWC Value</p></button>
-                        <button class="btn btn-primary bgcol-FFA29A  fw-semibold col-242424 w-132px h-30px" type="button"><p class="mb-0 position-relative bottom-4px">Door Interlock</p></button>
-                        <button class="btn btn-primary bgcol-FFAB36  fw-semibold  col-242424 w-132px h-30px" type="button"><p class="mb-0 position-relative bottom-4px">Counter</p></button>
+                        <button class="btn btn-primary bgcol-81D4FA me-auto fw-semibold col-242424 w-132px h-30px" type="button" id="btn-awc-value"><p class="mb-0 position-relative bottom-4px">AWC Value</p></button>
+                        <button class="btn btn-primary bgcol-FFA29A fw-semibold col-242424 w-132px h-30px" type="button" id="btn-door-interlock"><p class="mb-0 position-relative bottom-4px">Door Interlock</p></button>
+                        <button class="btn btn-primary bgcol-FFAB36 fw-semibold col-242424 w-132px h-30px" type="button" id="btn-counter"><p class="mb-0 position-relative bottom-4px">Counter</p></button>
                     </div>
 
                     <div class="d-flex gap-2 mb-3">
-                        <button class="btn btn-primary bgcol-34C639 me-auto fw-semibold w-132px col-242424 h-30px" type="button"><p class="mb-0 position-relative bottom-4px">Run</p></button>
-                        <button class="btn btn-primary bgcol-F38B46 fw-semibold w-132px col-242424 h-30px" type="button"><p class="mb-0 position-relative bottom-4px">Ready</p></button>
-                        <button class="btn btn-primary bgcol-F597F2 fw-semibold w-132px col-242424 h-30px" type="button"><p class="mb-0 position-relative bottom-4px">Alarm</p></button>
+                        <button class="btn btn-primary bgcol-34C639 me-auto fw-semibold w-132px col-242424 h-30px" type="button" id="btn-run-status"><p class="mb-0 position-relative bottom-4px">Run</p></button>
+                        <button class="btn btn-primary bgcol-F38B46 fw-semibold w-132px col-242424 h-30px" type="button" id="btn-ready-status"><p class="mb-0 position-relative bottom-4px">Ready</p></button>
+                        <button class="btn btn-primary bgcol-F597F2 fw-semibold w-132px col-242424 h-30px" type="button" id="btn-alarm-status"><p class="mb-0 position-relative bottom-4px">Alarm</p></button>
                     </div>
                 </div>
 
@@ -133,367 +143,400 @@
                             <!--Control-1-->
                             <div class="tab-pane pt-3 fade me-3" id="control1" role="tabpanel" aria-labelledby="control1" tabindex="0">
                                 <section class="d-flex">
-
                                     <!--Left side section-->
                                     <div class="">
                                         <div class="p-3 bgcol-E9EFFB w-100">
                                             <!--horizontal tabs inside the card-->
-                                            <ul class="nav nav-tabs row-gap-3 position-relative ms-1 " id="" role="tablist">
+                                            <ul class="nav nav-tabs row-gap-3 position-relative ms-1" id="control1Tabs" role="tablist">
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s1Control" aria-selected="true">S1 Control</button>
+                                                    <button class="nav-link active col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#s1ControlPane" type="button" role="tab" aria-selected="true">S1 Control</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s2Control" aria-selected="false">S2 Control</button>
+                                                    <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#s2ControlPane" type="button" role="tab" aria-selected="false">S2 Control</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">Torque</button>
+                                                    <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#torquePane" type="button" role="tab" aria-selected="false">Torque</button>
                                                 </li>
                                             </ul>
 
-                                            <!--Graph cards section-->
-                                            <div class="tab-pane pt-3 fade show active" id="s1Control" role="tabpanel" aria-labelledby="S1Control" tabindex="0">
+                                            <div class="tab-content">
+                                                <!--S1 Control Pane-->
+                                                <div class="tab-pane pt-3 fade show active" id="s1ControlPane" role="tabpanel" tabindex="0">
+                                                    <div class="row s1-card-container g-3">
 
-                                                <div class="row tab-content s1-card-container">
-                                                    <!--Card 1-->
-                                                    <div class="col-md-12 s1Control col-xl-4 d-flex">
-                                                        <div class="card box-shadow-1 card-filldepth d-flex flex-column w-100">
+                                                        <!--========== Card 1: S1 Fill Depth ==========-->
+                                                        <div class="col-md-12 col-xl-4 d-flex">
+                                                            <div class="card box-shadow-1 card-filldepth d-flex flex-column w-100">
+                                                                <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S1 Fill Depth</h5>
+                                                                <div class="card-body d-flex flex-column p-3 bord-rad-4px">
 
-                                                            <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S1 Fill Depth</h5>
-                                                            <div class="card-body d-flex flex-column p-3 bord-rad-4px">
-
-                                                                <!--1st row-->
-                                                                <div class="d-flex gap-2 flex-wrap align-items-end mb-3">
-                                                                    <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-auto h-30px" type="button"><p class="mb-0 bottom-4px position-relative">Die Fill</p></button>
-                                                                    <div class="">
-                                                                        <label class="font-size-12px d-flex fw-semibold">Recipe Value</label>
-                                                                        <div class="w-85px d-flex">
-                                                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
-                                                                                <div class="d-flex flex-column me-2 row-gap-1">
-                                                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                                                        <img src="/images/up arrow.svg">
-                                                                                    </button>
-                                                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                                                        <img src="/images/down arrow.svg">
-                                                                                    </button>
-                                                                                </div>
-                                                                                <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-
-
-                                                                <!--3rd and 4th rows-->
-                                                                <div class="d-flex gap-5">
-                                                                    <button class="btn btn-primary rounded-0 bgcol-149550 me-auto fw-semibold w-auto h-30px" type="button"><p class="mb-0 position-relative bottom-4px">En</p></button>
-                                                                    <div class="row mb-3 ms-auto">
-                                                                        <label for="colFormLabel" class="col-auto col-form-label fw-semibold">Fill Depth</label>
-
-                                                                        <canvas id="fillDepthChart" width="100" height="200"></canvas>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="d-flex mt-auto flex-wrap">
-                                                                    <p class="mb-0 align-self-center me-auto fw-semibold">S1 Select Fill Cam</p>
-                                                                    <div class="d-flex h-30px toolTypeDropdown batchDropdown position-relative">
-                                                                        <input type="text" class="form-control bg-white flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly="">
-                                                                        <button type="button" class="border-0 bgcol-215ED6 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            <span class="visually-hidden">Toggle Dropdown</span>
+                                                                    <!--Die Fill + Recipe Value-->
+                                                                    <div class="d-flex gap-2 align-items-end mb-2">
+                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold h-30px me-auto" type="button">
+                                                                            <p class="mb-0 bottom-4px position-relative">Die Fill</p>
                                                                         </button>
-                                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                                            <li><a class="dropdown-item" href="#">4444</a></li>
-                                                                            <li><a class="dropdown-item" href="#">2432</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!--Card 2-->
-
-                                                    <div class="col-md-12 s1Control col-xl-4 d-flex">
-                                                        <div class="card box-shadow-1 card-filldepth d-flex flex-column w-100">
-
-
-                                                            <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S1 Fill Depth</h5>
-                                                            <div class="card-body d-flex flex-column p-3 bord-rad-4px">
-
-                                                                <!--1st row-->
-                                                                <div class="d-flex gap-2 flex-wrap align-items-end mb-3">
-                                                                    <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-auto h-30px" type="button"><p class="mb-0 bottom-4px position-relative fw-semibold">Pre Penetration</p></button>
-                                                                    <div class="">
-                                                                        <label class="font-size-12px d-flex fw-semibold">Recipe Value</label>
-                                                                        <div class="w-85px d-flex">
-                                                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
-                                                                                <div class="d-flex flex-column me-2 row-gap-1">
-                                                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                                                        <img src="/images/up arrow.svg">
-                                                                                    </button>
-                                                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                                                        <img src="/images/down arrow.svg">
-                                                                                    </button>
+                                                                        <div>
+                                                                            <label class="font-size-12px d-block fw-semibold text-end">Recipe Value</label>
+                                                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 py-1 h-29px min-width-70 w-70px">
+                                                                                <div class="d-flex flex-column me-1 row-gap-1">
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-die-fill-recipe',0.10)"><img src="/images/up arrow.svg"></button>
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-die-fill-recipe',-0.10)"><img src="/images/down arrow.svg"></button>
                                                                                 </div>
-                                                                                <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000">
+                                                                                <input type="text" id="c1-die-fill-recipe"
+                                                                                       class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold"
+                                                                                       value="0.00"
+                                                                                       onchange="writeControl1Register('S1_DIE_FILL_RECIPE',this.value)">
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
 
-
-
-                                                                <!--3rd and 4th rows-->
-                                                                <div class="d-flex gap-5">
-                                                                    <button class="btn btn-primary rounded-0 bgcol-FF4636 me-auto fw-semibold w-auto h-30px" type="button"><p class="mb-0 position-relative bottom-4px fw-semibold">En</p></button>
-                                                                    <div class="row mb-3 ms-auto">
-                                                                        <label for="colFormLabel" class="col-auto col-form-label fw-semibold">Fill Depth</label>
-
-                                                                        <canvas id="fillDepthChart" width="100" height="200"></canvas>
+                                                                    <!--En + Fill Depth actual-->
+                                                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                                                        <button class="btn btn-primary rounded-0 bgcol-149550 fw-semibold h-30px"
+                                                                                id="c1-die-fill-en" data-active="false"
+                                                                                onclick="toggleCoil('S1_DIE_FILL_EN',this)">
+                                                                            <p class="mb-0 position-relative bottom-4px">En</p>
+                                                                        </button>
+                                                                        <span class="fw-semibold font-size-12px ms-1">Fill Depth</span>
+                                                                        <span class="fw-semibold font-size-12px bgcol-81D4FA col-215ED6 px-2 py-1 rounded" id="c1-s1-fill-depth-pos">0.000</span>
+                                                                        <span class="fw-semibold font-size-12px">mm</span>
                                                                     </div>
-                                                                </div>
-                                                                <div class="d-flex align-items-end flex-wrap mt-auto">
-                                                                    <div class="d-flex flex-column me-auto">
-                                                                        <button class="btn btn-primary rounded-0 bgcol-FF4636 me-auto fw-semibold w-auto h-30px" type="button"><p class="mb-0 position-relative bottom-4px">En</p></button>
-                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold mt-2 w-auto h-30px" type="button"><p class="mb-0 bottom-4px position-relative">Pre Thickness</p></button>
 
-                                                                    </div>
-                                                                    <div class="">
-                                                                        <label class="font-size-12px d-flex justify-content-end">Recipe Value</label>
-                                                                        <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
-                                                                            <div class="d-flex flex-column me-2 row-gap-1">
-                                                                                <button class="btn btn-sm arrow-btns p-0">
-                                                                                    <img src="/images/up arrow.svg">
-                                                                                </button>
-                                                                                <button class="btn btn-sm arrow-btns p-0">
-                                                                                    <img src="/images/down arrow.svg">
-                                                                                </button>
-                                                                            </div>
-                                                                            <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000">
+                                                                    <!--Vertical Scale-->
+                                                                    <div class="d-flex c1-vscale-wrapper my-1">
+                                                                        <div class="c1-vscale">
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">1</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">2.5</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">5</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">7.5</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">10</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">12.5</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">15</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">17.5</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">20</span></div>
+                                                                        </div>
+                                                                        <div class="c1-vscale-track">
+                                                                            <div class="c1-vscale-bar" id="c1-bar-fill" style="height:0%;"></div>
                                                                         </div>
                                                                     </div>
 
+                                                                    <!--S1 Select Fill Cam-->
+                                                                    <div class="d-flex mt-auto align-items-center pt-2">
+                                                                        <p class="mb-0 me-auto fw-semibold font-size-12px">S1 Select Fill Cam</p>
+                                                                        <div class="d-flex h-30px toolTypeDropdown batchDropdown position-relative">
+                                                                            <input type="text" class="form-control bg-white flex-grow-1 dropdownInput bord-D2D2D2 font-size-12px" value="15" readonly>
+                                                                            <button type="button" class="border-0 bgcol-215ED6 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn"
+                                                                                    data-bs-toggle="dropdown">
+                                                                                <span class="visually-hidden">Toggle</span>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                                <li><a class="dropdown-item" href="#">10</a></li>
+                                                                                <li><a class="dropdown-item" href="#">15</a></li>
+                                                                                <li><a class="dropdown-item" href="#">20</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <!--Card 3-->
-                                                    <div class="col-md-12 s1Control col-xl-4 d-flex">
-                                                        <div class="card box-shadow-1 card-filldepth d-flex flex-column w-100">
+                                                        <!--========== Card 2: S1 Pre Thickness ==========-->
+                                                        <div class="col-md-12 col-xl-4 d-flex">
+                                                            <div class="card box-shadow-1 card-filldepth d-flex flex-column w-100">
+                                                                <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S1 Pre Thickness</h5>
+                                                                <div class="card-body d-flex flex-column p-3 bord-rad-4px">
 
-
-                                                            <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S1 Fill Depth</h5>
-                                                            <div class="card-body d-flex flex-column p-3 bord-rad-4px">
-
-
-                                                                <!--1st row-->
-                                                                <div class="d-flex gap-2 flex-wrap align-items-end mb-3">
-                                                                    <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-auto h-30px" type="button"><p class="mb-0 bottom-4px position-relative">Main Penetration</p></button>
-                                                                    <div class="">
-                                                                        <label class="font-size-12px d-flex fw-semibold">Recipe Value</label>
-                                                                        <div class="w-85px d-flex ">
-                                                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
-                                                                                <div class="d-flex flex-column me-2 row-gap-1">
-                                                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                                                        <img src="/images/up arrow.svg">
-                                                                                    </button>
-                                                                                    <button class="btn btn-sm arrow-btns p-0">
-                                                                                        <img src="/images/down arrow.svg">
-                                                                                    </button>
+                                                                    <!--Pre Penetration + Recipe Value-->
+                                                                    <div class="d-flex gap-2 align-items-end mb-2">
+                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold h-30px me-auto" type="button">
+                                                                            <p class="mb-0 bottom-4px position-relative">Pre Penetration</p>
+                                                                        </button>
+                                                                        <div>
+                                                                            <label class="font-size-12px d-block fw-semibold text-end">Recipe Value</label>
+                                                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 py-1 h-29px min-width-70 w-70px">
+                                                                                <div class="d-flex flex-column me-1 row-gap-1">
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-pre-pen-recipe',0.10)"><img src="/images/up arrow.svg"></button>
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-pre-pen-recipe',-0.10)"><img src="/images/down arrow.svg"></button>
                                                                                 </div>
-                                                                                <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000">
+                                                                                <input type="text" id="c1-pre-pen-recipe"
+                                                                                       class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold"
+                                                                                       value="0.00"
+                                                                                       onchange="writeControl1Register('S1_PRE_PEN_RECIPE',this.value)">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!--En + Pre Penetration actual-->
+                                                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                                                        <button class="btn btn-primary rounded-0 bgcol-FF4636 fw-semibold h-30px"
+                                                                                id="c1-pre-pen-en" data-active="false"
+                                                                                onclick="toggleCoil('S1_PRE_PEN_EN',this)">
+                                                                            <p class="mb-0 position-relative bottom-4px">En</p>
+                                                                        </button>
+                                                                        <span class="fw-semibold font-size-12px ms-1">Pre Penetration</span>
+                                                                        <span class="fw-semibold font-size-12px bgcol-81D4FA col-215ED6 px-2 py-1 rounded" id="c1-s1-pre-pen-pos">0.000</span>
+                                                                        <span class="fw-semibold font-size-12px">mm</span>
+                                                                    </div>
+
+                                                                    <!--Vertical Scale-->
+                                                                    <div class="d-flex c1-vscale-wrapper my-1">
+                                                                        <div class="c1-vscale">
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">2</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">4</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">6</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">8</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">10</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">12</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">15</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">20</span></div>
+                                                                        </div>
+                                                                        <div class="c1-vscale-track">
+                                                                            <div class="c1-vscale-bar" id="c1-bar-pre" style="height:0%;"></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!--Pre Lower actual value-->
+                                                                    <div class="d-flex align-items-center justify-content-end gap-1 mb-2">
+                                                                        <span class="fw-semibold font-size-12px">Pre Lower</span>
+                                                                        <span class="fw-semibold font-size-12px bgcol-81D4FA col-215ED6 px-2 py-1 rounded" id="c1-s1-pre-lower-pos">0.000</span>
+                                                                        <span class="fw-semibold font-size-12px">mm</span>
+                                                                    </div>
+
+                                                                    <!--En + Pre Thickness + Recipe-->
+                                                                    <div class="d-flex align-items-end gap-2 mt-auto">
+                                                                        <div class="d-flex flex-column me-auto gap-1">
+                                                                            <button class="btn btn-primary rounded-0 bgcol-FF4636 fw-semibold h-30px"
+                                                                                    id="c1-pre-thickness-en" data-active="false"
+                                                                                    onclick="toggleCoil('S1_PRE_THICKNESS_EN',this)">
+                                                                                <p class="mb-0 position-relative bottom-4px">En</p>
+                                                                            </button>
+                                                                            <button class="btn btn-primary bgcol-8434C6 fw-semibold h-30px" type="button">
+                                                                                <p class="mb-0 bottom-4px position-relative">Pre Thickness</p>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div>
+                                                                            <label class="font-size-12px d-block fw-semibold text-end">Recipe Value</label>
+                                                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 py-1 h-29px min-width-70 w-70px">
+                                                                                <div class="d-flex flex-column me-1 row-gap-1">
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-pre-thickness-recipe',0.10)"><img src="/images/up arrow.svg"></button>
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-pre-thickness-recipe',-0.10)"><img src="/images/down arrow.svg"></button>
+                                                                                </div>
+                                                                                <input type="text" id="c1-pre-thickness-recipe"
+                                                                                       class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold"
+                                                                                       value="0.00"
+                                                                                       onchange="writeControl1Register('S1_PRE_THICKNESS_RECIPE',this.value)">
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-
-
-                                                                <!--3rd and 4th rows-->
-                                                                <div class="d-flex gap-5">
-                                                                    <button class="btn btn-primary rounded-0 bgcol-FF4636 me-auto fw-semibold w-auto h-30px" type="button"><p class="mb-0 position-relative bottom-4px">En</p></button>
-                                                                    <div class="row mb-3 ms-auto">
-                                                                        <label for="colFormLabel" class="col-auto col-form-label fw-semibold">Fill Depth</label>
-
-                                                                        <canvas id="fillDepthChart" width="100" height="200"></canvas>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="d-flex align-items-end flex-wrap mt-auto">
-                                                                    <div class="d-flex flex-column me-auto">
-                                                                        <button class="btn btn-primary rounded-0 bgcol-FF4636 me-auto fw-semibold w-auto h-30px" type="button"><p class="mb-0 position-relative bottom-4px">En</p></button>
-                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-auto h-30px mt-2" type="button"><p class="mb-0 bottom-4px position-relative">Main Thickness</p></button>
-
-                                                                    </div>
-                                                                    <div class="">
-                                                                        <label class="font-size-12px d-flex justify-content-end fw-semibold">Recipe Value</label>
-                                                                        <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 w-70px py-1 h-29px min-width-70">
-                                                                            <div class="d-flex flex-column me-2 row-gap-1">
-                                                                                <button class="btn btn-sm arrow-btns p-0">
-                                                                                    <img src="/images/up arrow.svg">
-                                                                                </button>
-                                                                                <button class="btn btn-sm arrow-btns p-0">
-                                                                                    <img src="/images/down arrow.svg">
-                                                                                </button>
-                                                                            </div>
-                                                                            <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold" value="0.000">
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-
                                                             </div>
                                                         </div>
+
+                                                        <!--========== Card 3: S1 Pre Thickness (Main) ==========-->
+                                                        <div class="col-md-12 col-xl-4 d-flex">
+                                                            <div class="card box-shadow-1 card-filldepth d-flex flex-column w-100">
+                                                                <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S1 Pre Thickness</h5>
+                                                                <div class="card-body d-flex flex-column p-3 bord-rad-4px">
+
+                                                                    <!--Main Penetration + Recipe Value-->
+                                                                    <div class="d-flex gap-2 align-items-end mb-2">
+                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold h-30px me-auto" type="button">
+                                                                            <p class="mb-0 bottom-4px position-relative">Main Penetration</p>
+                                                                        </button>
+                                                                        <div>
+                                                                            <label class="font-size-12px d-block fw-semibold text-end">Recipe Value</label>
+                                                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 py-1 h-29px min-width-70 w-70px">
+                                                                                <div class="d-flex flex-column me-1 row-gap-1">
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-main-pen-recipe',0.10)"><img src="/images/up arrow.svg"></button>
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-main-pen-recipe',-0.10)"><img src="/images/down arrow.svg"></button>
+                                                                                </div>
+                                                                                <input type="text" id="c1-main-pen-recipe"
+                                                                                       class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold"
+                                                                                       value="0.00"
+                                                                                       onchange="writeControl1Register('S1_MAIN_PEN_RECIPE',this.value)">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!--En + Main Pen actual-->
+                                                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                                                        <button class="btn btn-primary rounded-0 bgcol-FF4636 fw-semibold h-30px"
+                                                                                id="c1-main-pen-en" data-active="false"
+                                                                                onclick="toggleCoil('S1_MAIN_PEN_EN',this)">
+                                                                            <p class="mb-0 position-relative bottom-4px">En</p>
+                                                                        </button>
+                                                                        <span class="fw-semibold font-size-12px ms-1">Pre Penetration</span>
+                                                                        <span class="fw-semibold font-size-12px bgcol-81D4FA col-215ED6 px-2 py-1 rounded" id="c1-s1-main-pen-pos">0.000</span>
+                                                                        <span class="fw-semibold font-size-12px">mm</span>
+                                                                    </div>
+
+                                                                    <!--Vertical Scale-->
+                                                                    <div class="d-flex c1-vscale-wrapper my-1">
+                                                                        <div class="c1-vscale">
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">2</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">4</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">6</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">8</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">10</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">12</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">15</span></div>
+                                                                            <div class="c1-vscale-row"><span class="c1-vscale-label">20</span></div>
+                                                                        </div>
+                                                                        <div class="c1-vscale-track">
+                                                                            <div class="c1-vscale-bar" id="c1-bar-main" style="height:0%;"></div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!--Main Lower actual value-->
+                                                                    <div class="d-flex align-items-center justify-content-end gap-1 mb-2">
+                                                                        <span class="fw-semibold font-size-12px">Main Lower</span>
+                                                                        <span class="fw-semibold font-size-12px bgcol-81D4FA col-215ED6 px-2 py-1 rounded" id="c1-s1-main-lower-pos">0.000</span>
+                                                                        <span class="fw-semibold font-size-12px">mm</span>
+                                                                    </div>
+
+                                                                    <!--En + Main Thickness + Recipe-->
+                                                                    <div class="d-flex align-items-end gap-2 mt-auto">
+                                                                        <div class="d-flex flex-column me-auto gap-1">
+                                                                            <button class="btn btn-primary rounded-0 bgcol-FF4636 fw-semibold h-30px"
+                                                                                    id="c1-main-thickness-en" data-active="false"
+                                                                                    onclick="toggleCoil('S1_MAIN_THICKNESS_EN',this)">
+                                                                                <p class="mb-0 position-relative bottom-4px">En</p>
+                                                                            </button>
+                                                                            <button class="btn btn-primary bgcol-8434C6 fw-semibold h-30px" type="button">
+                                                                                <p class="mb-0 bottom-4px position-relative">Main Thickness</p>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div>
+                                                                            <label class="font-size-12px d-block fw-semibold text-end">Recipe Value</label>
+                                                                            <div class="d-flex align-items-center bord-col-215ED6 rounded px-2 py-1 h-29px min-width-70 w-70px">
+                                                                                <div class="d-flex flex-column me-1 row-gap-1">
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-main-thickness-recipe',0.10)"><img src="/images/up arrow.svg"></button>
+                                                                                    <button class="btn btn-sm arrow-btns p-0" onclick="adjustRecipeValue('c1-main-thickness-recipe',-0.10)"><img src="/images/down arrow.svg"></button>
+                                                                                </div>
+                                                                                <input type="text" id="c1-main-thickness-recipe"
+                                                                                       class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 fw-semibold"
+                                                                                       value="0.00"
+                                                                                       onchange="writeControl1Register('S1_MAIN_THICKNESS_RECIPE',this.value)">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
+
+                                                <!--S2 Control Pane (placeholder)-->
+                                                <div class="tab-pane pt-3 fade" id="s2ControlPane" role="tabpanel" tabindex="0">
+                                                    <p class="fw-semibold text-center py-5">S2 Control - Coming Soon</p>
+                                                </div>
+
+                                                <!--Torque Pane (placeholder)-->
+                                                <div class="tab-pane pt-3 fade" id="torquePane" role="tabpanel" tabindex="0">
+                                                    <p class="fw-semibold text-center py-5">Torque - Coming Soon</p>
+                                                </div>
                                             </div>
-
-
-
                                         </div>
-                                        <!--Last row cards-->
+
+                                        <!--Last row cards: Force Limits-->
                                         <div class="d-flex s1Cards flex-wrap flex-lg-nowrap gap-5 mt-3">
-
-                                            <!--Card 1-->
-                                            <div class="card  box-shadow-1">
-
-                                                <div class="card-body  p-0 bord-rad-4px">
+                                            <!--S1 Force Limit Card-->
+                                            <div class="card box-shadow-1">
+                                                <div class="card-body p-0 bord-rad-4px">
                                                     <h5 class="card-title col-FFFFFF bord-top-rad-4px">S1 Force Limit-kN</h5>
                                                     <div class="card-body w-fitcontent overflow-x-auto p-0 bord-rad-4px">
-
-
                                                         <div class="container px-4 py-3">
-
                                                             <div class="row">
-                                                                <!-- LEFT COLUMN -->
                                                                 <div class="d-flex">
-                                                                    <!-- Header Row -->
-
                                                                     <div class="row g-3 align-items-center">
-
                                                                         <div class="col-8 fw-semibold">Rej. Upper Limit S1</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s1-rej-upper" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S1_REJ_UPPER_LIMIT', this.value)">
                                                                         </div>
-
-
-
                                                                         <div class="col-8 fw-semibold">AWC Upper Limit S1</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s1-awc-upper" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S1_AWC_UPPER_LIMIT', this.value)">
                                                                         </div>
-
-
                                                                         <div class="col-8 fw-semibold">AWC Set Point S1</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s1-awc-setpoint" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S1_AWC_SET_POINT', this.value)">
                                                                         </div>
-
-
                                                                         <div class="col-8 fw-semibold">AWC Lower Limit S1</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s1-awc-lower" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S1_AWC_LOWER_LIMIT', this.value)">
                                                                         </div>
-
                                                                         <div class="col-8 fw-semibold">Rej. Lower Limit S1</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s1-rej-lower" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S1_REJ_LOWER_LIMIT', this.value)">
                                                                         </div>
-
-
                                                                     </div>
                                                                     <div class="d-flex flex-column align-self-center">
-                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button"><p class="mb-0 bottom-4px position-relative">AWC</p></button>
-                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button"><p class="mb-0 bottom-4px position-relative">REJ</p></button>
-                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button"><p class="mb-0 bottom-4px position-relative">Sample</p></button>
-
+                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button" onclick="jogButtonClick('S1_AWC_CMD')"><p class="mb-0 bottom-4px position-relative">AWC</p></button>
+                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button" onclick="jogButtonClick('S1_REJ_CMD')"><p class="mb-0 bottom-4px position-relative">REJ</p></button>
+                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button" onclick="jogButtonClick('S1_SAMPLE_CMD')"><p class="mb-0 bottom-4px position-relative">Sample</p></button>
                                                                     </div>
                                                                 </div>
-
-                                                                <!-- RIGHT COLUMN -->
-
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
 
-
-                                            <!--Card 2-->
-                                            <div class="card  box-shadow-1">
-
-                                                <div class="card-body  p-0 bord-rad-4px">
+                                            <!--S2 Force Limit Card-->
+                                            <div class="card box-shadow-1">
+                                                <div class="card-body p-0 bord-rad-4px">
                                                     <h5 class="card-title col-FFFFFF bord-top-rad-4px">S2 Force Limit-kN</h5>
                                                     <div class="card-body w-fitcontent overflow-x-auto p-0 bord-rad-4px">
-
-
                                                         <div class="container px-4 py-3">
-
                                                             <div class="row">
-                                                                <!-- LEFT COLUMN -->
                                                                 <div class="d-flex">
-                                                                    <!-- Header Row -->
-
-
                                                                     <div class="row g-3 align-items-center">
-
                                                                         <div class="col-8 fw-semibold">Rej. Upper Limit S2</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s2-rej-upper" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S2_REJ_UPPER_LIMIT', this.value)">
                                                                         </div>
-
-
-
                                                                         <div class="col-8 fw-semibold">AWC Upper Limit S2</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s2-awc-upper" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S2_AWC_UPPER_LIMIT', this.value)">
                                                                         </div>
-
-
                                                                         <div class="col-8 fw-semibold">AWC Set Point S2</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s2-awc-setpoint" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S2_AWC_SET_POINT', this.value)">
                                                                         </div>
-
-
                                                                         <div class="col-8 fw-semibold">AWC Lower Limit S2</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s2-awc-lower" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S2_AWC_LOWER_LIMIT', this.value)">
                                                                         </div>
-
                                                                         <div class="col-8 fw-semibold">Rej. Lower Limit S2</div>
                                                                         <div class="col-3">
-                                                                            <input type="text" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000">
+                                                                            <input type="text" id="c1-s2-rej-lower" class="form-control form-control-sm text-center bord-col-215ED6" value="0.000"
+                                                                                   onchange="writeControl1Register('S2_REJ_LOWER_LIMIT', this.value)">
                                                                         </div>
-
-
                                                                     </div>
                                                                     <div class="d-flex flex-column align-self-center">
-                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button"><p class="mb-0 bottom-4px position-relative">AWC</p></button>
-                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button"><p class="mb-0 bottom-4px position-relative">REJ</p></button>
-                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button"><p class="mb-0 bottom-4px position-relative">Sample</p></button>
-
+                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button" onclick="jogButtonClick('S2_AWC_CMD')"><p class="mb-0 bottom-4px position-relative">AWC</p></button>
+                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button" onclick="jogButtonClick('S2_REJ_CMD')"><p class="mb-0 bottom-4px position-relative">REJ</p></button>
+                                                                        <button class="btn btn-primary bgcol-8434C6 me-auto fw-semibold w-100px h-30px mt-2" type="button" onclick="jogButtonClick('S2_SAMPLE_CMD')"><p class="mb-0 bottom-4px position-relative">Sample</p></button>
                                                                     </div>
                                                                 </div>
-
-                                                                <!-- RIGHT COLUMN -->
-
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                 </section>
-
-
                             </div>
 
                             <!--Control 2-->
@@ -504,176 +547,181 @@
                                     <div class="order-last order-xxl-first">
                                         <div class="bg-col-E9EFFB p-3">
                                             <div class="d-flex flex-lg-nowrap flex-wrap gap-4">
-                                                <!--Card 1-->
+                                                <!--Card 1: S1 Parameter-->
                                                 <section class="card text-bg-light mb-3 box-shadow-1 w-100">
                                                     <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S1 Parameter</h5>
 
                                                     <div class="card-body p-3">
-
-
                                                         <div class="row justify-content-start w-100 position-relative counter-comp">
-
                                                             <div class="d-flex flex-column px-0">
                                                                 <div class="d-flex justify-content-lg-end flex-column">
                                                                     <div class="d-flex s1Param gap-3 flex-wrap align-items-center justify-content-between pb-2">
                                                                         <label class="font-size-16 fw-semibold min-width-40p clr-242424">Rejection valve ON Time S1</label>
                                                                         <div class="d-flex align-items-center gap-10px w--100 max-width-115px">
-                                                                            <input type="text" class="bord-D2D2D2 px-12-py-6px w--100 w-70px  bord-rad-4px" placeholder="">
+                                                                            <input type="text"
+                                                                                   id="s1-rej-valve-on-time"
+                                                                                   class="bord-D2D2D2 px-12-py-6px w--100 w-70px bord-rad-4px"
+                                                                                   placeholder="0"
+                                                                                   onchange="writeControl2Register('S1_REJ_VALVE_ON_TIME', this.value)">
                                                                             <span class="font-size-16px fw-semibold clr-242424">msec</span>
                                                                         </div>
-
                                                                     </div>
                                                                     <div class="d-flex s1Param gap-3 flex-wrap align-items-center justify-content-between pb-2">
-                                                                        <label class="font-size-16px  fw-semibold min-width-40p clr-242424">Initial rejection revolution S1</label>
+                                                                        <label class="font-size-16px fw-semibold min-width-40p clr-242424">Initial rejection revolution S1</label>
                                                                         <div class="d-flex align-items-center gap-10px w--100 max-width-115px">
-                                                                            <input type="text" class="bord-D2D2D2 px-12-py-6px w--100 w-70px  bord-rad-4px" placeholder="">
+                                                                            <input type="text"
+                                                                                   id="s1-init-rej-revolution"
+                                                                                   class="bord-D2D2D2 px-12-py-6px w--100 w-70px bord-rad-4px"
+                                                                                   placeholder="0"
+                                                                                   onchange="writeControl2Register('S1_INIT_REJ_REVOLUTION', this.value)">
                                                                             <span class="font-size-16px fw-semibold clr-242424">rev</span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="d-flex s1Param gap-3 flex-wrap align-items-center justify-content-between pb-2">
                                                                         <label class="font-size-16px fw-semibold min-width-40p clr-242424">Powder Low Level Time S1</label>
                                                                         <div class="d-flex align-items-center gap-10px w--100 max-width-115px">
-                                                                            <input type="text" class="bord-D2D2D2 px-12-py-6px w--100 w-70px" placeholder="">
+                                                                            <input type="text"
+                                                                                   id="s1-powder-low-level-time"
+                                                                                   class="bord-D2D2D2 px-12-py-6px w--100 w-70px"
+                                                                                   placeholder="0"
+                                                                                   onchange="writeControl2Register('S1_POWDER_LOW_LEVEL_TIME', this.value)">
                                                                             <span class="font-size-16px fw-semibold clr-242424">sec</span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="d-flex s1Param gap-3 flex-wrap align-items-center justify-content-between pb-2">
                                                                         <label class="font-size-16px fw-semibold min-width-40p clr-242424">Sequence Rejection Count S1</label>
                                                                         <div class="d-flex align-items-center gap-10px w--100 max-width-115px">
-                                                                            <input type="text" class="bord-D2D2D2 px-12-py-6px w--100 w-70px bord-rad-4px" placeholder="">
-                                                                            <span class="font-size-16px fw-semibold clr-242424"></span>
+                                                                            <input type="text"
+                                                                                   id="s1-seq-rej-count"
+                                                                                   class="bord-D2D2D2 px-12-py-6px w--100 w-70px bord-rad-4px"
+                                                                                   placeholder="0"
+                                                                                   onchange="writeControl2Register('S1_SEQ_REJ_COUNT', this.value)">
+                                                                            <span class="font-size-16px fw-semibold clr-242424">-</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-
                                                             </div>
-
                                                         </div>
-
-
                                                     </div>
                                                 </section>
 
-                                                <!--Card 2-->
+                                                <!--Card 2: S2 Parameter-->
                                                 <section class="card text-bg-light mb-3 box-shadow-1 w-100">
                                                     <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">S2 Parameter</h5>
 
                                                     <div class="card-body p-3">
-
-                                                        <!--Middle row-->
                                                         <div class="row justify-content-start w-100 position-relative counter-comp">
-
                                                             <div class="d-flex flex-column px-0">
                                                                 <div class="d-flex justify-content-lg-end flex-column">
                                                                     <div class="d-flex s1Param gap-3 flex-wrap align-items-center justify-content-between pb-2">
-                                                                        <label class="font-size-16 fw-semibold min-width-40p clr-242424">Rejection valve ON Time S1</label>
+                                                                        <label class="font-size-16 fw-semibold min-width-40p clr-242424">Rejection valve ON Time S2</label>
                                                                         <div class="d-flex align-items-center gap-10px w--100 max-width-115px">
-                                                                            <input type="text" class="bord-D2D2D2 px-12-py-6px w--100 w-70px  bord-rad-4px" placeholder="">
+                                                                            <input type="text"
+                                                                                   id="s2-rej-valve-on-time"
+                                                                                   class="bord-D2D2D2 px-12-py-6px w--100 w-70px bord-rad-4px"
+                                                                                   placeholder="0"
+                                                                                   onchange="writeControl2Register('S2_REJ_VALVE_ON_TIME', this.value)">
                                                                             <span class="font-size-16px fw-semibold clr-242424">msec</span>
                                                                         </div>
-
                                                                     </div>
                                                                     <div class="d-flex s1Param gap-3 flex-wrap align-items-center justify-content-between pb-2">
-                                                                        <label class="font-size-16px  fw-semibold min-width-40p clr-242424">Initial rejection revolution S1</label>
+                                                                        <label class="font-size-16px fw-semibold min-width-40p clr-242424">Initial rejection revolution S2</label>
                                                                         <div class="d-flex align-items-center gap-10px w--100 max-width-115px">
-                                                                            <input type="text" class="bord-D2D2D2 px-12-py-6px w--100 w-70px  bord-rad-4px" placeholder="">
+                                                                            <input type="text"
+                                                                                   id="s2-init-rej-revolution"
+                                                                                   class="bord-D2D2D2 px-12-py-6px w--100 w-70px bord-rad-4px"
+                                                                                   placeholder="0"
+                                                                                   onchange="writeControl2Register('S2_INIT_REJ_REVOLUTION', this.value)">
                                                                             <span class="font-size-16px fw-semibold clr-242424">rev</span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="d-flex s1Param gap-3 flex-wrap align-items-center justify-content-between pb-2">
-                                                                        <label class="font-size-16px fw-semibold min-width-40p clr-242424">Powder Low Level Time S1</label>
+                                                                        <label class="font-size-16px fw-semibold min-width-40p clr-242424">Powder Low Level Time S2</label>
                                                                         <div class="d-flex align-items-center gap-10px w--100 max-width-115px">
-                                                                            <input type="text" class="bord-D2D2D2 px-12-py-6px w--100 w-70px" placeholder="">
+                                                                            <input type="text"
+                                                                                   id="s2-powder-low-level-time"
+                                                                                   class="bord-D2D2D2 px-12-py-6px w--100 w-70px"
+                                                                                   placeholder="0"
+                                                                                   onchange="writeControl2Register('S2_POWDER_LOW_LEVEL_TIME', this.value)">
                                                                             <span class="font-size-16px fw-semibold clr-242424">sec</span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="d-flex s1Param gap-3 flex-wrap align-items-center justify-content-between pb-2">
-                                                                        <label class="font-size-16px fw-semibold min-width-40p clr-242424">Sequence Rejection Count S1</label>
+                                                                        <label class="font-size-16px fw-semibold min-width-40p clr-242424">Sequence Rejection Count S2</label>
                                                                         <div class="d-flex align-items-center gap-10px w--100 max-width-115px">
-                                                                            <input type="text" class="bord-D2D2D2 px-12-py-6px w--100 w-70px bord-rad-4px" placeholder="">
-                                                                            <span class="font-size-16px fw-semibold clr-242424"></span>
+                                                                            <input type="text"
+                                                                                   id="s2-seq-rej-count"
+                                                                                   class="bord-D2D2D2 px-12-py-6px w--100 w-70px bord-rad-4px"
+                                                                                   placeholder="0"
+                                                                                   onchange="writeControl2Register('S2_SEQ_REJ_COUNT', this.value)">
+                                                                            <span class="font-size-16px fw-semibold clr-242424">-</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-
                                                             </div>
-
                                                         </div>
-
-
                                                     </div>
                                                 </section>
                                             </div>
 
-                                            <!--2nd row card-->
+                                            <!--2nd row card: Lubrication Motor Time Setting-->
                                             <section class="card text-bg-light mb-3 box-shadow-1 w-100">
                                                 <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">Lubrication Motor Time Setting</h5>
 
                                                 <div class="card-body p-3 px-5">
-
-
                                                     <div class="row justify-content-start w-100 position-relative counter-comp">
-
                                                         <div class="d-flex flex-column px-0">
                                                             <div class="d-flex flex-wrap">
-
                                                                 <div class="d-flex gap-3 align-items-center justify-content-between pb-2 me-auto">
                                                                     <label class="font-size-16px fw-semibold min-width-40p clr-242424">Lubrication Motor ON Time</label>
                                                                     <div class="d-flex align-items-center gap-10px max-width-115px">
-                                                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px" placeholder="">
+                                                                        <input type="text"
+                                                                               id="lube-motor-on-time"
+                                                                               class="bord-D2D2D2 px-12-py-6px w-70px"
+                                                                               placeholder="0"
+                                                                               onchange="writeControl2Register('LUBE_MOTOR_ON_TIME', this.value)">
                                                                         <span class="font-size-16px fw-semibold clr-242424">sec</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
                                                                     <label class="font-size-16px fw-semibold min-width-40p clr-242424">Lubrication Motor OFF Time</label>
                                                                     <div class="d-flex align-items-center gap-10px max-width-115px">
-                                                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px" placeholder="">
+                                                                        <input type="text"
+                                                                               id="lube-motor-off-time"
+                                                                               class="bord-D2D2D2 px-12-py-6px w-70px"
+                                                                               placeholder="0"
+                                                                               onchange="writeControl2Register('LUBE_MOTOR_OFF_TIME', this.value)">
                                                                         <span class="font-size-16px fw-semibold clr-242424">min</span>
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-
-
                                                         </div>
-
                                                     </div>
-
-
                                                 </div>
                                             </section>
 
-                                            <!--3rd row card-->
+                                            <!--3rd row card: Common Parameter 1-->
                                             <section class="card text-bg-light mb-3 box-shadow-1 w-100">
                                                 <h5 class="card-title col-FFFFFF bord-top-rad-4px mb-0">Common Parameter</h5>
 
                                                 <div class="card-body p-3 px-5">
-
-
                                                     <div class="row justify-content-start w-100 position-relative counter-comp">
-
                                                         <div class="d-flex px-0">
-
-
                                                             <div class="d-flex gap-3 align-items-center justify-content-between pb-2 me-auto">
                                                                 <label class="font-size-16px fw-semibold min-width-40p clr-242424">Individual Rejection Count</label>
                                                                 <div class="d-flex align-items-center gap-10px max-width-115px">
-                                                                    <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px" placeholder="">
+                                                                    <input type="text"
+                                                                           id="individual-rej-count"
+                                                                           class="bord-D2D2D2 px-12-py-6px w-70px"
+                                                                           placeholder="0"
+                                                                           onchange="writeControl2Register('INDIVIDUAL_REJ_COUNT', this.value)">
                                                                 </div>
                                                             </div>
-
-
-
-
                                                         </div>
-
                                                     </div>
-
-
                                                 </div>
                                             </section>
+
 
                                             <!--4th row card-->
                                             <section class="card text-bg-light mb-3 box-shadow-1 w-100">
@@ -743,94 +791,138 @@
                                                 </div>
                                             </section>
 
-                                            <!--5th row card-->
+
+                                            <!--5th row card: Jog and Sample Buttons-->
                                             <section class="card text-bg-light mb-3 box-shadow-1 w-100">
                                                 <div class="card-body overflow-x-auto p-0 bord-rad-4px">
-
-
                                                     <div class="container analog-container px-4 py-3">
                                                         <div class="row">
-                                                            <!-- LEFT COLUMN -->
+                                                            <!-- S1 COLUMN -->
                                                             <div class="left-column col-md-6">
-                                                                <!-- Header Row -->
-
-
                                                                 <div class="row g-3 align-items-center justify-content-end">
                                                                     <div class="col-6 d-flex justify-content-start">
-                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold min-width-168px" type="button">Sample Jog S1</button>
+                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold min-width-168px"
+                                                                                type="button"
+                                                                                onclick="jogButtonClick('S1_SAMPLE_JOG_CMD')">
+                                                                            Sample Jog S1
+                                                                        </button>
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <p class="mb-0 fw-semibold">Valve Status</p>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <button class="btn btn-primary bgcol-47494A fw-semibold w-60px" type="button">Off</button>
+                                                                        <button class="btn btn-primary bgcol-47494A fw-semibold w-60px"
+                                                                                id="s1-sample-valve-status"
+                                                                                type="button"
+                                                                                style="cursor: default;">
+                                                                            Off
+                                                                        </button>
                                                                     </div>
 
                                                                     <div class="col-6 d-flex justify-content-start">
-                                                                        <button class="btn btn-primary bgcol-126F15 fw-semibold min-width-168px" type="button">Lubrication Jog</button>
+                                                                        <button class="btn btn-primary bgcol-126F15 fw-semibold min-width-168px"
+                                                                                type="button"
+                                                                                onclick="jogButtonClick('LUBE_JOG_CMD')">
+                                                                            Lubrication Jog
+                                                                        </button>
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <p class="mb-0 fw-semibold">Motor Status</p>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <button class="btn btn-primary bgcol-47494A fw-semibold w-60px" type="button">Off</button>
+                                                                        <button class="btn btn-primary bgcol-47494A fw-semibold w-60px"
+                                                                                id="s1-motor-lube-status"
+                                                                                type="button"
+                                                                                style="cursor: default;">
+                                                                            Off
+                                                                        </button>
                                                                     </div>
 
                                                                     <div class="col-6 d-flex justify-content-start">
-                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold min-width-168px" type="button">Powder Interlock S1</button>
+                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold min-width-168px"
+                                                                                type="button"
+                                                                                onclick="jogButtonClick('S1_POWDER_INTERLOCK_CMD')">
+                                                                            Powder Interlock S1
+                                                                        </button>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <p class="mb-0 fw-semibold">Powder Sensor Time S1 (sec)</p>
+                                                                        <p class="mb-0 fw-semibold">Powder Sensor Time (sec)</p>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <input type="text" class="form-control form-control-sm text-center bord-col-215ED6 fw-semibold w-60px" value="0.000">
+                                                                        <input type="text"
+                                                                               id="powder-sensor-time-s1"
+                                                                               class="form-control form-control-sm text-center bord-col-215ED6 fw-semibold w-60px"
+                                                                               placeholder="0"
+                                                                               onchange="writeControl2Register('POWDER_SENSOR_TIME_S1', this.value)">
                                                                     </div>
                                                                 </div>
-
                                                             </div>
 
-                                                            <!-- RIGHT COLUMN -->
+                                                            <!-- S2 COLUMN -->
                                                             <div class="left-column col-md-6 mt-0">
-
                                                                 <div class="row g-3 align-items-center justify-content-xxl-start justify-content-center">
                                                                     <div class="col-6 d-flex justify-content-start">
-                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold min-width-168px" type="button">Sample Jog S2</button>
+                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold min-width-168px"
+                                                                                type="button"
+                                                                                onclick="jogButtonClick('S2_SAMPLE_JOG_CMD')">
+                                                                            Sample Jog S2
+                                                                        </button>
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <p class="mb-0 fw-semibold">Valve Status</p>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <button class="btn btn-primary bgcol-47494A fw-semibold w-60px" type="button">Off</button>
+                                                                        <button class="btn btn-primary bgcol-47494A fw-semibold w-60px"
+                                                                                id="s2-sample-valve-status"
+                                                                                type="button"
+                                                                                style="cursor: default;">
+                                                                            Off
+                                                                        </button>
                                                                     </div>
 
                                                                     <div class="col-6 d-flex justify-content-start">
-                                                                        <button class="btn btn-primary bgcol-126F15 fw-semibold min-width-168px" type="button">Lubrication Jog</button>
+                                                                        <button class="btn btn-primary bgcol-126F15 fw-semibold min-width-168px"
+                                                                                type="button"
+                                                                                onclick="jogButtonClick('LUBE_JOG_CMD')">
+                                                                            Lubrication Jog
+                                                                        </button>
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <p class="mb-0 fw-semibold">Motor Status</p>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <button class="btn btn-primary bgcol-47494A fw-semibold w-60px" type="button">Off</button>
+                                                                        <button class="btn btn-primary bgcol-47494A fw-semibold w-60px"
+                                                                                id="s2-motor-lube-status"
+                                                                                type="button"
+                                                                                style="cursor: default;">
+                                                                            Off
+                                                                        </button>
                                                                     </div>
 
-                                                                    <div class="col-6 d-flex justify-content-startr">
-                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold min-width-168px" type="button">Powder Interlock S2</button>
+                                                                    <div class="col-6 d-flex justify-content-start">
+                                                                        <button class="btn btn-primary bgcol-8434C6 fw-semibold min-width-168px"
+                                                                                type="button"
+                                                                                onclick="jogButtonClick('S2_POWDER_INTERLOCK_CMD')">
+                                                                            Powder Interlock S2
+                                                                        </button>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <p class="mb-0 fw-semibold">Powder Sensor Time S1 (sec)</p>
+                                                                        <p class="mb-0 fw-semibold">Powder Sensor Time (sec)</p>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <input type="text" class="form-control form-control-sm text-center bord-col-215ED6 fw-semibold w-60px" value="0.000">
+                                                                        <input type="text"
+                                                                               id="powder-sensor-time-s2"
+                                                                               class="form-control form-control-sm text-center bord-col-215ED6 fw-semibold w-60px"
+                                                                               placeholder="0"
+                                                                               onchange="writeControl2Register('POWDER_SENSOR_TIME_S2', this.value)">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </section>
                                         </div>
-
                                     </div>
 
 
@@ -1040,58 +1132,116 @@
                                 <div class="p-3 bgcol-E9EFFB w-100 h-100 overflow-y-auto max-height-1">
                                     <div class="container py-4">
                                         <div class="row g-3">
-                                            @{
-                                                var alarmTitles = new List<string>
-                                                                                        {
-                                                                                        "Emergency PB Healthy",
-                                                                                        "S1 Main Penetration Roller In Position Healthy",
-                                                                                        "Safety Door Healthy",
-                                                                                        "S1 Pre Penetration Roller In Position Healthy",
-                                                                                        "Turret Motor Healthy",
-                                                                                        "S2 Main Penetration Roller In Position Healthy",
-                                                                                        "S1 Feeder Motor Healthy",
-                                                                                        "S2 Pre Penetration Roller In Position Healthy",
-                                                                                        "LUBI Motor Healthy",
-                                                                                        "Turret In Position Healthy",
-                                                                                        "S1 Upper Cam In Position Healthy",
-                                                                                        "S1 Scrapper In Position Healthy",
-                                                                                        "S1 Lower Cam In Position Healthy",
-                                                                                        "S2 Scrapper In Position Healthy",
-                                                                                        "S2 Upper Cam IN Position Healthy",
-                                                                                        "LUBI Oil Low Level Healthy",
-                                                                                        "S2 Lower Cam In Position Healthy",
-                                                                                        "S1 Powder Level Sensor Healthy",
-                                                                                        "S1 Fill Depth Servo Healthy",
-                                                                                        "S2 Powder Level Sensor Healthy",
-                                                                                        "S1 Main Lower Servo Healthy",
-                                                                                        "S2 Fill Depth Servo Healthy",
-                                                                                        "S1 Main Penetration Servo Healthy",
-                                                                                        "S2 Main Penetration Servo Healthy",
-                                                                                        "S1 Pre Lower Servo Healthy",
-                                                                                        "S1 Pre Lower Servo Healthy",
-                                                                                        "S1 Pre Penetration Servo Healthy",
-                                                                                        "S1 Pre Penetration Servo Healthy",
-                                                                                        };
-                                            }
-                                            <!-- Item 1 -->
-                                            @foreach (var title in alarmTitles)
-                                            {
-                                                <div class="col-lg-6">
-                                                    <div class="bgcol-34C639 col-242424 bord-rad-4px text-center py-2 fw-semibold">
-                                                        @title
-                                                    </div>
-                                                </div>
-                                            }
-
-
+                                            <!-- Emergency PB -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-EMERGENCY_PB" style="cursor: default; background-color: #34C639; color: white; border: none;">Emergency PB Healthy</button>
+                                            </div>
+                                            <!-- S1 Main Penetration Roller -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_MAIN_PENETRATION_ROLLER" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Main Penetration Roller In Position Healthy</button>
+                                            </div>
+                                            <!-- Safety Door -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-SAFETY_DOOR" style="cursor: default; background-color: #34C639; color: white; border: none;">Safety Door Healthy</button>
+                                            </div>
+                                            <!-- S1 Pre Penetration Roller -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_PRE_PENETRATION_ROLLER" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Pre Penetration Roller In Position Healthy</button>
+                                            </div>
+                                            <!-- Turret Motor -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-TURRET_MOTOR" style="cursor: default; background-color: #34C639; color: white; border: none;">Turret Motor Healthy</button>
+                                            </div>
+                                            <!-- S2 Main Penetration Roller -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S2_MAIN_PENETRATION_ROLLER" style="cursor: default; background-color: #34C639; color: white; border: none;">S2 Main Penetration Roller In Position Healthy</button>
+                                            </div>
+                                            <!-- S1 Feeder Motor -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_FEEDER_MOTOR" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Feeder Motor Healthy</button>
+                                            </div>
+                                            <!-- S2 Pre Penetration Roller -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S2_PRE_PENETRATION_ROLLER" style="cursor: default; background-color: #34C639; color: white; border: none;">S2 Pre Penetration Roller In Position Healthy</button>
+                                            </div>
+                                            <!-- Lube Motor -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-LUBE_MOTOR" style="cursor: default; background-color: #34C639; color: white; border: none;">LUBE Motor Healthy</button>
+                                            </div>
+                                            <!-- Turret In Position -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-TURRET_IN_POSITION" style="cursor: default; background-color: #34C639; color: white; border: none;">Turret In Position Healthy</button>
+                                            </div>
+                                            <!-- S1 Upper Cam -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_UPPER_CAM_IN_POSITION" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Upper Cam In Position Healthy</button>
+                                            </div>
+                                            <!-- S1 Scrapper -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_SCRAPPER_IN_POSITION" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Scrapper In Position Healthy</button>
+                                            </div>
+                                            <!-- S1 Lower Cam -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_LOWER_CAM_IN_POSITION" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Lower Cam In Position Healthy</button>
+                                            </div>
+                                            <!-- S2 Scrapper -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S2_SCRAPPER_IN_POSITION" style="cursor: default; background-color: #34C639; color: white; border: none;">S2 Scrapper In Position Healthy</button>
+                                            </div>
+                                            <!-- S2 Upper Cam -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S2_UPPER_CAM_IN_POSITION" style="cursor: default; background-color: #34C639; color: white; border: none;">S2 Upper Cam IN Position Healthy</button>
+                                            </div>
+                                            <!-- Lube Oil Low Level -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-LUBE_OIL_LOW_LEVEL" style="cursor: default; background-color: #34C639; color: white; border: none;">LUBI Oil Low Level Healthy</button>
+                                            </div>
+                                            <!-- S2 Lower Cam -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S2_LOWER_CAM_IN_POSITION" style="cursor: default; background-color: #34C639; color: white; border: none;">S2 Lower Cam In Position Healthy</button>
+                                            </div>
+                                            <!-- S1 Powder Level Sensor -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_POWDER_LEVEL_SENSOR" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Powder Level Sensor Healthy</button>
+                                            </div>
+                                            <!-- S1 Fill Depth Servo -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_FILL_DEPTH_SERVO" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Fill Depth Servo Healthy</button>
+                                            </div>
+                                            <!-- S2 Powder Level Sensor -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S2_POWDER_LEVEL_SENSOR" style="cursor: default; background-color: #34C639; color: white; border: none;">S2 Powder Level Sensor Healthy</button>
+                                            </div>
+                                            <!-- S1 Main Lower Servo -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_MAIN_LOWER_SERVO" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Main Lower Servo Healthy</button>
+                                            </div>
+                                            <!-- S2 Fill Depth Servo -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S2_FILL_DEPTH_SERVO" style="cursor: default; background-color: #34C639; color: white; border: none;">S2 Fill Depth Servo Healthy</button>
+                                            </div>
+                                            <!-- S1 Main Penetration Servo -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_MAIN_PENETRATION_SERVO" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Main Penetration Servo Healthy</button>
+                                            </div>
+                                            <!-- S2 Main Penetration Servo -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S2_MAIN_PENETRATION_SERVO" style="cursor: default; background-color: #34C639; color: white; border: none;">S2 Main Penetration Servo Healthy</button>
+                                            </div>
+                                            <!-- S1 Pre Lower Servo -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_PRE_LOWER_SERVO" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Pre Lower Servo Healthy</button>
+                                            </div>
+                                            <!-- S1 Pre Penetration Servo -->
+                                            <div class="col-lg-6">
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-S1_PRE_PENETRATION_SERVO" style="cursor: default; background-color: #34C639; color: white; border: none;">S1 Pre Penetration Servo Healthy</button>
+                                            </div>
+                                            <!-- Batch Completed -->
                                             <div class="col-12">
-                                                <div class="bgcol-34C639 col-242424 bord-rad-4px text-center py-2 fw-semibold">
-                                                    Batch Completed
-                                                </div>
+                                                <button class="btn btn-sm fw-semibold w-100 alarm-btn" id="alarm-BATCH_COMPLETED" style="cursor: default; background-color: #34C639; color: white; border: none;">Batch Completed</button>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -1559,87 +1709,313 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('forceGraphCanvas').getContext('2d');
+<!-- ADD THIS AT THE TOP, BEFORE OTHER SCRIPTS -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.0/dist/browser/signalr.min.js"></script>
 
-    const forceChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: Array.from({ length: 52 }, (_, i) => i + 1), // Punch Tool
-            datasets: [
-                // Actual Force (main curve)
-                {
-                    label: 'Compression Force',
-                    data: Array(52).fill(0),
-                    borderColor: '#4DA3FF',
-                    borderWidth: 2,
-                    tension: 0.3,
-                    pointRadius: 0
-                },
 
-                // Upper Limit
-                {
-                    label: 'Upper Limit',
-                    data: Array(52).fill(6),
-                    borderColor: '#FF4D4F',
-                    borderWidth: 1,
-                    borderDash: [6, 6],
-                    pointRadius: 0
-                },
+    <!-- ===== 1. PLC Write Helpers — MUST be defined first ===== -->
+    <script>
+        async function writeCoil(tagKey, value) {
+            try {
+                await fetch('/api/PlcWrite/coil', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tagKey: tagKey, value: value })
+                });
+            } catch (e) { console.error('❌ writeCoil:', e); }
+        }
 
-                // Lower Limit
-                {
-                    label: 'Lower Limit',
-                    data: Array(52).fill(4),
-                    borderColor: '#52C41A',
-                    borderWidth: 1,
-                    borderDash: [6, 6],
-                    pointRadius: 0
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: false,
+        async function writeRegister(tagKey, value) {
+            try {
+                await fetch('/api/PlcWrite/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tagKey: tagKey, value: parseInt(value) || 0 })
+                });
+            } catch (e) { console.error('❌ writeRegister:', e); }
+        }
 
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
+        async function writeControl2Register(tagKey, value) {
+            await writeRegister(tagKey, parseInt(value) || 0);
+        }
 
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Punch Tool',
-                        color: '#FFFFFF'
+        async function writeControl1Register(tagKey, value) {
+            const intValue = Math.round((parseFloat(value) || 0) * 1000);
+            await writeRegister(tagKey, intValue);
+        }
+
+        async function jogButtonClick(tagKey) {
+            await writeCoil(tagKey, true);
+            setTimeout(() => writeCoil(tagKey, false), 500);
+        }
+
+        async function toggleCoil(tagKey, btnElement) {
+            const isActive = btnElement.dataset.active === "true";
+            const newValue = !isActive;
+            await writeCoil(tagKey, newValue);
+            btnElement.dataset.active = newValue.toString();
+            if (newValue) {
+                btnElement.style.setProperty("background-color", "#149550", "important");
+                btnElement.style.setProperty("opacity", "1", "important");
+            } else {
+                btnElement.style.setProperty("background-color", "#FF4636", "important");
+                btnElement.style.setProperty("opacity", "0.6", "important");
+            }
+        }
+
+        function adjustRecipeValue(inputId, step) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            let val = parseFloat(input.value) || 0;
+            val = Math.max(0, val + step);
+            input.value = val.toFixed(2);
+            input.dispatchEvent(new Event('change'));
+        }
+
+        function updateBar(barId, posValue, maxScale) {
+            const bar = document.getElementById(barId);
+            if (bar) bar.style.height = Math.min(100, Math.max(0, (posValue / maxScale) * 100)) + "%";
+        }
+    </script>
+
+    <!-- ===== 2. CDN Libraries ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.0/dist/browser/signalr.min.js"></script>
+
+    <!-- ===== 3. Force Chart ===== -->
+    <script>
+        const ctx = document.getElementById('forceGraphCanvas').getContext('2d');
+        const forceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 52 }, (_, i) => i + 1),
+                datasets: [
+                    {
+                        label: 'Compression Force',
+                        data: Array(52).fill(0),
+                        borderColor: '#4DA3FF',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        pointRadius: 0
                     },
-                    ticks: {
-                        color: '#FFFFFF'
+                    {
+                        label: 'Upper Limit',
+                        data: Array(52).fill(6),
+                        borderColor: '#FF4D4F',
+                        borderWidth: 1,
+                        borderDash: [6, 6],
+                        pointRadius: 0
                     },
-                    grid: {
-                        color: 'rgba(255,255,255,0.1)'
+                    {
+                        label: 'Lower Limit',
+                        data: Array(52).fill(4),
+                        borderColor: '#52C41A',
+                        borderWidth: 1,
+                        borderDash: [6, 6],
+                        pointRadius: 0
                     }
-                },
-                y: {
-                    min: 0,
-                    max: 50,
-                    title: {
-                        display: true,
-                        text: 'Load Force',
-                        color: '#FFFFFF'
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Punch Tool', color: '#FFFFFF' },
+                        ticks: { color: '#FFFFFF' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
                     },
-                    ticks: {
-                        color: '#FFFFFF'
-                    },
-                    grid: {
-                        color: 'rgba(255,255,255,0.1)'
+                    y: {
+                        min: 0, max: 50,
+                        title: { display: true, text: 'Load Force', color: '#FFFFFF' },
+                        ticks: { color: '#FFFFFF' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
                     }
                 }
             }
+        });
+    </script>
+
+    <!-- ===== 4. SignalR Connection + All Handlers ===== -->
+    <script>
+        let connection;
+
+        if (typeof signalR === 'undefined') {
+            console.error("❌ SignalR library not loaded!");
+        } else {
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/servoHub")
+                .withAutomaticReconnect()
+                .build();
+
+            // ── TagUpdated ──────────────────────────────────────────
+            connection.on("TagUpdated", function (key, value) {
+
+                // Tables (top section)
+                const tableMap = {
+                    GOOD_S1: "am-good-s1", REJECTED_S1: "am-rej-s1", TOTAL_S1: "am-total-s1",
+                    GOOD_S2: "am-good-s2", REJECTED_S2: "am-rej-s2", TOTAL_S2: "am-total-s2",
+                    AVG_MAIN_S1: "am-avg-main1", AVG_PRE_S1: "am-avg-pre1", AVG_EJECT_S1: "am-avg-eject1",
+                    AVG_MAIN_S2: "am-avg-main2", AVG_PRE_S2: "am-avg-pre2", AVG_EJECT_S2: "am-avg-eject2",
+                    DWELL_TIME: "am-dwell", TOTAL_QTY: "am-totalqty", AWC_VALUE: "am-awc-value"
+                };
+                if (tableMap[key]) {
+                    const el = document.getElementById(tableMap[key]);
+                    if (el) el.innerText = value;
+                }
+
+                // Control-1 recipe/limit inputs (stored as int * 1000)
+                const c1Map = {
+                    S1_REJ_UPPER_LIMIT: "c1-s1-rej-upper",
+                    S1_AWC_UPPER_LIMIT: "c1-s1-awc-upper",
+                    S1_AWC_SET_POINT:   "c1-s1-awc-setpoint",
+                    S1_AWC_LOWER_LIMIT: "c1-s1-awc-lower",
+                    S1_REJ_LOWER_LIMIT: "c1-s1-rej-lower",
+                    S2_REJ_UPPER_LIMIT: "c1-s2-rej-upper",
+                    S2_AWC_UPPER_LIMIT: "c1-s2-awc-upper",
+                    S2_AWC_SET_POINT:   "c1-s2-awc-setpoint",
+                    S2_AWC_LOWER_LIMIT: "c1-s2-awc-lower",
+                    S2_REJ_LOWER_LIMIT: "c1-s2-rej-lower",
+                    S1_DIE_FILL_RECIPE:      "c1-die-fill-recipe",
+                    S1_PRE_PEN_RECIPE:       "c1-pre-pen-recipe",
+                    S1_PRE_THICKNESS_RECIPE: "c1-pre-thickness-recipe",
+                    S1_MAIN_PEN_RECIPE:      "c1-main-pen-recipe",
+                    S1_MAIN_THICKNESS_RECIPE:"c1-main-thickness-recipe"
+                };
+                if (c1Map[key]) {
+                    const el = document.getElementById(c1Map[key]);
+                    if (el) el.value = (parseInt(value) / 1000).toFixed(2);
+                }
+            });
+
+            // ── DigitalInputUpdated ─────────────────────────────────
+            connection.on("DigitalInputUpdated", function (key, value) {
+
+                const opacityMap = {
+                    DOOR_INTERLOCK: "btn-door-interlock",
+                    RUN_STATUS:     "btn-run-status",
+                    READY_STATUS:   "btn-ready-status",
+                    ALARM_STATUS:   "btn-alarm-status"
+                };
+                if (opacityMap[key]) {
+                    const el = document.getElementById(opacityMap[key]);
+                    if (el) el.style.opacity = value ? "1" : "0.5";
+                    return;
+                }
+
+                const statusMap = {
+                    S1_SAMPLE_VALVE_STATUS: "s1-sample-valve-status",
+                    S1_MOTOR_LUBE_STATUS:   "s1-motor-lube-status",
+                    S2_SAMPLE_VALVE_STATUS: "s2-sample-valve-status",
+                    S2_MOTOR_LUBE_STATUS:   "s2-motor-lube-status"
+                };
+                if (statusMap[key]) {
+                    const btn = document.getElementById(statusMap[key]);
+                    if (btn) {
+                        btn.innerText = value ? "On" : "Off";
+                        btn.style.setProperty("background-color", value ? "#34C639" : "#47494A", "important");
+                        btn.style.setProperty("color", "white", "important");
+                    }
+                    return;
+                }
+
+                handleAlarmUpdate(key, value);
+            });
+
+            // ── AnalogInputUpdated ──────────────────────────────────
+            connection.on("AnalogInputUpdated", function (key, v1, v2) {
+                // Reserved for future analog display
+            });
+
+            // ── ServoStatusUpdated ──────────────────────────────────
+            connection.on("ServoStatusUpdated", function (servoCode, ready, alarm, torque, actPos) {
+                const pos = actPos / 1000;
+
+                // S1 Fill Depth
+                if (servoCode === "S1_Fill_Depth_Servo-1") {
+                    const el = document.getElementById("c1-s1-fill-depth-pos");
+                    if (el) el.innerText = pos.toFixed(3);
+                    updateBar("c1-bar-fill", pos, 20);
+                }
+                // S1 Pre Penetration
+                if (servoCode === "S1_Pre_Penetration_Servo-6") {
+                    const el = document.getElementById("c1-s1-pre-pen-pos");
+                    if (el) el.innerText = pos.toFixed(3);
+                    updateBar("c1-bar-pre", pos, 20);
+                }
+                // S1 Pre Lower
+                if (servoCode === "S1_Pre_Lower_Servo-5") {
+                    const el = document.getElementById("c1-s1-pre-lower-pos");
+                    if (el) el.innerText = pos.toFixed(3);
+                }
+                // S1 Main Penetration
+                if (servoCode === "S1_Main_Penetration_Servo-4") {
+                    const el = document.getElementById("c1-s1-main-pen-pos");
+                    if (el) el.innerText = pos.toFixed(3);
+                    updateBar("c1-bar-main", pos, 20);
+                }
+                // S1 Main Lower
+                if (servoCode === "S1_Main_Lower_Servo-3") {
+                    const el = document.getElementById("c1-s1-main-lower-pos");
+                    if (el) el.innerText = pos.toFixed(3);
+                }
+            });
+
+            // ── Start connection ────────────────────────────────────
+            connection.start()
+                .then(() => console.log("✅ SignalR connected"))
+                .catch(err => console.error("❌ SignalR error:", err));
+
+            connection.onreconnecting(() => console.warn("⚠️ Reconnecting..."));
+            connection.onreconnected(() => console.log("✅ Reconnected"));
+            connection.onclose(() => console.warn("⚠️ Connection closed"));
         }
-    });
-</script>
+
+        // ── Alarm Handler ───────────────────────────────────────────
+        function handleAlarmUpdate(key, value) {
+            const alarmMap = {
+                EMERGENCY_PB:                  "alarm-EMERGENCY_PB",
+                S1_MAIN_PENETRATION_ROLLER:    "alarm-S1_MAIN_PENETRATION_ROLLER",
+                SAFETY_DOOR:                   "alarm-SAFETY_DOOR",
+                S1_PRE_PENETRATION_ROLLER:     "alarm-S1_PRE_PENETRATION_ROLLER",
+                TURRET_MOTOR:                  "alarm-TURRET_MOTOR",
+                S2_MAIN_PENETRATION_ROLLER:    "alarm-S2_MAIN_PENETRATION_ROLLER",
+                S1_FEEDER_MOTOR:               "alarm-S1_FEEDER_MOTOR",
+                S2_PRE_PENETRATION_ROLLER:     "alarm-S2_PRE_PENETRATION_ROLLER",
+                LUBE_MOTOR:                    "alarm-LUBE_MOTOR",
+                TURRET_IN_POSITION:            "alarm-TURRET_IN_POSITION",
+                S1_UPPER_CAM_IN_POSITION:      "alarm-S1_UPPER_CAM_IN_POSITION",
+                S1_SCRAPPER_IN_POSITION:       "alarm-S1_SCRAPPER_IN_POSITION",
+                S1_LOWER_CAM_IN_POSITION:      "alarm-S1_LOWER_CAM_IN_POSITION",
+                S2_SCRAPPER_IN_POSITION:       "alarm-S2_SCRAPPER_IN_POSITION",
+                S2_UPPER_CAM_IN_POSITION:      "alarm-S2_UPPER_CAM_IN_POSITION",
+                LUBE_OIL_LOW_LEVEL:            "alarm-LUBE_OIL_LOW_LEVEL",
+                S2_LOWER_CAM_IN_POSITION:      "alarm-S2_LOWER_CAM_IN_POSITION",
+                S1_POWDER_LEVEL_SENSOR:        "alarm-S1_POWDER_LEVEL_SENSOR",
+                S1_FILL_DEPTH_SERVO:           "alarm-S1_FILL_DEPTH_SERVO",
+                S2_POWDER_LEVEL_SENSOR:        "alarm-S2_POWDER_LEVEL_SENSOR",
+                S1_MAIN_LOWER_SERVO:           "alarm-S1_MAIN_LOWER_SERVO",
+                S2_FILL_DEPTH_SERVO:           "alarm-S2_FILL_DEPTH_SERVO",
+                S1_MAIN_PENETRATION_SERVO:     "alarm-S1_MAIN_PENETRATION_SERVO",
+                S2_MAIN_PENETRATION_SERVO:     "alarm-S2_MAIN_PENETRATION_SERVO",
+                S1_PRE_LOWER_SERVO:            "alarm-S1_PRE_LOWER_SERVO",
+                S1_PRE_PENETRATION_SERVO:      "alarm-S1_PRE_PENETRATION_SERVO",
+                BATCH_COMPLETED:               "alarm-BATCH_COMPLETED"
+            };
+
+            const btnId = alarmMap[key];
+            if (!btnId) return;
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+
+            const healthy = (value === true || value === 1);
+            btn.style.setProperty("background-color", healthy ? "#34C639" : "#FF441F", "important");
+            btn.style.setProperty("color", "white", "important");
+        }
+    </script>
+
+}

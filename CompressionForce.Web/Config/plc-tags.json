@@ -5,9 +5,6 @@
     "Slow": 1000
   },
   "Tags": [
-
-
-
     {
       "key": "LC_S1_MAIN_VOLT",
       "loadCellCode": "S1_MAIN",
@@ -22,9 +19,48 @@
       "address": 1,
       "polling": "Fast"
     },
-
-
-
+    {
+      "key": "LC_S2_MAIN_VOLT",
+      "loadCellCode": "S2_MAIN",
+      "type": "InputRegister",
+      "address": 2,
+      "polling": "Fast"
+    },
+    {
+      "key": "LC_S2_PRE_VOLT",
+      "loadCellCode": "S2_PRE",
+      "type": "InputRegister",
+      "address": 3,
+      "polling": "Fast"
+    },
+    {
+      "key": "LC_S1_EJECT_VOLT",
+      "loadCellCode": "S1_EJECT",
+      "type": "InputRegister",
+      "address": 4,
+      "polling": "Fast"
+    },
+    {
+      "key": "LC_S2_EJECT_VOLT",
+      "loadCellCode": "S2_EJECT",
+      "type": "InputRegister",
+      "address": 5,
+      "polling": "Fast"
+    },
+    {
+      "key": "LC_UPPER_PUNCH_VOLT",
+      "loadCellCode": "UPPER_PUNCH",
+      "type": "InputRegister",
+      "address": 6,
+      "polling": "Fast"
+    },
+    {
+      "key": "LC_LOWER_PUNCH_VOLT",
+      "loadCellCode": "LOWER_PUNCH",
+      "type": "InputRegister",
+      "address": 7,
+      "polling": "Fast"
+    },
     {
       "key": "S1_Fill_Depth_Servo-1_JOG_UP",
       "type": "Coil",
@@ -45,7 +81,6 @@
       "type": "Coil",
       "address": 3
     },
-
     {
       "key": "S1_Fill_Depth_Servo-1_SET_POS",
       "type": "HoldingRegister",
@@ -67,8 +102,6 @@
       "address": 1,
       "polling": "Slow"
     },
-
-
     {
       "key": "S1_Fill_Depth_Servo-1_ACT_TORQUE",
       "type": "InputRegister",
@@ -109,64 +142,172 @@
       "polling": "Fast"
     },
     {
-      "Key": "DO_S1_INIT_REJ",
-      "Type": "Coil",
-      "Address": 5,
-      "Polling": "Medium"
+      "key": "DI_TURRET_DRIVE_TRIP",
+      "type": "DiscreteInput",
+      "address": 5,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_S2_INIT_REJ",
-      "Type": "Coil",
-      "Address": 6,
-      "Polling": "Medium"
+      "key": "DI_LHS_FEEDER_DRIVE_TRIP",
+      "type": "DiscreteInput",
+      "address": 6,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_S1_SAMPLE",
-      "Type": "Coil",
-      "Address": 7,
-      "Polling": "Medium"
+      "key": "DI_RHS_FEEDER_DRIVE_TRIP",
+      "type": "DiscreteInput",
+      "address": 7,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_S2_SAMPLE",
-      "Type": "Coil",
-      "Address": 8,
-      "Polling": "Medium"
+      "key": "DI_LUBE_MOTOR_TRIP",
+      "type": "DiscreteInput",
+      "address": 8,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_S1_REJ",
-      "Type": "Coil",
-      "Address": 9,
-      "Polling": "Medium"
+      "key": "DI_S1UPPER_CAM",
+      "type": "DiscreteInput",
+      "address": 9,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_S2_REJ",
-      "Type": "Coil",
-      "Address": 10,
-      "Polling": "Medium"
+      "key": "DI_S1LOWER_CAM",
+      "type": "DiscreteInput",
+      "address": 10,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_LUBE",
-      "Type": "Coil",
-      "Address": 11,
-      "Polling": "Slow"
+      "key": "DI_S2UPPER_CAM",
+      "type": "DiscreteInput",
+      "address": 11,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_RED_LAMP",
-      "Type": "Coil",
-      "Address": 12,
-      "Polling": "Slow"
+      "key": "DI_S2LOWER_CAM",
+      "type": "DiscreteInput",
+      "address": 12,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_YEL_LAMP",
-      "Type": "Coil",
-      "Address": 13,
-      "Polling": "Slow"
+      "key": "DI_S1MAINPEN",
+      "type": "DiscreteInput",
+      "address": 13,
+      "polling": "Fast"
     },
     {
-      "Key": "DO_GRN_LAMP",
-      "Type": "Coil",
-      "Address": 14,
-      "Polling": "Slow"
+      "key": "DI_S1PREPEN",
+      "type": "DiscreteInput",
+      "address": 14,
+      "polling": "Fast"
+    },
+    {
+      "key": "DI_S2MAINPEN",
+      "type": "DiscreteInput",
+      "address": 15,
+      "polling": "Fast"
+    },
+    {
+      "key": "DI_S2PREPEN",
+      "type": "DiscreteInput",
+      "address": 16,
+      "polling": "Fast"
+    },
+    {
+      "key": "DI_TURRETINPOSITION",
+      "type": "DiscreteInput",
+      "address": 17,
+      "polling": "Fast"
+    },
+    {
+      "key": "DI_S1SCRAPPER",
+      "type": "DiscreteInput",
+      "address": 18,
+      "polling": "Fast"
+    },
+    {
+      "key": "DI_S2SCRAPPER",
+      "type": "DiscreteInput",
+      "address": 19,
+      "polling": "Fast"
+    },
+    {
+      "key": "DI_RHSPOWDER",
+      "type": "DiscreteInput",
+      "address": 20,
+      "polling": "Fast"
+    },
+    {
+      "key": "DI_LHSPOWDER",
+      "type": "DiscreteInput",
+      "address": 21,
+      "polling": "Fast"
+    },
+    {
+      "key": "DI_LUBEOIL",
+      "type": "DiscreteInput",
+      "address": 22,
+      "polling": "Fast"
+    },
+    {
+      "key": "DO_S1_INIT_REJ",
+      "type": "Coil",
+      "address": 5,
+      "polling": "Medium"
+    },
+    {
+      "key": "DO_S2_INIT_REJ",
+      "type": "Coil",
+      "address": 6,
+      "polling": "Medium"
+    },
+    {
+      "key": "DO_S1_SAMPLE",
+      "type": "Coil",
+      "address": 7,
+      "polling": "Medium"
+    },
+    {
+      "key": "DO_S2_SAMPLE",
+      "type": "Coil",
+      "address": 8,
+      "polling": "Medium"
+    },
+    {
+      "key": "DO_S1_REJ",
+      "type": "Coil",
+      "address": 9,
+      "polling": "Medium"
+    },
+    {
+      "key": "DO_S2_REJ",
+      "type": "Coil",
+      "address": 10,
+      "polling": "Medium"
+    },
+    {
+      "key": "DO_LUBE",
+      "type": "Coil",
+      "address": 11,
+      "polling": "Slow"
+    },
+    {
+      "key": "DO_RED_LAMP",
+      "type": "Coil",
+      "address": 12,
+      "polling": "Slow"
+    },
+    {
+      "key": "DO_YEL_LAMP",
+      "type": "Coil",
+      "address": 13,
+      "polling": "Slow"
+    },
+    {
+      "key": "DO_GRN_LAMP",
+      "type": "Coil",
+      "address": 14,
+      "polling": "Slow"
     },
     {
       "key": "REVOLUTION_COUNT",
@@ -190,7 +331,6 @@
       "type": "Coil",
       "address": 31
     },
-
     {
       "key": "TURRET_DOOR_INTERLOCK",
       "type": "DiscreteInput",
@@ -211,7 +351,6 @@
       "type": "HoldingRegister",
       "address": 30
     },
-
     {
       "key": "S1_MOTOR_STATUS",
       "type": "DiscreteInput",
@@ -227,7 +366,6 @@
       "type": "HoldingRegister",
       "address": 31
     },
-
     {
       "key": "S2_MOTOR_STATUS",
       "type": "DiscreteInput",
@@ -242,7 +380,1164 @@
       "key": "S2_SET_RPM",
       "type": "HoldingRegister",
       "address": 32
+    },
+    {
+      "key": "GOOD_S1",
+      "type": "InputRegister",
+      "address": 37,
+      "polling": "Fast"
+    },
+    {
+      "key": "REJECTED_S1",
+      "type": "InputRegister",
+      "address": 38,
+      "polling": "Fast"
+    },
+    {
+      "key": "TOTAL_S1",
+      "type": "InputRegister",
+      "address": 39,
+      "polling": "Fast"
+    },
+    {
+      "key": "GOOD_S2",
+      "type": "InputRegister",
+      "address": 40,
+      "polling": "Fast"
+    },
+    {
+      "key": "REJECTED_S2",
+      "type": "InputRegister",
+      "address": 41,
+      "polling": "Fast"
+    },
+    {
+      "key": "TOTAL_S2",
+      "type": "InputRegister",
+      "address": 42,
+      "polling": "Fast"
+    },
+    {
+      "key": "AVG_MAIN_S1",
+      "type": "InputRegister",
+      "address": 43,
+      "polling": "Fast"
+    },
+    {
+      "key": "AVG_PRE_S1",
+      "type": "InputRegister",
+      "address": 44,
+      "polling": "Fast"
+    },
+    {
+      "key": "AVG_EJECT_S1",
+      "type": "InputRegister",
+      "address": 45,
+      "polling": "Fast"
+    },
+    {
+      "key": "AVG_MAIN_S2",
+      "type": "InputRegister",
+      "address": 46,
+      "polling": "Fast"
+    },
+    {
+      "key": "AVG_PRE_S2",
+      "type": "InputRegister",
+      "address": 47,
+      "polling": "Fast"
+    },
+    {
+      "key": "AVG_EJECT_S2",
+      "type": "InputRegister",
+      "address": 48,
+      "polling": "Fast"
+    },
+    {
+      "key": "DWELL_TIME",
+      "type": "InputRegister",
+      "address": 49,
+      "polling": "Fast"
+    },
+    {
+      "key": "TOTAL_QTY",
+      "type": "InputRegister",
+      "address": 50,
+      "polling": "Fast"
+    },
+    {
+      "key": "AWC_VALUE",
+      "type": "InputRegister",
+      "address": 51,
+      "polling": "Fast"
+    },
+    {
+      "key": "DOOR_INTERLOCK",
+      "type": "DiscreteInput",
+      "address": 52,
+      "polling": "Fast"
+    },
+    {
+      "key": "RUN_STATUS",
+      "type": "DiscreteInput",
+      "address": 53,
+      "polling": "Fast"
+    },
+    {
+      "key": "READY_STATUS",
+      "type": "DiscreteInput",
+      "address": 54,
+      "polling": "Fast"
+    },
+    {
+      "key": "ALARM_STATUS",
+      "type": "DiscreteInput",
+      "address": 55,
+      "polling": "Fast"
+    },
+    {
+      "key": "TURRET_START_CMD",
+      "type": "Coil",
+      "address": 56
+    },
+    {
+      "key": "TURRET_JOG_CMD",
+      "type": "Coil",
+      "address": 57
+    },
+    {
+      "key": "S1_AUTO_CMD",
+      "type": "Coil",
+      "address": 58
+    },
+    {
+      "key": "S1_STOP_CMD",
+      "type": "Coil",
+      "address": 59
+    },
+    {
+      "key": "S1_JOG_CMD",
+      "type": "Coil",
+      "address": 60
+    },
+    {
+      "key": "S2_AUTO_CMD",
+      "type": "Coil",
+      "address": 61
+    },
+    {
+      "key": "S2_STOP_CMD",
+      "type": "Coil",
+      "address": 62
+    },
+    {
+      "key": "S2_JOG_CMD",
+      "type": "Coil",
+      "address": 63
+    },
+    {
+      "key": "BATCH_ACTIVE_FLAG",
+      "type": "DiscreteInput",
+      "address": 64,
+      "polling": "Fast"
+    },
+    {
+      "key": "BATCH_QTY_HOLD",
+      "type": "HoldingRegister",
+      "address": 65,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_REJ_VALVE_ON_TIME",
+      "type": "HoldingRegister",
+      "address": 40,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_INIT_REJ_REVOLUTION",
+      "type": "HoldingRegister",
+      "address": 41,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_POWDER_LOW_LEVEL_TIME",
+      "type": "HoldingRegister",
+      "address": 42,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_SEQ_REJ_COUNT",
+      "type": "HoldingRegister",
+      "address": 43,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_REJ_VALVE_ON_TIME",
+      "type": "HoldingRegister",
+      "address": 44,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_INIT_REJ_REVOLUTION",
+      "type": "HoldingRegister",
+      "address": 45,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_POWDER_LOW_LEVEL_TIME",
+      "type": "HoldingRegister",
+      "address": 46,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_SEQ_REJ_COUNT",
+      "type": "HoldingRegister",
+      "address": 47,
+      "polling": "Medium"
+    },
+    {
+      "key": "LUBE_MOTOR_ON_TIME",
+      "type": "HoldingRegister",
+      "address": 48,
+      "polling": "Slow"
+    },
+    {
+      "key": "LUBE_MOTOR_OFF_TIME",
+      "type": "HoldingRegister",
+      "address": 49,
+      "polling": "Slow"
+    },
+    {
+      "key": "INDIVIDUAL_REJ_COUNT",
+      "type": "HoldingRegister",
+      "address": 50,
+      "polling": "Medium"
+    },
+    {
+      "key": "POWDER_SENSOR_TIME_S1",
+      "type": "HoldingRegister",
+      "address": 51,
+      "polling": "Medium"
+    },
+    {
+      "key": "POWDER_SENSOR_TIME_S2",
+      "type": "HoldingRegister",
+      "address": 52,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_SAMPLE_JOG_CMD",
+      "type": "Coil",
+      "address": 100
+    },
+    {
+      "key": "S2_SAMPLE_JOG_CMD",
+      "type": "Coil",
+      "address": 101
+    },
+    {
+      "key": "LUBE_JOG_CMD",
+      "type": "Coil",
+      "address": 102
+    },
+    {
+      "key": "S1_POWDER_INTERLOCK_CMD",
+      "type": "Coil",
+      "address": 103
+    },
+    {
+      "key": "S2_POWDER_INTERLOCK_CMD",
+      "type": "Coil",
+      "address": 104
+    },
+    {
+      "key": "S1_SAMPLE_VALVE_STATUS",
+      "type": "DiscreteInput",
+      "address": 100,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_MOTOR_LUBE_STATUS",
+      "type": "DiscreteInput",
+      "address": 101,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_SAMPLE_VALVE_STATUS",
+      "type": "DiscreteInput",
+      "address": 102,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_MOTOR_LUBE_STATUS",
+      "type": "DiscreteInput",
+      "address": 103,
+      "polling": "Fast"
+    },
+    {
+      "key": "EMERGENCY_PB",
+      "type": "DiscreteInput",
+      "address": 110,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_MAIN_PENETRATION_ROLLER",
+      "type": "DiscreteInput",
+      "address": 111,
+      "polling": "Fast"
+    },
+    {
+      "key": "SAFETY_DOOR",
+      "type": "DiscreteInput",
+      "address": 112,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_PRE_PENETRATION_ROLLER",
+      "type": "DiscreteInput",
+      "address": 113,
+      "polling": "Fast"
+    },
+    {
+      "key": "TURRET_MOTOR",
+      "type": "DiscreteInput",
+      "address": 114,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_MAIN_PENETRATION_ROLLER",
+      "type": "DiscreteInput",
+      "address": 115,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_FEEDER_MOTOR",
+      "type": "DiscreteInput",
+      "address": 116,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_PRE_PENETRATION_ROLLER",
+      "type": "DiscreteInput",
+      "address": 117,
+      "polling": "Fast"
+    },
+    {
+      "key": "LUBE_MOTOR",
+      "type": "DiscreteInput",
+      "address": 118,
+      "polling": "Fast"
+    },
+    {
+      "key": "TURRET_IN_POSITION",
+      "type": "DiscreteInput",
+      "address": 119,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_UPPER_CAM_IN_POSITION",
+      "type": "DiscreteInput",
+      "address": 120,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_SCRAPPER_IN_POSITION",
+      "type": "DiscreteInput",
+      "address": 121,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_LOWER_CAM_IN_POSITION",
+      "type": "DiscreteInput",
+      "address": 122,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_SCRAPPER_IN_POSITION",
+      "type": "DiscreteInput",
+      "address": 123,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_UPPER_CAM_IN_POSITION",
+      "type": "DiscreteInput",
+      "address": 124,
+      "polling": "Fast"
+    },
+    {
+      "key": "LUBE_OIL_LOW_LEVEL",
+      "type": "DiscreteInput",
+      "address": 125,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_LOWER_CAM_IN_POSITION",
+      "type": "DiscreteInput",
+      "address": 126,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_POWDER_LEVEL_SENSOR",
+      "type": "DiscreteInput",
+      "address": 127,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_FILL_DEPTH_SERVO",
+      "type": "DiscreteInput",
+      "address": 128,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_POWDER_LEVEL_SENSOR",
+      "type": "DiscreteInput",
+      "address": 129,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_MAIN_LOWER_SERVO",
+      "type": "DiscreteInput",
+      "address": 130,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_FILL_DEPTH_SERVO",
+      "type": "DiscreteInput",
+      "address": 131,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_MAIN_PENETRATION_SERVO",
+      "type": "DiscreteInput",
+      "address": 132,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_MAIN_PENETRATION_SERVO",
+      "type": "DiscreteInput",
+      "address": 133,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_PRE_LOWER_SERVO",
+      "type": "DiscreteInput",
+      "address": 134,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_PRE_PENETRATION_SERVO",
+      "type": "DiscreteInput",
+      "address": 135,
+      "polling": "Fast"
+    },
+    {
+      "key": "BATCH_COMPLETED",
+      "type": "DiscreteInput",
+      "address": 136,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_REJ_UPPER_LIMIT",
+      "type": "HoldingRegister",
+      "address": 200,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_AWC_UPPER_LIMIT",
+      "type": "HoldingRegister",
+      "address": 201,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_AWC_SET_POINT",
+      "type": "HoldingRegister",
+      "address": 202,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_AWC_LOWER_LIMIT",
+      "type": "HoldingRegister",
+      "address": 203,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_REJ_LOWER_LIMIT",
+      "type": "HoldingRegister",
+      "address": 204,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_REJ_UPPER_LIMIT",
+      "type": "HoldingRegister",
+      "address": 205,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_AWC_UPPER_LIMIT",
+      "type": "HoldingRegister",
+      "address": 206,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_AWC_SET_POINT",
+      "type": "HoldingRegister",
+      "address": 207,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_AWC_LOWER_LIMIT",
+      "type": "HoldingRegister",
+      "address": 208,
+      "polling": "Medium"
+    },
+    {
+      "key": "S2_REJ_LOWER_LIMIT",
+      "type": "HoldingRegister",
+      "address": 209,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_DIE_FILL_RECIPE",
+      "type": "HoldingRegister",
+      "address": 210,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_PRE_PEN_RECIPE",
+      "type": "HoldingRegister",
+      "address": 211,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_PRE_THICKNESS_RECIPE",
+      "type": "HoldingRegister",
+      "address": 212,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_MAIN_PEN_RECIPE",
+      "type": "HoldingRegister",
+      "address": 213,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_MAIN_THICKNESS_RECIPE",
+      "type": "HoldingRegister",
+      "address": 214,
+      "polling": "Medium"
+    },
+    {
+      "key": "S1_AWC_CMD",
+      "type": "Coil",
+      "address": 200
+    },
+    {
+      "key": "S1_REJ_CMD",
+      "type": "Coil",
+      "address": 201
+    },
+    {
+      "key": "S1_SAMPLE_CMD",
+      "type": "Coil",
+      "address": 202
+    },
+    {
+      "key": "S2_AWC_CMD",
+      "type": "Coil",
+      "address": 203
+    },
+    {
+      "key": "S2_REJ_CMD",
+      "type": "Coil",
+      "address": 204
+    },
+    {
+      "key": "S2_SAMPLE_CMD",
+      "type": "Coil",
+      "address": 205
+    },
+    {
+      "key": "S1_DIE_FILL_EN",
+      "type": "Coil",
+      "address": 206
+    },
+    {
+      "key": "S1_PRE_PEN_EN",
+      "type": "Coil",
+      "address": 207
+    },
+    {
+      "key": "S1_PRE_THICKNESS_EN",
+      "type": "Coil",
+      "address": 208
+    },
+    {
+      "key": "S1_MAIN_PEN_EN",
+      "type": "Coil",
+      "address": 209
+    },
+    {
+      "key": "S1_MAIN_THICKNESS_EN",
+      "type": "Coil",
+      "address": 210
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_JOG_UP",
+      "type": "Coil",
+      "address": 300
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_JOG_DOWN",
+      "type": "Coil",
+      "address": 301
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_RUN",
+      "type": "Coil",
+      "address": 302
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_STOP",
+      "type": "Coil",
+      "address": 303
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 300
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_SET",
+      "type": "HoldingRegister",
+      "address": 301,
+      "polling": "Slow"
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_SET_POS",
+      "type": "HoldingRegister",
+      "address": 302
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 303
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 300
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_ACT_POS",
+      "type": "InputRegister",
+      "address": 301,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_READY",
+      "type": "DiscreteInput",
+      "address": 300
+    },
+    {
+      "key": "S2_Fill_Depth_Servo-2_ALARM",
+      "type": "DiscreteInput",
+      "address": 301
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_JOG_UP",
+      "type": "Coil",
+      "address": 304
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_JOG_DOWN",
+      "type": "Coil",
+      "address": 305
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_RUN",
+      "type": "Coil",
+      "address": 306
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_STOP",
+      "type": "Coil",
+      "address": 307
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 304
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_SET",
+      "type": "HoldingRegister",
+      "address": 305,
+      "polling": "Slow"
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_SET_POS",
+      "type": "HoldingRegister",
+      "address": 306
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 307
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 302
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_ACT_POS",
+      "type": "InputRegister",
+      "address": 303,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_READY",
+      "type": "DiscreteInput",
+      "address": 302
+    },
+    {
+      "key": "S1_Main_Lower_Servo-3_ALARM",
+      "type": "DiscreteInput",
+      "address": 303
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_JOG_UP",
+      "type": "Coil",
+      "address": 308
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_JOG_DOWN",
+      "type": "Coil",
+      "address": 309
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_RUN",
+      "type": "Coil",
+      "address": 310
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_STOP",
+      "type": "Coil",
+      "address": 311
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 308
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_SET",
+      "type": "HoldingRegister",
+      "address": 309,
+      "polling": "Slow"
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_SET_POS",
+      "type": "HoldingRegister",
+      "address": 310
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 311
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 304
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_ACT_POS",
+      "type": "InputRegister",
+      "address": 305,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_READY",
+      "type": "DiscreteInput",
+      "address": 304
+    },
+    {
+      "key": "S1_Main_Penetration_Servo-4_ALARM",
+      "type": "DiscreteInput",
+      "address": 305
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_JOG_UP",
+      "type": "Coil",
+      "address": 312
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_JOG_DOWN",
+      "type": "Coil",
+      "address": 313
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_RUN",
+      "type": "Coil",
+      "address": 314
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_STOP",
+      "type": "Coil",
+      "address": 315
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 312
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_SET",
+      "type": "HoldingRegister",
+      "address": 313,
+      "polling": "Slow"
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_SET_POS",
+      "type": "HoldingRegister",
+      "address": 314
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 315
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 306
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_ACT_POS",
+      "type": "InputRegister",
+      "address": 307,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_READY",
+      "type": "DiscreteInput",
+      "address": 306
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-5_ALARM",
+      "type": "DiscreteInput",
+      "address": 307
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_JOG_UP",
+      "type": "Coil",
+      "address": 316
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_JOG_DOWN",
+      "type": "Coil",
+      "address": 317
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_RUN",
+      "type": "Coil",
+      "address": 318
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_STOP",
+      "type": "Coil",
+      "address": 319
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 316
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_SET",
+      "type": "HoldingRegister",
+      "address": 317,
+      "polling": "Slow"
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_SET_POS",
+      "type": "HoldingRegister",
+      "address": 318
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 319
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 308
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_ACT_POS",
+      "type": "InputRegister",
+      "address": 309,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_READY",
+      "type": "DiscreteInput",
+      "address": 308
+    },
+    {
+      "key": "S1_Pre_Penetration_Servo-6_ALARM",
+      "type": "DiscreteInput",
+      "address": 309
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_JOG_UP",
+      "type": "Coil",
+      "address": 320
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_JOG_DOWN",
+      "type": "Coil",
+      "address": 321
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_RUN",
+      "type": "Coil",
+      "address": 322
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_STOP",
+      "type": "Coil",
+      "address": 323
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 320
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_SET",
+      "type": "HoldingRegister",
+      "address": 321,
+      "polling": "Slow"
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_SET_POS",
+      "type": "HoldingRegister",
+      "address": 322
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 323
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 310
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_ACT_POS",
+      "type": "InputRegister",
+      "address": 311,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_READY",
+      "type": "DiscreteInput",
+      "address": 310
+    },
+    {
+      "key": "S2_Main_Lower_Servo-7_ALARM",
+      "type": "DiscreteInput",
+      "address": 311
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_JOG_UP",
+      "type": "Coil",
+      "address": 324
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_JOG_DOWN",
+      "type": "Coil",
+      "address": 325
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_RUN",
+      "type": "Coil",
+      "address": 326
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_STOP",
+      "type": "Coil",
+      "address": 327
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 324
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_SET",
+      "type": "HoldingRegister",
+      "address": 325,
+      "polling": "Slow"
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_SET_POS",
+      "type": "HoldingRegister",
+      "address": 326
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 327
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 312
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_ACT_POS",
+      "type": "InputRegister",
+      "address": 313,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_READY",
+      "type": "DiscreteInput",
+      "address": 312
+    },
+    {
+      "key": "S2_Main_Penetration_Servo-8_ALARM",
+      "type": "DiscreteInput",
+      "address": 313
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_JOG_UP",
+      "type": "Coil",
+      "address": 328
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_JOG_DOWN",
+      "type": "Coil",
+      "address": 329
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_RUN",
+      "type": "Coil",
+      "address": 330
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_STOP",
+      "type": "Coil",
+      "address": 331
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 328
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_SET",
+      "type": "HoldingRegister",
+      "address": 329,
+      "polling": "Slow"
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_SET_POS",
+      "type": "HoldingRegister",
+      "address": 330
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 331
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 314
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_ACT_POS",
+      "type": "InputRegister",
+      "address": 315,
+      "polling": "Fast"
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_READY",
+      "type": "DiscreteInput",
+      "address": 314
+    },
+    {
+      "key": "S1_Pre_Lower_Servo-9_ALARM",
+      "type": "DiscreteInput",
+      "address": 315
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_JOG_UP",
+      "type": "Coil",
+      "address": 332
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_JOG_DOWN",
+      "type": "Coil",
+      "address": 333
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_RUN",
+      "type": "Coil",
+      "address": 334
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_STOP",
+      "type": "Coil",
+      "address": 335
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_JOG_SPEED",
+      "type": "HoldingRegister",
+      "address": 332
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_SET",
+      "type": "HoldingRegister",
+      "address": 333,
+      "polling": "Slow"
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_SET_POS",
+      "type": "HoldingRegister",
+      "address": 334
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_SET_SPEED",
+      "type": "HoldingRegister",
+      "address": 335
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_ACT_TORQUE",
+      "type": "InputRegister",
+      "address": 316
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_ACT_POS",
+      "type": "InputRegister",
+      "address": 317,
+      "polling": "Fast"
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_READY",
+      "type": "DiscreteInput",
+      "address": 316
+    },
+    {
+      "key": "S2_Pre_Penetration_Servo-10_ALARM",
+      "type": "DiscreteInput",
+      "address": 317
     }
-
   ]
 }

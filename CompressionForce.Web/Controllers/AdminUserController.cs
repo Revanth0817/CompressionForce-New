@@ -297,6 +297,24 @@ namespace Compression_Force.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        /* ================= MY PRIVILEGES (CURRENT USER) ================= */
+
+        [HttpGet("MyPrivileges")]
+        public async Task<IActionResult> MyPrivileges()
+        {
+            var role = HttpContext.Session.GetString("UserLevel");
+
+            if (string.IsNullOrEmpty(role))
+                return Unauthorized("Not logged in");
+
+            var allowed = await _context.GroupPrivileges
+                .Where(p => p.GroupName == role && p.IsAllowed)
+                .Select(p => p.PrivilegeKey)
+                .ToListAsync();
+
+            return Ok(allowed); // e.g. ["Recipe","Diagnostics","Batch"]
+        }
     }
 
     /* ================= DTOs ================= */

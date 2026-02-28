@@ -184,5 +184,11 @@ namespace CompressionForce.Integrations.PLC.Modbus
                 _plcLock.Release();
             }
         }
+
+        // =====================================
+        // INTERFACE PROPERTIES
+        // =====================================
+        public bool IsConnected => _client.Connected;
+        public string Host => _ip;
     }
 }
