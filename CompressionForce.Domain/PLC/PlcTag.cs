@@ -1,9 +1,4 @@
 ﻿using CompressionForce.Domain.PLC;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CompressionForce.Domain.PLC
 {
@@ -15,7 +10,11 @@ namespace CompressionForce.Domain.PLC
 
         public PlcDataType Type { get; set; }
 
+        // 🔵 Used by Modbus
         public int Address { get; set; }
+
+        // 🟢 Used by ADS
+        public string? Symbol { get; set; }
 
         public string Polling { get; set; } = "Medium";
 

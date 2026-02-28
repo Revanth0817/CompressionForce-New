@@ -5,15 +5,13 @@ using CompressionForce.Domain.Abstractions;
 using CompressionForce.Domain.Abstractions.UnitOfWork;
 using CompressionForce.Domain.Calibration;
 using CompressionForce.Domain.PLC;
-using CompressionForce.Domain.PLC;
 using CompressionForce.Domain.Validation;
 using CompressionForce.Services.Interfaces;
 using CompressionForce.Integrations.PLC.Modbus;
+using CompressionForce.Integrations.PLC;
+using CompressionForce.Integrations.PLC.Ads;
 using CompressionForce.Services;
 using CompressionForce.Services.Batches;
-
-
-using CompressionForce.Services;
 using CompressionForce.Services.Audit;
 using CompressionForce.Services.Lookups;
 using CompressionForce.Services.Recipes;
@@ -131,10 +129,24 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IPlcProtocol>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
-    var ip = config["Plc:Ip"];
-    var port = int.Parse(config["Plc:Port"]);
+    var plcTagConfig = sp.GetRequiredService<PlcTagConfig>();
 
-    return new ModbusTcpProtocol(ip, port);
+    var protocol = config["Plc:Protocol"];
+
+    if (protocol == "ADS")
+    {
+        var amsNetId = config["Plc:AmsNetId"];
+        var adsPort = int.Parse(config["Plc:AdsPort"]);
+
+        return new AdsProtocol(amsNetId, adsPort, plcTagConfig);
+    }
+    else
+    {
+        var ip = config["Plc:Ip"];
+        var port = int.Parse(config["Plc:Port"]);
+
+        return new ModbusTcpProtocol(ip, port);
+    }
 });
 
 
