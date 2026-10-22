@@ -11,7 +11,7 @@
             <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#viewParameters" type="button" role="tab" aria-controls="viewParameters" aria-selected="false">View Parameters</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#fillCamGuide" type="button" role="tab" aria-controls="fillCamGuide" aria-selected="false">Fill Cam Guide</button>
+            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#fillCamGuide" type="button" role="tab" aria-controls="fillCamGuide" aria-selected="false">Fill Cam Guide</button>
         </li>
     </ul>
 
@@ -146,13 +146,13 @@
                                                     <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s2Control" aria-selected="false">S2 Control</button>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">Torque</button>
+                                                    <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">Torque</button>
                                                 </li>
                                             </ul>
 
                                             <!--Graph cards section-->
                                             <div class="tab-pane pt-3 fade show active" id="s1Control" role="tabpanel" aria-labelledby="S1Control" tabindex="0">
-
+                                                
                                                 <div class="row tab-content s1-card-container">
                                                     <!--Card 1-->
                                                     <div class="col-md-12 s1Control col-xl-4 d-flex">
@@ -190,13 +190,13 @@
                                                                     <div class="row mb-3 ms-auto">
                                                                         <label for="colFormLabel" class="col-auto col-form-label fw-semibold">Fill Depth</label>
 
-                                                                        <canvas id="fillDepthChart" width="100" height="200"></canvas>
+                                                                        <canvas class="fillDepthChart" width="100" height="200"></canvas>
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex mt-auto flex-wrap">
                                                                     <p class="mb-0 align-self-center me-auto fw-semibold">S1 Select Fill Cam</p>
                                                                     <div class="d-flex h-30px toolTypeDropdown batchDropdown position-relative">
-                                                                        <input type="text" class="form-control bg-white flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly="">
+                                                                        <input type="text" class="form-control bg-white flex-grow-1 dropdownInput bord-D2D2D2" value="4321" readonly="">
                                                                         <button type="button" class="border-0 bgcol-215ED6 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                                                             <span class="visually-hidden">Toggle Dropdown</span>
                                                                         </button>
@@ -249,7 +249,7 @@
                                                                     <div class="row mb-3 ms-auto">
                                                                         <label for="colFormLabel" class="col-auto col-form-label fw-semibold">Fill Depth</label>
 
-                                                                        <canvas id="fillDepthChart" width="100" height="200"></canvas>
+                                                                        <canvas class="fillDepthChart" width="100" height="200"></canvas>
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex align-items-end flex-wrap mt-auto">
@@ -317,7 +317,7 @@
                                                                     <div class="row mb-3 ms-auto">
                                                                         <label for="colFormLabel" class="col-auto col-form-label fw-semibold">Fill Depth</label>
 
-                                                                        <canvas id="fillDepthChart" width="100" height="200"></canvas>
+                                                                        <canvas class="fillDepthChart" width="100" height="200"></canvas>
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex align-items-end flex-wrap mt-auto">
@@ -687,7 +687,7 @@
                                                             <div class="d-flex flex-column gap-3 align-items-center">
                                                                 <label class="font-size-16px fw-semibold clr-242424">Select S1-A</label>
                                                                 <div class="d-flex commonProductDropdown batchDropdown position-relative">
-                                                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly="">
+                                                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" value="4321" readonly="">
                                                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <span class="visually-hidden">Toggle Dropdown</span>
                                                                     </button>
@@ -700,7 +700,7 @@
                                                             <div class="d-flex flex-column gap-3 align-items-center">
                                                                 <label class="font-size-16px fw-semibold clr-242424">Select S1-B</label>
                                                                 <div class="d-flex commonProductDropdown batchDropdown position-relative">
-                                                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly="">
+                                                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" value="4321" readonly="">
                                                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <span class="visually-hidden">Toggle Dropdown</span>
                                                                     </button>
@@ -713,7 +713,7 @@
                                                             <div class="d-flex flex-column gap-3 align-items-center">
                                                                 <label class="font-size-16px fw-semibold clr-242424">Select S2-A</label>
                                                                 <div class="d-flex commonProductDropdown batchDropdown position-relative">
-                                                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly="">
+                                                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" value="4321" readonly="">
                                                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <span class="visually-hidden">Toggle Dropdown</span>
                                                                     </button>
@@ -726,7 +726,7 @@
                                                             <div class="d-flex flex-column gap-3 align-items-center">
                                                                 <label class="font-size-16px fw-semibold clr-242424">Select S2-A</label>
                                                                 <div class="d-flex commonProductDropdown batchDropdown position-relative">
-                                                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly="">
+                                                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" value="4321" readonly="">
                                                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                                                         <span class="visually-hidden">Toggle Dropdown</span>
                                                                     </button>
@@ -966,16 +966,16 @@
                                             <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s2Control" aria-selected="false">S1 Pre Comp.</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S1 Ejection</button>
+                                            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S1 Ejection</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Main Comp.</button>
+                                            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Main Comp.</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Pre Comp.</button>
+                                            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Pre Comp.</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link col-242424 fw-semibold" id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Ejection</button>
+                                            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">S2 Ejection</button>
                                         </li>
                                     </ul>
 
@@ -1004,19 +1004,19 @@
                                         </div>
 
                                         <p class="mb-0 fw-semibold text-black-custom">
-                                            Last Revolution Main S1
-                                        </p>
+    Last Revolution Main S1
+</p>
 
-                                        <div class="mb-3 d-flex gap-2 justify-content-start align-items-center text-black-custom">
-                                            <label class="col-auto col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">
-                                                SREL Value
-                                            </label>
-                                            <input type="text"
-                                                   class="form-control form-control-sm me-auto col-4 text-center w-60px bgcol-E9EFFB bord-col-215ED6 fw-semibold"
-                                                   value="0">
-                                        </div>
+<div class="mb-3 d-flex gap-2 justify-content-start align-items-center text-black-custom">
+    <label class="col-auto col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">
+        SREL Value
+    </label>
+    <input type="text"
+           class="form-control form-control-sm me-auto col-4 text-center w-60px bgcol-E9EFFB bord-col-215ED6 fw-semibold"
+           value="0">
+</div>
 
-
+                                       
 
                                     </div>
                                     <!-- Graph Container -->
@@ -1127,7 +1127,7 @@
                             <div class="d-flex gap-3 align-items-center">
                                 <label class="font-size-16px fw-semibold clr-242424">Tool Type</label>
                                 <div class="d-flex toolTypeDropdown batchDropdown position-relative">
-                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
+                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" value="4321" readonly>
                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="visually-hidden">Toggle Dropdown</span>
                                     </button>
@@ -1140,7 +1140,7 @@
                             <div class="d-flex gap-3 align-items-center">
                                 <label class="font-size-16px fw-semibold clr-242424">AWC & AR</label>
                                 <div class="d-flex commonProductDropdown batchDropdown position-relative">
-                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
+                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" value="4321" readonly>
                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="visually-hidden">Toggle Dropdown</span>
                                     </button>
@@ -1153,7 +1153,7 @@
                             <div class="d-flex gap-3 align-items-center">
                                 <label class="font-size-16px fw-semibold clr-242424">Recipe</label>
                                 <div class="d-flex commonProductDropdown batchDropdown position-relative">
-                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
+                                    <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" value="4321" readonly>
                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="visually-hidden">Toggle Dropdown</span>
                                     </button>
@@ -1188,7 +1188,7 @@
                         <div class="col-sm-12 order-md-2 order-lg-3 col-md-6  col-lg-5">
                             <div class="d-flex justify-content-lg-end flex-column">
                                 <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16 min-width-30 fw-semibold clr-242424">Table Thickness</label>
+                                    <label class="font-size-16 min-width-30 fw-semibold clr-242424">Tablet Thickness</label>
                                     <div class="d-flex align-items-center gap-10px max-width-115px">
                                         <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px  boxshadow" placeholder="" />
                                         <span class="font-size-16px fw-semibold clr-242424">mm</span>
@@ -1196,14 +1196,14 @@
 
                                 </div>
                                 <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Hardness</label>
+                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Tablet Hardness</label>
                                     <div class="d-flex align-items-center gap-10px max-width-115px">
                                         <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px  boxshadow" placeholder="" />
                                         <span class="font-size-16px fw-semibold clr-242424">kpa</span>
                                     </div>
                                 </div>
                                 <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Weight</label>
+                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Tablet Weight</label>
                                     <div class="d-flex align-items-center gap-10px max-width-115px">
                                         <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  boxshadow" placeholder="" />
                                         <span class="font-size-16px fw-semibold clr-242424">mg</span>
@@ -1517,7 +1517,7 @@
                                 <div class="d-flex justify-content-between forceCamBox align-items-center mb-0">
                                     <label class="form-check-label fw-semibold" for="switchCheckDefault">Shape Selection</label>
                                     <div class="d-flex fillCamLabel position-relative w-130px h-30px">
-                                        <input type="text" class="form-control flex-grow-1 bg-white dropdownInput bord-D2D2D2" id="selectedItem" value="Round">
+                                        <input type="text" class="form-control flex-grow-1 bg-white dropdownInput bord-D2D2D2" value="Round">
                                         <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="visually-hidden">Toggle Dropdown</span>
                                         </button>
@@ -1532,7 +1532,7 @@
                                     <input type="text" class="bord-D2D2D2 bord-rad-4px fillCamLabel px-12-py-6px w-130px h-30px" value="0.00">
                                 </div>
                                 <div class="d-flex justify-content-between forceCamBox align-items-center mb-0">
-                                    <label class="form-check-label fw-semibold" for="switchCheckDefault">Table Weight(mg)</label>
+                                    <label class="form-check-label fw-semibold" for="switchCheckDefault">Tablet Weight(mg)</label>
                                     <input type="text" class="bord-D2D2D2 bord-rad-4px px-12 fillCamLabel px-12-py-6px w-130px h-30px" value="0.00">
                                 </div>
                                 <div class="d-flex justify-content-between forceCamBox align-items-center mb-0">
@@ -1559,7 +1559,7 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/lib/chartjs/chart.umd.min.js"></script>
 <script>
     const ctx = document.getElementById('forceGraphCanvas').getContext('2d');
 
@@ -1642,4 +1642,17 @@
             }
         }
     });
+</script>
+
+<script>
+    /* +/- arrows next to the value box (the box sits in the same wrapper as the arrows) */
+    function changeValue(step) {
+        const src = window.event && window.event.target;
+        const box = src && src.closest ? src.closest(".align-items-center") : null;
+        const input = (box || document).querySelector(".arrows-text");
+        if (!input) return;
+
+        const next = (parseFloat(input.value) || 0) + step;
+        if (next >= 0) input.value = next;
+    }
 </script>

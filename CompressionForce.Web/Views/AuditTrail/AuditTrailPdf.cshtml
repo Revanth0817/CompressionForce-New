@@ -60,7 +60,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.DateTime.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    <td>@item.DateTime.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")</td>
                     <td>@item.UserName</td>
                     <td>@item.Activity</td>
                     <td>@item.EventDescription</td>

@@ -1,5 +1,6 @@
 ﻿using CompressionForce.Data;
 using CompressionForce.Services.DTOs;
+using System;
 using System.Linq;
 
 namespace CompressionForce.Services
@@ -15,7 +16,10 @@ namespace CompressionForce.Services
 
         public AutoTareVm GetStatus()
         {
-            var row = _db.AutoTareStatuses.FirstOrDefault();
+            var row = _db.AutoTareStatuses
+                .OrderByDescending(r => r.last_updated)
+                .ThenByDescending(r => r.Id)
+                .FirstOrDefault();
 
             if (row == null)
             {
@@ -24,6 +28,8 @@ namespace CompressionForce.Services
 
             return new AutoTareVm
             {
+                HasData = true,
+                LastUpdatedUtc = DateTime.SpecifyKind(row.last_updated, DateTimeKind.Utc),
                 MotorStatus = row.MotorStatus ? "On" : "Off",
                 MotorTrip = row.MotorTrip ? "On" : "Off",
                 Revolutions = row.Revolutions,

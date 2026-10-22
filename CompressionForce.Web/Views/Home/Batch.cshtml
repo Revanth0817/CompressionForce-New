@@ -1,9 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Batch";
 }
+
+<style>
+    .batch-pill { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .batch-pill-active { background: #FFDD00; color: #242424; }
+    .batch-pill-off { background: #D2D2D2; color: #242424; }
+    .batchStatusOff { background-color: #D2D2D2 !important; }
+    .batch-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .batch-records td, .batch-records th { vertical-align: middle; font-size: 14px; }
+</style>
+
 <div class="BatchContainer p-lg-4 p-md-4 p-sm-3 p-3 pt-4">
-        <div class="w-100 BatchHeader">
-            <div class="d-flex flex-wrap batchPageTabHeader gap-4">
+    <div class="w-100 BatchHeader">
+        <div class="d-flex flex-wrap batchPageTabHeader gap-4">
             <nav class="flex-grow-1">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <button class="nav-link font-size-16px clr-242424 fw-semibold active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Parameter</button>
@@ -13,495 +23,341 @@
             <div class="d-flex gap-3 align-items-center">
                 <label class="font-size-16px fw-semibold clr-242424">Recipe Code</label>
                 <div class="d-flex RecipeCodeDropdown flex-grow-1 batchDropdown position-relative">
-                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
+                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="recipeSelected" value="" placeholder="No recipes" readonly>
                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">4444</a></li>
-                        <li><a class="dropdown-item" href="#">2432</a></li>
-                    </ul>
+                    <ul class="dropdown-menu dropdown-menu-end" id="recipeMenu"></ul>
                 </div>
             </div>
-            </div>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        </div>
+
+        <div id="batchMessage" class="alert mt-3 mb-0 d-none" role="alert"></div>
+
+        <div class="tab-content" id="nav-tabContent">
+            <!-- ================= PARAMETER ================= -->
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                 <div class="d-flex flex-wrap gap-3 py-4">
-                    <button class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" href="" role="button">Add Batch</button>
-                    <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Edit Batch</button>
-                    <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Deactivate Batch</button>
-                    <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">View Batch</button>
-                    <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Print Batch</button>
+                    <button type="button" id="btnAddBatch" class="batch-btn bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white">Add Batch</button>
+                    <button type="button" class="batch-btn bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" disabled title="Not available yet">Edit Batch</button>
+                    <button type="button" id="btnDeactivateBatch" class="batch-btn bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" disabled>Deactivate Batch</button>
+                    <button type="button" class="batch-btn bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" disabled title="Not available yet">View Batch</button>
+                    <button type="button" class="batch-btn bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" disabled title="Not available yet">Print Batch</button>
                 </div>
+
                 <div class="p-lg-4 p-md-4 p-sm-3 p-3 bord-D2D2D2 bord-rad-4px boxshadow">
                     <div class="row px-0">
                         <div class="col-sm-12 order-md-1 order-lg-1 col-md-6 col-lg-5 mb-lg-0 mb-sm-3 mb-md-3 mb-3">
                             <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 mb-3">
                                 <label class="font-size-16px fw-semibold clr-242424 min-width-30">Batch Number</label>
                                 <div class="d-flex batchNumberDropdown batchDropdown flex-grow-1 position-relative">
-                                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
+                                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="batchSelected" value="" placeholder="No active batch" readonly>
                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="visually-hidden">Toggle Dropdown</span>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">4444</a></li>
-                                        <li><a class="dropdown-item" href="#">2432</a></li>
-                                    </ul>
+                                    <ul class="dropdown-menu dropdown-menu-end" id="batchMenu"></ul>
                                 </div>
                             </div>
                             <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 BatchQtydiv">
                                 <label class="font-size-16px fw-semibold clr-242424 min-width-30">Good Qty</label>
-                                <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px  goodQtyBgColor" value="5359" placeholder="Enter Batch Quantity" readonly />
+                                <input type="text" id="goodQty" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px" value="" readonly />
                             </div>
                         </div>
                         <div class="col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2"></div>
                         <div class="col-sm-12 order-md-2 order-lg-3 col-md-6 col-lg-5">
                             <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 BatchQtydiv mb-3">
                                 <label class="font-size-16px fw-semibold clr-242424 min-width-30">Batch Qty</label>
-                                <input type="text" class="bord-D2D2D2 px-12-py-6px form-control batchLabelw-60 bord-rad-4px boxshadow" />
+                                <input type="text" id="batchQty" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px" value="" readonly />
                             </div>
                             <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 BatchQtydiv">
                                 <label class="font-size-16px fw-semibold clr-242424 min-width-30">Batch Status</label>
-                                <input type="text" class="border-0 px-12-py-6px form-control batchLabelw-60 bord-rad-4px  inActiveBgColor" value="Incomplete Batch (Active)" placeholder="Enter Batch Quantity" readonly />
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!--Common Product Parameter-->
-                <div class="commonProductParameter boxshadow bord-rad-4px mt-4">
-                    <div class="commonProductHeader fw-semibold bgcol-215ED6 text-white text-center  font-size-18px p-10px">
-                        Common Product Parameter
-                    </div>
-                    <div class="py-4">
-                        <div class="px-lg-4 px-md-4 px-sm-3 px-3">
-                            <div class="commonProductHeaderSelectors d-flex flex-wrap gap-3 justify-content-between pb-4">
-                                <div class="d-flex gap-3 align-items-center commonProductDropdownDiv">
-                                    <label class="font-size-16px fw-semibold min-width-30 clr-242424">Tool Type</label>
-                                    <div class="d-flex toolTypeDropdown batchDropdown position-relative">
-                                        <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
-                                        <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="visually-hidden">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#">4444</a></li>
-                                            <li><a class="dropdown-item" href="#">2432</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center commonProductDropdownDiv">
-                                    <label class="font-size-16px fw-semibold min-width-30 clr-242424">AWC & AR</label>
-                                    <div class="d-flex commonProductDropdown batchDropdown position-relative">
-                                        <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
-                                        <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="visually-hidden">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#">4444</a></li>
-                                            <li><a class="dropdown-item" href="#">2432</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center commonProductDropdownDiv">
-                                    <label class="font-size-16px fw-semibold min-width-30 clr-242424">Recipe</label>
-                                    <div class="d-flex commonProductDropdown batchDropdown position-relative">
-                                        <input type="text" class="form-control flex-grow-1 dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
-                                        <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="visually-hidden">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#">4444</a></li>
-                                            <li><a class="dropdown-item" href="#">2432</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row px-lg-4 px-md-4 px-sm-3 px-3 commonProductContainer">
-                            <div class="col-sm-12 order-md-1 order-lg-1 col-md-6 col-lg-5">
-                                <div class="d-flex gap-3 align-items-center pb-2">
-                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Recipe Code</label>
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px batchLabelw-60 boxshadow" placeholder="Enter Recipe Code" />
-                                </div>
-                                <div class="d-flex gap-3 align-items-center pb-2">
-                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Product Name</label>
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px batchLabelw-60 boxshadow" placeholder="Enter Product Name" />
-                                </div>
-                                <div class="d-flex gap-3 align-items-center pb-2">
-                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Shape</label>
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px batchLabelw-60 boxshadow" placeholder="Shape" />
-                                </div>
-                                <div class="d-flex gap-3 align-items-center pb-2">
-                                    <label class="font-size-16px min-width-30 fw-semibold clr-242424">Size</label>
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control bord-rad-4px batchLabelw-60 boxshadow" placeholder="Size" />
-                                </div>
-                            </div>
-                            <div class="col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2"></div>
-                            <div class="col-sm-12 order-md-2 order-lg-3 col-md-6  col-lg-5">
-                                <div class="d-flex justify-content-lg-end flex-column">
-                                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                        <label class="font-size-16 min-width-30 fw-semibold clr-242424">Table Thickness</label>
-                                        <div class="d-flex align-items-center gap-10px width-115px">
-                                            <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
-                                            <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                        </div>
-
-                                    </div>
-                                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                        <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Hardness</label>
-                                        <div class="d-flex align-items-center gap-10px width-115px">
-                                            <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
-                                            <span class="font-size-16px fw-semibold clr-242424">kpa</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                        <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Weight</label>
-                                        <div class="d-flex align-items-center gap-10px width-115px">
-                                            <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                            <span class="font-size-16px fw-semibold clr-242424">mg</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                        <label class="font-size-16px min-width-30 fw-semibold clr-242424">Max Turret RPM</label>
-                                        <div class="d-flex align-items-center gap-10px width-115px">
-                                            <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                            <span class="font-size-16px fw-semibold clr-242424">rpm</span>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                <input type="text" id="batchStatus" class="border-0 px-12-py-6px form-control batchLabelw-60 bord-rad-4px" value="" readonly />
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!--S1 & S2 Product Parameters-->
-                <div class="container-fluid mt-4">
-                    <div class="row productParameterMainContainer boxshadow bord-rad-4px">
-                    <div class="col-sm-12 productParameterContainer  order-md-1 order-lg-1 col-md-6 col-lg-5 px-0">
-                        <div class="productParameterHeader1 fw-semibold bgcol-215ED6 text-white px-lg-4 px-md-4 px-sm-3 font-size-18px p-10px">
-                            S1-Product Parameter
-                        </div>
-                        <div class="p-lg-4 p-sm-3 p-md-3 p-3">
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Force Feeder Ratio S1</label>
-                                <div class="dropdown">
-                                        <button class="btn bg-white bord-D2D2D2 dropdown-toggle w-70px margin-right-45px" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            1.0
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><a class="dropdown-item" href="#">1.0</a></li>
-                                            <li><a class="dropdown-item" href="#">2.0</a></li>
-                                            <li><a class="dropdown-item" href="#">3.0</a></li>
-                                        </ul>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Fill Depth S1</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Main Penetration Position S1</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Main Thickness Position S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Pre Penetration Position S1</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Pre Thickness Position S1</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Sample Interval S1</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">rev</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Sample revolution Qty. S1</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">rev</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Max Main Comp. Force S1</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Max Pre Comp. Force S1</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Max Ejection Comp. Force S1</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="emptyParamerDiv col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
-                        <div class="productParamerHeader bgcol-215ED6 clr-215ED6 text-center  font-size-18px p-10px">
-                            Empty
-                        </div>
-                    </div>
-                        <div class="col-sm-12 order-md-2 productParameterContainer order-lg-3 col-md-6  col-lg-5 px-0">
-                        <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-0 px-md-0 px-sm-3">
-                            S2-Product Parameter
-                        </div>
-                            <div class="pe-lg-4 py-lg-4 ps-lg-0 pe-md-4 py-md-4 ps-md-0 p-sm-3 p-3">
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Force Feeder Ratio S2</label>
-                                    <div class="dropdown">
-                                        <button class="btn bg-white bord-D2D2D2 dropdown-toggle w-70px margin-right-45px" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                            1.0
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                            <li><a class="dropdown-item" href="#">1.0</a></li>
-                                            <li><a class="dropdown-item" href="#">2.0</a></li>
-                                            <li><a class="dropdown-item" href="#">3.0</a></li>
-                                        </ul>
-                                    </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Fill Depth S2</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Main Penetration Position S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Main Thickness Position S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Pre Penetration Position S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Pre Thickness Position S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">mm</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Sample Interval S2</label>
-                                <div class="d-flex align-items-center gap-3 width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">rev</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Sample revolution Qty. S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">rev</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Max Main Comp. Force S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Max Pre Comp. Force S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Max Ejection Comp. Force S2</label>
-                                <div class="d-flex align-items-center gap-10px width-115px">
-                                    <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                    <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
-                 </div>
-                <!--S1 AWC & AR Set Parameter & S2 AWC & AR Set Parameter-->
-                <div class="container-fluid mt-4">
-                    <div class="row productParameterMainContainer boxshadow bord-rad-4px">
-                        <div class="col-sm-12 productParameterContainer order-md-1 order-lg-1 col-md-6 col-lg-5 px-0">
-                            <div class="productParameterHeader1 fw-semibold bgcol-215ED6 text-white px-lg-4 px-md-4 px-sm-3  font-size-18px p-10px">
-                                S1 AWC & AR Set Parameter
-                            </div>
-                            <div class="p-lg-4 p-sm-3 p-md-3 p-3">
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px  batchLabelw-60 fw-semibold clr-242424">Rejection Limit Max S1</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">AWC Limit Max S1</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">AWC Set Point S1</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">AWC Limit Min S1</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Rejection Limit Min S1</label>
-                                    <div class="d-flex align-items-center gap-10px width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="emptyParamerDiv  col-sm-0 order-md-3 order-lg-2 col-md-0 col-lg-2 px-0">
-                            <div class="productParameterHeader bgcol-215ED6 clr-215ED6 text-center  font-size-18px p-10px">
-                                Empty
-                            </div>
-                        </div>
-                        <div class="col-sm-12 order-md-2 productParameterContainer order-lg-3 col-md-6 col-lg-5 px-0">
-                            <div class="productParameterHeader2 fw-semibold bgcol-215ED6 text-white pe-4 font-size-18px p-10px px-lg-0 px-md-0 px-sm-3">
-                                S2 AWC & AR Set Parameter
-                            </div>
-                            <div class="pe-lg-4 py-lg-4 ps-lg-0 pe-md-4 py-md-4 ps-md-0 p-sm-3 p-3">
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px  batchLabelw-60 fw-semibold clr-242424">Rejection Limit Max S2</label>
-                                    <div class="d-flex align-items-center gap-3 width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">AWC Limit Max S2</label>
-                                    <div class="d-flex align-items-center gap-3 width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">AWC Set Point S2</label>
-                                    <div class="d-flex align-items-center gap-3 width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px  bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">AWC Limit Min S2</label>
-                                    <div class="d-flex align-items-center gap-3 width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                                    <label class="font-size-16px batchLabelw-60 fw-semibold clr-242424">Rejection Limit Min S2</label>
-                                    <div class="d-flex align-items-center gap-3 width-115px">
-                                        <input type="text" class="bord-D2D2D2 px-12-py-6px w-70px bord-rad-4px" placeholder="" />
-                                        <span class="font-size-16px fw-semibold clr-242424">kN</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                
-                </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+                <!-- recipe parameters of the selected recipe (read only) -->
+                <div id="recipeSection" class="card mt-4"></div>
             </div>
-        </div>
-        
-        
-</div>
 
-
-<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bgcol-215ED6 text-white justify-content-between  font-size-18px">
-                <h5 class="fw-semibold modal-title" id="exampleModalToggleLabel">
-                    Add Batch
-                </h5>
-                <button type="button" class="bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"><img src="~/icons/closeicon.svg" /></button>
-            </div>
-            <div class="modal-body px-4 pt-4 pb-3">
-                <h6 class="font-size-14 mb-3">Batch Selection</h6>
-                <div class="d-flex flex-grow-1 batchDropdown position-relative">
-                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="selectedItem" value="4321" readonly>
-                    <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">4444</a></li>
-                        <li><a class="dropdown-item" href="#">2432</a></li>
-                    </ul>
+            <!-- ================= RECORDS ================= -->
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="d-flex align-items-center justify-content-between py-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="onlyThisRecipe" checked>
+                        <label class="form-check-label font-size-14px fw-semibold clr-242424" for="onlyThisRecipe">Only the selected recipe</label>
+                    </div>
+                    <div class="font-size-14px fw-semibold clr-242424">Total batches: <span id="recordsCount">0</span></div>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-end border-top-0 p-3 pt-0 gap-2">
-                <button type="button" class="btn col-215ED6 bord-215ED6 fw-semibold font-size-16px px-4" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn bgcol-215ED6 text-white fw-semibold font-size-16px px-4">Save</button>
+                <div class="table-responsive bord-D2D2D2 bord-rad-4px boxshadow">
+                    <table class="table table-hover mb-0 batch-records">
+                        <thead>
+                            <tr class="bgcol-215ED6 text-white">
+                                <th class="bgcol-215ED6 text-white">Date &amp; Time</th>
+                                <th class="bgcol-215ED6 text-white">Batch Code</th>
+                                <th class="bgcol-215ED6 text-white">Recipe</th>
+                                <th class="bgcol-215ED6 text-white text-end">Batch Qty</th>
+                                <th class="bgcol-215ED6 text-white text-end">Good Qty</th>
+                                <th class="bgcol-215ED6 text-white">Status</th>
+                                <th class="bgcol-215ED6 text-white">User</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsBody">
+                            <tr><td colspan="7" class="text-center text-muted py-4">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- ================= ADD BATCH ================= -->
+<div class="modal fade" id="addBatchModal" aria-hidden="true" aria-labelledby="addBatchLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bgcol-215ED6 text-white justify-content-between font-size-18px">
+                <h5 class="fw-semibold modal-title" id="addBatchLabel">Add Batch</h5>
+                <button type="button" class="bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"><img src="~/icons/closeicon.svg" alt="Close" /></button>
+            </div>
+            <div class="modal-body px-4 pt-4 pb-3">
+                <h6 class="font-size-14 mb-2">Recipe Code</h6>
+                <div class="d-flex flex-grow-1 batchDropdown position-relative mb-3">
+                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="addRecipe" value="" readonly>
+                    <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" id="addRecipeMenu"></ul>
+                </div>
 
+                <h6 class="font-size-14 mb-2">Batch Code</h6>
+                <input type="text" id="addBatchCode" class="form-control bord-D2D2D2 mb-3" maxlength="20" placeholder="e.g. B-1001" autocomplete="off">
 
+                <h6 class="font-size-14 mb-2">Batch Quantity</h6>
+                <input type="number" id="addBatchQty" class="form-control bord-D2D2D2" min="1" max="1000000" step="1" placeholder="e.g. 5000">
 
+                <div id="addBatchError" class="text-danger font-size-12px mt-3 fw-semibold d-none"></div>
+            </div>
+            <div class="modal-footer justify-content-end border-top-0 p-3 pt-0 gap-2">
+                <button type="button" class="btn col-215ED6 bord-215ED6 fw-semibold font-size-16px px-4" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="btnSaveBatch" class="btn bgcol-215ED6 text-white fw-semibold font-size-16px px-4">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= DEACTIVATE BATCH ================= -->
+<div class="modal fade" id="deactivateBatchModal" aria-hidden="true" aria-labelledby="deactivateBatchLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bgcol-215ED6 text-white justify-content-between font-size-18px">
+                <h5 class="fw-semibold modal-title" id="deactivateBatchLabel">Deactivate Batch</h5>
+                <button type="button" class="bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close"><img src="~/icons/closeicon.svg" alt="Close" /></button>
+            </div>
+            <div class="modal-body px-4 pt-4 pb-3">
+                <p class="mb-2" id="deactivateText"></p>
+                <p class="font-size-14 text-muted mb-0">A deactivated batch can no longer be used and cannot be activated again.</p>
+                <div id="deactivateError" class="text-danger font-size-12px mt-3 fw-semibold d-none"></div>
+            </div>
+            <div class="modal-footer justify-content-end border-top-0 p-3 pt-0 gap-2">
+                <button type="button" class="btn col-215ED6 bord-215ED6 fw-semibold font-size-16px px-4" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="btnConfirmDeactivate" class="btn bgcol-215ED6 text-white fw-semibold font-size-16px px-4">Deactivate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    const state = { recipes: [], batches: [], recipe: "", batchId: null };
+    const $ = id => document.getElementById(id);
+
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const fmt = iso => iso ? new Date(iso).toLocaleString() : "";
+
+    function banner(text, kind) {
+        const el = $("batchMessage");
+        if (!text) { el.classList.add("d-none"); return; }
+        el.className = "alert mt-3 mb-0 alert-" + (kind || "success");
+        el.textContent = text;
+    }
+
+    async function api(url, options) {
+        const res = await fetch(url, options);
+        if (!res.ok) throw new Error((await res.text()) || ("Request failed (" + res.status + ")"));
+        const type = res.headers.get("content-type") || "";
+        return type.includes("json") ? res.json() : null;
+    }
+
+    // fills a custom dropdown (input + <ul>) and wires selection
+    function fillDropdown(menuId, inputId, items, onSelect) {
+        const menu = $(menuId);
+        menu.innerHTML = items.length
+            ? items.map(v => `<li><a class="dropdown-item" href="#" data-value="${esc(v)}">${esc(v)}</a></li>`).join("")
+            : `<li><span class="dropdown-item text-muted">None</span></li>`;
+        menu.querySelectorAll("a[data-value]").forEach(a => a.addEventListener("click", e => {
+            e.preventDefault();
+            $(inputId).value = a.dataset.value;
+            onSelect(a.dataset.value);
+        }));
+    }
+
+    const activeBatches = () => state.batches.filter(b => b.isActive && b.recipeCode === state.recipe);
+
+    function showSelectedBatch() {
+        const b = state.batches.find(x => x.id === state.batchId);
+        $("batchSelected").value = b ? b.batchCode : "";
+        $("goodQty").value = b ? b.goodQty ?? "0" : "";
+        $("batchQty").value = b ? b.batchQty ?? "" : "";
+
+        const status = $("batchStatus");
+        status.value = b ? b.status : "";
+        status.className = "border-0 px-12-py-6px form-control batchLabelw-60 bord-rad-4px " +
+            (b ? (b.isActive ? "inActiveBgColor" : "batchStatusOff") : "");
+        $("goodQty").classList.toggle("goodQtyBgColor", !!b);
+        $("btnDeactivateBatch").disabled = !(b && b.isActive);
+    }
+
+    function renderBatchMenu() {
+        const list = activeBatches();
+        fillDropdown("batchMenu", "batchSelected", list.map(b => b.batchCode), code => {
+            const b = list.find(x => x.batchCode === code);
+            state.batchId = b ? b.id : null;
+            showSelectedBatch();
+        });
+        if (!list.some(b => b.id === state.batchId)) state.batchId = list.length ? list[0].id : null;
+        showSelectedBatch();
+    }
+
+    function renderRecords() {
+        const onlyThis = $("onlyThisRecipe").checked && state.recipe;
+        const rows = state.batches.filter(b => !onlyThis || b.recipeCode === state.recipe);
+        $("recordsCount").textContent = rows.length;
+        $("recordsBody").innerHTML = rows.length ? rows.map(b => `
+            <tr>
+                <td>${esc(fmt(b.dateTime))}</td>
+                <td class="fw-semibold">${esc(b.batchCode)}</td>
+                <td>${esc(b.recipeCode)}</td>
+                <td class="text-end">${esc(b.batchQty)}</td>
+                <td class="text-end">${esc(b.goodQty)}</td>
+                <td><span class="batch-pill ${b.isActive ? "batch-pill-active" : "batch-pill-off"}">${esc(b.status)}</span></td>
+                <td>${esc(b.userName)}</td>
+            </tr>`).join("")
+            : `<tr><td colspan="7" class="text-center text-muted py-4">No batches found</td></tr>`;
+    }
+
+    async function loadRecipeParameters() {
+        const host = $("recipeSection");
+        if (!state.recipe) { host.innerHTML = ""; return; }
+        try {
+            const res = await fetch("/Recipe/GetTheRecipe?code=" + encodeURIComponent(state.recipe));
+            host.innerHTML = res.ok ? await res.text() : "";
+        } catch { host.innerHTML = ""; }
+    }
+
+    async function loadBatches() {
+        state.batches = await api("/Batch/List");
+        renderBatchMenu();
+        renderRecords();
+    }
+
+    async function selectRecipe(code) {
+        state.recipe = code;
+        $("recipeSelected").value = code;
+        state.batchId = null;
+        renderBatchMenu();
+        renderRecords();
+        await loadRecipeParameters();
+    }
+
+    /* ---------------- add ---------------- */
+    function showModalError(id, text) {
+        const el = $(id);
+        el.textContent = text || "";
+        el.classList.toggle("d-none", !text);
+    }
+
+    $("btnAddBatch").addEventListener("click", () => {
+        if (!state.recipes.length) { banner("Create a recipe first - a batch needs a recipe.", "warning"); return; }
+        $("addRecipe").value = state.recipe || state.recipes[0];
+        $("addBatchCode").value = "";
+        $("addBatchQty").value = "";
+        showModalError("addBatchError", "");
+        bootstrap.Modal.getOrCreateInstance($("addBatchModal")).show();
+    });
+
+    $("btnSaveBatch").addEventListener("click", async () => {
+        const btn = $("btnSaveBatch");
+        const body = {
+            recipeCode: $("addRecipe").value,
+            batchCode: $("addBatchCode").value.trim(),
+            batchQty: $("addBatchQty").value === "" ? null : parseInt($("addBatchQty").value, 10)
+        };
+        if (!body.batchCode) { showModalError("addBatchError", "Enter a batch code"); return; }
+        if (!body.batchQty || body.batchQty < 1) { showModalError("addBatchError", "Enter a batch quantity of 1 or more"); return; }
+
+        btn.disabled = true;
+        try {
+            const created = await api("/Batch/Add", {
+                method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body)
+            });
+            bootstrap.Modal.getInstance($("addBatchModal")).hide();
+            await loadBatches();
+            if (body.recipeCode !== state.recipe) await selectRecipe(body.recipeCode);
+            state.batchId = created.id;
+            renderBatchMenu();
+            banner("Batch '" + body.batchCode + "' added.", "success");
+        } catch (e) {
+            showModalError("addBatchError", e.message);
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    /* ---------------- deactivate ---------------- */
+    $("btnDeactivateBatch").addEventListener("click", () => {
+        const b = state.batches.find(x => x.id === state.batchId);
+        if (!b || !b.isActive) return;
+        $("deactivateText").textContent = "Deactivate batch '" + b.batchCode + "' of recipe '" + b.recipeCode + "'?";
+        showModalError("deactivateError", "");
+        bootstrap.Modal.getOrCreateInstance($("deactivateBatchModal")).show();
+    });
+
+    $("btnConfirmDeactivate").addEventListener("click", async () => {
+        const b = state.batches.find(x => x.id === state.batchId);
+        if (!b) return;
+        const btn = $("btnConfirmDeactivate");
+        btn.disabled = true;
+        try {
+            await api("/Batch/Deactivate", {
+                method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: b.id })
+            });
+            bootstrap.Modal.getInstance($("deactivateBatchModal")).hide();
+            await loadBatches();
+            banner("Batch '" + b.batchCode + "' deactivated.", "success");
+        } catch (e) {
+            showModalError("deactivateError", e.message);
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    $("onlyThisRecipe").addEventListener("change", renderRecords);
+
+    /* ---------------- start ---------------- */
+    (async function init() {
+        try {
+            state.recipes = await api("/Batch/Recipes");
+            fillDropdown("recipeMenu", "recipeSelected", state.recipes, selectRecipe);
+            fillDropdown("addRecipeMenu", "addRecipe", state.recipes, () => { });
+            await loadBatches();
+            if (state.recipes.length) await selectRecipe(state.recipes[0]);
+            else banner("There are no recipes yet. Add a recipe first, then create batches for it.", "warning");
+        } catch (e) {
+            banner("Could not load batches: " + e.message, "danger");
+            $("btnAddBatch").disabled = true; // nothing to add to when the page could not load
+        }
+    })();
+})();
+</script>

@@ -8,6 +8,7 @@ namespace CompressionForce.Controllers
 {
     [ApiController]
     [Route("Register")]
+    [CompressionForce.Web.Authorization.RequirePrivilege("AccessManagement")]
     public class RegisterController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,15 +28,29 @@ namespace CompressionForce.Controllers
             if (string.IsNullOrWhiteSpace(model.Email))
                 return BadRequest("Email is required");
 
+            if (string.IsNullOrWhiteSpace(model.UserName) ||
+                string.IsNullOrWhiteSpace(model.Password))
+                return BadRequest("Username and password are required");
+
             if (model.Password != model.ConfirmPassword)
                 return BadRequest("Passwords do not match");
 
+            var email = model.Email.Trim().ToLower();
+            var username = model.UserName.Trim();
+
+            if (_context.UserManagements.Any(u => u.ERemail == email))
+                return BadRequest("Email already exists");
+
+            if (_context.UserManagements.Any(u => u.ERname == username))
+                return BadRequest("Username already exists");
+
             var user = new UserManagement
             {
-                ERname = model.UserName,
-                ERemail = model.Email, // ✅ FIXED
+                ERname = username,
+                ERemail = email,
                 ERpassword = BCrypt.Net.BCrypt.HashPassword(model.Password),
-                ERlevel = model.Role,
+                ERlevel = "User", // role is assigned by an administrator
+                IsActive = true,
                 CreatedDate = DateTime.UtcNow
             };
 

@@ -8,7 +8,7 @@
     var treatments = Model?.Treatments as List<string> ?? new();
     var awc_arTypes = Model?.AWC_ARTypes as List<string> ?? new();
     var forceFeederRatioS1Types = Model?.ForceFeederRatioS1Types as List<string> ?? new();
-    var forceFeederRatioS2Types = Model?.ForceFeederRatioS1Types as List<string> ?? new();
+    var forceFeederRatioS2Types = Model?.ForceFeederRatioS2Types as List<string> ?? new();
     var recipeTypes = Model?.RecipeTypes as List<string> ?? new();
 
     var parametersDict = parameters?.ToDictionary(p => p.Name, p => p)
@@ -28,12 +28,13 @@
     ParameterRule? GetRule(string name) =>
         rules.FirstOrDefault(r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-    Console.WriteLine(Model.Code);
-    Console.WriteLine("----------------------------------vm.code----------------------------------");
-    Console.WriteLine(Model.Parameters.Count);
-    Console.WriteLine("----------------------------------Parameters.Count in AddRecipe View----------------------------------");
-    Console.WriteLine(rules.Count());
-    Console.WriteLine("----------------------------------rules.Count in AddRecipe View----------------------------------");
+    // A posted form may be missing parameters (e.g. a re-rendered invalid submission): never index into a missing key
+    foreach (var rule in rules)
+    {
+        if (!parametersDict.ContainsKey(rule.Name))
+            parametersDict[rule.Name] = new RecipeParameter { Name = rule.Name, Type = rule.Type, Value = string.Empty };
+    }
+
 
 }
 
@@ -137,7 +138,7 @@
                 <div class="col-sm-12  col-md-6  col-lg-6">
                     <div class="d-flex justify-content-lg-end flex-column">
                         <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                            <label class="font-size-16 min-width-30 fw-semibold clr-242424">Table Thickness</label>
+                            <label class="font-size-16 min-width-30 fw-semibold clr-242424">Tablet Thickness</label>
                             <div class="d-flex align-items-center gap-10px width-115px">
                                 <input recipe-param param-name="TabletThickness" type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
                                 <span class="font-size-16px fw-semibold clr-242424">mm</span>
@@ -145,14 +146,14 @@
 
                         </div>
                         <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                            <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Hardness</label>
+                            <label class="font-size-16px min-width-30 fw-semibold clr-242424">Tablet Hardness</label>
                             <div class="d-flex align-items-center gap-10px width-115px">
                                 <input recipe-param param-name="TabletHardness" type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px  bord-rad-4px" placeholder="" />
                                 <span class="font-size-16px fw-semibold clr-242424">kpa</span>
                             </div>
                         </div>
                         <div class="d-flex gap-3 align-items-center justify-content-between pb-2">
-                            <label class="font-size-16px min-width-30 fw-semibold clr-242424">Table Weight</label>
+                            <label class="font-size-16px min-width-30 fw-semibold clr-242424">Tablet Weight</label>
                             <div class="d-flex align-items-center gap-10px width-115px">
                                 <input recipe-param param-name="TabletWeight" type="text" class="bord-D2D2D2 px-12-py-6px form-control w-70px bord-rad-4px" placeholder="" />
                                 <span class="font-size-16px fw-semibold clr-242424">mg</span>

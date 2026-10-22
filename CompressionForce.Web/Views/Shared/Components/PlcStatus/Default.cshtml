@@ -13,7 +13,7 @@
             <div class="row g-3">
 
                 <!-- Date -->
-                <div class="col-12 col-md-4 col-lg-1">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl">
                     <label class="font-size-14 fw-semibold mb-1 col-242424">Date</label>
                     <input type="text"
                            class="form-control height-35 col-242424 font-size-14 border-radius-4"
@@ -22,7 +22,7 @@
                 </div>
 
                 <!-- Time -->
-                <div class="col-12 col-md-4 col-lg-1">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl">
                     <label class="font-size-14 fw-semibold mb-1 col-242424">Time</label>
                     <input type="text"
                            class="form-control height-35 col-242424 font-size-14 border-radius-4"
@@ -31,7 +31,7 @@
                 </div>
 
                 <!-- User Login On -->
-                <div class="col-12 col-md-4 col-lg-2">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl">
                     <label class="font-size-14 fw-semibold mb-1 col-242424">User Login On</label>
                     <input class="form-control height-35"
                            value="@Model.UserLoginOn"
@@ -39,7 +39,7 @@
                 </div>
 
                 <!-- App Run Time -->
-                <div class="col-12 col-md-4 col-lg-1">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl">
                     <label class="font-size-14 fw-semibold mb-1 col-242424">App.RunTime</label>
                     <input class="form-control height-35 col-242424 font-size-14 border-radius-4"
                            value="@Model.AppRunTime"
@@ -48,7 +48,7 @@
                 </div>
 
                 <!-- User Name -->
-                <div class="col-12 col-md-4 col-lg-2">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl">
                     <label class="font-size-14 fw-semibold mb-1 col-242424">User Name</label>
                     <input class="form-control height-35"
                            value="@Model.UserName"
@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- User Level -->
-                <div class="col-12 col-md-4 col-lg-1">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl">
                     <label class="font-size-14 fw-semibold mb-1 col-242424">User Level</label>
                     <input class="form-control height-35"
                            value="@Model.UserLevel"
@@ -65,7 +65,7 @@
                 </div>
 
                 <!-- PLC IP -->
-                <div class="col-12 col-md-4 col-lg-2">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl">
                     <label class="font-size-14 fw-semibold mb-1 col-242424">PLC IP</label>
                     <input type="text"
                            class="form-control height-35 col-242424 font-size-14"
@@ -74,7 +74,7 @@
                 </div>
 
                 <!-- Local DB -->
-                <div class="col-12 col-md-4 col-lg-1 text-start">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl text-start">
                     <label class="font-size-14 fw-semibold mb-1 d-block col-242424">Local DB</label>
                     <div class="mt-2">
                         <img src="~/icons/@(Model.LocalDbConnected ? "local db.svg" : "db_error.svg")"
@@ -83,7 +83,7 @@
                 </div>
 
                 <!-- PLC Comm -->
-                <div class="col-12 col-md-4 col-lg-1 text-start">
+                <div class="col-12 col-sm-6 col-md-4 col-xxl text-start">
                     <label class="font-size-14 fw-semibold mb-1 d-block col-242424">PLC Comm</label>
                     <div class="mt-2">
                         <img src="~/icons/@(Model.PlcConnected ? "plc comm.svg" : "plc_error.svg")"

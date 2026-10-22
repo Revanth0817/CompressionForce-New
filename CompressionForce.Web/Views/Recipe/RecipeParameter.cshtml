@@ -3,7 +3,16 @@
 @using System.Linq
 
 
-@*@{   ViewData["Title"] = "RecipeParameter";}*@
+@{ ViewData["Title"] = "Recipe"; }
+
+@if (TempData["Success"] is string recipeOk)
+{
+    <div class="alert alert-success mx-3 mt-3 mb-0">@recipeOk</div>
+}
+@if (TempData["Error"] is string recipeErr)
+{
+    <div class="alert alert-danger mx-3 mt-3 mb-0">@recipeErr</div>
+}
 
 <div class="BatchContainer p-3">
     <div class="w-100 BatchHeader">
@@ -82,7 +91,7 @@
             </div>
 
             <div class="modal-body border-bottom-0">
-                <label for="recipeName" class="fw-semibold col-242424 font-size-14px mb-1">Enter the Recipe Name</label>
+                <label for="recipeName" class="fw-semibold col-242424 font-size-14px mb-1">Enter the Recipe Code</label>
                 <input type="text" id="recipeName" class="form-control font-size-14px col-242424 fw-normal" placeholder="e.g. R-1001">
 
                 <div id="duplicateError" class="text-danger font-size-12px mt-2 fw-semibold" style="display:none;">
@@ -101,7 +110,7 @@
 <script>
      // Auto-show modal if there's an error from the Controller
      document.addEventListener("DOMContentLoaded", function () {
-         var error = '@TempData["ErrorMessage"]';
+         var error = '@TempData["Error"]';
          if (error && error.length > 0) {
              var myModal = new bootstrap.Modal(document.getElementById('addRecipeModal'));
              myModal.show();

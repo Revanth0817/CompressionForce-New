@@ -90,36 +90,26 @@ namespace CompressionForce.Web.TagHelpers
                 var action = ViewContext.RouteData.Values["action"]?.ToString();
 
                 string value = string.Empty;
-                Console.WriteLine("----------------------------------------------Printing for action and Value----------------------------------------------");
                 if (action == "AddRecipe")
                 {
-                    Console.WriteLine("action: " + action + " + ParamName: " + ParamName);
-                    //Console.WriteLine("parametersDict[key].Value Type: " + parametersDict[key]?.Value.GetType().ToString());
-
                     // Get value from model
                     value = (ParamName == "ForceFeederRatioS1"
                                 ? model.ForceFeederRatioS1Types?.FirstOrDefault()
                                 : model.ForceFeederRatioS2Types?.FirstOrDefault())
                             ?? string.Empty;
-
-                    Console.WriteLine("value: " + value);
                 }
                 else if (action == "EditRecipe")
                 {
-                    Console.WriteLine("action: " + action + " + ParamName: " + ParamName);
                     // Get value from parametersDict
                     var key = ParamName == "ForceFeederRatioS1"
                                 ? "ForceFeederRatioS1"
                                 : "ForceFeederRatioS2";
-                    Console.WriteLine("parametersDict[key].Value Type: " + parametersDict[key]?.Value.GetType().ToString());
 
                     value = parametersDict.ContainsKey(key) &&
                             parametersDict[key]?.Value != null &&
                             !string.IsNullOrEmpty(parametersDict[key].Value.ToString())
                             ? parametersDict[key].Value.ToString()
                             : string.Empty;
-
-                    Console.WriteLine("value: " + value);
                 }
 
                 // Create the hidden input

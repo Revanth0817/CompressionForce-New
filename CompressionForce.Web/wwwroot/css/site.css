@@ -595,8 +595,6 @@ height-18{
 .punch-item {
     min-width: 40px;
 }
-<<<<<<< HEAD
-=======
 /* ================================
    PAGE BACKGROUND
 ================================ */
@@ -740,9 +738,10 @@ height-18{
     justify-content: space-between;
 }
 
-    .y-scale span {
-        font-size: 11px;
-    }
+.y-scale span {
+    font-size: 11px;
+ 
+}
 
 /* ================================
    BLACK PLOT AREA (REFERENCE)
@@ -770,9 +769,9 @@ height-18{
     justify-content: space-between;
 }
 
-    .x-scale span {
-        font-size: 11px;
-    }
+.x-scale span {
+    font-size: 11px;
+}
 
 .x-title {
     font-size: 13px;
@@ -845,8 +844,7 @@ height-18{
     max-width: 1600px; /* adjust if needed */
     margin: 0 auto;
 }
-
-#fillDepthChart {
+.fillDepthChart {
     display: block;
     max-height: 180px;
 }
@@ -860,7 +858,6 @@ height-18{
         display: flex;
         flex-direction: column;
     }
-
 #forceGraphCanvas {
     background-color: #1E1E1E;
     border-radius: 4px;
@@ -870,4 +867,12 @@ height-18{
     color: #000000 !important;
 }
 
->>>>>>> Auto moded frontend
+
+
+
+
+
+/* ASP.NET renders an empty validation summary when there are no errors; keep it invisible */
+.validation-summary-valid {
+    display: none;
+}

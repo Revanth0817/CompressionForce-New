@@ -54,12 +54,6 @@ namespace CompressionForce.WebControllers
                 return View(model);
             }
 
-            if (!user.IsActive)
-            {
-                ModelState.AddModelError("", "Your account is deactivated. Contact administrator.");
-                return View(model);
-            }
-
             if (user.LockedUntil.HasValue && user.LockedUntil > DateTime.UtcNow)
             {
                 var remaining = user.LockedUntil.Value - DateTime.UtcNow;
@@ -89,7 +83,9 @@ namespace CompressionForce.WebControllers
                 if (settings != null &&
                     user.FailedLoginAttempts >= settings.MaxWrongAttempts)
                 {
-                    user.LockedUntil = DateTime.UtcNow.AddMinutes(30);
+                    user.LockedUntil = DateTime.UtcNow.AddMinutes(
+                        settings.LockoutMinutes > 0 ? settings.LockoutMinutes : 30);
+                    user.FailedLoginAttempts = 0;
                 }
 
                 await _context.SaveChangesAsync();
@@ -98,10 +94,24 @@ namespace CompressionForce.WebControllers
                 return View(model);
             }
 
+            // status messages are only shown once the password is right (no account probing)
+            if (user.IsPendingApproval)
+            {
+                ModelState.AddModelError("", "Your account is waiting for administrator approval.");
+                return View(model);
+            }
+
+            if (!user.IsActive)
+            {
+                ModelState.AddModelError("", "Your account is deactivated. Contact administrator.");
+                return View(model);
+            }
+
             // 🔁 PASSWORD EXPIRED
             if (user.ExpiryDate.HasValue && user.ExpiryDate < DateTime.UtcNow)
             {
-                HttpContext.Session.SetString("UserName", user.ERname);
+                // Not a full login: only allow the change-password page
+                HttpContext.Session.SetString("PasswordChangeUser", user.ERname);
                 return RedirectToAction("ChangePassword");
             }
 
@@ -113,10 +123,7 @@ namespace CompressionForce.WebControllers
             await _context.SaveChangesAsync();
 
             // ===================== SESSION VALUES (🔥 IMPORTANT) =====================
-            HttpContext.Session.SetString("UserName", user.ERname);
-            HttpContext.Session.SetString("UserLevel", user.ERlevel ?? "User");
-            HttpContext.Session.SetString("LoginTime", DateTime.UtcNow.ToString("O"));
-            HttpContext.Session.SetString("LastActivity", DateTime.UtcNow.ToString("O"));
+            StartSession(user);
 
             // 🔥 AUDIT LOG
             _auditLogger.Log(
@@ -164,8 +171,10 @@ namespace CompressionForce.WebControllers
                 ERname = username,
                 ERemail = email,
                 ERpassword = BCrypt.Net.BCrypt.HashPassword(model.Password),
-                ERlevel = string.IsNullOrWhiteSpace(model.Role) ? "User" : model.Role,
-                IsActive = true,
+                ERlevel = "User", // role is assigned by an administrator, never by the registrant
+                // nobody gets in by signing up: an administrator has to approve the account first
+                IsActive = false,
+                IsPendingApproval = true,
                 CreatedDate = DateTime.UtcNow,
                 ExpiryDate = DateTime.UtcNow.AddDays(settings?.PasswordExpiryDays ?? 90),
                 FailedLoginAttempts = 0,
@@ -178,10 +187,10 @@ namespace CompressionForce.WebControllers
             // 🔥 AUDIT LOG
             _auditLogger.Log(
                 "User Management",
-                $"New user '{username}' registered"
+                $"New user '{username}' registered and is waiting for administrator approval"
             );
 
-            TempData["SuccessMessage"] = "Signup successful. Please login.";
+            TempData["SuccessMessage"] = "Signup received. An administrator must approve your account before you can log in.";
             return RedirectToAction("Login");
         }
 
@@ -200,7 +209,8 @@ namespace CompressionForce.WebControllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var userName = HttpContext.Session.GetString("UserName");
+            var userName = HttpContext.Session.GetString("UserName")
+                           ?? HttpContext.Session.GetString("PasswordChangeUser");
             if (string.IsNullOrEmpty(userName))
                 return RedirectToAction("Login");
 
@@ -219,12 +229,29 @@ namespace CompressionForce.WebControllers
                 return View(model);
             }
 
+            if (model.NewPassword == model.OldPassword)
+            {
+                ModelState.AddModelError("NewPassword", "The new password must be different from the old one");
+                return View(model);
+            }
+
             var settings = await _context.SecuritySettings.FirstOrDefaultAsync();
 
             user.ERpassword = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
             user.ExpiryDate = DateTime.UtcNow.AddDays(settings?.PasswordExpiryDays ?? 90);
+            user.FailedLoginAttempts = 0;
+            user.LockedUntil = null;
 
             await _context.SaveChangesAsync();
+
+            // Complete the login for users coming from the expired-password flow
+            if (HttpContext.Session.GetString("UserName") == null)
+            {
+                user.LastLoginDate = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                StartSession(user);
+            }
+            HttpContext.Session.Remove("PasswordChangeUser");
 
             // 🔥 AUDIT LOG
             _auditLogger.Log(
@@ -234,6 +261,15 @@ namespace CompressionForce.WebControllers
 
             TempData["SuccessMessage"] = "Password changed successfully";
             return RedirectToAction("Welcome", "Home");
+        }
+
+        private void StartSession(UserManagement user)
+        {
+            HttpContext.Session.Remove("PasswordChangeUser");
+            HttpContext.Session.SetString("UserName", user.ERname);
+            HttpContext.Session.SetString("UserLevel", user.ERlevel ?? "User");
+            HttpContext.Session.SetString("LoginTime", DateTime.UtcNow.ToString("O"));
+            HttpContext.Session.SetString("LastActivity", DateTime.UtcNow.ToString("O"));
         }
 
         /* ===================== LOGOUT ===================== */

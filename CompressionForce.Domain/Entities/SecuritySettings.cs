@@ -7,5 +7,6 @@
         public int ApplicationTimeoutMinutes { get; set; }
         public int PasswordExpiryDays { get; set; }
         public int MaxWrongAttempts { get; set; }
+        public int LockoutMinutes { get; set; } = 30;
     }
 }

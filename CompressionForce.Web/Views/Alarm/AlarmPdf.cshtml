@@ -53,7 +53,7 @@
             {
                 <tr>
                     <td>@item.AlarmCode</td>
-                    <td>@item.AlarmCreatedTime.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                    <td>@item.AlarmCreatedTime.ToLocalTime().ToString("dd-MM-yyyy HH:mm:ss")</td>
                     <td>@item.AlarmDescription</td>
                     <td>@item.UserName</td>
                 </tr>

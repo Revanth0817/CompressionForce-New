@@ -1,4 +1,5 @@
-﻿@*
+﻿@{ ViewData["Title"] = "Access Management"; }
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -131,36 +132,12 @@
 
                             <div class="mb-2">
                                 <label class="form-label font-size-14 fw-semibold">Password</label>
-
-                                <div class="input-group password-group">
-                                    <input type="password"
-                                           class="form-control password-input"
-                                           id="password"
-                                           placeholder="Password"
-                                           required>
-
-                                    <span class="input-group-text password-eye"
-                                          onclick="togglePassword(this)">
-                                        <img src="~/icons/password_show.svg" alt="Show">
-                                    </span>
-                                </div>
+                                <input type="password" class="form-control" id="password" required>
                             </div>
 
                             <div class="mb-2">
                                 <label class="form-label font-size-14 fw-semibold">Confirm Password</label>
-
-                                <div class="input-group password-group">
-                                    <input type="password"
-                                           class="form-control password-input"
-                                           id="confirmPassword"
-                                           placeholder="Confirm password"
-                                           required>
-
-                                    <span class="input-group-text password-eye"
-                                          onclick="togglePassword(this)">
-                                        <img src="~/icons/password_show.svg" alt="Show">
-                                    </span>
-                                </div>
+                                <input type="password" class="form-control" id="confirmPassword" required>
                             </div>
 
                             <!-- USER ROLE DROPDOWN -->
@@ -210,11 +187,11 @@
 
 
 <!--Change Access-->
-<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggle2Label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bgcol-215ED6 text-white justify-content-between font-size-18px">
-                <h5 class="fw-semibold modal-title" id="exampleModalToggleLabel">Change Access</h5>
+                <h5 class="fw-semibold modal-title" id="exampleModalToggle2Label">Change Access</h5>
                 <button type="button" class="bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
                     <img src="~/icons/closeicon.svg" />
                 </button>
@@ -401,13 +378,13 @@
 
 
 <!--Security configuration-->
-<div class="modal fade" id="exampleModalToggle4" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+<div class="modal fade" id="exampleModalToggle4" aria-hidden="true" aria-labelledby="exampleModalToggle4Label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <!-- HEADER -->
             <div class="modal-header bgcol-215ED6 text-white justify-content-between font-size-18px">
-                <h5 class="fw-semibold modal-title" id="exampleModalToggleLabel">
+                <h5 class="fw-semibold modal-title" id="exampleModalToggle4Label">
                     Security Configuration
                 </h5>
                 <button type="button"
@@ -430,17 +407,13 @@
                     <div class="d-flex align-items-center gap-2 min-width-26">
                         <div class="d-flex align-items-center bord-D2D2D2 rounded px-2 w-60px py-1">
                             <div class="d-flex flex-column me-2 row-gap-1">
-                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'appTimeout')">
-                                    ▲
-                                </button>
-                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'appTimeout')">
-                                    ▼
-                                </button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'appTimeout')"><img src="/images/up arrow.svg" alt=""></button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'appTimeout')"><img src="/images/down arrow.svg" alt=""></button>
                             </div>
 
                             <!-- ✅ ID ADDED -->
                             <input type="number"
-                                   id="appTimeout"
+                                   id="appTimeout" min="1" max="1440"
                                    class="form-control arrows-text font-size-14 border-0 p-0 ps-1 text-start fw-semibold"
                                    value="10">
                         </div>
@@ -457,17 +430,13 @@
                     <div class="d-flex align-items-center gap-2 min-width-26">
                         <div class="d-flex align-items-center bord-D2D2D2 rounded px-2 w-60px py-1">
                             <div class="d-flex flex-column me-2 row-gap-1">
-                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'pwdExpiry')">
-                                    ▲
-                                </button>
-                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'pwdExpiry')">
-                                    ▼
-                                </button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'passwordExpiry')"><img src="/images/up arrow.svg" alt=""></button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'passwordExpiry')"><img src="/images/down arrow.svg" alt=""></button>
                             </div>
 
                             <!-- ✅ ID ADDED -->
                             <input type="number"
-                                   id="passwordExpiry"
+                                   id="passwordExpiry" min="1" max="365"
                                    class="form-control arrows-text font-size-14 border-0 p-0 ps-1 text-start fw-semibold"
                                    value="10">
                         </div>
@@ -484,17 +453,13 @@
                     <div class="d-flex align-items-center gap-2 min-width-26">
                         <div class="d-flex align-items-center bord-D2D2D2 rounded px-2 w-60px py-1">
                             <div class="d-flex flex-column me-2 row-gap-1">
-                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'wrongAttempts')">
-                                    ▲
-                                </button>
-                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'wrongAttempts')">
-                                    ▼
-                                </button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'maxAttempts')"><img src="/images/up arrow.svg" alt=""></button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'maxAttempts')"><img src="/images/down arrow.svg" alt=""></button>
                             </div>
 
                             <!-- ✅ ID ADDED -->
                             <input type="number"
-                                   id="maxAttempts"
+                                   id="maxAttempts" min="1" max="10"
                                    class="form-control arrows-text font-size-14 border-0 p-0 ps-1 text-start fw-semibold"
                                    value="10">
                         </div>
@@ -598,38 +563,19 @@
 
                 <div class="mb-3">
                     <label class="fw-semibold">New Password</label>
-
-                    <div class="input-group">
-                        <input type="password"
-                               id="newPassword"
-                               class="form-control"
-                               placeholder="Enter new password">
-
-                        <span class="input-group-text password-eye"
-                              data-target="newPassword"
-                              onclick="togglePassword(this)">
-                            <img src="~/icons/password_show.svg" class="eye-icon" alt="Show password">
-                        </span>
-                    </div>
+                    <input type="password"
+                           id="newPassword"
+                           class="form-control"
+                           placeholder="Enter new password">
                 </div>
 
                 <div class="mb-3">
                     <label class="fw-semibold">Confirm New Password</label>
-
-                    <div class="input-group">
-                        <input type="password"
-                               id="confirmNewPassword"
-                               class="form-control"
-                               placeholder="Confirm new password">
-
-                        <span class="input-group-text password-eye"
-                              data-target="confirmNewPassword"
-                              onclick="togglePassword(this)">
-                            <img src="~/icons/password_show.svg" class="eye-icon" alt="Show password">
-                        </span>
-                    </div>
+                    <input type="password"
+                           id="confirmNewPassword"
+                           class="form-control"
+                           placeholder="Confirm new password">
                 </div>
-
 
                 <div class="d-flex justify-content-end gap-3 mt-3">
                     <button class="btn bord-215ED6 clr-215ED6"
@@ -659,6 +605,25 @@
     let cachedUsers = [];
 
     /* ================= LOAD USERS ================= */
+        function escHtml(v) {
+        return String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    // tells the administrator how many self-registered accounts are waiting for a decision
+    function showPendingBanner(count) {
+        let banner = document.getElementById("pendingBanner");
+        if (!banner) {
+            banner = document.createElement("div");
+            banner.id = "pendingBanner";
+            banner.className = "alert alert-warning py-2 mt-3 mb-0 font-size-14px fw-semibold";
+            const table = document.getElementById("userTableBody").closest("table");
+            table.parentElement.insertBefore(banner, table);
+        }
+        banner.classList.toggle("d-none", count === 0);
+        banner.textContent = count + (count === 1 ? " new account is" : " new accounts are") +
+            " waiting for approval. Select the account and press Account Activate to approve it, or Account Deactivate to reject it.";
+    }
+
     async function loadUsers() {
         const res = await fetch("/AdminUser/List");
         if (!res.ok) return;
@@ -679,19 +644,22 @@
             return;
         }
 
+        showPendingBanner(users.filter(u => u.isPending).length);
+
         users.forEach(u => {
-            const statusClass = u.isActive ? "text-success" : "text-danger";
-            const statusText = u.isActive ? "Active" : "Inactive";
+            const statusClass = u.isPending ? "" : (u.isActive ? "text-success" : "text-danger");
+            const statusStyle = u.isPending ? "color:#B26A00;" : "";
+            const statusText = u.isPending ? "Pending approval" : (u.isActive ? "Active" : "Inactive");
 
             tbody.innerHTML += `
                 <tr data-id="${u.id}">
                     <td class="text-center">
                         <input type="checkbox" class="row-checkbox" data-id="${u.id}">
                     </td>
-                    <td class="td-username">${u.userName}</td>
-                    <td class="td-role">${u.role}</td>
+                    <td class="td-username">${escHtml(u.userName)}</td>
+                    <td class="td-role">${escHtml(u.role)}</td>
                     <td>${u.expiryDate ? new Date(u.expiryDate).toLocaleDateString() : "-"}</td>
-                    <td class="fw-semibold ${statusClass}">${statusText}</td>
+                    <td class="fw-semibold ${statusClass}" style="${statusStyle}">${statusText}</td>
                     <td>${u.lastLoginDate ? new Date(u.lastLoginDate).toLocaleString() : "-"}</td>
                 </tr>`;
         });
@@ -794,14 +762,14 @@
         list.innerHTML = "";
 
         users.forEach(u => {
-            list.innerHTML += `
-                <li>
-                    <a class="dropdown-item"
-                       href="#"
-                       onclick="selectUserFromDropdown(event, ${u.id}, '${u.userName}', '${u.role}')">
-                       ${u.userName}
-                    </a>
-                </li>`;
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.className = "dropdown-item";
+            a.href = "#";
+            a.textContent = u.userName;                       // text, never HTML
+            a.addEventListener("click", e => selectUserFromDropdown(e, u.id, u.userName, u.role));
+            li.appendChild(a);
+            list.appendChild(li);
         });
     }
 
@@ -1102,60 +1070,19 @@
         .addEventListener("show.bs.modal", loadPrivilegeGroups);
 </script>
 
+
+
 <script>
-    /* ================= LOAD SETTINGS WHEN MODAL OPENS ================= */
-    document
-        .getElementById("exampleModalToggle4")
-        .addEventListener("show.bs.modal", loadSecuritySettings);
+    /* ===== +/- arrows for the security settings inputs (respects min/max) ===== */
+    function changeValue(step, id) {
+        const input = document.getElementById(id);
+        if (!input) return;
 
-    async function loadSecuritySettings() {
+        const min = input.min !== "" ? parseInt(input.min) : -Infinity;
+        const max = input.max !== "" ? parseInt(input.max) : Infinity;
+        const current = parseInt(input.value) || 0;
 
-        const res = await fetch("/AdminUser/GetSecuritySettings");
-        if (!res.ok) {
-            console.warn("No security settings found");
-            return;
-        }
-
-        const s = await res.json();
-
-        document.getElementById("appTimeout").value = s.applicationTimeoutMinutes;
-        document.getElementById("pwdExpiry").value = s.passwordExpiryDays;
-        document.getElementById("wrongAttempts").value = s.maxWrongAttempts;
-    }
-
-    /* ================= SAVE SETTINGS ================= */
-    async function saveSecuritySettings() {
-
-        const data = {
-            applicationTimeoutMinutes: parseInt(
-                document.getElementById("appTimeout").value
-            ),
-            passwordExpiryDays: parseInt(
-                document.getElementById("pwdExpiry").value
-            ),
-            maxWrongAttempts: parseInt(
-                document.getElementById("wrongAttempts").value
-            )
-        };
-
-        console.log("Saving security settings:", data);
-
-        const res = await fetch("/AdminUser/SaveSecuritySettings", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
-
-        if (!res.ok) {
-            alert(await res.text());
-            return;
-        }
-
-        alert("Security settings saved successfully");
-
-        bootstrap.Modal.getInstance(
-            document.getElementById("exampleModalToggle4")
-        ).hide();
+        input.value = Math.min(max, Math.max(min, current + step));
     }
 </script>
 
@@ -1192,7 +1119,7 @@
         });
 
         if (!res.ok) {
-            alert("Failed to save security settings");
+            alert(await res.text() || "Failed to save security settings");
             return;
         }
 
@@ -1227,9 +1154,11 @@
         });
 
         if (!res.ok) {
+            alert(await res.text() || "Failed to reset password expiry");
             return;
         }
 
+        alert("Password expiry reset for the selected users");
         loadUsers();
     }
 </script>
@@ -1285,41 +1214,4 @@
         alert("Password updated successfully");
     }
 </script>
-
-<script>
-    function togglePassword(el) {
-
-        let input = null;
-
-        // Case 1: data-target based (recommended)
-        const targetId = el.getAttribute("data-target");
-        if (targetId) {
-            input = document.getElementById(targetId);
-        }
-
-        // Case 2: password-group based (fallback)
-        if (!input) {
-            const group = el.closest('.password-group');
-            if (group) {
-                input = group.querySelector('.password-input');
-            }
-        }
-
-        // Safety check
-        if (!input) {
-            console.warn("Password input not found");
-            return;
-        }
-
-        // Toggle password visibility
-        if (input.type === "password") {
-            input.type = "text";
-            el.classList.add("active");
-        } else {
-            input.type = "password";
-            el.classList.remove("active");
-        }
-    }
-</script>
-
 

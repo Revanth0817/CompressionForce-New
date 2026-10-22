@@ -32,14 +32,34 @@ namespace CompressionForce.Services.Validation
 
             if (cfg.Rules.TryGetValue("requireAtLeastOneParameter", out var require) && require)
             {
-                if (recipe.Parameters == null || !recipe.Parameters.Any())
+                if ((recipe.Parameters == null || !recipe.Parameters.Any()) &&
+                    !result.Errors.Contains("Recipe must contain at least one parameter."))
                     result.AddError("Recipe must contain at least one parameter.");
+            }
+
+            // Every configured required parameter must be present exactly once,
+            // and nothing outside the configuration is accepted.
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var param in recipe.Parameters)
+            {
+                if (!seen.Add(param.Name ?? string.Empty))
+                    result.AddError($"Parameter '{param.Name}' is duplicated.");
+            }
+
+            foreach (var rule in cfg.Parameters.Where(r => r.Required))
+            {
+                if (!seen.Contains(rule.Name))
+                    result.AddError($"Parameter '{rule.Name}' is required.");
             }
 
             foreach (var param in recipe.Parameters)
             {
-                var rule = _configProvider.GetRuleFor(param.Name);
-                if (rule == null) continue;
+                var rule = _configProvider.GetRuleFor(param.Name ?? string.Empty);
+                if (rule == null)
+                {
+                    result.AddError($"Unknown parameter '{param.Name}'.");
+                    continue;
+                }
 
                 // Required
                 if (rule.Required)

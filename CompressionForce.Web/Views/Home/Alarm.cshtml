@@ -1,4 +1,5 @@
-﻿<div class="container-fluid p-4 d-flex flex-column min-vh-75">
+﻿@{ ViewData["Title"] = "Alarm"; }
+<div class="container-fluid p-4 d-flex flex-column min-vh-75">
     <div class="flex-grow-1">
         <!-- Header + Buttons -->
         <div class="row align-items-center mb-4 mb-md-4">
@@ -25,7 +26,7 @@
                     <label class="fw-semibold col-242424 font-size-14px mb-0">Total No of Alarms </label>
                     <input type="text"
        id="totalCount"
-       class="form-control form-control-sm shadow-custom bg-white max-w-63px fw-semibold col-242424 font-size-14px"
+       class="form-control form-control-sm shadow-custom bg-white max-w-63px text-center fw-semibold col-242424 font-size-14px" style="max-width:100px;min-width:63px"
        value="0"
        readonly>
 
@@ -79,6 +80,8 @@
             </div>
         </div>
 
+        <div id="alarmNote" class="font-size-13px text-muted mb-2"></div>
+
         <!-- Table Section -->
         <div class="table-responsive">
             <table class="table table-bordered table-sm mb-0 font-size-12px col-242424 fw-normal text-nowrap table-striped-blue min-w-800px">
@@ -109,9 +112,13 @@
         }
     }
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    let allAlarms = [];   // 🔥 stores all alarms from DB
+
+    // alarm descriptions and user names are data, not HTML
+    function esc(v) {
+        return String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
 
     // 🔹 Render alarm table
     function renderAlarmTable(data) {
@@ -129,58 +136,41 @@
             data.forEach(item => {
                 rows += `
                     <tr class="text-center fw-normal col-242424 font-size-13px">
-                        <td>${item.alarmCode}</td>
-                        <td>${item.alarmCreatedTimeText}</td>
-                        <td>${item.alarmDescription}</td>
-                        <td>${item.userName ?? ""}</td>
+                        <td>${esc(item.alarmCode)}</td>
+                        <td>${esc(item.alarmCreatedTimeText)}</td>
+                        <td>${esc(item.alarmDescription)}</td>
+                        <td>${esc(item.userName)}</td>
                     </tr>`;
             });
         }
 
         $("#alarmTableBody").html(rows);
-        $("#totalCount").val(data.length);
     }
 
-    // 🔹 Fetch ALL alarms from DB (AUTO)
+    // 🔹 Load the alarms of the selected From / To range (the server does the filtering and caps the list)
+    let alarmRequest = 0;
     function fetchAllAlarms() {
+        const params = new URLSearchParams();
+        if ($("#fromDate").val()) params.set("fromDate", $("#fromDate").val());
+        if ($("#toDate").val()) params.set("toDate", $("#toDate").val());
+
+        const mine = ++alarmRequest;
         $.ajax({
-            url: "/Alarm/GetAllAlarms",
+            url: "/Alarm/GetAllAlarms" + (params.toString() ? "?" + params.toString() : ""),
             type: "GET",
             success: function (data) {
-                allAlarms = data;
-                renderAlarmTable(allAlarms);
+                if (mine !== alarmRequest) return;     // a newer request already replaced this one
+                renderAlarmTable(data.alarms);
+                $("#totalCount").val(data.total);
+                $("#alarmNote").text(data.truncated
+                    ? "Showing the newest " + data.alarms.length.toLocaleString() + " of " + data.total.toLocaleString() +
+                      " alarms. Narrow the From / To range to see older ones."
+                    : "");
             },
             error: function () {
                 console.error("Failed to fetch alarms");
             }
         });
-    }
-
-    // 🔹 Filter alarms using From / To Date (CLIENT SIDE)
-    function filterAlarms() {
-
-        if (allAlarms.length === 0) return;
-
-        let filtered = allAlarms;
-
-        const fromVal = $("#fromDate").val();
-        const toVal = $("#toDate").val();
-
-        if (fromVal) {
-            const fromDate = new Date(fromVal);
-            filtered = filtered.filter(a =>
-                new Date(a.alarmCreatedTime) >= fromDate
-            );
-        }
-
-        if (toVal) {
-            const toDate = new Date(toVal);
-            filtered = filtered.filter(a =>
-                new Date(a.alarmCreatedTime) <= toDate
-            );
-        }
-
-        renderAlarmTable(filtered);
     }
 
     // 🔥 AUTO FETCH WHEN PAGE LOADS
@@ -190,11 +180,11 @@
 
     // 🔹 Apply filter when date changes
     $("#fromDate, #toDate").on("change", function () {
-        filterAlarms();
+        fetchAllAlarms();
     });
 
-    // 🔹 OPTIONAL: Auto refresh every 5 seconds (industrial style)
-    setInterval(fetchAllAlarms, 5000);
+    // 🔹 OPTIONAL: Auto refresh every 5 seconds (industrial style), paused while the tab is hidden
+    setInterval(function () { if (!document.hidden) fetchAllAlarms(); }, 5000);
 </script>
 <script>
     $("#fetchReportBtn").on("click", function (e) {
@@ -210,7 +200,7 @@
         let url = "/Alarm/DownloadAlarmPdf";
 
         if (fromDate || toDate) {
-            url += `?fromDate=${fromDate}&toDate=${toDate}`;
+            url += `?fromDate=${encodeURIComponent(fromDate)}&toDate=${encodeURIComponent(toDate)}`;
         }
 
         window.location.href = url;

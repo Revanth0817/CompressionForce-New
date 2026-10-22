@@ -44,6 +44,7 @@ namespace CompressionForce.Services.Validation
                 .GetResult();
 
             if (parameter.Value is string value &&
+                !string.IsNullOrEmpty(value) &&
                 !allowed.Contains(value))
             {
                 result.AddError(

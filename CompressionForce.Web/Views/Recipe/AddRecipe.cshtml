@@ -1,10 +1,12 @@
 ﻿@model CompressionForce.Web.Models.Recipes.AddEditRecipeVm
+@{ ViewData["Title"] = "Add Recipe"; }
 @{
 }
 
 
 <!--Add Recipe-->
 <form asp-action="AddRecipe" method="post">
+<div asp-validation-summary="All" class="alert alert-danger mx-3 mt-3 mb-0"></div>
 <div class="container-fluid px-lg-4 px-md-4 px-sm-3 pt-4 px-3">
     <div class="RecipeCodeContainer bord-rad-4px boxshadow">
         <div class="AddRecipeHeader headerRadius fw-semibold bgcol-215ED6 text-white text-center  font-size-18px p-10px">

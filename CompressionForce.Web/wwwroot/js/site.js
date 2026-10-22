@@ -18,6 +18,25 @@ document.addEventListener('DOMContentLoaded', function () {
         currentPath = '/home/index';
     }
 
+    // Screens that have no menu entry of their own belong to one (same grouping as the privilege checks)
+    const parentMenu = [
+        ['/recipe/',            '/recipe/recipeparameter'],
+        ['/auditTrail/',        '/audittrail/audittrail'],
+        ['/report/',            '/report/report'],
+        ['/home/table',         '/report/report'],
+        ['/home/graph',         '/report/report'],
+        ['/home/signal',        '/home/diagnostics'],
+        ['/home/manualmode',    '/home/automode'],
+        ['/home/operationmode', '/home/automode'],
+        ['/home/viewbatch',     '/home/batch']
+    ].map(([prefix, target]) => [prefix.toLowerCase(), target]);
+
+    const exact = Array.from(navButtons).some(b => b.getAttribute('data-nav-url').toLowerCase() === currentPath);
+    if (!exact) {
+        const hit = parentMenu.find(([prefix]) => currentPath.startsWith(prefix));
+        if (hit) currentPath = hit[1];
+    }
+
     navButtons.forEach(button => {
         const navUrl = button.getAttribute('data-nav-url').toLowerCase();
 

@@ -3,6 +3,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .report-empty { text-align: center; padding: 56px 16px; color: #6c757d; font-weight: 600; }
+    .report-note { font-size: 13px; color: #6c757d; }
+    .report-punches { max-height: 150px; overflow-y: auto; }
+    .report-punches label { white-space: nowrap; }
+    .print-only { display: none; }
+    .report-table-wrap { max-height: 420px; overflow: auto; }
+
+    @@media print {
+        header, #sidebarMenu, .main-container ~ *, .page-actions, .report-tabs, .report-controls,
+        .report-sub-tabs, .report-punch-tools, .report-note { display: none !important; }
+        .print-only { display: block !important; margin-bottom: 12px; font-size: 14px; }
+        .tab-pane { display: none !important; }
+        .tab-pane.active { display: block !important; opacity: 1 !important; }
+        .report-table-wrap { max-height: none; overflow: visible; }
+        .graph-container { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+</style>
+
 <div class="offline-force-page">
 
     <!-- ================= HEADER ================= -->
@@ -10,325 +29,441 @@
         <h4 class="page-title">Offline Force Data</h4>
 
         <div class="page-actions d-flex gap-3">
-            <button type="button" class="btn btn-outline-primary btn-sm">
-                        Print Report
-                    </button>
+            <button type="button" id="btnPrintReport" class="btn btn-outline-primary btn-sm" disabled>Print Report</button>
 
             <div class="batch-group">
                 <label class="batch-label">Batch Number</label>
 
                 <div class="input-group">
-
-                    <!-- READONLY INPUT -->
-                    <input type="text"
-                           class="form-control dropdownInput bord-D2D2D2"
-                           id="currentBatch"
-                           value="Select Batch"
-                           readonly />
-
-                    <!-- DROPDOWN BUTTON -->
+                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="currentBatch"
+                           value="" placeholder="Select Batch" readonly />
                     <button type="button"
                             class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
-
-                    <!-- DROPDOWN MENU -->
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#" onclick="setBatch(1)">1</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="setBatch(2)">2</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="setBatch(3)">3</a></li>
-                    </ul>
-
+                    <ul class="dropdown-menu dropdown-menu-end" id="batchMenu" style="max-height:300px;overflow-y:auto"></ul>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- ================= MAIN TABS ================= -->
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#s1-main">
-                S1 Main Comp.
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s1-pre">
-                S1 Pre Comp.
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s1-eject">
-                S1 Ejection
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-main">
-                S2 Main Comp.
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-pre">
-                S2 Pre Comp.
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-eject">
-                S2 Ejection
-            </button>
-        </li>
+    <!-- shown on paper only -->
+    <div class="print-only" id="printHeader"></div>
+
+    <div id="reportMessage" class="alert d-none" role="alert"></div>
+
+    <!-- ================= STATION / STAGE TABS ================= -->
+    <ul class="nav nav-tabs mb-3 report-tabs" id="stageTabs">
+        <li class="nav-item"><button type="button" class="nav-link active" data-stage="s1-main">S1 Main Comp.</button></li>
+        <li class="nav-item"><button type="button" class="nav-link" data-stage="s1-pre">S1 Pre Comp.</button></li>
+        <li class="nav-item"><button type="button" class="nav-link" data-stage="s1-eject">S1 Ejection</button></li>
+        <li class="nav-item"><button type="button" class="nav-link" data-stage="s2-main">S2 Main Comp.</button></li>
+        <li class="nav-item"><button type="button" class="nav-link" data-stage="s2-pre">S2 Pre Comp.</button></li>
+        <li class="nav-item"><button type="button" class="nav-link" data-stage="s2-eject">S2 Ejection</button></li>
     </ul>
 
-    <!-- ================= MAIN TAB CONTENT ================= -->
+    <!-- ================= VIEW TABS ================= -->
+    <ul class="nav nav-tabs mb-3 report-sub-tabs">
+        <li class="nav-item"><button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#view-rev">Force VS Revolutions</button></li>
+        <li class="nav-item"><button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#view-punch">Force VS Punch Number</button></li>
+        <li class="nav-item"><button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#view-data">Force Data</button></li>
+    </ul>
+
     <div class="tab-content">
 
-        <!-- ========== TEMPLATE FOR ALL MAIN TABS ========== -->
-        @foreach (var tab in new[] {
-                new { Id="s1-main", Title="S1 Main Comp", Active=true },
-                new { Id="s1-pre", Title="S1 Pre Comp", Active=false },
-                new { Id="s1-eject", Title="S1 Ejection", Active=false },
-                new { Id="s2-main", Title="S2 Main Comp", Active=false },
-                new { Id="s2-pre", Title="S2 Pre Comp", Active=false },
-                new { Id="s2-eject", Title="S2 Ejection", Active=false }
-                })
-        {
-            <div class="tab-pane fade @(tab.Active ? "show active" : "")" id="@tab.Id">
-
-                <!-- SUB TABS -->
-                <ul class="nav nav-tabs mb-3">
-                    <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#@tab.Id-rev">
-                            Force VS Revolutions
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#@tab.Id-punch">
-                            Force VS Punch Number
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#@tab.Id-data">
-                            Force Data
-                        </button>
-                    </li>
-                </ul>
-
-                <!-- SUB TAB CONTENT -->
-                <div class="tab-content">
-
-                    <!-- GRAPH TAB -->
-                    <div class="tab-pane fade show active" id="@tab.Id-rev">
-                        <div class="graph-container" style="height:300px">
-                            <canvas class="forceRevolutionChart"></canvas>
-
-                        </div>
-
-                        <div class="controls mt-3">
-                            <label>Start Revolution</label>
-                            <input type="number" value="1" class="form-control d-inline w-25" />
-
-                            <label class="ms-3">End Revolution</label>
-                            <input type="number" value="10" class="form-control d-inline w-25" />
-                        </div>
-
-                        <div class="punch-container mt-3">
-                            @for (int i = 1; i <= 51; i++)
-                            {
-                                <label class="me-2">
-                                    <input type="checkbox" checked /> P@(i)
-                                </label>
-                            }
-                        </div>
-                    </div>
-
-                    <!-- PUNCH TAB -->
-                    <!-- PUNCH TAB -->
-                    <div class="tab-pane fade" id="@tab.Id-punch">
-
-                        <!-- GRAPH -->
-                        <div class="graph-container" style="height:300px">
-                            <canvas class="forcePunchChart"></canvas>
-                        </div>
-
-                        <!-- CONTROLS -->
-                        <div class="controls mt-3">
-                            <label>Start Punch</label>
-                            <input type="number" value="1" class="form-control d-inline w-25" />
-
-                            <label class="ms-3">End Punch</label>
-                            <input type="number" value="51" class="form-control d-inline w-25" />
-                        </div>
-
-                        <!-- PUNCH CHECKBOXES -->
-                        <div class="punch-container mt-3">
-                            @for (int i = 1; i <= 51; i++)
-                            {
-                                <label class="me-2">
-                                    <input type="checkbox" checked /> P@(i)
-                                </label>
-                            }
-                        </div>
-
-                    </div>
-
-
-                    <!-- DATA TAB -->
-                    <div class="tab-pane fade" id="@tab.Id-data">
-
-                        <div class="table-responsive force-table-wrapper">
-
-                            <table class="table table-bordered force-data-table">
-
-                                <thead>
-                                    <tr>
-                                        <th>Date & Time</th>
-                                        <th>Revolution</th>
-                                        @for (int i = 1; i <= 14; i++)
-                                        {
-                                            <th>P@(i)</th>
-                                        }
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr>
-                                        <td>02-12-2023 16:20:38</td>
-                                        <td>0</td>
-                                        @for (int i = 1; i <= 14; i++)
-                                        {
-                                            <td>0</td>
-                                        }
-                                    </tr>
-
-                                    <tr>
-                                        <td>28-11-2023 11:32:08</td>
-                                        <td>0</td>
-                                        @for (int i = 1; i <= 14; i++)
-                                        {
-                                            <td>0</td>
-                                        }
-                                    </tr>
-
-                                    <tr>
-                                        <td>05-11-2023 20:19:00</td>
-                                        <td>0</td>
-                                        @for (int i = 1; i <= 14; i++)
-                                        {
-                                            <td>0</td>
-                                        }
-                                    </tr>
-
-                                    <tr>
-                                        <td>05-11-2023 12:32:35</td>
-                                        <td>0</td>
-                                        @for (int i = 1; i <= 14; i++)
-                                        {
-                                            <td>0</td>
-                                        }
-                                    </tr>
-
-                                    <tr>
-                                        <td>02-11-2023 12:10:23</td>
-                                        <td>0</td>
-                                        @for (int i = 1; i <= 14; i++)
-                                        {
-                                            <td>1.734</td>
-                                        }
-                                    </tr>
-                                </tbody>
-
-                            </table>
-                        </div>
-                    </div>
-
-
-                </div>
+        <!-- ===== Force vs revolutions ===== -->
+        <div class="tab-pane fade show active" id="view-rev">
+            <div class="graph-container" style="height:300px; position:relative">
+                <canvas id="revChart"></canvas>
             </div>
-        }
+            <div class="report-note mt-2" id="revNote"></div>
+
+            <div class="controls mt-3 report-controls">
+                <label>Start Revolution</label>
+                <input type="number" id="revStart" class="form-control d-inline w-25" />
+                <label class="ms-3">End Revolution</label>
+                <input type="number" id="revEnd" class="form-control d-inline w-25" />
+            </div>
+        </div>
+
+        <!-- ===== Force vs punch ===== -->
+        <div class="tab-pane fade" id="view-punch">
+            <div class="graph-container" style="height:300px; position:relative">
+                <canvas id="punchChart"></canvas>
+            </div>
+            <div class="report-note mt-2" id="punchNote"></div>
+
+            <div class="controls mt-3 report-controls">
+                <label>Revolution</label>
+                <input type="number" id="punchRev" class="form-control d-inline w-25" />
+                <label class="ms-3">Start Punch</label>
+                <input type="number" id="punchStart" class="form-control d-inline w-25" min="1" />
+                <label class="ms-3">End Punch</label>
+                <input type="number" id="punchEnd" class="form-control d-inline w-25" min="1" />
+            </div>
+        </div>
+
+        <!-- ===== Table ===== -->
+        <div class="tab-pane fade" id="view-data">
+            <div class="table-responsive force-table-wrapper report-table-wrap">
+                <table class="table table-bordered force-data-table">
+                    <thead id="dataHead"></thead>
+                    <tbody id="dataBody"></tbody>
+                </table>
+            </div>
+            <div class="report-note mt-2" id="dataNote"></div>
+        </div>
+    </div>
+
+    <!-- ===== punch selection (used by both charts) ===== -->
+    <div class="mt-3" id="punchPanel">
+        <div class="report-punch-tools mb-1">
+            <span class="fw-semibold me-2">Punches</span>
+            <button type="button" class="btn btn-link btn-sm p-0 me-2" id="punchAll">All</button>
+            <button type="button" class="btn btn-link btn-sm p-0" id="punchNone">None</button>
+        </div>
+        <div class="punch-container report-punches" id="punchBox"></div>
     </div>
 </div>
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/lib/chartjs/chart.umd.min.js"></script>
 
     <script>
-        /* =====================================================
-           FORCE VS REVOLUTIONS GRAPH
-        ====================================================== */
-        document.querySelectorAll('.forceRevolutionChart').forEach(canvas => {
-            new Chart(canvas, {
-                type: 'line',
-                data: {
-                    labels: Array.from({ length: 10 }, (_, i) => i + 1), // Revolutions
-                    datasets: [{
-                        label: 'Force (kN)',
-                        data: [5, 12, 22, 35, 30, 28, 26, 20, 15, 10],
-                        borderWidth: 2,
-                        tension: 0.3,
-                        pointRadius: 3
-                    }]
-                },
+    (function () {
+        const $ = id => document.getElementById(id);
+        const state = { batches: [], batch: "", stage: "s1-main", data: null, selected: new Set(), loadId: 0 };
+        let revChart = null, punchChart = null;
+
+        // readable on the dark chart panels
+        Chart.defaults.color = "#d6d6d6";
+        Chart.defaults.borderColor = "rgba(255,255,255,0.14)";
+
+        const STAGE_NAMES = { "s1-main": "S1 Main Comp.", "s1-pre": "S1 Pre Comp.", "s1-eject": "S1 Ejection",
+                              "s2-main": "S2 Main Comp.", "s2-pre": "S2 Pre Comp.", "s2-eject": "S2 Ejection" };
+
+        const fmtForce = v => (v === null || v === undefined) ? "" : Number(v).toFixed(3);
+        const fmtDate = iso => iso ? new Date(iso).toLocaleString() : "";
+        const colour = (i, n) => `hsl(${Math.round((i * 360) / Math.max(n, 1))}, 70%, 60%)`;
+
+        function banner(text, kind) {
+            const el = $("reportMessage");
+            if (!text) { el.classList.add("d-none"); return; }
+            el.className = "alert alert-" + (kind || "info");
+            el.textContent = text;
+        }
+
+        async function getJson(url) {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error((await res.text()) || ("Request failed (" + res.status + ")"));
+            return res.json();
+        }
+
+        /* ---------------- batches ---------------- */
+        function renderBatchMenu() {
+            const menu = $("batchMenu");
+            menu.innerHTML = "";
+            if (!state.batches.length) {
+                menu.innerHTML = '<li><span class="dropdown-item text-muted">No batches</span></li>';
+                return;
+            }
+            state.batches.forEach(b => {
+                const li = document.createElement("li");
+                const a = document.createElement("a");
+                a.className = "dropdown-item";
+                a.href = "#";
+                a.textContent = b.code + (b.recipe ? "  ·  " + b.recipe : "") + (b.hasData ? "" : "  (no data)");
+                a.addEventListener("click", e => { e.preventDefault(); selectBatch(b.code); });
+                li.appendChild(a);
+                menu.appendChild(li);
+            });
+        }
+
+        function selectBatch(code) {
+            state.batch = code;
+            $("currentBatch").value = code;
+            loadData();
+        }
+
+        /* ---------------- data ---------------- */
+        async function loadData() {
+            if (!state.batch) { showEmpty("Select a batch to see its force data."); return; }
+
+            const myLoad = ++state.loadId;
+            showEmpty("Loading...");
+            try {
+                const data = await getJson("/Report/Data?stage=" + encodeURIComponent(state.stage) +
+                                           "&batch=" + encodeURIComponent(state.batch));
+                if (myLoad !== state.loadId) return;       // a newer request replaced this one
+                state.data = data;
+                setupControls();
+                renderAll();
+            } catch (e) {
+                if (myLoad !== state.loadId) return;
+                state.data = null;
+                showEmpty("Could not load the force data: " + e.message);
+            }
+        }
+
+        const rows = () => (state.data ? state.data.rows : []);
+
+        // punches that carry at least one value
+        function punchesWithData() {
+            const list = [];
+            for (let p = 1; p <= (state.data ? state.data.punchCount : 0); p++)
+                if (rows().some(r => r.values[p - 1] !== null)) list.push(p);
+            return list;
+        }
+
+        function setupControls() {
+            const revs = rows().map(r => r.revolution).filter(v => v !== null);
+            const min = revs.length ? Math.min(...revs) : "";
+            const max = revs.length ? Math.max(...revs) : "";
+            $("revStart").value = min;
+            $("revEnd").value = max;
+            $("punchRev").value = max;
+
+            const punches = punchesWithData();
+            state.selected = new Set(punches);
+            $("punchStart").value = punches.length ? punches[0] : "";
+            $("punchEnd").value = punches.length ? punches[punches.length - 1] : "";
+
+            const box = $("punchBox");
+            box.innerHTML = "";
+            punches.forEach(p => {
+                const label = document.createElement("label");
+                label.className = "me-2";
+                const cb = document.createElement("input");
+                cb.type = "checkbox";
+                cb.checked = true;
+                cb.dataset.punch = p;
+                cb.addEventListener("change", () => {
+                    cb.checked ? state.selected.add(p) : state.selected.delete(p);
+                    renderCharts();
+                });
+                label.appendChild(cb);
+                label.appendChild(document.createTextNode(" P" + p));
+                box.appendChild(label);
+            });
+        }
+
+        /* ---------------- rendering ---------------- */
+        function showEmpty(text) {
+            state.data = state.data && text === "Loading..." ? state.data : null;
+            [revChart, punchChart].forEach(c => c && c.destroy());
+            revChart = punchChart = null;
+            ["revNote", "punchNote", "dataNote"].forEach(id => $(id).textContent = "");
+            $("dataHead").innerHTML = "";
+            $("dataBody").innerHTML = "";
+            ["revChart", "punchChart"].forEach(id => {
+                const holder = $(id).parentElement;
+                holder.querySelectorAll(".report-empty").forEach(n => n.remove());
+                $(id).style.display = "none";
+                const msg = document.createElement("div");
+                msg.className = "report-empty";
+                msg.textContent = text;
+                holder.appendChild(msg);
+            });
+            const body = $("dataBody");
+            const tr = document.createElement("tr");
+            const td = document.createElement("td");
+            td.className = "report-empty";
+            td.textContent = text;
+            tr.appendChild(td);
+            body.appendChild(tr);
+            $("punchBox").innerHTML = "";
+            $("punchPanel").classList.add("d-none");     // nothing to pick from
+            $("btnPrintReport").disabled = true;
+            banner("", "");                              // a note about the previous batch/stage no longer applies
+        }
+
+        function renderAll() {
+            if (!rows().length) {
+                showEmpty("No force data has been recorded for batch '" + state.batch + "' on " + STAGE_NAMES[state.stage] + " yet.");
+                return;
+            }
+            ["revChart", "punchChart"].forEach(id => {
+                const holder = $(id).parentElement;
+                holder.querySelectorAll(".report-empty").forEach(n => n.remove());
+                $(id).style.display = "";
+            });
+            $("btnPrintReport").disabled = false;
+            $("punchPanel").classList.remove("d-none");
+            renderCharts();
+            renderTable();
+
+            if (state.data.truncated)
+                banner("This batch has " + state.data.total.toLocaleString() + " revolutions; only the newest " +
+                       state.data.rows.length.toLocaleString() + " are shown.", "warning");
+            else
+                banner("", "");
+        }
+
+        const num = id => { const v = parseFloat($(id).value); return Number.isFinite(v) ? v : null; };
+
+        function renderCharts() {
+            if (!state.data || !rows().length) return;
+            renderRevolutionChart();
+            renderPunchChart();
+        }
+
+        function renderRevolutionChart() {
+            const from = num("revStart"), to = num("revEnd");
+            let list = rows().filter(r => r.revolution !== null &&
+                (from === null || r.revolution >= from) && (to === null || r.revolution <= to));
+            const punches = punchesWithData().filter(p => state.selected.has(p));
+
+            // keep very large selections responsive: thin out the revolutions, never the punches
+            const budget = 60000;
+            const step = Math.max(1, Math.ceil((list.length * Math.max(punches.length, 1)) / budget));
+            const shown = step > 1 ? list.filter((_, i) => i % step === 0) : list;
+
+            $("revNote").textContent = !shown.length
+                ? "No revolutions in this range."
+                : (shown.length + " revolution" + (shown.length === 1 ? "" : "s") +
+                   (step > 1 ? " (showing 1 of every " + step + " revolutions)" : "") + ", " + punches.length + " punch" + (punches.length === 1 ? "" : "es"));
+
+            const datasets = punches.map((p, i) => ({
+                label: "P" + p,
+                data: shown.map(r => r.values[p - 1]),
+                borderColor: colour(i, punches.length),
+                backgroundColor: colour(i, punches.length),
+                borderWidth: 1.5, pointRadius: shown.length > 60 ? 0 : 2, tension: 0.2, spanGaps: true
+            }));
+
+            if (revChart) revChart.destroy();
+            revChart = new Chart($("revChart"), {
+                type: "line",
+                data: { labels: shown.map(r => r.revolution), datasets },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false, animation: false,
+                    interaction: { mode: "nearest", intersect: false },
+                    plugins: { legend: { display: datasets.length > 0 && datasets.length <= 12 } },
                     scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Revolution Number'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Force (kN)'
-                            },
-                            beginAtZero: true
-                        }
+                        x: { title: { display: true, text: "Revolution Number" } },
+                        y: { title: { display: true, text: "Force (kN)" }, beginAtZero: true }
                     }
                 }
             });
-        });
+        }
 
+        function renderPunchChart() {
+            const rev = num("punchRev");
+            const from = num("punchStart"), to = num("punchEnd");
 
-        /* =====================================================
-           FORCE VS PUNCH NUMBER GRAPH
-        ====================================================== */
-        document.querySelectorAll('.forcePunchChart').forEach(canvas => {
-            new Chart(canvas, {
-                type: 'line',
+            // the chosen revolution, or the closest recorded one at or before it
+            const candidates = rows().filter(r => r.revolution !== null && (rev === null || r.revolution <= rev));
+            const row = candidates.length ? candidates[candidates.length - 1] : null;
+
+            const punches = punchesWithData().filter(p =>
+                state.selected.has(p) && (from === null || p >= from) && (to === null || p <= to));
+
+            $("punchNote").textContent = row
+                ? "Revolution " + row.revolution + (row.dateTime ? "  ·  " + fmtDate(row.dateTime) : "") +
+                  (rev !== null && row.revolution !== rev ? "  (closest recorded revolution to " + rev + ")" : "")
+                : "No recorded revolution at or before " + rev + ".";
+
+            if (punchChart) punchChart.destroy();
+            punchChart = new Chart($("punchChart"), {
+                type: "line",
                 data: {
-                    labels: Array.from({ length: 51 }, (_, i) => i + 1), // Punch Numbers
+                    labels: punches.map(p => "P" + p),
                     datasets: [{
-                        label: 'Force (kN)',
-                        data: Array.from({ length: 51 }, () => Math.floor(Math.random() * 40)),
-                        borderWidth: 2,
-                        tension: 0.3,
-                        pointRadius: 2
+                        label: "Force (kN)",
+                        data: row ? punches.map(p => row.values[p - 1]) : [],
+                        borderColor: "#4aa3ff", backgroundColor: "#4aa3ff",
+                        borderWidth: 2, pointRadius: 2, tension: 0.2, spanGaps: true
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false, animation: false,
                     scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Punch Number'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Force (kN)'
-                            },
-                            beginAtZero: true
-                        }
+                        x: { title: { display: true, text: "Punch Number" } },
+                        y: { title: { display: true, text: "Force (kN)" }, beginAtZero: true }
                     }
                 }
             });
+        }
+
+        function renderTable() {
+            const punches = punchesWithData();
+            const head = $("dataHead"), body = $("dataBody");
+            head.innerHTML = ""; body.innerHTML = "";
+
+            const hr = document.createElement("tr");
+            ["Date & Time", "Revolution"].concat(punches.map(p => "P" + p), ["Average"]).forEach(t => {
+                const th = document.createElement("th");
+                th.textContent = t;
+                hr.appendChild(th);
+            });
+            head.appendChild(hr);
+
+            const limit = 200;
+            const newest = rows().slice().reverse().slice(0, limit);       // newest first
+            newest.forEach(r => {
+                const tr = document.createElement("tr");
+                [fmtDate(r.dateTime), r.revolution === null ? "" : r.revolution]
+                    .concat(punches.map(p => fmtForce(r.values[p - 1])), [fmtForce(r.average)])
+                    .forEach(t => { const td = document.createElement("td"); td.textContent = t; tr.appendChild(td); });
+                body.appendChild(tr);
+            });
+
+            $("dataNote").textContent = rows().length > limit
+                ? "Showing the newest " + limit + " of " + rows().length.toLocaleString() + " revolutions."
+                : rows().length + " revolution" + (rows().length === 1 ? "" : "s") + ".";
+        }
+
+        /* ---------------- wiring ---------------- */
+        document.querySelectorAll("#stageTabs button").forEach(btn => btn.addEventListener("click", () => {
+            document.querySelectorAll("#stageTabs button").forEach(b => b.classList.toggle("active", b === btn));
+            state.stage = btn.dataset.stage;
+            loadData();
+        }));
+
+        ["revStart", "revEnd", "punchRev", "punchStart", "punchEnd"].forEach(id =>
+            $(id).addEventListener("input", renderCharts));
+
+        $("punchAll").addEventListener("click", () => {
+            document.querySelectorAll("#punchBox input").forEach(cb => { cb.checked = true; state.selected.add(Number(cb.dataset.punch)); });
+            renderCharts();
         });
+        $("punchNone").addEventListener("click", () => {
+            document.querySelectorAll("#punchBox input").forEach(cb => cb.checked = false);
+            state.selected.clear();
+            renderCharts();
+        });
+
+        // charts drawn while their tab was hidden need a resize once the tab is shown
+        document.querySelectorAll(".report-sub-tabs button").forEach(btn =>
+            btn.addEventListener("shown.bs.tab", () => { revChart && revChart.resize(); punchChart && punchChart.resize(); }));
+
+        $("btnPrintReport").addEventListener("click", () => {
+            const b = state.batches.find(x => x.code === state.batch);
+            $("printHeader").innerHTML = "";
+            const strong = document.createElement("strong");
+            strong.textContent = "Offline Force Report";
+            $("printHeader").appendChild(strong);
+            $("printHeader").appendChild(document.createTextNode(
+                "  —  Batch " + state.batch + (b && b.recipe ? "  ·  Recipe " + b.recipe : "") +
+                "  ·  " + STAGE_NAMES[state.stage] + "  ·  printed " + new Date().toLocaleString()));
+            revChart && revChart.resize(); punchChart && punchChart.resize();
+            window.print();
+        });
+
+        /* ---------------- start ---------------- */
+        (async function init() {
+            showEmpty("Loading...");
+            try {
+                state.batches = await getJson("/Report/Batches");
+                renderBatchMenu();
+                const first = state.batches.find(b => b.hasData) || state.batches[0];
+                if (first) selectBatch(first.code);
+                else showEmpty("There are no batches yet. Create a batch on the Batch screen first.");
+            } catch (e) {
+                showEmpty("Could not load the batch list: " + e.message);
+            }
+        })();
+    })();
     </script>
 }

@@ -11,8 +11,8 @@ namespace CompressionForce.Web.Models
 
         [Required(ErrorMessage = "New password is required")]
         [StringLength(15, ErrorMessage = "New password cannot exceed 15 characters.", MinimumLength = 8)]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$",
-            ErrorMessage = "Password must be 8-15 characters with uppercase, lowercase, number, and special character")]
+        [RegularExpression(CompressionForce.Web.Security.PasswordPolicy.Pattern,
+            ErrorMessage = CompressionForce.Web.Security.PasswordPolicy.Message)]
         [DataType(DataType.Password)]
         [Display(Name = "New Password")]
         public string NewPassword { get; set; } = string.Empty;

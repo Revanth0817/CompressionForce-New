@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompressionForce.Web.Authorization;
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Rotativa.AspNetCore;
 
 namespace CompressionForce.Controllers
 {
+    [RequirePrivilege("AuditTrail")]
     public class AuditTrailController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -34,7 +36,7 @@ namespace CompressionForce.Controllers
             if (!string.IsNullOrWhiteSpace(fromDate) &&
                 DateTime.TryParse(fromDate, out DateTime fromDt))
             {
-                fromDt = DateTime.SpecifyKind(fromDt, DateTimeKind.Utc);
+                fromDt = DateTime.SpecifyKind(fromDt, DateTimeKind.Local).ToUniversalTime();
                 query = query.Where(x => x.DateTime >= fromDt);
             }
 
@@ -44,8 +46,8 @@ namespace CompressionForce.Controllers
             {
                 var endOfDayUtc = DateTime.SpecifyKind(
                     toDt.Date.AddDays(1).AddSeconds(-1),
-                    DateTimeKind.Utc
-                );
+                    DateTimeKind.Local
+                ).ToUniversalTime();
 
                 query = query.Where(x => x.DateTime <= endOfDayUtc);
             }
@@ -107,7 +109,7 @@ namespace CompressionForce.Controllers
             if (!string.IsNullOrWhiteSpace(fromDate) &&
                 DateTime.TryParse(fromDate, out DateTime fromDt))
             {
-                fromDt = DateTime.SpecifyKind(fromDt, DateTimeKind.Utc);
+                fromDt = DateTime.SpecifyKind(fromDt, DateTimeKind.Local).ToUniversalTime();
                 query = query.Where(x => x.DateTime >= fromDt);
             }
 
@@ -116,8 +118,8 @@ namespace CompressionForce.Controllers
             {
                 var endOfDayUtc = DateTime.SpecifyKind(
                     toDt.Date.AddDays(1).AddSeconds(-1),
-                    DateTimeKind.Utc
-                );
+                    DateTimeKind.Local
+                ).ToUniversalTime();
 
                 query = query.Where(x => x.DateTime <= endOfDayUtc);
             }

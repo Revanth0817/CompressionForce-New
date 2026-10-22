@@ -65,7 +65,7 @@ function onIndexReady() {
         const $inputField = $('#recipeName');
 
         if (!codeValue) {
-            alert('Please enter a Recipe Name/Code.');
+            alert('Please enter a Recipe Code.');
             return;
         }
 

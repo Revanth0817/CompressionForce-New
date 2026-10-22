@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CompressionForce.Web.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Linq;
 namespace CompressionForce.Web.Controllers
 {
     [Route("[controller]/[action]")]
+    [RequirePrivilege("Calibration")]
     public class ServoCalibrationController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,6 +28,18 @@ namespace CompressionForce.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(model.ServoCode))
                 return BadRequest("ServoCode missing");
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.ServoCode, @"^[A-Za-z0-9_\-]{1,60}$"))
+                return BadRequest("ServoCode has invalid characters");
+
+            if (string.IsNullOrWhiteSpace(model.ServoName) || model.ServoName.Length > 100)
+                return BadRequest("ServoName is required (max 100 characters)");
+
+            // the screen never lets these go below zero; keep the database the same way
+            const decimal limit = 1000000m;
+            if (new[] { model.JogSpeed, model.TorqueLimit, model.SetPosition, model.SetSpeed }
+                    .Any(v => v < 0 || v > limit))
+                return BadRequest("Servo values must be between 0 and 1,000,000");
 
             var entity = new ServoCalibration
             {

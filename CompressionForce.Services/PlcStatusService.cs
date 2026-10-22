@@ -37,7 +37,7 @@ namespace CompressionForce.Services
                 loginOn = loginTime.ToString("hh:mm tt");
 
                 var diff = DateTime.Now - loginTime;
-                appRunTime = $"{diff.Hours}H:{diff.Minutes}M";
+                appRunTime = $"{(int)diff.TotalHours}H:{diff.Minutes}M";
             }
 
             var status = _db.PlcStatuses
@@ -60,13 +60,19 @@ namespace CompressionForce.Services
                 };
             }
 
-            var plcAlive =
-                (DateTime.Now - status.PlcHeartbeat).TotalSeconds <= 10;
+            // timestamptz columns come back as UTC; compare in the same kind
+            var heartbeatAge = status.PlcHeartbeat.Kind == DateTimeKind.Local
+                ? DateTime.Now - status.PlcHeartbeat
+                : DateTime.UtcNow - DateTime.SpecifyKind(status.PlcHeartbeat, DateTimeKind.Utc);
+            var plcAlive = heartbeatAge.TotalSeconds <= 10;
+            var lastUpdated = status.LastUpdated.Kind == DateTimeKind.Utc
+                ? status.LastUpdated.ToLocalTime()
+                : status.LastUpdated;
 
             return new PlcStatusVm
             {
-                Date = status.LastUpdated.ToString("dd MMM yyyy"),
-                Time = status.LastUpdated.ToString("hh:mm tt"),
+                Date = lastUpdated.ToString("dd MMM yyyy"),
+                Time = lastUpdated.ToString("hh:mm tt"),
                 PlcIp = status.PlcIp,
 
                 LocalDbConnected = status.IsLocalDbConnected,

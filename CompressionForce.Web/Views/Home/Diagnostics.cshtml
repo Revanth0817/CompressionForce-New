@@ -783,17 +783,17 @@
     </div>
 </div>
 
-@*sample function for changing the value of counter elemant. Test for the first counter in Servo managament inside Diagnostics*@
+@*+/- arrows of a counter: change the counter that was clicked (the arrows and the value box share a wrapper)*@
 <script>
     function changeValue(step) {
-      const input = document.querySelector(".arrows-text");
-      let currentValue = parseInt(input.value || 0);
+      const src = window.event && window.event.target;
+      const wrapper = src && src.closest ? src.closest(".align-items-center") : null;
+      const input = wrapper ? wrapper.querySelector(".arrows-text") : null;
 
-      if(currentValue + step >= 0){
-          input.value = currentValue + step;
-      }
+      // greyed-out counters (e.g. Set Pos./Set Speed before the servo is enabled) stay as they are
+      if (!input || input.disabled || input.classList.contains("arrows-text-dis")) return;
+
+      const next = (parseFloat(input.value) || 0) + step;
+      if (next >= 0) input.value = Number.isInteger(next) ? next : +next.toFixed(2);
     }
-
-
 </script>
-

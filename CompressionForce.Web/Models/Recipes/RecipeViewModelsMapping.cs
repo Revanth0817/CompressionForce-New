@@ -33,7 +33,7 @@ namespace CompressionForce.Web.Models.Recipes
                 Treatments = treatments,
                 AWC_ARTypes = awc_arTypes,
                 ForceFeederRatioS1Types = forceFeederRatioS1Types,
-                ForceFeederRatioS2Types = forceFeederRatioS1Types,
+                ForceFeederRatioS2Types = forceFeederRatioS2Types,
                 RecipeTypes = recipeTypes
             };
         }

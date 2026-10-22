@@ -1,9 +1,11 @@
 ﻿@model CompressionForce.Web.Models.Recipes.AddEditRecipeVm
+@{ ViewData["Title"] = "Edit Recipe"; }
 @{
 }
 
 <!-- Edit Recipe -->
 <form asp-action="EditRecipe" method="post">
+<div asp-validation-summary="All" class="alert alert-danger mx-3 mt-3 mb-0"></div>
     <div class="container-fluid px-lg-4 px-md-4 px-sm-3 pt-4 px-3">
 
         <!-- Recipe Code Card -->

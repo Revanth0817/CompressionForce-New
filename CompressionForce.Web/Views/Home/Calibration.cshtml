@@ -369,210 +369,215 @@
                 }
 
                <script>
-document.addEventListener("DOMContentLoaded", function () {
+    /* ============ helpers ============ */
+    function setField(id, value, digits) {
+        const el = document.getElementById(id);
+        if (!el || value === null || value === undefined) return;
+        el.value = digits === undefined ? value : Number(value).toFixed(digits);
+    }
 
-    fetch('@Url.Action("GetLoadCells", "Calibration")')
-        .then(response => response.json())
-        .then(data => {
+    // show the server's message (plain text) instead of a generic failure
+    async function failureText(res, fallback) {
+        try { const t = await res.text(); return t || fallback; } catch { return fallback; }
+    }
 
-            console.log("Loadcells:", data); // DEBUG
+    /* ============ load cell calibration ============ */
+    document.addEventListener("DOMContentLoaded", function () {
 
-            const dropdown = document.getElementById("loadcellDropdown");
-            dropdown.innerHTML = "";
+        fetch('@Url.Action("GetLoadCells", "Calibration")')
+            .then(response => response.json())
+            .then(data => {
+                const dropdown = document.getElementById("loadcellDropdown");
+                dropdown.innerHTML = "";
 
-            if (data.length === 0) {
-                dropdown.innerHTML =
-                    `<li><span class="dropdown-item text-muted">No loadcells found</span></li>`;
+                if (data.length === 0) {
+                    const li = document.createElement("li");
+                    li.innerHTML = '<span class="dropdown-item text-muted">No loadcells found</span>';
+                    dropdown.appendChild(li);
+                    return;
+                }
+
+                data.forEach(lc => {
+                    const li = document.createElement("li");
+                    const a = document.createElement("a");
+                    a.className = "dropdown-item";
+                    a.href = "#";
+                    a.textContent = lc.loadCellName;          // text, not HTML
+                    a.addEventListener("click", e => {
+                        e.preventDefault();
+                        selectLoadCell(lc.loadCellCode, lc.loadCellName);
+                    });
+                    li.appendChild(a);
+                    dropdown.appendChild(li);
+                });
+            })
+            .catch(err => console.error("Loadcell API error:", err));
+
+        loadSavedServoCalibrations();
+    });
+
+    // picking a sensor shows what was saved for it last (defaults if nothing was saved yet)
+    async function selectLoadCell(code, name) {
+        const box = document.getElementById("selectedItem");
+        box.value = name;
+        box.dataset.code = code;
+        document.getElementById("calibratedValue").value = "";
+
+        try {
+            const res = await fetch('@Url.Action("GetLastCalibration", "Calibration")?loadCellCode=' + encodeURIComponent(code));
+            if (res.ok) {
+                const c = await res.json();
+                setField("minVolt", c.minVolt);
+                setField("maxVolt", c.maxVolt);
+                setField("minValue", c.minValue);
+                setField("maxValue", c.maxValue);
+                setField("factor", c.factor, 4);
+                setField("offset", c.offset, 4);
                 return;
             }
+        } catch (err) { console.error(err); }
 
-            data.forEach(lc => {
-                const li = document.createElement("li");
-                li.innerHTML = `
-                    <a class="dropdown-item"
-                       href="#"
-                       onclick="selectLoadCell('${lc.loadCellCode}', '${lc.loadCellName}')">
-                        ${lc.loadCellName}
-                    </a>`;
-                dropdown.appendChild(li);
-            });
+        setField("minVolt", 0);
+        setField("maxVolt", 10);
+        setField("minValue", 0);
+        setField("maxValue", 100);
+        document.getElementById("factor").value = "";
+        document.getElementById("offset").value = "";
+    }
+
+    function calculateCalibration() {
+
+        const loadCellCode = document.getElementById("selectedItem").dataset.code;
+
+        if (!loadCellCode) {
+            alert("Please select Sensor Name");
+            return;
+        }
+
+        const minVolt = Number(document.getElementById("minVolt").value);
+        const maxVolt = Number(document.getElementById("maxVolt").value);
+        const minVal  = Number(document.getElementById("minValue").value);
+        const maxVal  = Number(document.getElementById("maxValue").value);
+        const voltage = Number(document.getElementById("sensorVoltage").value);
+
+        if (maxVolt === minVolt) {
+            alert("Min Volt and Max Volt cannot be same");
+            return;
+        }
+
+        const factor = (maxVal - minVal) / (maxVolt - minVolt);
+        const offset = minVal - (minVolt * factor);
+        const force  = (voltage * factor) + offset;
+
+        document.getElementById("factor").value = factor.toFixed(4);
+        document.getElementById("offset").value = offset.toFixed(4);
+        document.getElementById("calibratedValue").value = force.toFixed(3);
+
+        // save to database
+        fetch('@Url.Action("SaveCalibration", "Calibration")', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                loadCellCode: loadCellCode,
+                minVolt: minVolt,
+                maxVolt: maxVolt,
+                minValue: minVal,
+                maxValue: maxVal,
+                factor: factor,
+                offset: offset
+            })
         })
-        .catch(err => console.error("Loadcell API error:", err));
-});
+        .then(async res => {
+            if (!res.ok) throw new Error(await failureText(res, "Error saving calibration"));
+            alert("Calibration saved successfully");
+        })
+        .catch(err => {
+            console.error(err);
+            alert(err.message || "Error saving calibration");
+        });
+    }
 
-function selectLoadCell(code, name) {
-    document.getElementById("selectedItem").value = name;
-    document.getElementById("selectedItem").dataset.code = code;
-}
+    /* ============ servo calibration ============ */
+
+    // fill every servo card with the values saved last for that servo
+    function loadSavedServoCalibrations() {
+        document.querySelectorAll("#servoCali .card").forEach(card => {
+            const title = card.querySelector(".card-title");
+            if (!title || !title.dataset.servo) return;
+
+            fetch('/ServoCalibration/GetLastServoCalibration?servoCode=' + encodeURIComponent(title.dataset.servo))
+                .then(res => res.ok ? res.json() : null)
+                .then(d => {
+                    if (!d) return;                              // nothing saved yet: keep the defaults
+                    card.querySelector(".jog-speed").value  = Number(d.jogSpeed).toFixed(2);
+                    card.querySelector(".act-torque").value = d.torqueLimit;
+                    card.querySelector(".set-pos").value    = Number(d.setPosition).toFixed(2);
+                    card.querySelector(".set-speed").value  = Number(d.setSpeed).toFixed(2);
+                })
+                .catch(err => console.error("Servo load error:", err));
+        });
+    }
+
+    function saveServoCalibration(btn) {
+
+        const card = btn.closest(".card-body");
+        const titleEl = card.closest(".card").querySelector(".card-title");
+
+        const payload = {
+            servoCode: titleEl.dataset.servo,
+            servoName: titleEl.innerText.trim(),
+            jogSpeed: Number(card.querySelector(".jog-speed").value),
+            torqueLimit: Number(card.querySelector(".act-torque").value),
+            setPosition: Number(card.querySelector(".set-pos").value),
+            setSpeed: Number(card.querySelector(".set-speed").value)
+        };
+
+        fetch("/ServoCalibration/SaveServoCalibration", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        .then(async res => {
+            if (!res.ok) throw new Error(await failureText(res, "Servo calibration save failed"));
+            const r = await res.json();
+            alert(r.message);
+        })
+        .catch(err => {
+            console.error(err);
+            alert(err.message || "Servo calibration save failed");
+        });
+    }
+
+    function resetServoCalibration(btn) {
+
+        const card = btn.closest(".card-body");
+
+        // Set ALL values to ZERO
+        card.querySelector(".jog-speed").value  = 0;
+        card.querySelector(".act-torque").value = 0;
+        card.querySelector(".set-value").value  = 0;
+        card.querySelector(".set-pos").value    = 0;
+        card.querySelector(".set-speed").value  = 0;
+
+        // Uncheck Ready / Alarm if present
+        card.querySelectorAll(".servo-radio").forEach(r => r.checked = false);
+
+        alert("All servo values reset to zero");
+    }
+
+    function changeValue(el, step) {
+
+        // Find nearest input inside the same counter component
+        const input = el.closest(".counter-comp").querySelector("input");
+
+        if (!input) return;
+
+        let value = parseFloat(input.value) || 0;
+        value += step;
+
+        // Prevent negative values (industrial safety)
+        if (value < 0) value = 0;
+
+        input.value = value.toFixed(2);
+    }
 </script>
-                
-
-                <script>
-                    function calculateCalibration() {
-
-                        const loadCellCode = document.getElementById("selectedItem").dataset.code;
-
-                        if (!loadCellCode) {
-                            alert("Please select Sensor Name");
-                            return;
-                        }
-
-                        const minVolt = Number(document.getElementById("minVolt").value);
-                        const maxVolt = Number(document.getElementById("maxVolt").value);
-                        const minVal  = Number(document.getElementById("minValue").value);
-                        const maxVal  = Number(document.getElementById("maxValue").value);
-                        const voltage = Number(document.getElementById("sensorVoltage").value);
-
-                        if (maxVolt === minVolt) {
-                            alert("Min Volt and Max Volt cannot be same");
-                            return;
-                        }
-
-                        const factor = (maxVal - minVal) / (maxVolt - minVolt);
-                        const offset = minVal - (minVolt * factor);
-                        const force  = (voltage * factor) + offset;
-
-                        document.getElementById("factor").value = factor.toFixed(4);
-                        document.getElementById("offset").value = offset.toFixed(4);
-                        document.getElementById("calibratedValue").value = force.toFixed(3);
-
-                        // 🔹 SAVE TO DATABASE
-                        fetch('@Url.Action("SaveCalibration", "Calibration")', {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                loadCellCode: loadCellCode,
-                                minVolt: minVolt,
-                                maxVolt: maxVolt,
-                                minValue: minVal,
-                                maxValue: maxVal,
-                                factor: factor,
-                                offset: offset
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            alert("Calibration saved successfully");
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            alert("Error saving calibration");
-                        });
-                    }
-                </script>
-                <script>
-                    function saveServoCalibration(servoCode, servoName) {
-
-                        const data = {
-                            servoCode: servoCode,
-                            servoName: servoName,
-                            jogSpeed: Number(document.getElementById(`${servoCode}-jogSpeed`).value),
-                            setPosition: Number(document.getElementById(`${servoCode}-setPos`).value),
-                            setSpeed: Number(document.getElementById(`${servoCode}-setSpeed`).value),
-                            torqueLimit: Number(document.getElementById(`${servoCode}-torque`).value)
-                        };
-
-                        fetch('/ServoCalibration/SaveServoCalibration', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(data)
-                        })
-                        .then(res => res.json())
-                        .then(r => alert(r.message))
-                        .catch(err => {
-                            console.error(err);
-                            alert("Error saving servo calibration");
-                        });
-                    }
-                </script>
-                <script>
-                    function loadLastServoCalibration(servoCode) {
-                        fetch(`/ServoCalibration/GetLastServoCalibration?servoCode=${servoCode}`)
-                            .then(res => res.json())
-                            .then(d => {
-                                if (!d) return;
-
-                                document.getElementById(`${servoCode}-jogSpeed`).value = d.jogSpeed;
-                                document.getElementById(`${servoCode}-setPos`).value = d.setPosition;
-                                document.getElementById(`${servoCode}-setSpeed`).value = d.setSpeed;
-                                document.getElementById(`${servoCode}-torque`).value = d.torqueLimit;
-                            });
-                    }
-                </script>
-                <script>
-                    function saveServoCalibration(btn) {
-
-                        const card = btn.closest(".card-body");
-                        const titleEl = card.closest(".card").querySelector(".card-title");
-
-                        const servoCode = titleEl.dataset.servo;
-                        const servoName = titleEl.innerText;
-
-                        const jogSpeed   = Number(card.querySelector(".jog-speed").value);
-                        const torque     = Number(card.querySelector(".act-torque").value);
-                        const setValue   = Number(card.querySelector(".set-value").value);
-                        const setPos     = Number(card.querySelector(".set-pos").value);
-                        const setSpeed   = Number(card.querySelector(".set-speed").value);
-
-                        const payload = {
-                            servoCode: servoCode,
-                            servoName: servoName,
-                            jogSpeed: jogSpeed,
-                            torqueLimit: torque,
-                            setPosition: setPos,
-                            setSpeed: setSpeed
-                        };
-
-                        fetch("/ServoCalibration/SaveServoCalibration", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(payload)
-                        })
-                        .then(res => res.json())
-                        .then(r => alert(r.message))
-                        .catch(err => {
-                            console.error(err);
-                            alert("Servo calibration save failed");
-                        });
-                    }
-                </script>
-                <<script>
-                     function resetServoCalibration(btn) {
-
-                         const card = btn.closest(".card-body");
-
-                         // Set ALL values to ZERO
-                         card.querySelector(".jog-speed").value  = 0;
-                         card.querySelector(".act-torque").value = 0;
-                         card.querySelector(".set-value").value  = 0;
-                         card.querySelector(".set-pos").value    = 0;
-                         card.querySelector(".set-speed").value  = 0;
-
-                         // Uncheck Ready / Alarm if present
-                         const radios = card.querySelectorAll(".servo-radio");
-                         radios.forEach(r => r.checked = false);
-
-                         alert("All servo values reset to zero");
-                     }
-</script>
-                <script>
-                    function changeValue(el, step) {
-
-                        // Find nearest input inside the same counter component
-                        const input = el.closest(".counter-comp").querySelector("input");
-
-                        if (!input) return;
-
-                        let value = parseFloat(input.value) || 0;
-
-                        // Step logic (can be customized)
-                        value += step;
-
-                        // Prevent negative values (industrial safety)
-                        if (value < 0) value = 0;
-
-                        input.value = value.toFixed(2);
-                    }
-                </script>

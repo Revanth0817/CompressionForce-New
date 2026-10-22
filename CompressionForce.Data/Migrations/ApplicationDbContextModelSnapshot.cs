@@ -181,11 +181,9 @@ namespace CompressionForce.Data.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("NewParameters")
-                        .IsRequired()
                         .HasColumnType("jsonb");
 
                     b.Property<string>("OldParameters")
-                        .IsRequired()
                         .HasColumnType("jsonb");
 
                     b.Property<string>("RecipeCode")
@@ -2132,6 +2130,9 @@ namespace CompressionForce.Data.Migrations
                     b.Property<int>("ApplicationTimeoutMinutes")
                         .HasColumnType("integer");
 
+                    b.Property<int>("LockoutMinutes")
+                        .HasColumnType("integer");
+
                     b.Property<int>("MaxWrongAttempts")
                         .HasColumnType("integer");
 
@@ -2284,6 +2285,9 @@ namespace CompressionForce.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPendingApproval")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastLoginDate")
