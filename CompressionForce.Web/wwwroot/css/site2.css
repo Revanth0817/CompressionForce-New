@@ -595,3 +595,38 @@ li.diagnostics-list {
 .help-screens li {
     padding: 3px 0;
 }
+
+/* Login / Register header: the title stays on one line on wide screens and wraps on phones */
+.auth-title {
+    white-space: nowrap;
+}
+
+@media (max-width: 767.98px) {
+    .auth-navbar {
+        height: auto !important;
+        min-height: 60px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+
+    .auth-title {
+        white-space: normal;
+        text-align: center;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    /* the welcome panel is only a heading and a link: do not make phone users scroll past 500px of it */
+    .login-min-height {
+        min-height: 0;
+    }
+
+    /* site.css fixes the login panel at 300px on phones, far less than the form needs */
+    .login-section {
+        height: auto !important;
+    }
+
+    .login-section.p-5, .background-col-E9EFFB.p-5 {
+        padding: 1.5rem !important;
+    }
+}
