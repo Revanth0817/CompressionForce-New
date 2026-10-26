@@ -5,14 +5,14 @@
 <div class="card border-0 mx-4 ps-0 pt-4">
     <ul class="nav nav-tabs row-gap-3" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active col-242424 " id="" data-bs-toggle="tab" data-bs-target="#controlsandGraphs" type="button" role="tab" aria-controls="controlsandGraphs" aria-selected="true">Controls and Graphs</button>
+            <button class="nav-link active col-242424 " data-bs-toggle="tab" data-bs-target="#controlsandGraphs" type="button" role="tab" aria-controls="controlsandGraphs" aria-selected="true">Controls and Graphs</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link col-242424 " id="" data-bs-toggle="tab" data-bs-target="#parameters" type="button" role="tab" aria-controls="parameters" aria-selected="false">Parameters</button>
+            <button class="nav-link col-242424 " data-bs-toggle="tab" data-bs-target="#parameters" type="button" role="tab" aria-controls="parameters" aria-selected="false">Parameters</button>
         </li>
     </ul>
 
-    <div class="tab-content" id="">
+    <div class="tab-content">
 
         <!--Controls and Graphs-->
         <div class="tab-pane pt-3 fade show active" id="controlsandGraphs" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -77,15 +77,15 @@
 
 
                     <!--vertical tabs beside the cards-->
-                    <ul class="nav flex-column nav-tabs position-relative vertical-tabs" id="" role="tablist">
+                    <ul class="nav flex-column nav-tabs position-relative vertical-tabs" role="tablist">
                         <li class="nav-item vertical-item" role="presentation">
-                            <button class="nav-link active vertical-nav col-242424 " id="" data-bs-toggle="tab" data-bs-target="#control2" type="button" role="tab" aria-controls="control2" aria-selected="true">Controls</button>
+                            <button class="nav-link active vertical-nav col-242424 " data-bs-toggle="tab" data-bs-target="#control2" type="button" role="tab" aria-controls="control2" aria-selected="true">Controls</button>
                         </li>
                         <li class="nav-item vertical-item" role="presentation">
-                            <button class="nav-link vertical-nav col-242424 " id="" data-bs-toggle="tab" data-bs-target="#OperationforceGraph" type="button" role="tab" aria-controls="OperationforceGraph" aria-selected="false">Force Graph</button>
+                            <button class="nav-link vertical-nav col-242424 " data-bs-toggle="tab" data-bs-target="#OperationforceGraph" type="button" role="tab" aria-controls="OperationforceGraph" aria-selected="false">Force Graph</button>
                         </li>
                         <li class="nav-item vertical-item" role="presentation">
-                            <button class="nav-link vertical-nav col-242424 " id="" data-bs-toggle="tab" data-bs-target="#Operationalarm" type="button" role="tab" aria-controls="Operationalarm" aria-selected="false">Alarm</button>
+                            <button class="nav-link vertical-nav col-242424 " data-bs-toggle="tab" data-bs-target="#Operationalarm" type="button" role="tab" aria-controls="Operationalarm" aria-selected="false">Alarm</button>
                         </li>
                     </ul>
 
@@ -104,7 +104,7 @@
 
                                             <!--1st row card-->
                                             <section class="card text-bg-light mb-3 box-shadow-1 w-100">
-                                                <h5 class="card-title col-FFFFFF fw-semibold font-size-18px bord-top-rad-4px mb-0">Dozzer position</h5>
+                                                <h5 class="card-title col-FFFFFF fw-semibold font-size-18px bord-top-rad-4px mb-0">Lubrication Motor Time Setting</h5>
 
                                                 <div class="card-body p-3 px-5">
 
@@ -117,7 +117,7 @@
                                                                 <div class="d-flex gap-3 align-items-center justify-content-between pb-2 me-auto">
                                                                 <label class="font-size-14px fw-semibold min-width-40p clr-242424 min-w-180px">Lubrication Motor ON Time</label>
                                                                     <div class="d-flex align-items-center gap-10px max-width-115px">
-                                                                        <input type="text" class="bord-215ED6 bord-rad-4px px-1 py-1 w-60px text-center fw-semibold col-242424 h-29px" value ="3">
+                                                                        <input type="text" class="bord-215ED6 bord-rad-4px px-1 py-1 w-60px text-center fw-semibold col-242424 h-29px" value="3">
                                                                         <span class="font-size-14px fw-semibold col-242424">sec</span>
                                                                     </div>
                                                                 </div>
@@ -367,15 +367,15 @@
                                     <!-- Main Content -->
                                     <div class="w-100">
                                         <!--horizontal tabs inside the card-->
-                                        <ul class="nav nav-tabs row-gap-3 position-relative " id="" role="tablist">
+                                        <ul class="nav nav-tabs row-gap-3 position-relative " role="tablist">
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link active col-242424 " id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s1Control" aria-selected="true">Main Compression</button>
+                                                <button class="nav-link col-242424 force-stage-tab active" type="button" data-stage="Main Compression" aria-pressed="true">Main Compression</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link col-242424 " id="" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="s2Control" aria-selected="false">Pre Compression</button>
+                                                <button class="nav-link col-242424 force-stage-tab" type="button" data-stage="Pre Compression" aria-pressed="false">Pre Compression</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link col-242424 " id="contact-tab" data-bs-toggle="tab" data-bs-target="#" type="button" role="tab" aria-controls="torque" aria-selected="false">Ejection</button>
+                                                <button class="nav-link col-242424 force-stage-tab" type="button" data-stage="Ejection" aria-pressed="false">Ejection</button>
                                             </li>
                                         </ul>
                                         <!--Labels above graph-->
@@ -393,9 +393,9 @@
                                                         </svg>
                                                     </button>
                                                 </div>
-                                                <input type="" id="" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
+                                                <input type="text" class="form-control arrows-text bgcol-transparent font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
                                             </div>
-                                            <p class=" mb-0">Main Compression Force</p>
+                                            <p class="mb-0" id="forceGraphLabel">Main Compression Force</p>
                                             <div class="mb-3 d-flex gap-2 justify-content-start align-items-center vis-hidden">
                                                 <label for="colFormLabelSm" class="col-auto col-form-label me-auto text-nowrap col-form-label-sm">SREL Value</label>
                                                 <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bgcol-E9EFFB bord-col-215ED6 fw-semibold" value="0">
@@ -960,4 +960,17 @@
         const next = (parseFloat(input.value) || 0) + step;
         if (next >= 0) input.value = next;
     }
+</script>
+
+<script>
+    // Force Graph stage tabs (they pointed at "#", so nothing happened): highlight the chosen stage and relabel the graph
+    document.querySelectorAll(".force-stage-tab").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+            document.querySelectorAll(".force-stage-tab").forEach(function (t) {
+                t.classList.toggle("active", t === tab);
+                t.setAttribute("aria-pressed", t === tab);
+            });
+            document.getElementById("forceGraphLabel").textContent = tab.dataset.stage + " Force";
+        });
+    });
 </script>
