@@ -63,56 +63,52 @@
                 <div class="collapse d-md-block position-relative z-0" id="sidebarMenu">
                     <div class="sidebar-wrapper bg-white position-sticky z-0">
                         <div class="nav flex-column nav-pills px-0 py-3">
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Diagnostics", "Home")" data-privilege="Diagnostics" type="button">
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Diagnostics", "Home")" data-privilege="Diagnostics" href="@Url.Action("Diagnostics", "Home")">
                                 <img src="~/icons/diagnostics.svg" alt="Diagnostics" class="me-2 width-24 height-24"> Diagnostics
-                            </button>
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("RecipeParameter", "Recipe")" data-privilege="Recipe" type="button">
+                            </a>
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("RecipeParameter", "Recipe")" data-privilege="Recipe" href="@Url.Action("RecipeParameter", "Recipe")">
                                 <img src="~/icons/recipe2.svg" alt="Recipe" class="me-2 width-24 height-24"> Recipe
-                            </button>
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Batch", "Home")" data-privilege="Batch" type="button">
+                            </a>
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Batch", "Home")" data-privilege="Batch" href="@Url.Action("Batch", "Home")">
                                 <img src="~/icons/batch0.svg" alt="Batch" class="me-2 width-24 height-24"> Batch
-                            </button>
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
-                                    data-nav-url="@Url.Action("AutoMode", "Home")" data-privilege="AutoMode"
-                                    type="button">
-                                <img src="~/icons/auto0.svg" class="me-2 width-24 height-24"> Auto Mode
-                            </button>
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
-                                    type="button"
+                            </a>
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
+                                    data-nav-url="@Url.Action("AutoMode", "Home")" data-privilege="AutoMode" href="@Url.Action("AutoMode", "Home")">
+                                <img src="~/icons/auto0.svg" class="me-2 width-24 height-24" alt=""> Auto Mode
+                            </a>
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
                                     data-privilege="Report"
-                                    data-nav-url="@Url.Action("Report", "Report")">
+                                    data-nav-url="@Url.Action("Report", "Report")" href="@Url.Action("Report", "Report")">
                                 <img src="~/icons/reports.svg" alt="Report" class="me-2 width-24 height-24">
                                 Report
-                            </button>
+                            </a>
 
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Calibration", "Home")" data-privilege="Calibration" type="button">
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Calibration", "Home")" data-privilege="Calibration" href="@Url.Action("Calibration", "Home")">
                                 <img src="~/icons/calibration1.svg" alt="Calibration" class="me-2 width-24 height-24"> Calibration
-                            </button>
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Alarm", "Home")" data-privilege="Alarm" type="button">
+                            </a>
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("Alarm", "Home")" data-privilege="Alarm" href="@Url.Action("Alarm", "Home")">
                                 <img src="~/icons/alarmnew.svg" alt="Alarm" class="me-2 width-24 height-24"> Alarm
-                            </button>
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
-                                    type="button"
+                            </a>
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
                                     data-privilege="HelpMenu"
-                                    data-nav-url="@Url.Action("HelpMenu", "Home")">
+                                    data-nav-url="@Url.Action("HelpMenu", "Home")" href="@Url.Action("HelpMenu", "Home")">
                                 <img src="~/icons/helpmenu.svg" alt="Help Menu" class="me-2 width-24 height-24"> Help Menu
-                            </button>
+                            </a>
 
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
-                                    data-nav-url="@Url.Action("AutoTare", "Home")" data-privilege="AutoTareMode"
-                                    type="button">
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424"
+                                    data-nav-url="@Url.Action("AutoTare", "Home")" data-privilege="AutoTareMode" href="@Url.Action("AutoTare", "Home")">
                                 <img src="~/icons/autotaremode.svg" alt="Auto Tare" class="me-2 width-24 height-24"> Auto Tare Mode
-                            </button>
+                            </a>
 
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("AccessManagement", "Home")" data-privilege="AccessManagement" type="button">
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("AccessManagement", "Home")" data-privilege="AccessManagement" href="@Url.Action("AccessManagement", "Home")">
                                 <img src="~/icons/access.svg" alt="Access Management" class="me-2 width-24 height-24"> Access Management
-                            </button>
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("AuditTrail", "AuditTrail")" data-privilege="AuditTrail" type="button">
+                            </a>
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("AuditTrail", "AuditTrail")" data-privilege="AuditTrail" href="@Url.Action("AuditTrail", "AuditTrail")">
                                 <img src="~/icons/audit new.svg" alt="Audit" class="me-2 width-24 height-24"> Audit Trail
-                            </button>
-                            <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("ChangePassword", "Account")" data-privilege="ChangePassword" type="button">
+                            </a>
+                            <a class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424" data-nav-url="@Url.Action("ChangePassword", "Account")" data-privilege="ChangePassword" href="@Url.Action("ChangePassword", "Account")">
                                 <img src="~/icons/password1.svg" alt="Password" class="me-2 width-24 height-24"> Change Password
-                            </button>
+                            </a>
                             <button class="nav-link sidebar-nav-link text-nowrap d-flex align-items-center ps-2 pe-3 mb-2 fw-semibold font-size-14 col-242424 sidebar-signout" type="button" onclick="location.href='@Url.Action("Logout", "Account")'">
                                 <img src="~/icons/sign out.svg" alt="SignOut" class="me-2 width-24 height-24"> Sign Out
                             </button>
@@ -164,6 +160,11 @@
                         menu.style.pointerEvents = "none";
                         menu.style.opacity = "0.4";
                         menu.style.cursor = "not-allowed";
+
+                        if (menu.tagName === "A") {
+                            menu.setAttribute("aria-disabled", "true");
+                            menu.setAttribute("tabindex", "-1");
+                        }
 
                         const link = menu.querySelector("a");
                         if (link) {

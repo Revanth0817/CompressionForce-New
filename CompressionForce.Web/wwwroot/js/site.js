@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // Selector for all sidebar buttons that are used for navigation
-    const navButtons = document.querySelectorAll('.sidebar-wrapper button[data-nav-url]');
+    const navButtons = document.querySelectorAll('.sidebar-wrapper [data-nav-url]');
 
     // Get the current page path, typically /Controller/Action
     // We remove the domain part (e.g., https://mysite.com) and keep only the path.
@@ -40,12 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     navButtons.forEach(button => {
         const navUrl = button.getAttribute('data-nav-url').toLowerCase();
 
-        // --- 1. Navigation Handler (Click Functionality) ---
-
-        button.addEventListener('click', function () {
-            // Navigate the user to the URL stored in the data attribute
-            window.location.href = navUrl;
-        });
+        // The entries are real links (<a href>): the browser navigates, middle-click / open in new tab work.
 
         // --- 2. Active Class Management (Highlighting) ---
 
@@ -53,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (currentPath === navUrl) {
             // Add the 'active' class to the current button
             button.classList.add('active');
+            button.setAttribute('aria-current', 'page');
 
             // You might also need to add the background color class if it's tied to active state
             // Example:
@@ -60,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             // Ensure any stale 'active' class is removed
             button.classList.remove('active');
+            button.removeAttribute('aria-current');
             // button.classList.remove('bg-color-E9EFFB'); 
         }
     });
