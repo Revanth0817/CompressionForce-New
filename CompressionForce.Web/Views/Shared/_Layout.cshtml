@@ -37,21 +37,25 @@
                     <div class="mx-auto fw-bold text-uppercase text-white font-size-20 custom-navbar-brand text-nowrap">
                         SRC-51 Compression Force Control System
                     </div>
-
-                    @if (!isLoginPage)
-                    {
-                        <div class="d-flex align-items-center gap-2 position-relative dropdown height-60">
-                            @* Display the logged-in username *@
-                            <span class="text-white font-size-14 me-2">@currentUserName</span>
-
-                            <img src="~/icons/user vector.png" alt="User" class="width-24 height-24">
-                            <div class="dropdown-content">
-                                @* Link to the Logout action *@
-                                <a asp-controller="Account" asp-action="Logout">Sign Out</a>
-                            </div>
-                        </div>
-                    }
                 </div>
+
+                @if (!isLoginPage)
+                {
+                    @* user menu: a real dropdown (click / keyboard / touch), kept outside the collapsing title area so it also shows on phones *@
+                    <div class="dropdown user-menu ms-2">
+                        <button type="button" class="btn p-0 border-0 d-flex align-items-center gap-2 text-white user-menu-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"
+                                aria-label="User menu for @currentUserName">
+                            <span class="font-size-14 d-none d-sm-inline">@currentUserName</span>
+                            <img src="~/icons/user vector.png" alt="" class="width-24 height-24">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end user-menu-list">
+                            <li><span class="dropdown-item-text user-menu-name">Signed in as <strong>@currentUserName</strong></span></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Change Password</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Sign Out</a></li>
+                        </ul>
+                    </div>
+                }
             </div>
         </nav>
     </header>
