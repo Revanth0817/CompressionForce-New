@@ -29,6 +29,7 @@ namespace CompressionForce.Services
             var userLevel = session?.GetString("UserLevel") ?? "";
             var loginTimeStr = session?.GetString("LoginTime");
 
+            var loginTimeIso = session?.GetString("LoginTime") ?? "";
             string loginOn = "";
             string appRunTime = "";
 
@@ -66,7 +67,8 @@ namespace CompressionForce.Services
                     UserName = userName,
                     UserLevel = userLevel,
                     UserLoginOn = loginOn,
-                    AppRunTime = appRunTime
+                    AppRunTime = appRunTime,
+                    LoginTimeIso = loginTimeIso
                 };
             }
 
@@ -91,7 +93,8 @@ namespace CompressionForce.Services
                 UserName = userName,
                 UserLevel = userLevel,
                 UserLoginOn = loginOn,
-                AppRunTime = appRunTime
+                AppRunTime = appRunTime,
+                LoginTimeIso = loginTimeIso
             };
         }
     }
