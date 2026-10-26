@@ -639,3 +639,8 @@ li.diagnostics-list {
         padding: 1.5rem !important;
     }
 }
+
+/* round status dot with no PLC data: same neutral grey as the list markers */
+.status-dot-unknown {
+    background-color: #9AA0A6;
+}
