@@ -20,6 +20,11 @@
                             onclick="downloadPdf(true)">
                         Print Report
                     </button>
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm"
+                            onclick="clearFilters()">
+                        Clear Filters
+                    </button>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <label class="fw-semibold col-242424 font-size-14px mb-0">
@@ -82,7 +87,7 @@
 
             <!-- User Name -->
             <div class="col-md-6 col-12 d-flex align-items-center gap-2">
-                <label class="fw-semibold font-size-14px min-w-120px">
+                <label class="fw-semibold font-size-14px col-242424 mb-0 text-nowrap min-w-120px">
                     User Name
                 </label>
 
@@ -121,7 +126,8 @@
                                 <li>
                                     <button class="dropdown-item"
                                             type="button"
-                                            onclick="setUserName('@user')">
+                                            data-value="@user"
+                                            onclick="setUserName(this.dataset.value)">
                                         @user
                                     </button>
                                 </li>
@@ -179,7 +185,8 @@
                             {
                                 <li>
                                     <button class="dropdown-item" type="button"
-                                            onclick="setActivity('@act')">
+                                            data-value="@act"
+                                            onclick="setActivity(this.dataset.value)">
                                         @act
                                     </button>
                                 </li>
@@ -225,7 +232,7 @@
                         {
                             <tr class="text-center fw-normal col-242424 font-size-13px">
                                 <td>
-                                    @item.DateTime.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
+                                    @item.DateTime.ToLocalTime().ToString("dd-MM-yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)
 
 
                                 </td>
@@ -293,6 +300,11 @@
 
                     const params = new URLSearchParams();
 
+                    if (fromDate && toDate && fromDate > toDate) {
+                        alert("From Date Time must be earlier than To Date Time.");
+                        return;
+                    }
+
                     if (userName !== "None") params.append("userName", userName);
                     if (activity !== "None") params.append("activity", activity);
                     if (fromDate) params.append("fromDate", fromDate);
@@ -318,7 +330,16 @@
 
                     if (params.get("toDate"))
                         document.getElementById("toDate").value = params.get("toDate");
+
+                    // picking a date applies the filter, the same as picking a user or an activity
+                    ["fromDate", "toDate"].forEach(function (id) {
+                        document.getElementById(id).addEventListener("change", applyFilters);
+                    });
                 });
+
+                function clearFilters() {
+                    window.location.href = window.location.pathname;
+                }
             </script>
 
 
