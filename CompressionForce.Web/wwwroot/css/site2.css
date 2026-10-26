@@ -376,6 +376,18 @@ input.form-check-input {
         content: url('../images/list maker2.svg');
     }
 
+/* Digital Input rows: marker stays on the first line, wrapped text hangs beside it, and both columns keep the same row height */
+li.diagnostics-list {
+    display: flex;
+    align-items: center;
+    min-height: 2.8em;
+    line-height: 1.25;
+}
+
+    li.diagnostics-list::before {
+        flex: none;
+    }
+
 .diagnostics-list-before, .manual-mode-list-before {
     list-style: none;
 }
