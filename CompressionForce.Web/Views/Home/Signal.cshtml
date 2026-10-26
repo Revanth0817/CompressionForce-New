@@ -2,10 +2,10 @@
 <div class="container-fluid mt-3">
     <ul class="nav nav-tabs position-sticky">
         <li class="nav-item">
-            <a class="nav-link tab-nav-link active col-242424 font-size-14 fw-semibold" aria-current="page" href="#">Signal Monitoring</a>
+            <a class="nav-link tab-nav-link active col-242424 font-size-14 fw-semibold" aria-current="page" href="@Url.Action("Signal", "Home")">Signal Monitoring</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold" href="#">Input & Output</a>
+            <a class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold" href="@Url.Action("Diagnostics", "Home")">Input & Output</a>
         </li>
     </ul>
 </div>
@@ -126,7 +126,7 @@
         <div class="col-12 col-lg-2 wrap-below-1440">
             <div class="card shadow h-100">
                 <div class="card-header font-size-14 fw-semibold text-white background-col-215ED6 text-center text-nowrap">Main Thickness Position</div>
-                <input type="range" class="form-range p-3" min="0" max="25">
+                <input type="range" class="form-range p-3 signal-slider" min="0" max="25" step="0.01" value="0">
                 <div class="d-flex justify-content-center align-items-center">
                     <input type="text" class="form-control text-center mb-2 width-60 height-25 font-size-14 border-radius-4 fw-semibold" value="0.00">
                 </div>
@@ -137,7 +137,7 @@
         <div class="col-12 col-lg-2 wrap-below-1440">
             <div class="card shadow h-100">
                 <div class="card-header font-size-14 fw-semibold text-white background-col-215ED6 text-center text-nowrap">Pre Thickness Position</div>
-                <input type="range" class="form-range p-3" min="0" max="25">
+                <input type="range" class="form-range p-3 signal-slider" min="0" max="25" step="0.01" value="0">
                 <div class="d-flex justify-content-center align-items-center">
                     <input type="text" class="form-control text-center mb-2 width-60 height-25 font-size-14 border-radius-4 fw-semibold"  value="0.00">
                 </div>
@@ -148,7 +148,7 @@
         <div class="col-12 col-lg-2 wrap-below-1440">
             <div class="card shadow h-100">
                 <div class="card-header font-size-14 fw-semibold text-white background-col-215ED6 text-center text-nowrap">Dozzer Position</div>
-                <input type="range" class="form-range p-3" min="0" max="25">
+                <input type="range" class="form-range p-3 signal-slider" min="0" max="25" step="0.01" value="0">
                 <div class="d-flex justify-content-center align-items-center">
                     <input type="text" class="form-control text-center mb-2 width-60 height-25 font-size-14 border-radius-4 fw-semibold" value="0.00">
                 </div>
@@ -184,28 +184,56 @@
 
     <!-- Right Section (Graph etc.) -->
     <div class="col-12">
-        <div class="height-400 p-3 background-col-E9EFFB">
+        <div class="p-3 background-col-E9EFFB" style="min-height:400px">
             <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                <!-- Input Box Left -->
-                <div class="border border-215ED6 d-flex align-items-center justify-content-between p-2 border-radius-4 background-col-E9EFFB width-60 height-25" 
-                >
-                    <img src="~/icons/updown icon.svg" alt="Up/Down">
-                    <span class="value fw-semibold font-size-16 col-242424">50</span>
-                </div>
-
                 <!-- Tabs Right -->
                 <ul class="nav nav-tabs position-sticky ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link tab-nav-link active col-242424 font-size-14 fw-semibold" aria-current="page" href="#">Main Compression</a>
+                        <button type="button" class="nav-link tab-nav-link active col-242424 font-size-14 fw-semibold graph-stage-tab" aria-selected="true" data-stage="Main Compression">Main Compression</button>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold" href="#">Pre Compression</a>
+                        <button type="button" class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold graph-stage-tab" aria-selected="false" data-stage="Pre Compression">Pre Compression</button>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold" href="#">Ejection</a>
+                        <button type="button" class="nav-link tab-nav-link col-242424 font-size-14 fw-semibold graph-stage-tab" aria-selected="false" data-stage="Ejection">Ejection</button>
                     </li>
                 </ul>
             </div>
+
+            <div class="alert alert-info font-size-14 py-2" role="status">
+                No signal data is available while the PLC is not connected.
+            </div>
+            @await Html.PartialAsync("_SignalMonitoringGraph")
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // each position slider and its value box follow each other
+        document.querySelectorAll(".signal-slider").forEach(function (slider) {
+            var box = slider.parentElement.querySelector('input[type="text"]');
+            slider.addEventListener("input", function () { box.value = Number(slider.value).toFixed(2); });
+            box.addEventListener("change", function () {
+                var v = parseFloat(box.value);
+                if (isNaN(v)) v = 0;
+                v = Math.min(parseFloat(slider.max), Math.max(parseFloat(slider.min), v));
+                slider.value = v;
+                box.value = v.toFixed(2);
+            });
+        });
+
+        // graph tabs: highlight the chosen stage and label the graph with it
+        document.querySelectorAll(".graph-stage-tab").forEach(function (tab) {
+            tab.addEventListener("click", function () {
+                document.querySelectorAll(".graph-stage-tab").forEach(function (t) {
+                    t.classList.toggle("active", t === tab);
+                    t.setAttribute("aria-selected", t === tab);
+                });
+                var title = document.querySelector(".y-title");
+                var names = { "Main Compression": "S1 Main Force", "Pre Compression": "S1 Pre Force", "Ejection": "S1 Ejection Force" };
+                if (title) title.textContent = names[tab.dataset.stage];
+            });
+        });
+    </script>
+}
