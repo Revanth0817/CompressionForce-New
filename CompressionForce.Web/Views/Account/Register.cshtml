@@ -10,7 +10,7 @@
         <div class="row">
 
             <!-- LEFT SECTION -->
-            <div class="col-md-6 background-col-E9EFFB p-5 text-center d-flex flex-column justify-content-center height-500">
+            <div class="col-md-6 background-col-E9EFFB p-5 text-center d-flex flex-column justify-content-center login-min-height">
                 <h3 class="fw-bold font-size-20 col-242424">Create Account</h3>
                 <p class="font-size-16 col-242424">
                     Sign up to monitor, control, and optimize compression force parameters with confidence.
@@ -23,7 +23,7 @@
             </div>
 
             <!-- RIGHT SECTION -->
-            <div class="col-md-6 login-section p-5 d-flex flex-column justify-content-center height-500">
+            <div class="col-md-6 login-section p-5 d-flex flex-column justify-content-center login-min-height">
 
                 <form asp-controller="Account" asp-action="Register" method="post">
 
@@ -33,11 +33,13 @@
                     <div class="mb-3">
                         <label asp-for="UserName"
                                class="form-label font-size-14 fw-semibold col-242424">
-                            User Name <span class="text-danger">*</span>
+                            User Name<span class="text-danger">*</span>
                         </label>
                         <input asp-for="UserName"
                                class="form-control font-size-14 col-242424"
-                               placeholder="Enter User Name" />
+                               placeholder="Enter User Name"
+                               autocomplete="username"
+                               autofocus />
                         <span asp-validation-for="UserName" class="text-danger font-size-12"></span>
                     </div>
 
@@ -45,11 +47,12 @@
                     <div class="mb-3">
                         <label asp-for="Email"
                                class="form-label font-size-14 fw-semibold col-242424">
-                            Email Address <span class="text-danger">*</span>
+                            Email Address<span class="text-danger">*</span>
                         </label>
                         <input asp-for="Email"
                                class="form-control font-size-14 col-242424"
-                               placeholder="Enter Email" />
+                               placeholder="Enter Email"
+                               autocomplete="email" />
                         <span asp-validation-for="Email" class="text-danger font-size-12"></span>
                     </div>
 
@@ -57,20 +60,24 @@
                     <div class="mb-3">
                         <label asp-for="Password"
                                class="form-label font-size-14 fw-semibold col-242424">
-                            Password <span class="text-danger">*</span>
+                            Password<span class="text-danger">*</span>
                         </label>
 
                         <div class="position-relative">
                             <input asp-for="Password"
                                    type="password"
-                                   class="form-control col-242424 font-size-14"
+                                   class="form-control col-242424 font-size-14 pe-5"
                                    id="Password"
-                                   placeholder="Enter Password" />
+                                   placeholder="Enter Password"
+                                   autocomplete="new-password" />
 
-                            <img src="~/icons/eyeicon.svg"
-                                 alt="Toggle Password"
-                                 class="position-absolute top-50 translate-middle-y cursor-pointer end-0 me-2"
-                                 onclick="togglePassword('Password')" />
+                            <button type="button"
+                                    class="btn p-0 border-0 bg-transparent position-absolute top-50 translate-middle-y end-0 me-2"
+                                    data-toggle-for="Password"
+                                    aria-label="Show password" aria-pressed="false"
+                                    onclick="togglePassword('Password', this)">
+                                <img src="~/icons/eyeicon.svg" alt="" />
+                            </button>
                         </div>
 
                         <span asp-validation-for="Password" class="text-danger font-size-12"></span>
@@ -81,27 +88,31 @@
                     <div class="mb-3">
                         <label asp-for="ConfirmPassword"
                                class="form-label font-size-14 fw-semibold col-242424">
-                            Confirm Password <span class="text-danger">*</span>
+                            Confirm Password<span class="text-danger">*</span>
                         </label>
 
                         <div class="position-relative">
                             <input asp-for="ConfirmPassword"
                                    type="password"
-                                   class="form-control col-242424 font-size-14"
+                                   class="form-control col-242424 font-size-14 pe-5"
                                    id="ConfirmPassword"
-                                   placeholder="Confirm Password" />
+                                   placeholder="Confirm Password"
+                                   autocomplete="new-password" />
 
-                            <img src="~/icons/eyeicon.svg"
-                                 alt="Toggle Password"
-                                 class="position-absolute top-50 translate-middle-y cursor-pointer end-0 me-2"
-                                 onclick="togglePassword('ConfirmPassword')" />
+                            <button type="button"
+                                    class="btn p-0 border-0 bg-transparent position-absolute top-50 translate-middle-y end-0 me-2"
+                                    data-toggle-for="ConfirmPassword"
+                                    aria-label="Show confirm password" aria-pressed="false"
+                                    onclick="togglePassword('ConfirmPassword', this)">
+                                <img src="~/icons/eyeicon.svg" alt="" />
+                            </button>
                         </div>
 
                         <span asp-validation-for="ConfirmPassword" class="text-danger font-size-12"></span>
                     </div>
 
-                    <button type="submit"
-                            class="btn background-col-215ED6 text-white font-size-16 fw-semibold ms-auto d-block">
+                    <button type="submit" id="signUpButton"
+                            class="btn background-col-215ED6 text-white font-size-16 fw-semibold ms-auto d-block w-100 py-2">
                         Sign Up
                     </button>
 
@@ -113,10 +124,30 @@
 </div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script>
-        function togglePassword(inputId) {
+        function togglePassword(inputId, btn) {
             var input = document.getElementById(inputId);
-            input.type = input.type === "password" ? "text" : "password";
+            var show = input.type === "password";
+            input.type = show ? "text" : "password";
+            var name = inputId === "Password" ? "password" : "confirm password";
+            btn.setAttribute("aria-pressed", show);
+            btn.setAttribute("aria-label", (show ? "Hide " : "Show ") + name);
         }
+
+        // one click = one account request
+        document.querySelector("form").addEventListener("submit", function () {
+            var form = this;
+            if (window.jQuery && window.jQuery.validator && !window.jQuery(form).valid()) return;
+            var btn = document.getElementById("signUpButton");
+            setTimeout(function () { btn.disabled = true; btn.textContent = "Creating account..."; }, 0);
+        });
+
+        // coming back with the browser Back button must not leave the button disabled
+        window.addEventListener("pageshow", function () {
+            var btn = document.getElementById("signUpButton");
+            btn.disabled = false;
+            btn.textContent = "Sign Up";
+        });
     </script>
 }
