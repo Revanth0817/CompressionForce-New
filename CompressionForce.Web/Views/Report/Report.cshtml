@@ -144,7 +144,12 @@
                               "s2-main": "S2 Main Comp.", "s2-pre": "S2 Pre Comp.", "s2-eject": "S2 Ejection" };
 
         const fmtForce = v => (v === null || v === undefined) ? "" : Number(v).toFixed(3);
-        const fmtDate = iso => iso ? new Date(iso).toLocaleString() : "";
+        // dd-MM-yyyy HH:mm:ss, the same format as the alarm and audit trail screens
+        const fmtStamp = d => {
+            const p = v => String(v).padStart(2, "0");
+            return `${p(d.getDate())}-${p(d.getMonth() + 1)}-${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+        };
+        const fmtDate = iso => iso ? fmtStamp(new Date(iso)) : "";
         const colour = (i, n) => `hsl(${Math.round((i * 360) / Math.max(n, 1))}, 70%, 60%)`;
 
         function banner(text, kind) {
@@ -446,7 +451,7 @@
             $("printHeader").appendChild(strong);
             $("printHeader").appendChild(document.createTextNode(
                 "  —  Batch " + state.batch + (b && b.recipe ? "  ·  Recipe " + b.recipe : "") +
-                "  ·  " + STAGE_NAMES[state.stage] + "  ·  printed " + new Date().toLocaleString()));
+                "  ·  " + STAGE_NAMES[state.stage] + "  ·  printed " + fmtStamp(new Date())));
             revChart && revChart.resize(); punchChart && punchChart.resize();
             window.print();
         });
