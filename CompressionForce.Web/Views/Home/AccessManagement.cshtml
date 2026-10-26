@@ -47,7 +47,7 @@
                 Reset Password Expiry
             </button>
 
-            <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#exampleModalToggle3" href="" role="button">Previlege</button>
+            <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#exampleModalToggle3" href="" role="button">Privilege</button>
             <button type="button" class="bord-D2D2D2 clr-242424 boxshadow font-size-14px fw-semibold rounded-2 py-2 px-3 bg-white" data-bs-toggle="modal" data-bs-target="#exampleModalToggle4" href="" role="button">Security Settings</button>
         </div>
         <div class="table-wrapper">
@@ -246,7 +246,7 @@
 
             <!-- HEADER -->
             <div class="modal-header bgcol-215ED6 text-white d-flex align-items-center">
-                <h5 class="fw-semibold mb-0">Privileges Settings</h5>
+                <h5 class="fw-semibold mb-0">Privilege Settings</h5>
                 <button type="button"
                         class="btn-close btn-close-white ms-auto"
                         data-bs-dismiss="modal"></button>
@@ -302,7 +302,7 @@
                     <!-- Auto Mode -->
                     <label class="mb-3 d-flex align-items-center fw-semibold">
                         <input type="checkbox" class="form-check-input me-2" data-privilege="AutoMode">
-                        AutoMode
+                        Auto Mode
                     </label>
 
                     <!-- Report -->
@@ -445,7 +445,7 @@
                 </div>
 
                 <!-- Wrong Attempts -->
-                <div class="d-flex align-items-center gap-2 justify-content-between">
+                <div class="d-flex align-items-center gap-2 justify-content-between mb-3">
                     <label class="mb-0 font-size-14 fw-semibold">
                         No. of Wrong Attempt
                     </label>
@@ -463,6 +463,29 @@
                                    class="form-control arrows-text font-size-14 border-0 p-0 ps-1 text-start fw-semibold"
                                    value="10">
                         </div>
+                        <span class="font-size-14 fw-semibold invisible">Minutes</span>
+                    </div>
+                </div>
+
+                <!-- Lockout Duration -->
+                <div class="d-flex align-items-center gap-2 justify-content-between">
+                    <label class="mb-0 font-size-14 fw-semibold">
+                        Lockout Duration
+                    </label>
+
+                    <div class="d-flex align-items-center gap-2 min-width-26">
+                        <div class="d-flex align-items-center bord-D2D2D2 rounded px-2 w-60px py-1">
+                            <div class="d-flex flex-column me-2 row-gap-1">
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(1, 'lockoutMinutes')"><img src="/images/up arrow.svg" alt=""></button>
+                                <button class="btn btn-sm arrow-btns p-0" onclick="changeValue(-1, 'lockoutMinutes')"><img src="/images/down arrow.svg" alt=""></button>
+                            </div>
+
+                            <input type="number"
+                                   id="lockoutMinutes" min="1" max="1440"
+                                   class="form-control arrows-text font-size-14 border-0 p-0 ps-1 text-start fw-semibold"
+                                   value="30">
+                        </div>
+                        <span class="font-size-14 fw-semibold">Minutes</span>
                     </div>
                 </div>
 
@@ -658,9 +681,9 @@
                     </td>
                     <td class="td-username">${escHtml(u.userName)}</td>
                     <td class="td-role">${escHtml(u.role)}</td>
-                    <td>${u.expiryDate ? new Date(u.expiryDate).toLocaleDateString() : "-"}</td>
+                    <td>${u.expiryDate ? fmtDay(u.expiryDate) : "-"}</td>
                     <td class="fw-semibold ${statusClass}" style="${statusStyle}">${statusText}</td>
-                    <td>${u.lastLoginDate ? new Date(u.lastLoginDate).toLocaleString() : "-"}</td>
+                    <td>${u.lastLoginDate ? fmtStamp(u.lastLoginDate) : "-"}</td>
                 </tr>`;
         });
 
@@ -1073,6 +1096,16 @@
 
 
 <script>
+    /* ===== dates: dd-MM-yyyy (HH:mm:ss), the same as the alarm and audit trail screens ===== */
+    function fmtDay(iso) {
+        const d = new Date(iso), p = v => String(v).padStart(2, "0");
+        return `${p(d.getDate())}-${p(d.getMonth() + 1)}-${d.getFullYear()}`;
+    }
+    function fmtStamp(iso) {
+        const d = new Date(iso), p = v => String(v).padStart(2, "0");
+        return `${fmtDay(iso)} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+    }
+
     /* ===== +/- arrows for the security settings inputs (respects min/max) ===== */
     function changeValue(step, id) {
         const input = document.getElementById(id);
@@ -1094,22 +1127,23 @@
         const res = await fetch("/AdminUser/GetSecuritySettings");
         if (!res.ok) return;
 
-        const data = await res.json();
-        const inputs = document.querySelectorAll(".arrows-text");
-
-        inputs[0].value = data.applicationTimeoutMinutes;
-        inputs[1].value = data.passwordExpiryDays;
-        inputs[2].value = data.maxWrongAttempts;
+        showSecuritySettings(await res.json());
     });
+
+    function showSecuritySettings(data) {
+        document.getElementById("appTimeout").value = data.applicationTimeoutMinutes;
+        document.getElementById("passwordExpiry").value = data.passwordExpiryDays;
+        document.getElementById("maxAttempts").value = data.maxWrongAttempts;
+        document.getElementById("lockoutMinutes").value = data.lockoutMinutes;
+    }
 
     async function saveSecuritySettings() {
 
-        const inputs = document.querySelectorAll(".arrows-text");
-
         const payload = {
-            applicationTimeoutMinutes: parseInt(inputs[0].value),
-            passwordExpiryDays: parseInt(inputs[1].value),
-            maxWrongAttempts: parseInt(inputs[2].value)
+            applicationTimeoutMinutes: parseInt(document.getElementById("appTimeout").value),
+            passwordExpiryDays: parseInt(document.getElementById("passwordExpiry").value),
+            maxWrongAttempts: parseInt(document.getElementById("maxAttempts").value),
+            lockoutMinutes: parseInt(document.getElementById("lockoutMinutes").value)
         };
 
         const res = await fetch("/AdminUser/SaveSecuritySettings", {
@@ -1125,11 +1159,7 @@
 
         // Reload values from DB after save
         const reload = await fetch("/AdminUser/GetSecuritySettings");
-        const data = await reload.json();
-
-        inputs[0].value = data.applicationTimeoutMinutes;
-        inputs[1].value = data.passwordExpiryDays;
-        inputs[2].value = data.maxWrongAttempts;
+        showSecuritySettings(await reload.json());
 
         bootstrap.Modal.getInstance(modalEl).hide();
     }
