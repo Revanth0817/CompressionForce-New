@@ -376,7 +376,11 @@ input.form-check-input {
         content: url('../images/list maker2.svg');
     }
 
-    /* no PLC data yet: neutral grey instead of an invented red state */
+    /* no PLC data yet: neutral grey instead of an invented green/red state */
+    .diagnostics-list.status-unknown::before {
+        content: url('../images/list marker unknown.svg');
+    }
+
     .manual-mode-list.status-unknown::before {
         content: url('../images/list marker unknown.svg');
     }

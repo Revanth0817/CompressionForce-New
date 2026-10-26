@@ -33,30 +33,30 @@
                             <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Inputs</h5>
                             <div class="d-sm-flex px-4 pt-3">
                                 <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
-                                    <li class="diagnostics-list fw-semibold">Emergency Control</li>
-                                    <li class="diagnostics-list fw-semibold">Door Safety</li>
-                                    <li class="diagnostics-list fw-semibold">Turret Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">LHS Feeder Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">RHS Feeder Drive Trip</li>
-                                    <li class="diagnostics-list fw-semibold">Lube Motor Trip</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Upper Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Lower Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Upper Cam in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Lower Cam in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">Emergency Control</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">Door Safety</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">Turret Drive Trip</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">LHS Feeder Drive Trip</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">RHS Feeder Drive Trip</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">Lube Motor Trip</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S1 Upper Cam in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S1 Lower Cam in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S2 Upper Cam in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S2 Lower Cam in Position</li>
 
                                 </ul>
 
                                 <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
-                                    <li class="diagnostics-list fw-semibold">S1 Main Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Pre Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Main Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Pre Penetration Roller in Position</li>
-                                    <li class="diagnostics-list fw-semibold">Turret in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S1 Scrapper in Position</li>
-                                    <li class="diagnostics-list fw-semibold">S2 Scrapper in Position</li>
-                                    <li class="diagnostics-list fw-semibold">RHS Powder Level Sensor</li>
-                                    <li class="diagnostics-list fw-semibold">LHS Powder Level Sensor</li>
-                                    <li class="diagnostics-list fw-semibold">Lube Oil Low</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S1 Main Penetration Roller in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S1 Pre Penetration Roller in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S2 Main Penetration Roller in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S2 Pre Penetration Roller in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">Turret in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S1 Scrapper in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">S2 Scrapper in Position</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">RHS Powder Level Sensor</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">LHS Powder Level Sensor</li>
+                                    <li class="diagnostics-list status-unknown fw-semibold">Lube Oil Low</li>
 
                                 </ul>
                             </div>
@@ -92,7 +92,7 @@
                                 @foreach (var item in switchItems)
                                 {
                                     <li class="diagnostics-list-before">
-                                        <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
+                                        <div class="form-check form-switch diagnostics-list status-unknown text-start form-check-reverse mb-0">
                                             <input class="form-check-input" type="checkbox" role="switch" id="output-@item.Replace(" ", "-")">
                                             <label class="form-check-label fw-semibold" for="output-@item.Replace(" ", "-")">@item</label>
                                         </div>
