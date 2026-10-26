@@ -587,3 +587,7 @@ li.diagnostics-list {
 .recipe-param-row {
     min-height: 3.6rem;
 }
+
+.login-min-height {
+    min-height: 500px;
+}

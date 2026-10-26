@@ -5,7 +5,7 @@
     <div class="container-fluid shadow border-d2d2d2 mt-5">
         <div class="row">
             <!-- ✅ LEFT SECTION - Sign Up Button FIXED -->
-            <div class="col-md-6 login-section background-col-E9EFFB p-5 text-center d-flex flex-column justify-content-center height-500">
+            <div class="col-md-6 login-section background-col-E9EFFB p-5 text-center d-flex flex-column justify-content-center login-min-height">
                 <h3 class="fw-bold font-size-20 col-242424">Welcome back!</h3>
                 <p class="font-size-16 col-242424">Your precision matters. Log in to monitor, adjust, and optimize compression force parameters with confidence. Continue your work with real-time insights and control at your fingertips.</p>
 
@@ -19,7 +19,7 @@
             </div>
 
             <!-- RIGHT SECTION - Login Form -->
-            <div class="col-md-6 login-section p-5 d-flex flex-column justify-content-center height-500">
+            <div class="col-md-6 login-section p-5 d-flex flex-column justify-content-center login-min-height">
                 <form asp-controller="Account" asp-action="Login" method="post">
                     <!-- Success/Error Messages -->
                     @if (TempData["SuccessMessage"] != null)
@@ -35,19 +35,22 @@
                         <label asp-for="Email" class="form-label font-size-14 fw-semibold col-242424">
                             Email Address/User Name<span class="text-danger">*</span>
                         </label>
-                        <input asp-for="Email" class="form-control font-size-14 col-242424" placeholder="Enter Username/Email">
+                        <input asp-for="Email" class="form-control font-size-14 col-242424" placeholder="Enter Username/Email" autocomplete="username" autofocus>
                         <span asp-validation-for="Email" class="text-danger font-size-12"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Password" class="form-label font-size-14 fw-semibold col-242424 pe-5">
-                            Password <span class="text-danger">*</span>
+                        <label asp-for="Password" class="form-label font-size-14 fw-semibold col-242424">
+                            Password<span class="text-danger">*</span>
                         </label>
                         <div class="position-relative">
-                            <input asp-for="Password" type="password" class="form-control col-242424 font-size-14" placeholder="Enter Password">
-                            <img src="~/icons/eyeicon.svg" alt="Toggle Password"
-                                 class="position-absolute top-50 translate-middle-y cursor-pointer end-0 me-2"
-                                 onclick="togglePasswordVisibility()">
+                            <input asp-for="Password" type="password" class="form-control col-242424 font-size-14 pe-5" placeholder="Enter Password" autocomplete="current-password">
+                            <button type="button" id="togglePassword"
+                                    class="btn p-0 border-0 bg-transparent position-absolute top-50 translate-middle-y end-0 me-2"
+                                    aria-label="Show password" aria-pressed="false"
+                                    onclick="togglePasswordVisibility()">
+                                <img src="~/icons/eyeicon.svg" alt="">
+                            </button>
                         </div>
                         <span asp-validation-for="Password" class="text-danger font-size-12"></span>
                     </div>
@@ -57,10 +60,14 @@
                             <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="RememberMe">
                             <label class="form-check-label col-242424 font-size-14" for="RememberMe">Remember Me</label>
                         </div>
-                        <a href="#" class="text-decoration-none col-242424 font-size-14">Forgot Password?</a>
+                        <button type="button" id="forgotPassword" class="btn btn-link p-0 text-decoration-none col-242424 font-size-14"
+                                aria-expanded="false" aria-controls="forgotPasswordNote">Forgot Password?</button>
+                    </div>
+                    <div id="forgotPasswordNote" class="alert alert-info font-size-12 py-2 d-none" role="status">
+                        Passwords cannot be reset here. Please ask an administrator to reset your password.
                     </div>
 
-                    <button type="submit" class="btn background-col-215ED6 text-white font-size-16 fw-semibold ms-auto d-block w-100 py-2">
+                    <button type="submit" id="loginButton" class="btn background-col-215ED6 text-white font-size-16 fw-semibold ms-auto d-block w-100 py-2">
                         Login
                     </button>
                 </form>
@@ -74,7 +81,32 @@
     <script>
         function togglePasswordVisibility() {
             var pwd = document.querySelector('input[name="Password"]');
-            pwd.type = pwd.type === "password" ? "text" : "password";
+            var btn = document.getElementById("togglePassword");
+            var show = pwd.type === "password";
+            pwd.type = show ? "text" : "password";
+            btn.setAttribute("aria-pressed", show);
+            btn.setAttribute("aria-label", show ? "Hide password" : "Show password");
         }
+
+        document.getElementById("forgotPassword").addEventListener("click", function () {
+            var note = document.getElementById("forgotPasswordNote");
+            var open = note.classList.toggle("d-none") === false;
+            this.setAttribute("aria-expanded", open);
+        });
+
+        // one click = one login attempt (each attempt counts towards the lockout)
+        document.querySelector("form").addEventListener("submit", function () {
+            var form = this;
+            if (window.jQuery && window.jQuery.validator && !window.jQuery(form).valid()) return;
+            var btn = document.getElementById("loginButton");
+            setTimeout(function () { btn.disabled = true; btn.textContent = "Logging in..."; }, 0);
+        });
+
+        // coming back with the browser Back button must not leave the button disabled
+        window.addEventListener("pageshow", function () {
+            var btn = document.getElementById("loginButton");
+            btn.disabled = false;
+            btn.textContent = "Login";
+        });
     </script>
 }
