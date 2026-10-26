@@ -40,9 +40,19 @@ namespace CompressionForce.Services
                 appRunTime = $"{(int)diff.TotalHours}H:{diff.Minutes}M";
             }
 
-            var status = _db.PlcStatuses
-                .OrderByDescending(x => x.LastUpdated)
-                .FirstOrDefault();
+            // the local database is "connected" when this very query reaches it - not a flag somebody has to write
+            Data.Entities.PlcStatus status = null;
+            var dbReachable = true;
+            try
+            {
+                status = _db.PlcStatuses
+                    .OrderByDescending(x => x.LastUpdated)
+                    .FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                dbReachable = false;
+            }
 
             if (status == null)
             {
@@ -51,7 +61,7 @@ namespace CompressionForce.Services
                     Date = DateTime.Now.ToString("dd MMM yyyy"),
                     Time = DateTime.Now.ToString("hh:mm tt"),
                     PlcConnected = false,
-                    LocalDbConnected = false,
+                    LocalDbConnected = dbReachable,
 
                     UserName = userName,
                     UserLevel = userLevel,
@@ -75,7 +85,7 @@ namespace CompressionForce.Services
                 Time = lastUpdated.ToString("hh:mm tt"),
                 PlcIp = status.PlcIp,
 
-                LocalDbConnected = status.IsLocalDbConnected,
+                LocalDbConnected = dbReachable && status.IsLocalDbConnected,
                 PlcConnected = plcAlive,
 
                 UserName = userName,
