@@ -24,16 +24,16 @@
                             <h5 class="card-title col-FFFFFF bord-top-rad-4px">Digital Inputs</h5>
                             <div class="d-sm-flex px-4 pt-3">
                                 <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
-                                    <li class="manual-mode-list  font-size-14 fw-semibold col-242424">Emergency Control</li>
-                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Turret Drive Trip</li>
-                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Punch Proxy</li>
-                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Tablet Counter Proxy</li>
+                                    <li class="manual-mode-list status-unknown  font-size-14 fw-semibold col-242424">Emergency Control</li>
+                                    <li class="manual-mode-list status-unknown background-color-FC260E font-size-14 fw-semibold col-242424">Turret Drive Trip</li>
+                                    <li class="manual-mode-list status-unknown background-color-FC260E font-size-14 fw-semibold col-242424">Punch Proxy</li>
+                                    <li class="manual-mode-list status-unknown background-color-FC260E font-size-14 fw-semibold col-242424">Tablet Counter Proxy</li>
                                 </ul>
                                 <ul class="list-group list-group-flush row-gap-16px mb-3 w-50 media-w-50">
-                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Door Safety</li>
-                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Feeder Drive Trip</li>
-                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Revolution Proxy</li>
-                                    <li class="manual-mode-list background-color-FC260E font-size-14 fw-semibold col-242424">Powder Level Sensor</li>
+                                    <li class="manual-mode-list status-unknown background-color-FC260E font-size-14 fw-semibold col-242424">Door Safety</li>
+                                    <li class="manual-mode-list status-unknown background-color-FC260E font-size-14 fw-semibold col-242424">Feeder Drive Trip</li>
+                                    <li class="manual-mode-list status-unknown background-color-FC260E font-size-14 fw-semibold col-242424">Revolution Proxy</li>
+                                    <li class="manual-mode-list status-unknown background-color-FC260E font-size-14 fw-semibold col-242424">Powder Level Sensor</li>
                                 </ul>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                                 @foreach (var item in switchItems)
                                 {
                                     <li class="manual-mode-list-before">
-                                        <div class="form-check form-switch manual-mode-list text-start form-check-reverse mb-0">
+                                        <div class="form-check form-switch manual-mode-list status-unknown text-start form-check-reverse mb-0">
                                             <input class="form-check-input" type="checkbox" role="switch" id="output-@item.Replace(" ", "-")">
                                             <label class="form-check-label font-size-14 fw-semibold col-242424" for="output-@item.Replace(" ", "-")">@item</label>
                                         </div>

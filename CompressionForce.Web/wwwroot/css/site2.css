@@ -376,6 +376,11 @@ input.form-check-input {
         content: url('../images/list maker2.svg');
     }
 
+    /* no PLC data yet: neutral grey instead of an invented red state */
+    .manual-mode-list.status-unknown::before {
+        content: url('../images/list marker unknown.svg');
+    }
+
 /* Digital Input rows: marker stays on the first line, wrapped text hangs beside it, and both columns keep the same row height */
 li.diagnostics-list {
     display: flex;
