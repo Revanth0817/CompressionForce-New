@@ -5,10 +5,10 @@
 <div class="card border-0 mx-4 ps-0 pt-4 min-height-78vh">
     <ul class="nav nav-tabs row-gap-3" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#loadcellCali" type="button" role="tab" aria-controls="loadcellCali" aria-selected="true">Loadcell Calibration</button>
+            <button class="nav-link active col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#loadcellCali" type="button" role="tab" aria-controls="loadcellCali" aria-selected="true">Loadcell Calibration</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#servoCali" type="button" role="tab" aria-controls="servoCali" aria-selected="false">Servo Calibration</button>
+            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#servoCali" type="button" role="tab" aria-controls="servoCali" aria-selected="false">Servo Calibration</button>
         </li>
 
     </ul>
@@ -157,7 +157,7 @@
                                 "S1 Main Lower Servo-3",
                                 "S2 Main Lower Servo-7",
                                 "S1 Pre Lower Servo-5",
-                                "S1 Pre Lower Servo-9"
+                                "S2 Pre Lower Servo-9"
                                 };
                 }
                 @foreach (var title in titles)
@@ -184,7 +184,7 @@
                                 <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Jog Speed</label>
 
-                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 py-1" style="width:92px">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0">
@@ -211,7 +211,7 @@
 
 
                                         </div>
-                                        <input class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold jog-speed" value="10">
+                                        <input class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold jog-speed" value="10.00">
                                     </div>
                                 </div>
 
@@ -220,8 +220,8 @@
                                     <label for="colFormLabelSm" class="col-4 col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">Act Torque</label>
                                     <input class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold act-torque" value="0">
                                     <div class="form-check col-4 form-check-reverse">
-                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
-                                        <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
+                                        <input class="form-check-input servo-radio" type="radio" name="status-@title.Replace(" ", "_")" id="ready-@title.Replace(" ", "_")">
+                                        <label class="form-check-label pe-2 fw-semibold" for="ready-@title.Replace(" ", "_")">
                                             Ready
                                         </label>
                                     </div>
@@ -230,8 +230,8 @@
                                 <div class="row mb-3 justify-content-end w-100 position-relative counter-comp align-items-center">
                                     
                                     <div class="form-check col-4 form-check-reverse">
-                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
-                                        <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
+                                        <input class="form-check-input servo-radio" type="radio" name="status-@title.Replace(" ", "_")" id="alarm-@title.Replace(" ", "_")">
+                                        <label class="form-check-label pe-2 fw-semibold" for="alarm-@title.Replace(" ", "_")">
                                             Alarm
                                         </label>
                                     </div>
@@ -262,7 +262,7 @@
                                 <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set</label>
 
-                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 py-1" style="width:92px">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
@@ -297,7 +297,7 @@
                                 <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Pos.</label>
 
-                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 py-1" style="width:92px">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
@@ -332,7 +332,7 @@
                                 <div class="row justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Speed</label>
 
-                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 py-1" style="width:92px">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
@@ -359,7 +359,7 @@
 
 
                                         </div>
-                                        <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-speed" value="30">
+                                        <input class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold set-speed" value="30.00">
                                     </div>
                                 </div>
 
