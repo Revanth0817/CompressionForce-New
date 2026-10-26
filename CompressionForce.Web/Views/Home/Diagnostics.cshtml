@@ -5,24 +5,24 @@
 <div class="card border-0 mx-4 ps-0 pt-4">
     <ul class="nav nav-tabs row-gap-3" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Input & Output</button>
+            <button class="nav-link active col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Input & Output</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Servo Management</button>
+            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Servo Management</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Signal Monitoring</button>
+            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Signal Monitoring</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link col-242424 fw-semibold" id="" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">Servo Home & Retrieve Setting</button>
+            <button class="nav-link col-242424 fw-semibold" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">Servo Home & Retrieve Setting</button>
         </li>
     </ul>
 
 
-    <div class="tab-content" id="">
+    <div class="tab-content">
 
         <!--Input & Output-->
-        <div class="tab-pane pt-3 fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <div class="tab-pane pt-3 px-3 fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
             <div class="row row-cols-1 row-cols-lg-2 g-4">
 
                 <!--Card 1-->
@@ -93,8 +93,8 @@
                                 {
                                     <li class="diagnostics-list-before">
                                         <div class="form-check form-switch diagnostics-list text-start form-check-reverse mb-0">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="">
-                                            <label class="form-check-label fw-semibold" for="switchCheckDefault">@item</label>
+                                            <input class="form-check-input" type="checkbox" role="switch" id="output-@item.Replace(" ", "-")">
+                                            <label class="form-check-label fw-semibold" for="output-@item.Replace(" ", "-")">@item</label>
                                         </div>
                                     </li>
                                 }
@@ -276,7 +276,7 @@
                                 "S1 Pre Penetration Servo-6",
                                 "S2 Main Lower Servo-7",
                                 "S2 Main Penetration Servo-8",
-                                "S1 Pre Lower Servo-9",
+                                "S2 Pre Lower Servo-9",
                                 "S2 Pre Penetration Servo-10"
                                 };
                 }
@@ -300,7 +300,7 @@
                                 <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Jog Speed</label>
 
-                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 w-70px py-1">
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 rounded px-2 py-1" style="width:92px">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0">
@@ -319,7 +319,7 @@
 
 
                                         </div>
-                                        <input type="" id="" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10">
+                                        <input type="text" class="form-control arrows-text font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10.00">
                                     </div>
                                 </div>
 
@@ -328,8 +328,8 @@
                                     <label for="colFormLabelSm" class="col-4 col-form-label me-auto text-nowrap col-form-label-sm fw-semibold">Act Torque</label>
                                     <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold" value="0">
                                     <div class="form-check col-4 form-check-reverse">
-                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
-                                        <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
+                                        <input class="form-check-input servo-radio" type="radio" name="status-@title.Replace(" ", "_")" id="ready-@title.Replace(" ", "_")">
+                                        <label class="form-check-label pe-2 fw-semibold" for="ready-@title.Replace(" ", "_")">
                                             Ready
                                         </label>
                                     </div>
@@ -339,8 +339,8 @@
                                     <label for="colFormLabelSm" class="col-4 col-form-label me-auto col-form-label-sm fw-semibold">Act Pos.</label>
                                     <input type="text" class="form-control form-control-sm me-auto col-4 text-center w-60px bord-col-215ED6 fw-semibold" value="0">
                                     <div class="form-check col-4 form-check-reverse">
-                                        <input class="form-check-input servo-radio" type="radio" name="radioDefault" id="">
-                                        <label class="form-check-label pe-2 fw-semibold" for="radioDefault1">
+                                        <input class="form-check-input servo-radio" type="radio" name="status-@title.Replace(" ", "_")" id="alarm-@title.Replace(" ", "_")">
+                                        <label class="form-check-label pe-2 fw-semibold" for="alarm-@title.Replace(" ", "_")">
                                             Alarm
                                         </label>
                                     </div>
@@ -361,7 +361,7 @@
                                 <div class="row mb-3 justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Pos.</label>
 
-                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 opacity-50 rounded px-2 w-70px py-1">
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 opacity-50 rounded px-2 py-1" style="width:92px">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
@@ -380,7 +380,7 @@
 
 
                                         </div>
-                                        <input type="" id="" class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10.15">
+                                        <input type="text" class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="10.15">
                                     </div>
                                 </div>
 
@@ -388,7 +388,7 @@
                                 <div class="row justify-content-start w-100 position-relative counter-comp">
                                     <label for="colFormLabelSm" class="col-auto col-form-label me-auto col-form-label-sm fw-semibold">Set Speed</label>
 
-                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 opacity-50 rounded px-2 w-70px py-1">
+                                    <div class="col-sm-3 d-flex align-items-center bord-D2D2D2 opacity-50 rounded px-2 py-1" style="width:92px">
                                         <div class="d-flex flex-column me-2 row-gap-1">
 
                                             <button class="btn btn-sm arrow-btns p-0 arrows-text-dis">
@@ -407,7 +407,7 @@
 
 
                                         </div>
-                                        <input type="" id="" class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="30">
+                                        <input type="text" class="form-control arrows-text arrows-text-dis font-size-12px h-16px border-0 p-0 ps-1 text-start fw-semibold" value="30.00">
                                     </div>
                                 </div>
 
