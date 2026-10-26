@@ -23,7 +23,7 @@
             <div class="d-flex gap-3 align-items-center">
                 <label class="font-size-16px fw-semibold clr-242424">Recipe Code</label>
                 <div class="d-flex RecipeCodeDropdown flex-grow-1 batchDropdown position-relative">
-                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="recipeSelected" value="" placeholder="No recipes" readonly>
+                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="recipeSelected" value="" placeholder="Loading..." readonly>
                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
@@ -51,7 +51,7 @@
                             <div class="d-flex gap-3 align-items-center batchdivMobileWidth100 mb-3">
                                 <label class="font-size-16px fw-semibold clr-242424 min-width-30">Batch Number</label>
                                 <div class="d-flex batchNumberDropdown batchDropdown flex-grow-1 position-relative">
-                                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="batchSelected" value="" placeholder="No active batch" readonly>
+                                    <input type="text" class="form-control dropdownInput bord-D2D2D2" id="batchSelected" value="" placeholder="Loading..." readonly>
                                     <button type="button" class="bgcol-215ED6 border-0 flex-shrink-0 text-white dropdown-toggle dropdown-toggle-split dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="visually-hidden">Toggle Dropdown</span>
                                     </button>
@@ -174,7 +174,12 @@
     const $ = id => document.getElementById(id);
 
     const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    const fmt = iso => iso ? new Date(iso).toLocaleString() : "";
+    // dd-MM-yyyy HH:mm:ss, the same format as the alarm and audit trail screens
+    const fmt = iso => {
+        if (!iso) return "";
+        const d = new Date(iso), p = v => String(v).padStart(2, "0");
+        return `${p(d.getDate())}-${p(d.getMonth() + 1)}-${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+    };
 
     function banner(text, kind) {
         const el = $("batchMessage");
@@ -207,6 +212,7 @@
 
     function showSelectedBatch() {
         const b = state.batches.find(x => x.id === state.batchId);
+        $("batchSelected").placeholder = "No active batch";
         $("batchSelected").value = b ? b.batchCode : "";
         $("goodQty").value = b ? b.goodQty ?? "0" : "";
         $("batchQty").value = b ? b.batchQty ?? "" : "";
@@ -349,6 +355,7 @@
     (async function init() {
         try {
             state.recipes = await api("/Batch/Recipes");
+            $("recipeSelected").placeholder = "No recipes";
             fillDropdown("recipeMenu", "recipeSelected", state.recipes, selectRecipe);
             fillDropdown("addRecipeMenu", "addRecipe", state.recipes, () => { });
             await loadBatches();
@@ -356,6 +363,7 @@
             else banner("There are no recipes yet. Add a recipe first, then create batches for it.", "warning");
         } catch (e) {
             banner("Could not load batches: " + e.message, "danger");
+            $("recipeSelected").placeholder = $("batchSelected").placeholder = "Unavailable";
             $("btnAddBatch").disabled = true; // nothing to add to when the page could not load
         }
     })();
