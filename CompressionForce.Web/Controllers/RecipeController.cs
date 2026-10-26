@@ -1,5 +1,6 @@
 ﻿using CompressionForce.Web.Authorization;
 
+using CompressionForce.Data;
 using CompressionForce.Domain.Entities;
 using CompressionForce.Domain.Exceptions;
 using CompressionForce.Domain.Validation;
@@ -9,6 +10,7 @@ using CompressionForce.Services.Recipes;
 using CompressionForce.Services.Validation;
 using CompressionForce.Web.Models.Recipes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -27,13 +29,16 @@ namespace CompressionForce.Web.Controllers
         private readonly ILookupService _lookupService;
         private readonly IRecipeValidationConfigProvider _cfgProvider;
         private readonly ILogger<RecipeController> _logger;
+        private readonly ApplicationDbContext _db;
 
         public RecipeController(
             IRecipeService recipeService,
             ILookupService lookupService,
             IRecipeValidationConfigProvider cfgProvider,
-            ILogger<RecipeController> logger)
+            ILogger<RecipeController> logger,
+            ApplicationDbContext db)
         {
+            _db = db;
             _recipeService = recipeService;
             _lookupService = lookupService;
             _cfgProvider = cfgProvider;
@@ -84,6 +89,29 @@ namespace CompressionForce.Web.Controllers
 
             return View(vm);
 
+        }
+
+        // Records tab: who added / changed / removed a recipe and when (newest first, capped)
+        [HttpGet]
+        public async Task<IActionResult> History(string? code)
+        {
+            var query = _db.RecipeHistories.AsNoTracking().AsQueryable();
+            if (!string.IsNullOrWhiteSpace(code))
+                query = query.Where(h => h.RecipeCode == code);
+
+            var rows = await query
+                .OrderByDescending(h => h.ChangedAt)
+                .Take(200)
+                .Select(h => new { h.RecipeCode, h.Action, h.ChangedBy, h.ChangedAt })
+                .ToListAsync();
+
+            return Json(rows.Select(h => new
+            {
+                h.RecipeCode,
+                h.Action,
+                h.ChangedBy,
+                changedAt = h.ChangedAt.ToLocalTime().ToString("dd-MM-yyyy HH:mm:ss")
+            }));
         }
 
         // 2. Return recipe content (partial)

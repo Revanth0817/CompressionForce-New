@@ -583,6 +583,7 @@ li.diagnostics-list {
     }
 }
 
-
-
-
+/* Recipe parameter rows: fixed two-line height so the S1 and S2 columns line up even when labels wrap */
+.recipe-param-row {
+    min-height: 3.6rem;
+}

@@ -72,8 +72,30 @@
 
 
             </div>
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="d-flex align-items-center gap-3 pt-3 pb-2">
+                    <span class="font-size-14px fw-semibold clr-242424" id="recipeRecordsTitle">Recipe history</span>
+                    <div class="form-check mb-0">
+                        <input class="form-check-input" type="checkbox" id="recordsAllRecipes">
+                        <label class="form-check-label font-size-14px clr-242424" for="recordsAllRecipes">All recipes</label>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm font-size-13px clr-242424 table-striped-blue w-100 mb-0">
+                        <thead class="text-center">
+                            <tr>
+                                <th class="bgcol-215ED6 text-white fw-semibold">Date &amp; Time</th>
+                                <th class="bgcol-215ED6 text-white fw-semibold">Recipe Code</th>
+                                <th class="bgcol-215ED6 text-white fw-semibold">Action</th>
+                                <th class="bgcol-215ED6 text-white fw-semibold">Changed By</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recipeRecordsBody" class="text-center">
+                            <tr><td colspan="4" class="text-muted">Open this tab to load the history.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -119,6 +141,33 @@
 </script>
 
     @section Scripts {
+    <script>
+    // Records tab: recipe history (read-only)
+    (function () {
+        const body = document.getElementById("recipeRecordsBody");
+        const all = document.getElementById("recordsAllRecipes");
+        const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+        async function loadRecords() {
+            const code = all.checked ? "" : (document.getElementById("currentRecipeCode").value || "").trim();
+            body.innerHTML = '<tr><td colspan="4" class="text-muted">Loading...</td></tr>';
+            try {
+                const res = await fetch("@Url.Action("History", "Recipe")?code=" + encodeURIComponent(code));
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                const rows = await res.json();
+                body.innerHTML = rows.length
+                    ? rows.map(r => `<tr><td>${esc(r.changedAt)}</td><td>${esc(r.recipeCode)}</td><td>${esc(r.action)}</td><td>${esc(r.changedBy)}</td></tr>`).join("")
+                    : '<tr><td colspan="4" class="text-muted">No history recorded.</td></tr>';
+            } catch (e) {
+                body.innerHTML = '<tr><td colspan="4" class="text-danger">Could not load the history.</td></tr>';
+            }
+        }
+
+        document.getElementById("nav-profile-tab").addEventListener("shown.bs.tab", loadRecords);
+        all.addEventListener("change", loadRecords);
+    })();
+    </script>
+
     <!-- jQuery Validation (depends on jQuery in _Layout) -->
     <partial name="_ValidationScriptsPartial" />
 
