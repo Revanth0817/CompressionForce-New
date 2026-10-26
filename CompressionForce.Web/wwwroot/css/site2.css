@@ -591,3 +591,7 @@ li.diagnostics-list {
 .login-min-height {
     min-height: 500px;
 }
+
+.help-screens li {
+    padding: 3px 0;
+}
