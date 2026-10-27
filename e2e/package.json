@@ -1,0 +1,21 @@
+{
+  "name": "compressionforce-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright end-to-end tests for the SRC-51 Compression Force Control System (CompressionForce.Web)",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:anon": "playwright test --project=anonymous",
+    "test:auth": "playwright test --project=authenticated",
+    "report": "playwright show-report",
+    "list": "playwright test --list"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.0.0",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.6.0"
+  }
+}

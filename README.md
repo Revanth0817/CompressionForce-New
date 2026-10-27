@@ -65,6 +65,19 @@ On first start the app seeds the `Admin` and `User` groups and a default admin a
 
 Recipes (add / edit / print / remove), Batch (add / deactivate), Report (per-batch results), Calibration and Servo Calibration, Alarms (filter + PDF), Auto Tare, Diagnostics, Audit Trail, Access Management, Help.
 
+## Tests
+
+End-to-end tests (Playwright, 136 tests, one spec per screen) live in [`e2e/`](e2e/README.md). Start the app, copy `e2e/.env.example` to `e2e/.env`, then:
+
+```bash
+cd e2e
+npm install
+npx playwright install chromium
+npm test
+```
+
+There are no unit-test projects in the .NET solution.
+
 ## Known limitations
 
 - No PLC communication (see status above).
